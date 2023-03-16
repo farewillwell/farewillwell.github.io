@@ -550,10 +550,7 @@ header .go-back i {
     height: 40vh !important;
 }
 
-.bg-cover:after {
-    -webkit-animation: rainbow 60s infinite;
-    animation: rainbow 60s infinite;
-}
+
 
 .bg-cover:before,
 .bg-cover:after {
@@ -1342,8 +1339,8 @@ thead {
     height: 80px;
     margin: 10px 0 50px -20px;
     padding: 21px 10px;
-    background-color: #ff5722;
-    color: #fff;
+    background-color: #22ffa3;
+    color: #ffffff;
     font-size: 1.8rem;
     font-weight: 600;
 }
