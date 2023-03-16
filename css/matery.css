@@ -1059,13 +1059,13 @@ article .article-tags .chip {
     margin-right: 5px;
     margin-bottom: 2px;
     color: #42a9b9;
-    background: #ffffff27;
+    background: #ffffff7d;
     border: 1px solid;
     transition: all 0.6s ease-in-out;
 }
 
 #artDetail .tag_share .article-tag .chip:hover {
-    color: #ffffff3a;
+    color: #fff;
     background: #426cb9;
 }
 
@@ -1143,7 +1143,7 @@ article .article-tags .chip {
 #artDetail .reprint {
     margin: 15px 0 0.4rem;
     padding: 0.5rem 0.8rem;
-    border: 1px solid #eeeeee68;
+    border: 1px solid #eee;
     line-height: 2;
     transition: box-shadow 0.3s ease-in-out
 }
@@ -1174,7 +1174,7 @@ article .article-tags .chip {
 
 #articleContent a {
     padding: 0 2px;
-    color: #42adb9;
+    color: #42b983;
     font-weight: 500;
     text-decoration: underline;
     word-wrap: break-word;
@@ -1327,7 +1327,7 @@ thead {
 }
 
 .chip-default .tag-length {
-    color: #791ee9;
+    color: #e91e63;
     margin-top: 1px;
 }
 
@@ -1628,9 +1628,9 @@ thead {
     line-height: 2.2rem;
     margin: 0 0.5rem;
     padding: 0;
-    color: #ffffff85;
-    border: 1px solid #0f889d;
-    background: radial-gradient(#30aabf, #0f9d58);
+    color: #fff;
+    border: 1px solid #0f9d58;
+    background: radial-gradient(#4cbf30, #0f9d58);
     font-size: 0.9rem;
     border-radius: 50%;
     box-shadow: 0 4px 6px rgba(50, 50, 93, .21), 0 2px 3px rgba(0, 0, 0, .1);
