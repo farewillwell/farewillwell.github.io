@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="讨论区第三次发帖, farewell&#39;s blog">
+    <meta name="keywords" content="ELF文件使用, farewell&#39;s blog">
     <meta name="description" content="你到过许多地方，用你自己的故事记认许多城邦后，你终于抵达此城">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>讨论区第三次发帖 | farewell&#39;s blog</title>
+    <title>ELF文件使用 | farewell&#39;s blog</title>
     <link rel="icon" type="image/png" href="/medias/logo.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -354,12 +354,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/7.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/17.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">讨论区第三次发帖</h1>
+                    <h1 class="description center-align post-title">ELF文件使用</h1>
                 </div>
             </div>
         </div>
@@ -475,8 +475,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/BUAA-OO/">
-                                <span class="chip bg-color">BUAA_OO</span>
+                            <a href="/tags/BUAA-OS/">
+                                <span class="chip bg-color">BUAA_OS</span>
                             </a>
                         
                     </div>
@@ -491,7 +491,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2023-03-15
+                    2023-03-18
                 </div>
                 
 
@@ -512,44 +512,34 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="poly架构在week3"><a href="#poly架构在week3" class="headerlink" title="poly架构在week3"></a>poly架构在week3</h1><h2 id="任务划分"><a href="#任务划分" class="headerlink" title="任务划分"></a>任务划分</h2><p>如果不考虑三角大额度优化的话还是几乎不用重构，添几个方法就行了，<br>上次笔者摆了就优化了个合并，拿了好几个80</p>
-<p>根据上次的功能，化为三个阶段：实现求导功能，实现自定义函数求导功能，实现函数嵌套定义功能，这里建议按照上述顺序分层次测试实施。</p>
-<h2 id="求导功能"><a href="#求导功能" class="headerlink" title="求导功能"></a>求导功能</h2><p>poly这个架构还是很适合求导的。</p>
-<p>试想我们在人手求导一个表达式的时候，一般都是希望这个表达式就是纯纯的多项式，然后拿它的每一个单项式分别开刀，最后把所有的单项式所搞得导数都加起来。</p>
-<p>在这样的实现中，poly是统一入手点，我们把所有需要求导的东西都叫做poly，从外面访问求导功能的时候，不管它严格的定义上是一个幂函数，一个常数，一个三角函数，一个mono，还是确实的一个poly，我们都从poly这个外在的包装访问。当然，具体内部的实现还是要每一种分别设定求导方式，不过我们统一返回一个将结果包装好的poly就好了。</p>
-<p>用poly的方法访问，内部实现各种百花齐放，然后返回一个poly作为包装。</p>
-<p>针对求导功能设置一个新的因子，Derivative，这个因子在lexer读取的时候是类似sin一样，一旦确定是这个dx的情况后，立刻使用括号栈扫描后面的字符串，将dx所管辖的字符串范围读出来。然后传进该字符串作为构造参数，把它变成一个poly （把一个字符串转换成poly是我们一直在做的事情，具体操作类似sin的处理，也可以类似第一次作业程序在main里的入口，区别是main是处理input，dx仅仅是处理字符串，但是本质都是一样的）</p>
-<p>所有在建立语法结构的时候，我们对每一个读到的语法单元进行递归下降的读取，然后等它深层的子语法单元都建好之后，在“归”的过程中加到上层的语法结构里面。所以在使用构造函数建好dx()<br>仅仅是建好，还没求导呢<br>已经递归的得到了dx()括号里的字符串先转成语法结构然后转成的多项式，然后这个多项式就作为dx()的的属性存在里面。</p>
-<p>作为因子，首先应该实现factor接口，factor接口需要实现方法toPoly()</p>
-<p>Derivative应当存这样的几个属性，对谁求导的para，需要被求导的多项式poly。存这样的方法：构造函数，toPoly方法</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public class Derivative implements Factor &#123;</span><br><span class="line"></span><br><span class="line">    private Poly poly;</span><br><span class="line"></span><br><span class="line">    private char parameter;</span><br><span class="line">    public Derivative(String string)</span><br><span class="line">    &#123;</span><br><span class="line">        //按字符串构造</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Poly toPoly() &#123;</span><br><span class="line"></span><br><span class="line">        //它存的poly对它的parameter求导的结果用poly包装</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>如何实现具体的求导<br>dx(cos(cos(cos(cos(cos(x))))))&#x3D;−sin(x)sin(cos(x))sin(cos(cos(x)))sin(cos(cos(cos(x))))sin(cos(cos(cos(cos(x)))))先粘一组数据:三角嵌套，正负号</p>
-<p>进入求导流程：对Derivative这个因子进行toPoly()</p>
-<p>在toPoly的过程中，是对Derivative的poly进行求导，调用这个poly的求导方法</p>
-<p>poly的求导方法：针对每一个mono调用求导方法，然后把mono的求导方法返回的poly相加</p>
-<h3 id="mono的求导方法"><a href="#mono的求导方法" class="headerlink" title="mono的求导方法"></a>mono的求导方法</h3><p>经过第二次作业，我们的mono升级为k<em>x^xp</em> y ^yp* z^zp* &lt;三角函数们&gt;</p>
-<p>可以把前面的看成一个函数，然后把后面的三角函数分别看成一个函数。</p>
-<p>然后mono就是这些函数相乘，直接用课程组的求导公式就行了 （这里建议把前面的xyz部分单独求导之后带上后面的，然后再对每个三角函数遍历求导）</p>
-<p>三角函数求导：如何解决里面的符号问题？一般来讲sin成cos没问题，但是cos变成-sin的符号怎么体现？</p>
-<p>一个思路是，不添加任何符号（当然也可以添加一个属性），由于求导只有一次，所以可以把这个符号移进去，让三角里面的poly乘个-1（深浅拷贝？乘的这个-1乘在哪里了？会不会出现多个三角函数的poly指的都是一个？这个看各自的具体实现，总之建议能新建的一定要新建，尽量减少原地）</p>
-<p>尤其注意：小心这里面的深浅拷贝问题，在循环mono的每一个三角函数的时候返回的poly里面的mono建议新建，三角函数其实无所谓）</p>
-<h2 id="自定义函数求导功能"><a href="#自定义函数求导功能" class="headerlink" title="自定义函数求导功能"></a>自定义函数求导功能</h2><p>设定的求导方式不是太适合直接函数替换，也许是希望我们用factor对函数建类？这里采取一个不讲性能的很笨拙的方法。<br>最后一次了，懒得新开了，直接用现有的工具将就一下，除了跑的慢点剩下都能看</p>
-<p>自定义函数里面带d，这个是什么意思？其实它的意思是</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f(x)=k(x)&#x27;</span><br></pre></td></tr></table></figure>
-<p>也就是说想知道f(x)是怎么回事，只需要对k(x)求导就可以了。</p>
-<p>我们需要在带入前就把k(x)’求出来，不然先代换的话会牵连到参数的求导。所以为了防止没求导的时候被调用，需要在建造这个函数的时候就解决掉导数问题。</p>
-<p>k(x)理论上也是一个表达式啊。</p>
-<p>我们前面实现了什么？ 1.将一个不带求导的函数表达式替换到待化简表达式里（注意：函数的定义式也是一个表达式，可以用等号分开两个部分，右边的就是一个表达式），让这个待化简表达式没自定义函数符号</p>
-<p>2.将一个不带函数的表达式变成poly化简，然后这个poly再变成字符串输出（它进来的时候是字符串，出来的时候也是字符串）</p>
-<p>3.对一个poly进行求导化简，变成另一个简化的poly</p>
-<p>是字符串形式的表达式，我们就可以通过新建的一个专门为它准备的lexer和parser来解析。</p>
-<p>所以可以这样做：</p>
-<p>假如是在函数定义式里出现的d，那么这个函数的定义式就不直接按照字符串存，就先按照表达式理解，先转成poly，然后用poly求导，然后导完了化成string，就是没d的东西，然后把函数定义的字符串按照这个存起来就好了。</p>
-<h2 id="函数嵌套定义"><a href="#函数嵌套定义" class="headerlink" title="函数嵌套定义"></a>函数嵌套定义</h2><p>观察要求，可以看到对自定义的函数变成了现在的样子</p>
-<p>函数表达式与上次作业不同，允许调用其他已定义的自定义函数（保证不会出现递归调用的情况），下面是几个不合法的例子。<br>函数定义时f(x,y) &#x3D; f(x,2)+y+1,出现递归调用，不合法。<br>函数定义时f(x,y) &#x3D; g(x,y)+y,g(x,y)&#x3D;f(x,y)+y,f先定义,g后定义,f在定义时调用了未定义的函数g，不合法。<br>也就是说，这次的函数定义，可以是先给出一个纯粹的函数，然后再定义一些带它的表达式，也可以是都是纯粹的函数，但是至少可以确定的是，一定是先定义了再在其他地方出现</p>
-<p>所以可以逐个读入函数模式，第一个肯定是不带其他函数的，然后看第二个有没有，第二个要是没有的话也像第一个一样存起来，但是第二个要是有的话，就先按照第二次作业处理待化简字符串一样，把第一个函数带进去，变成没有第一个函数标识符的字符串，再存进去。</p>
-<p>其实也可以理解要化简的表达式是第四个函数u(x)，从第二个到后面的其实都一样。</p>
-<p>何立群<br>2023-03-08 22:14:51<br>补充，在解决cos求导的符号时候，由于用poly套上mono封装，所以可以在mono上直接加系数为-1修正，不用把里面的poly乘-1了</p>
+                <h1 id="ELF"><a href="#ELF" class="headerlink" title="ELF"></a>ELF</h1><h2 id="单词辨析"><a href="#单词辨析" class="headerlink" title="单词辨析"></a>单词辨析</h2><h3 id="在汇编源码中"><a href="#在汇编源码中" class="headerlink" title="在汇编源码中"></a>在汇编源码中</h3><p>Section称为节，是指在汇编源码中经由关键字section或segment修饰、逻辑划分的指令或数据区域，汇编器会将这两个关键字修饰的区域在目标文件中编译成节，也就是说”节”最初诞生于目标文件中。</p>
+<p>Segment称为段，是链接器根据目标文件中属性相同的多个Section合并后的Section集合，这个集合称为Segment，也就是段，链接器把目标文件链接成可执行文件，因此段最终诞生于可执行文件中。我们平时所说的可执行程序内存空间中的代码段和数据段就是指的Segment。</p>
+<p>在汇编源码中，通常用语法关键字section或segment来表示一段区域，它们是编译器提供的伪指令，作用是相同的，都是在程序中”逻辑地”规划一段区域，此区域便是节。</p>
+<p>注意，此时所说的section或segment都是汇编语法中的关键字，它们在语法中都表示”节”，不是段，只是不同编译器的关键字不同而已，关键字segment在语法中也被认为与section意义相同。</p>
+<p>也就是说，汇编语法关键字中的section或segment实际上都是指目标文件（*.o）中的“节”（Section）。</p>
+<p>操作系统加载程序时并不关心节的数量和大小，操作系统只关心节的属性，因为程序必然是要加载到内存中才能运行的，而内存的访问会涉及到全局描述符表中段描述符的访问权限等属性，保护模式下对任何内存的访问都要经过段描述符才行。</p>
+<p>具体细节需要理解操作系统保护模式下全局描述表，没有再深究。总之，操作系统在加载程序时，不需要对逐个节进行加载，只要给出相同权限的节的集合就行了，例如把所有只读可执行的节（如代码节.text和初始化代码节.init）归并到一块，所有可读写的节（如数据节.data和未初始化节.bss）归并到一块，这样操作系统就能为它们分配不同的段选择子，从而指向不同段描述符，实现不同的访问权限了。<br>链接过程</p>
+<p>为了程序能在操作系统上运行，操作系统和编译器需要相互配合，此时汇编器只生成了目标文件，尚未链接，因此这个将”节”合并的工作是由链接器来完成的，链接器将目标文件中属性相同的节合并成一个大的Section集合，此集合便称为Segment，也就是段，此段便是我们平时所说的可执行程序内存空间中的代码段和数据段。</p>
+<h2 id="用途"><a href="#用途" class="headerlink" title="用途"></a>用途</h2><p> ELF中的section主要提供给Linker使用， 而segment提供给Loader用，Linker需要关心.text, .rel.text, .data, .rodata等等，关键是Linker需要做relocation。而Loader只需要知道Read&#x2F;Write&#x2F;Execute的属性。a.out格式没有这种区分。（注意现在使用gcc编译出来的a.out文件只是取该名字而已，文件格式是elf的.）</p>
+<p>2.一个executable的ELF文件可以没有section，但必须有segment。ELF文件中间部分是共用的（也就是代码段、数据段等），如shared objects就可以同时拥有Program header table和Section Header Table，这样load完后还可以relocate</p>
+<h2 id="关于作业细节"><a href="#关于作业细节" class="headerlink" title="关于作业细节"></a>关于作业细节</h2><p>1.本质上，在操作系统中，结构体是一个模板，这个东西它的意思是按照这个结构体的数据分布来套内存的。</p>
+<p>拥有强转性，不管是不是真的是这个结构体，所以实际上会发现通常在用的时候还没新建结构体就出现了结构体指针。</p>
+<p>事实上结构体在其他文件里是已经存好的，但是我在写其他函数的时候并没有传进来数据，只是传进来一个指针</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">readelf</span><span class="params">(<span class="type">const</span> <span class="type">void</span> *binary, <span class="type">size_t</span> size)</span> &#123;</span><br><span class="line">	Elf32_Ehdr *ehdr = (Elf32_Ehdr *)binary;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Check whether `binary` is a ELF file.</span></span><br><span class="line">	<span class="keyword">if</span> (!is_elf_format(binary, size)) &#123;</span><br><span class="line">		<span class="built_in">fputs</span>(<span class="string">&quot;not an elf file\n&quot;</span>, <span class="built_in">stderr</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Get the address of the section table, the number of section headers and the size of a</span></span><br><span class="line">	<span class="comment">// section header.</span></span><br><span class="line">	<span class="type">const</span> <span class="type">void</span> *sh_table;</span><br><span class="line">	Elf32_Half sh_entry_count;</span><br><span class="line">	Elf32_Half sh_entry_size;</span><br><span class="line">	<span class="comment">/* Exercise 1.1: Your code here. (1/2) */</span></span><br><span class="line">	sh_table=binary+ehdr-&gt;e_shoff;</span><br><span class="line">	sh_entry_count=ehdr-&gt;e_shnum;</span><br><span class="line">	sh_entry_size=ehdr-&gt;e_shentsize;</span><br><span class="line">	<span class="comment">// For each section header, output its index and the section address.</span></span><br><span class="line">	<span class="comment">// The index should start from 0.</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; sh_entry_count; i++) &#123;</span><br><span class="line">		<span class="type">const</span> Elf32_Shdr *shdr;</span><br><span class="line">		<span class="type">unsigned</span> <span class="type">int</span> addr;</span><br><span class="line">		<span class="comment">/* Exercise 1.1: Your code here. (2/2) */</span></span><br><span class="line">		shdr=(Elf32_Addr*)sh_table+i*sh_entry_size;</span><br><span class="line">		addr=shdr-&gt;sh_addr;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d:0x%x\n&quot;</span>, i, addr);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>比如这个代码，传进来一个指针但是是一个void*</p>
+<p>void*的意思是不定指针，没有规定类型，（事实上，在操作系统的硬件文件里面很少有真正存在类型的，都是纯粹的数据，比如elf就是二进制文件罢了），所以它的意思就是任意形式的地址，管的很宽。</p>
+<p>然后binary就是传进来的二进制文件的地址。</p>
+<p>然后记住，这种指针型的 操作，一般都是直接读取硬件，所以都是指针，然后使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Elf32_Ehdr *ehdr = (Elf32_Ehdr *)binary;</span><br></pre></td></tr></table></figure>
+<p>这种强转就是代表这个新的指针可以按照Elf32的类型去从binary的地址那里读取数值了。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sh_table=binary+ehdr-&gt;e_shoff;</span><br><span class="line">sh_entry_count=ehdr-&gt;e_shnum;</span><br><span class="line">sh_entry_size=ehdr-&gt;e_shentsize;</span><br></pre></td></tr></table></figure>
+<p>这三行代码代表从Elf表头那里读取数据，binary+shoff代表取偏移值来计算具体的sh位置。</p>
+<p>count代表计算有多少个节</p>
+<p>sh_entry_size代表计算的这个表里面存的每一个节的大小</p>
+<p>然后为了按照节的格式从里面取数据，所以要单独开一个新的类型之指针。</p>
+<p>const Elf32_Shdr *shdr;</p>
+<p>然后用计算出来的地址强转一下：<br>shdr&#x3D;(Elf32_Addr*)sh_table+i*sh_entry_size;</p>
+<p>就行了.就能用-&gt;从里面按格式取数据了。</p>
 
                 
             </div>
@@ -576,7 +566,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://brilliant-daffodil-eb4c4f.netlify.app/2023/03/15/OO_tiezi3/">https://brilliant-daffodil-eb4c4f.netlify.app/2023/03/15/OO_tiezi3/</a>
+                    <a href="https://brilliant-daffodil-eb4c4f.netlify.app/2023/03/18/ELF/">https://brilliant-daffodil-eb4c4f.netlify.app/2023/03/18/ELF/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -614,8 +604,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/BUAA-OO/">
-                                    <span class="chip bg-color">BUAA_OO</span>
+                                <a href="/tags/BUAA-OS/">
+                                    <span class="chip bg-color">BUAA_OS</span>
                                 </a>
                             
                         </div>
@@ -663,13 +653,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2023/03/18/bash/">
+                <a href="/2023/03/18/git/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="关于bash">
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="">
                         
-                        <span class="card-title">关于bash</span>
+                        <span class="card-title"></span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -691,14 +681,6 @@
                     </div>
                 </div>
                 
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/BUAA-OS/">
-                        <span class="chip bg-color">BUAA_OS</span>
-                    </a>
-                    
-                </div>
-                
             </div>
         </div>
         
@@ -708,13 +690,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2023/03/15/OO_tiezi2/">
+                <a href="/2023/03/18/c%E7%9A%84%E7%BC%96%E8%AF%91/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="讨论区第二次发帖">
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="关于c语言编译">
                         
-                        <span class="card-title">讨论区第二次发帖</span>
+                        <span class="card-title">关于c语言编译</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -725,7 +707,7 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-15
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-18
                             </span>
                         <span class="publish-author">
                             
@@ -738,8 +720,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/BUAA-OO/">
-                        <span class="chip bg-color">BUAA_OO</span>
+                    <a href="/tags/BUAA-OS/">
+                        <span class="chip bg-color">BUAA_OS</span>
                     </a>
                     
                 </div>

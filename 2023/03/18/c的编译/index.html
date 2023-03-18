@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="讨论区第三次发帖, farewell&#39;s blog">
+    <meta name="keywords" content="关于c语言编译, farewell&#39;s blog">
     <meta name="description" content="你到过许多地方，用你自己的故事记认许多城邦后，你终于抵达此城">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>讨论区第三次发帖 | farewell&#39;s blog</title>
+    <title>关于c语言编译 | farewell&#39;s blog</title>
     <link rel="icon" type="image/png" href="/medias/logo.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -354,12 +354,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/7.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/10.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">讨论区第三次发帖</h1>
+                    <h1 class="description center-align post-title">关于c语言编译</h1>
                 </div>
             </div>
         </div>
@@ -475,8 +475,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/BUAA-OO/">
-                                <span class="chip bg-color">BUAA_OO</span>
+                            <a href="/tags/BUAA-OS/">
+                                <span class="chip bg-color">BUAA_OS</span>
                             </a>
                         
                     </div>
@@ -491,7 +491,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2023-03-15
+                    2023-03-18
                 </div>
                 
 
@@ -512,44 +512,160 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="poly架构在week3"><a href="#poly架构在week3" class="headerlink" title="poly架构在week3"></a>poly架构在week3</h1><h2 id="任务划分"><a href="#任务划分" class="headerlink" title="任务划分"></a>任务划分</h2><p>如果不考虑三角大额度优化的话还是几乎不用重构，添几个方法就行了，<br>上次笔者摆了就优化了个合并，拿了好几个80</p>
-<p>根据上次的功能，化为三个阶段：实现求导功能，实现自定义函数求导功能，实现函数嵌套定义功能，这里建议按照上述顺序分层次测试实施。</p>
-<h2 id="求导功能"><a href="#求导功能" class="headerlink" title="求导功能"></a>求导功能</h2><p>poly这个架构还是很适合求导的。</p>
-<p>试想我们在人手求导一个表达式的时候，一般都是希望这个表达式就是纯纯的多项式，然后拿它的每一个单项式分别开刀，最后把所有的单项式所搞得导数都加起来。</p>
-<p>在这样的实现中，poly是统一入手点，我们把所有需要求导的东西都叫做poly，从外面访问求导功能的时候，不管它严格的定义上是一个幂函数，一个常数，一个三角函数，一个mono，还是确实的一个poly，我们都从poly这个外在的包装访问。当然，具体内部的实现还是要每一种分别设定求导方式，不过我们统一返回一个将结果包装好的poly就好了。</p>
-<p>用poly的方法访问，内部实现各种百花齐放，然后返回一个poly作为包装。</p>
-<p>针对求导功能设置一个新的因子，Derivative，这个因子在lexer读取的时候是类似sin一样，一旦确定是这个dx的情况后，立刻使用括号栈扫描后面的字符串，将dx所管辖的字符串范围读出来。然后传进该字符串作为构造参数，把它变成一个poly （把一个字符串转换成poly是我们一直在做的事情，具体操作类似sin的处理，也可以类似第一次作业程序在main里的入口，区别是main是处理input，dx仅仅是处理字符串，但是本质都是一样的）</p>
-<p>所有在建立语法结构的时候，我们对每一个读到的语法单元进行递归下降的读取，然后等它深层的子语法单元都建好之后，在“归”的过程中加到上层的语法结构里面。所以在使用构造函数建好dx()<br>仅仅是建好，还没求导呢<br>已经递归的得到了dx()括号里的字符串先转成语法结构然后转成的多项式，然后这个多项式就作为dx()的的属性存在里面。</p>
-<p>作为因子，首先应该实现factor接口，factor接口需要实现方法toPoly()</p>
-<p>Derivative应当存这样的几个属性，对谁求导的para，需要被求导的多项式poly。存这样的方法：构造函数，toPoly方法</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public class Derivative implements Factor &#123;</span><br><span class="line"></span><br><span class="line">    private Poly poly;</span><br><span class="line"></span><br><span class="line">    private char parameter;</span><br><span class="line">    public Derivative(String string)</span><br><span class="line">    &#123;</span><br><span class="line">        //按字符串构造</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Poly toPoly() &#123;</span><br><span class="line"></span><br><span class="line">        //它存的poly对它的parameter求导的结果用poly包装</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>如何实现具体的求导<br>dx(cos(cos(cos(cos(cos(x))))))&#x3D;−sin(x)sin(cos(x))sin(cos(cos(x)))sin(cos(cos(cos(x))))sin(cos(cos(cos(cos(x)))))先粘一组数据:三角嵌套，正负号</p>
-<p>进入求导流程：对Derivative这个因子进行toPoly()</p>
-<p>在toPoly的过程中，是对Derivative的poly进行求导，调用这个poly的求导方法</p>
-<p>poly的求导方法：针对每一个mono调用求导方法，然后把mono的求导方法返回的poly相加</p>
-<h3 id="mono的求导方法"><a href="#mono的求导方法" class="headerlink" title="mono的求导方法"></a>mono的求导方法</h3><p>经过第二次作业，我们的mono升级为k<em>x^xp</em> y ^yp* z^zp* &lt;三角函数们&gt;</p>
-<p>可以把前面的看成一个函数，然后把后面的三角函数分别看成一个函数。</p>
-<p>然后mono就是这些函数相乘，直接用课程组的求导公式就行了 （这里建议把前面的xyz部分单独求导之后带上后面的，然后再对每个三角函数遍历求导）</p>
-<p>三角函数求导：如何解决里面的符号问题？一般来讲sin成cos没问题，但是cos变成-sin的符号怎么体现？</p>
-<p>一个思路是，不添加任何符号（当然也可以添加一个属性），由于求导只有一次，所以可以把这个符号移进去，让三角里面的poly乘个-1（深浅拷贝？乘的这个-1乘在哪里了？会不会出现多个三角函数的poly指的都是一个？这个看各自的具体实现，总之建议能新建的一定要新建，尽量减少原地）</p>
-<p>尤其注意：小心这里面的深浅拷贝问题，在循环mono的每一个三角函数的时候返回的poly里面的mono建议新建，三角函数其实无所谓）</p>
-<h2 id="自定义函数求导功能"><a href="#自定义函数求导功能" class="headerlink" title="自定义函数求导功能"></a>自定义函数求导功能</h2><p>设定的求导方式不是太适合直接函数替换，也许是希望我们用factor对函数建类？这里采取一个不讲性能的很笨拙的方法。<br>最后一次了，懒得新开了，直接用现有的工具将就一下，除了跑的慢点剩下都能看</p>
-<p>自定义函数里面带d，这个是什么意思？其实它的意思是</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f(x)=k(x)&#x27;</span><br></pre></td></tr></table></figure>
-<p>也就是说想知道f(x)是怎么回事，只需要对k(x)求导就可以了。</p>
-<p>我们需要在带入前就把k(x)’求出来，不然先代换的话会牵连到参数的求导。所以为了防止没求导的时候被调用，需要在建造这个函数的时候就解决掉导数问题。</p>
-<p>k(x)理论上也是一个表达式啊。</p>
-<p>我们前面实现了什么？ 1.将一个不带求导的函数表达式替换到待化简表达式里（注意：函数的定义式也是一个表达式，可以用等号分开两个部分，右边的就是一个表达式），让这个待化简表达式没自定义函数符号</p>
-<p>2.将一个不带函数的表达式变成poly化简，然后这个poly再变成字符串输出（它进来的时候是字符串，出来的时候也是字符串）</p>
-<p>3.对一个poly进行求导化简，变成另一个简化的poly</p>
-<p>是字符串形式的表达式，我们就可以通过新建的一个专门为它准备的lexer和parser来解析。</p>
-<p>所以可以这样做：</p>
-<p>假如是在函数定义式里出现的d，那么这个函数的定义式就不直接按照字符串存，就先按照表达式理解，先转成poly，然后用poly求导，然后导完了化成string，就是没d的东西，然后把函数定义的字符串按照这个存起来就好了。</p>
-<h2 id="函数嵌套定义"><a href="#函数嵌套定义" class="headerlink" title="函数嵌套定义"></a>函数嵌套定义</h2><p>观察要求，可以看到对自定义的函数变成了现在的样子</p>
-<p>函数表达式与上次作业不同，允许调用其他已定义的自定义函数（保证不会出现递归调用的情况），下面是几个不合法的例子。<br>函数定义时f(x,y) &#x3D; f(x,2)+y+1,出现递归调用，不合法。<br>函数定义时f(x,y) &#x3D; g(x,y)+y,g(x,y)&#x3D;f(x,y)+y,f先定义,g后定义,f在定义时调用了未定义的函数g，不合法。<br>也就是说，这次的函数定义，可以是先给出一个纯粹的函数，然后再定义一些带它的表达式，也可以是都是纯粹的函数，但是至少可以确定的是，一定是先定义了再在其他地方出现</p>
-<p>所以可以逐个读入函数模式，第一个肯定是不带其他函数的，然后看第二个有没有，第二个要是没有的话也像第一个一样存起来，但是第二个要是有的话，就先按照第二次作业处理待化简字符串一样，把第一个函数带进去，变成没有第一个函数标识符的字符串，再存进去。</p>
-<p>其实也可以理解要化简的表达式是第四个函数u(x)，从第二个到后面的其实都一样。</p>
-<p>何立群<br>2023-03-08 22:14:51<br>补充，在解决cos求导的符号时候，由于用poly套上mono封装，所以可以在mono上直接加系数为-1修正，不用把里面的poly乘-1了</p>
+                <h1 id="gcc基础使用"><a href="#gcc基础使用" class="headerlink" title="gcc基础使用"></a>gcc基础使用</h1><p>假设将这个文件命名为 hello.c ，那么在终端中，你只要简单的敲下：</p>
+<p>$ gcc hello.c</p>
+<p>就会在当前目录下生成一个名为 a.out 的可执行文件。使用</p>
+<p>$ .&#x2F;a.out</p>
+<p>对 C 而言，从源代码到可执行文件要经过四个步骤：预处理-&gt;编译-&gt;汇编-&gt;链接。这个完整的过程有时被直接称为“编译”或“构建”。这四个阶段都会调用独立的程序，对于 C 程序和 GNU 编译工具链而言，预处理阶段会以源文件作为输入，调用 cpp 生成预处理文件；编译阶段会以预处理后的文件作为输入，调用 cc1 生成汇编文件；汇编阶段会以汇编文件作为输入，调用 as 生成目标文件；最后以一个或多个目标文件作为输入，调用 ld 生成可执行文件。而 gcc 则是作为一个总的调度程序，调用这些真正执行处理的程序，将这些程序封装起来给用户提供了一个比较简明的操作界面，这样就降低了我们编译程序的难度。你可以在编译的时候用 –verbose 让 gcc 打印出详细的编译信息，看一看一个简单的 gcc hello.c 后隐藏了多少复杂的操作</p>
+<h2 id="gcc的参数"><a href="#gcc的参数" class="headerlink" title="gcc的参数"></a>gcc的参数</h2><table>
+<thead>
+<tr>
+<th>参数</th>
+<th>意义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>-E</td>
+<td>只进行预处理,生成.i</td>
+</tr>
+<tr>
+<td>-o</td>
+<td>指定output 的file的名字（不写这个光写file默认把编译出来的放到这个文件夹里）</td>
+</tr>
+<tr>
+<td>-S</td>
+<td>生成汇编代码文件，生成.s</td>
+</tr>
+<tr>
+<td>-c</td>
+<td>生成机器码文件.out</td>
+</tr>
+<tr>
+<td>-I</td>
+<td>将指定目录的东西拿来链接，当然只要指定存在这个的文件夹就行了，不用指定文件，后面可以跟绝对地址，也可以.&#x2F;什么,也可以假如是上一层文件夹的就是..&#x2F;的，但是路径中间千万别空格,而且和参数之间留好空格！</td>
+</tr>
+<tr>
+<td>预处理</td>
+<td></td>
+</tr>
+</tbody></table>
+<p>重要要求：编出可执行文件gcc必须有main，所以不能单一一个文件编，否则会出undefined reference to &#96;main<br>gcc不能编没有main的程序！，所以需要造一个main！<br>问题：重复使用该命令会重复编译吗？</p>
+<p>在同一个文件夹之下，可以多次编译，只要名字不同即可，都会正常生成的.</p>
+<p>可以使用 -E 选项让 gcc 只进行预处理操作：</p>
+<p>$ gcc -E hello.c -o hello.i</p>
+<p>预处理过程主要处理源代码文件中以 # 开始的预处理指令。主要处理规则是：</p>
+<pre><code>将所有的 #define 删除，并展开所有的宏定义。
+处理所有的条件编译指令，如 #if ，#ifdef 等。
+处理 #include 预处理指令，将被包含的文件内容插入到该预处理指令的位置。
+</code></pre>
+<p>预处理过程还执行了一些其它操作，当前可以先不了解，感兴趣的同学可以阅读预处理器。<br>编译</p>
+<p>产生汇编代码。这一步是整个程序构建的核心部分，也是最复杂的部分之一，你在下学期的编译技术课上会深入学习这一部分的知识。如果想让 gcc 只从预处理文件生成汇编代码文件，可以使用 -S 参数，如下所示：</p>
+<p>$ gcc -S hello.i -o hello.s</p>
+<p>汇编</p>
+<p>将汇编代码转换为机器代码。如果想让 gcc 只进行这一步操作，可以使用 -c 参数，如下所示：</p>
+<p>$ gcc -c hello.s -o hello.o</p>
+<p>此时生成的文件称作目标文件（object file）</p>
+<p>链接</p>
+<p>hello.c 中调用了 printf 这个函数用来输出字符串，但是你有没有想过这个 printf 函数的定义到底在哪里呢？你可能会想 printf 定义在 stdio.h 中，但实际上 stdio.h 中只有 printf 的声明，并没有这个函数的定义。链接就是要解决这个问题。简单而言，链接就是把多个目标文件的代码段放在一起、数据段放在一起，然后和一些写好的库函数（比如 scanf 和 printf ）放在一块共同形成可执行文件。</p>
+<p>但是假如这个库在别的地方，会怎么样才能连接呢？比如在别的文件夹？</p>
+<h1 id="变量与存储"><a href="#变量与存储" class="headerlink" title="变量与存储"></a>变量与存储</h1><p>存储类别（storage class） 用来描述 C 语言中变量或者函数的一些特征。这些特征包括变量的存储期属性，作用域属性，以及链接属性。在 C 语言中，我们可以使用与存储类别有关的关键字（如 auto，extern，static）和变量声明的位置（如在函数内声明或者在函数外声明）来指定变量的存储类别。</p>
+<p>为了说明变量的存储类别的内涵，我们需要先来了解一下变量的存储期，作用域和链接分别都是什么。</p>
+<h2 id="存储期"><a href="#存储期" class="headerlink" title="存储期"></a>存储期</h2><p>存储期（storage duration） 描述一个对象（object） 在内存中的生命周期。注意，这里出现了一个新的名词：对象（object）。C 语言中的对象与面向对象编程中的对象不是一个概念，一定不要混淆。在 C 语言中，对象就是连续的一片内存空间，具有起始地址与大小这两个属性。与对象对应的另一个概念是标识符（identifier）。标识符是一个符合 C 语言规定的变量命名规则的字符串，在程序中我们可以使用标识符访问修改对象</p>
+<p>在 C 语言中，对象一共有四种存储期：静态存储期，自动存储期，动态分配存储期和线程存储期。</p>
+<p>这里插入一段Cprimer里的内容</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">一个东西，例如dio=3,dio就是代表了一个空间，它dio是一个标识符，指定了一个对象（一片内存空间）</span><br><span class="line">但是*p=&amp;dio都代表了dio的那一片东西，*p虽然确实的只想了一个对象，但是不是标识符</span><br><span class="line">不论是不是标识符，指向对象的叫做左值</span><br></pre></td></tr></table></figure>
+
+<p>静态存储期：在函数中使用 static 关键字定义的变量，<strong>或者在函数外定义的变量</strong>(比如main函数外定义的在main执行的时候就是静态的)，它们所对应的对象具有静态存储期。如果对象具有静态存储期，那么它<strong>在程序执行期间一直存在</strong>，并且在程序执行过程中对象所占据的内存空间大小和对象的起始地址不会发生变化。如果不对该对象进行初始化，那么该对象的值会自动初始化为 0。由于这种对象在程序执行期间地址和大小不会发生变化，因此称为静态的。</p>
+<p>自动存储期：在函数中不使用 static 关键字定义的变量所对应的对象具有自动存储期属性。程序执行到该变量声明的时候会创建变量对应的对象(比如函数里面声明，所以函数进行依次声明一次，每次的大抵都不一样)，在执行到该变量作用域结束时会释放掉该对象，<strong>随后该对象所占据的内存空间可做他用</strong>。如果在变量定义时不进行初始化，那么该变量的值不确定。因为对于对象的分配和释放并不需要程序员手动操作，因此称为自动的。也可以使用 auto 关键字在定义变量时显式指出该变量对应的对象具有自动存储期。注意：C 中的 auto 与 C++ 的 auto 是不一样的——前者表示自动存储期，后者表示自动类型推导</p>
+<p>作用域</p>
+<p>作用域（scope） 描述一个标识符在程序中可以被使用的区域。一个 C 变量具有的常见的作用域包括块作用域，函数作用域或者文件作用域。</p>
+<pre><code>块作用域（block scope）：块（block）是用一对花括号括起来的代码区域。定义在块中的变量具有块作用域，块作用域变量的可见范围是从定义处到包含该定义的块的结尾。此外，虽然函数的形式参数声明在函数体的花括号外，但是它们也具有块作用域，属于函数体这个块。
+</code></pre>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">int foo(int a, int b) &#123; // a,b 作用域开始</span><br><span class="line">    int c;  // c 作用域开始</span><br><span class="line">    &#123;</span><br><span class="line">        int d; // d 作用域开始</span><br><span class="line">        ...</span><br><span class="line">        d = 0; // d 作用域结束</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">    return a + b + c;</span><br><span class="line">&#125; // a , b, c 的作用域结束。</span><br></pre></td></tr></table></figure>
+
+<pre><code>文件作用域（file scope）：如果变量定义在函数的外部，那么这个变量具有文件作用域。具有文件作用域的变量，从它的定义处到该定义所在的文件末尾均可见。由于这样的变量可以在多个函数中使用，因此也叫做全局变量。
+</code></pre>
+<h2 id="链接"><a href="#链接" class="headerlink" title="链接"></a>链接</h2><p>在 C 语言中，一个变量的链接（linkage） 属性描述了该变量是否可以在别的文件（即不是定义这个变量的文件）中被使用。变量具有 3 种链接属性：内部链接，外部链接或者无链接。</p>
+<p>内部链接：内部链接变量只能在定义它的文件中使用。<strong>使用 static 关键字声明的全局变量是内部链接的。</strong></p>
+<p>外部链接：外部链接变量可以在所有的文件中使用。<strong>全局变量默认是外部链接的。</strong></p>
+<p>无链接：无链接其实就是这个变量没有链接属性的意思，<strong>在函数中定义的变量都是无链接的</strong>。注意无链接和内部链接的区别，无链接代表这个变量没有链接属性，没有办法将它变成外部链接或者内部链接的。而内部链接的变量去掉变量声明中的 static 关键字就变成了外部链接的，外部链接的变量在变量声明时加上 static 关键字就变成了内部链接的了</p>
+<p>global参数可以指定是外部链接（物理全局）</p>
+<p>使用命令 gcc foo.c hello.c 就可以将这两个 C 源文件编译成一个可执行文件了。如果想把编译和链接这两步拆开来做，可以使用这两条命令：</p>
+<pre><code>命令 gcc -c foo.c hello.c 对每个源文件依次进行编译操作，生成目标文件 foo.o 和hello.o。
+命令 ld foo.o hello.o 链接两个目标文件，生成名为 a.out 的可执行文件。
+</code></pre>
+<p>extern int，这个东西代表是从外面的文件里面拿过来的，而不是自己定义生成的，和外面那个文件操作的变量都是一个东西</p>
+<p>为什么只有使用 extern 关键字进行声明，我们才能访问别的文件中具有外部链接属性的变量呢？这里要介绍一下<strong>定义式声明（defining declaration） 和引用式声明（referencing declaration</strong>） 这两个概念。定义式声明会创建对象，而引用式声明不会创建对象，编译器会假设这个变量的定义在别的地方。对一个变量的定义式声明加上 extern 关键字后，这个声明就变成了引用式声明</p>
+<h2 id="变量的存储类别"><a href="#变量的存储类别" class="headerlink" title="变量的存储类别"></a>变量的存储类别</h2><p>在了解了 C 语言中变量的存储期，作用域与链接这三个概念后，我们终于可以将这三个概念组合起来，来完整的描述一个变量的存储类别。注意：存储类别并不是变量所具有的一个独立的属性，而可以认为是变量所具有的存储期，作用域与链接这三个属性的统称。</p>
+<p>我们可以使用存储类别说明符与变量定义的位置来指定变量的存储类别：</p>
+<table>
+<thead>
+<tr>
+<th>存储类别说明符</th>
+<th>变量声明位置</th>
+<th>存储期</th>
+<th>链接</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>auto</td>
+<td>函数内</td>
+<td>自动存储期</td>
+<td>无链接</td>
+<td>auto 关键字可以省略</td>
+</tr>
+<tr>
+<td>static</td>
+<td>函数内</td>
+<td>静态存储期</td>
+<td>无链接</td>
+<td></td>
+</tr>
+<tr>
+<td>static</td>
+<td>函数外</td>
+<td>静态存储期</td>
+<td>内部链接</td>
+<td></td>
+</tr>
+<tr>
+<td>无</td>
+<td>函数外</td>
+<td>静态存储期</td>
+<td>外部链接</td>
+<td>若要在别的文件中使用这种变量需要使用 extern 关键字进行引用式声明</td>
+</tr>
+<tr>
+<td>extern</td>
+<td>函数内</td>
+<td>静态存储期</td>
+<td>引用的变量需要具有外部链接</td>
+<td>引用式声明，不会创建对象</td>
+</tr>
+<tr>
+<td>extern</td>
+<td>函数外</td>
+<td>静态存储期</td>
+<td>引用的变量需要具有外部链接</td>
+<td>引用式声明，不会创建对象</td>
+</tr>
+</tbody></table>
+<p>总结关于static这个关键字，加上之后它的声明周期都是变长的，都是一直存在的了，函数内的也始终是一个东西，但是可连接性变差了</p>
+<h2 id="常量指针和指针常量"><a href="#常量指针和指针常量" class="headerlink" title="常量指针和指针常量"></a>常量指针和指针常量</h2><p>const int *p：（理解，int <em>p指的是</em>p是int的，这个值不可变）<br>const 和 int 可以互换位置，二者是等价的。我们以放在最前面时进行描述。</p>
+<p>当把 const 放最前面的时候，它修饰的就是 *p，那么 <em>p 就不可变。</em>p 表示的是指针变量 p 所指向的内存单元里面的内容，此时这个内容不可变。其他的都可变，如 p 中存放的是指向的内存单元的地址，这个地址可变，即 p 的指向可变。但指向谁，谁的内容就不可变。</p>
+<p>这种用法常见于定义函数的形参。前面学习 printf 和 scanf，以及后面将要学习的很多函数，它们的原型中很多参数都是用 const 修饰的，这样做的好处是安全！我们通过参数传递数据时，就把数据暴露了。而大多数情况下只是想使用传过来的数据，并不想改变它的值，但往往由于编程人员个人水平的原因会不小心改变它的值。这时我们在形参中用 const 把传过来的数据定义成只读的，这样就更安全了。这也是 const 最有用之处。</p>
+<p>int*const p&#x3D;&amp;a；<br>此时 const 修饰的是 p，所以 p 中存放的内存单元的地址不可变，而内存单元中的内容可变。即 p 的指向不可变，p 所指向的内存单元的内容可变。</p>
+<h2 id="梳理："><a href="#梳理：" class="headerlink" title="梳理："></a>梳理：</h2><p>C代码的经过：预处理-&gt;编译-&gt;汇编-&gt;链接</p>
+<p>这几个阶段是这样的：</p>
+<h3 id="预处理"><a href="#预处理" class="headerlink" title="预处理"></a>预处理</h3><p>a.c经过预处理-&gt;a.i</p>
+<p>操作：展开#define和include</p>
+<p>单独执行参数： -E</p>
+<h3 id="编译"><a href="#编译" class="headerlink" title="编译"></a>编译</h3><p>a.i经过处理变成a.s，这个.s叫做汇编文件，是用mips之类的东西些的</p>
+<p>操作：编译</p>
+<p>单独执行参数： -S</p>
+<h3 id="汇编"><a href="#汇编" class="headerlink" title="汇编"></a>汇编</h3><p>汇编和编译不是一个东西，汇编生成的是机器码，为a.o，是目标文件<br>单独执行：-c</p>
+<h3 id="连接："><a href="#连接：" class="headerlink" title="连接："></a>连接：</h3><p>生成可执行文件，是将各种 库 的东西连接起来，各种声明啥的，这时候才需要其他库其他文件啥的，前面的全都是自己的。</p>
 
                 
             </div>
@@ -576,7 +692,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://brilliant-daffodil-eb4c4f.netlify.app/2023/03/15/OO_tiezi3/">https://brilliant-daffodil-eb4c4f.netlify.app/2023/03/15/OO_tiezi3/</a>
+                    <a href="https://brilliant-daffodil-eb4c4f.netlify.app/2023/03/18/c%E7%9A%84%E7%BC%96%E8%AF%91/">https://brilliant-daffodil-eb4c4f.netlify.app/2023/03/18/c%E7%9A%84%E7%BC%96%E8%AF%91/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -614,8 +730,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/BUAA-OO/">
-                                    <span class="chip bg-color">BUAA_OO</span>
+                                <a href="/tags/BUAA-OS/">
+                                    <span class="chip bg-color">BUAA_OS</span>
                                 </a>
                             
                         </div>
@@ -663,13 +779,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2023/03/18/bash/">
+                <a href="/2023/03/18/ELF/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="关于bash">
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="ELF文件使用">
                         
-                        <span class="card-title">关于bash</span>
+                        <span class="card-title">ELF文件使用</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -708,13 +824,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2023/03/15/OO_tiezi2/">
+                <a href="/2023/03/18/CO&OS/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="讨论区第二次发帖">
+                        <img src="/medias/featureimages/1.jpg" class="responsive-img" alt="计组和操作系统的衔接">
                         
-                        <span class="card-title">讨论区第二次发帖</span>
+                        <span class="card-title">计组和操作系统的衔接</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -725,7 +841,7 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-15
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-18
                             </span>
                         <span class="publish-author">
                             
@@ -738,8 +854,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/BUAA-OO/">
-                        <span class="chip bg-color">BUAA_OO</span>
+                    <a href="/tags/BUAA-OS/">
+                        <span class="chip bg-color">BUAA_OS</span>
                     </a>
                     
                 </div>

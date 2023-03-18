@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="讨论区第三次发帖, farewell&#39;s blog">
+    <meta name="keywords" content="TLB管理, farewell&#39;s blog">
     <meta name="description" content="你到过许多地方，用你自己的故事记认许多城邦后，你终于抵达此城">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>讨论区第三次发帖 | farewell&#39;s blog</title>
+    <title>TLB管理 | farewell&#39;s blog</title>
     <link rel="icon" type="image/png" href="/medias/logo.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -354,12 +354,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/7.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/23.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">讨论区第三次发帖</h1>
+                    <h1 class="description center-align post-title">TLB管理</h1>
                 </div>
             </div>
         </div>
@@ -475,8 +475,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/BUAA-OO/">
-                                <span class="chip bg-color">BUAA_OO</span>
+                            <a href="/tags/BUAA-OS/">
+                                <span class="chip bg-color">BUAA_OS</span>
                             </a>
                         
                     </div>
@@ -491,7 +491,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2023-03-15
+                    2023-03-18
                 </div>
                 
 
@@ -512,44 +512,59 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="poly架构在week3"><a href="#poly架构在week3" class="headerlink" title="poly架构在week3"></a>poly架构在week3</h1><h2 id="任务划分"><a href="#任务划分" class="headerlink" title="任务划分"></a>任务划分</h2><p>如果不考虑三角大额度优化的话还是几乎不用重构，添几个方法就行了，<br>上次笔者摆了就优化了个合并，拿了好几个80</p>
-<p>根据上次的功能，化为三个阶段：实现求导功能，实现自定义函数求导功能，实现函数嵌套定义功能，这里建议按照上述顺序分层次测试实施。</p>
-<h2 id="求导功能"><a href="#求导功能" class="headerlink" title="求导功能"></a>求导功能</h2><p>poly这个架构还是很适合求导的。</p>
-<p>试想我们在人手求导一个表达式的时候，一般都是希望这个表达式就是纯纯的多项式，然后拿它的每一个单项式分别开刀，最后把所有的单项式所搞得导数都加起来。</p>
-<p>在这样的实现中，poly是统一入手点，我们把所有需要求导的东西都叫做poly，从外面访问求导功能的时候，不管它严格的定义上是一个幂函数，一个常数，一个三角函数，一个mono，还是确实的一个poly，我们都从poly这个外在的包装访问。当然，具体内部的实现还是要每一种分别设定求导方式，不过我们统一返回一个将结果包装好的poly就好了。</p>
-<p>用poly的方法访问，内部实现各种百花齐放，然后返回一个poly作为包装。</p>
-<p>针对求导功能设置一个新的因子，Derivative，这个因子在lexer读取的时候是类似sin一样，一旦确定是这个dx的情况后，立刻使用括号栈扫描后面的字符串，将dx所管辖的字符串范围读出来。然后传进该字符串作为构造参数，把它变成一个poly （把一个字符串转换成poly是我们一直在做的事情，具体操作类似sin的处理，也可以类似第一次作业程序在main里的入口，区别是main是处理input，dx仅仅是处理字符串，但是本质都是一样的）</p>
-<p>所有在建立语法结构的时候，我们对每一个读到的语法单元进行递归下降的读取，然后等它深层的子语法单元都建好之后，在“归”的过程中加到上层的语法结构里面。所以在使用构造函数建好dx()<br>仅仅是建好，还没求导呢<br>已经递归的得到了dx()括号里的字符串先转成语法结构然后转成的多项式，然后这个多项式就作为dx()的的属性存在里面。</p>
-<p>作为因子，首先应该实现factor接口，factor接口需要实现方法toPoly()</p>
-<p>Derivative应当存这样的几个属性，对谁求导的para，需要被求导的多项式poly。存这样的方法：构造函数，toPoly方法</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public class Derivative implements Factor &#123;</span><br><span class="line"></span><br><span class="line">    private Poly poly;</span><br><span class="line"></span><br><span class="line">    private char parameter;</span><br><span class="line">    public Derivative(String string)</span><br><span class="line">    &#123;</span><br><span class="line">        //按字符串构造</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Poly toPoly() &#123;</span><br><span class="line"></span><br><span class="line">        //它存的poly对它的parameter求导的结果用poly包装</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>如何实现具体的求导<br>dx(cos(cos(cos(cos(cos(x))))))&#x3D;−sin(x)sin(cos(x))sin(cos(cos(x)))sin(cos(cos(cos(x))))sin(cos(cos(cos(cos(x)))))先粘一组数据:三角嵌套，正负号</p>
-<p>进入求导流程：对Derivative这个因子进行toPoly()</p>
-<p>在toPoly的过程中，是对Derivative的poly进行求导，调用这个poly的求导方法</p>
-<p>poly的求导方法：针对每一个mono调用求导方法，然后把mono的求导方法返回的poly相加</p>
-<h3 id="mono的求导方法"><a href="#mono的求导方法" class="headerlink" title="mono的求导方法"></a>mono的求导方法</h3><p>经过第二次作业，我们的mono升级为k<em>x^xp</em> y ^yp* z^zp* &lt;三角函数们&gt;</p>
-<p>可以把前面的看成一个函数，然后把后面的三角函数分别看成一个函数。</p>
-<p>然后mono就是这些函数相乘，直接用课程组的求导公式就行了 （这里建议把前面的xyz部分单独求导之后带上后面的，然后再对每个三角函数遍历求导）</p>
-<p>三角函数求导：如何解决里面的符号问题？一般来讲sin成cos没问题，但是cos变成-sin的符号怎么体现？</p>
-<p>一个思路是，不添加任何符号（当然也可以添加一个属性），由于求导只有一次，所以可以把这个符号移进去，让三角里面的poly乘个-1（深浅拷贝？乘的这个-1乘在哪里了？会不会出现多个三角函数的poly指的都是一个？这个看各自的具体实现，总之建议能新建的一定要新建，尽量减少原地）</p>
-<p>尤其注意：小心这里面的深浅拷贝问题，在循环mono的每一个三角函数的时候返回的poly里面的mono建议新建，三角函数其实无所谓）</p>
-<h2 id="自定义函数求导功能"><a href="#自定义函数求导功能" class="headerlink" title="自定义函数求导功能"></a>自定义函数求导功能</h2><p>设定的求导方式不是太适合直接函数替换，也许是希望我们用factor对函数建类？这里采取一个不讲性能的很笨拙的方法。<br>最后一次了，懒得新开了，直接用现有的工具将就一下，除了跑的慢点剩下都能看</p>
-<p>自定义函数里面带d，这个是什么意思？其实它的意思是</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f(x)=k(x)&#x27;</span><br></pre></td></tr></table></figure>
-<p>也就是说想知道f(x)是怎么回事，只需要对k(x)求导就可以了。</p>
-<p>我们需要在带入前就把k(x)’求出来，不然先代换的话会牵连到参数的求导。所以为了防止没求导的时候被调用，需要在建造这个函数的时候就解决掉导数问题。</p>
-<p>k(x)理论上也是一个表达式啊。</p>
-<p>我们前面实现了什么？ 1.将一个不带求导的函数表达式替换到待化简表达式里（注意：函数的定义式也是一个表达式，可以用等号分开两个部分，右边的就是一个表达式），让这个待化简表达式没自定义函数符号</p>
-<p>2.将一个不带函数的表达式变成poly化简，然后这个poly再变成字符串输出（它进来的时候是字符串，出来的时候也是字符串）</p>
-<p>3.对一个poly进行求导化简，变成另一个简化的poly</p>
-<p>是字符串形式的表达式，我们就可以通过新建的一个专门为它准备的lexer和parser来解析。</p>
-<p>所以可以这样做：</p>
-<p>假如是在函数定义式里出现的d，那么这个函数的定义式就不直接按照字符串存，就先按照表达式理解，先转成poly，然后用poly求导，然后导完了化成string，就是没d的东西，然后把函数定义的字符串按照这个存起来就好了。</p>
-<h2 id="函数嵌套定义"><a href="#函数嵌套定义" class="headerlink" title="函数嵌套定义"></a>函数嵌套定义</h2><p>观察要求，可以看到对自定义的函数变成了现在的样子</p>
-<p>函数表达式与上次作业不同，允许调用其他已定义的自定义函数（保证不会出现递归调用的情况），下面是几个不合法的例子。<br>函数定义时f(x,y) &#x3D; f(x,2)+y+1,出现递归调用，不合法。<br>函数定义时f(x,y) &#x3D; g(x,y)+y,g(x,y)&#x3D;f(x,y)+y,f先定义,g后定义,f在定义时调用了未定义的函数g，不合法。<br>也就是说，这次的函数定义，可以是先给出一个纯粹的函数，然后再定义一些带它的表达式，也可以是都是纯粹的函数，但是至少可以确定的是，一定是先定义了再在其他地方出现</p>
-<p>所以可以逐个读入函数模式，第一个肯定是不带其他函数的，然后看第二个有没有，第二个要是没有的话也像第一个一样存起来，但是第二个要是有的话，就先按照第二次作业处理待化简字符串一样，把第一个函数带进去，变成没有第一个函数标识符的字符串，再存进去。</p>
-<p>其实也可以理解要化简的表达式是第四个函数u(x)，从第二个到后面的其实都一样。</p>
-<p>何立群<br>2023-03-08 22:14:51<br>补充，在解决cos求导的符号时候，由于用poly套上mono封装，所以可以在mono上直接加系数为-1修正，不用把里面的poly乘-1了</p>
+                <h1 id="TLB管理"><a href="#TLB管理" class="headerlink" title="TLB管理"></a>TLB管理</h1><h2 id="基础理解"><a href="#基础理解" class="headerlink" title="基础理解"></a>基础理解</h2><p>TLB的本质是一个表，但是不同于32位的页表项，TLB事实上是一个由64位的表项构成的表。</p>
+<p>本质上TLB和硬件紧密相连的，页表都是在内存里的，TLB则是在CPU里面的一个特殊的地址转换部件（这个部件叫MMU，本实验里面MMU只有TLB一个部件。</p>
+<p>R3000的CP0不是一个寄存器，而是一个寄存器体系。按照编号 有很多寄存器，每个寄存器32位。</p>
+<p>每一个 TLB 表项都有 64 位，其中高 32 位是 Key，低 32 位是 Data。</p>
+<p>物理页号始终是20位的数据。</p>
+<h2 id="TLB的功能"><a href="#TLB的功能" class="headerlink" title="TLB的功能"></a>TLB的功能</h2><p>当处理 器要在主内存寻址时，不是直接在内存的物理地址里查找的，而是通过一组虚拟地址转换到主内存的物理地址，TLB就是负责将虚拟内存地址翻译成实际的物理内 存地址，而CPU寻址时会优先在TLB中进行寻址</p>
+<p>所以说，TLB存着一个哈希表，key就是一个虚拟地址，data就是它对应的物理地址。</p>
+<p>这里，这个所谓地址是不准确的，因为地址那么多，不可能一一存起来的。</p>
+<p>所以要做的事情，其实是存页号，建立VPN和PPN的联系</p>
+<p>仅仅是用虚拟地值算出虚拟页号，然后不用二级页表了，直接返回物理页号，拼一下直接就成物理地址了</p>
+<p>仅仅是方便查页号而已。</p>
+<h2 id="TLB的构成"><a href="#TLB的构成" class="headerlink" title="TLB的构成"></a>TLB的构成</h2><p>EntryHi、EntryLo<br>EntryHi、EntryLo 都是 CP0 中的寄存器，他们只是分别对应到 TLB 的 Key 与 Data，<br>并不是 TLB 本身</p>
+<p>HI寄存器的内容：</p>
+<p>VPN（虚页号） :31-12   ASID（地址空间代号） :11-6</p>
+<p>PFN（物理页框号） :31-12   然后剩下的东西依次排开。</p>
+<p>– N：Non-cachable。当该位为 1 时，后续的物理地址访存将不通过 cache。</p>
+<p>– D：Dirty。事实上是可写位。当该位为 1 时，该地址可写；否则任何写操作都将引发<br>TLB 异常。</p>
+<p>– V：Valid。如果该位为 0，则任何访问该地址的操作都将引发 TLB 异常。</p>
+<p>– G：Global。如果该位为 1，则 CPU 发出的虚拟地址只需要与该表项的 VPN 匹配，即<br>可与此 TLB 项匹配成功（不需要检查 ASID 是否匹配）。<br>由于TLB在CPU中，所以有着十分重要的功能，所以专门开了几个指令来管理。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">• tlbr：以 Index 寄存器中的值为索引，读出 TLB 中对应的表项到 EntryHi 与 EntryLo。</span><br><span class="line">• tlbwi：以 Index 寄存器中的值为索引，将此时 EntryHi 与 EntryLo 的值写到索引指定</span><br><span class="line">的 TLB 表项中。</span><br><span class="line">• tlbwr：将 EntryHi 与 EntryLo 的数据随机写到一个 TLB 表项中（此处使用 Random 寄</span><br><span class="line">存器来“随机”指定表项，Random 寄存器本质上是一个不停运行的循环计数器）。</span><br><span class="line">• tlbp：根据 EntryHi 中的 Key（包含 VPN 与 ASID），查找 TLB 中与之对应的表项，并将</span><br><span class="line">表项的索引存入 Index 寄存器（若未找到匹配项，则 Index 最高位被置 1）。</span><br></pre></td></tr></table></figure>
+<p>注意，这几个指令都是无操作数指令，都是直接用就相当于一个操作的。</p>
+<p>比如直接<br>tlbp，就可以根据 EntryHi 中的 Key（包含 VPN 与 ASID），查找 TLB 中与之对应的表项，并将<br>表项的索引存入 Index 寄存器（若未找到匹配项，则 Index 最高位被置 1）。</p>
+<h2 id="TLB维护"><a href="#TLB维护" class="headerlink" title="TLB维护"></a>TLB维护</h2><p>操作系统可以修改页表中虚拟地址映射的物理页号或映射的权限位。如果 TLB 中已暂存了<br>页表中某一虚拟地址对应的页表项内容，之后操作系统更新了该页表项但没有更新 TLB，则访<br>问该虚拟地址可能会得到错误的物理页面。所以我们需要维护 TLB 的表项，使得当 TLB 能够<br>查询到虚拟地址相应的页号时，取得的物理地址和实际在页表中对应的物理地址一致。<br>具体来说，维护 TLB 的流程如下：</p>
+<ol>
+<li><p>更新页表中虚拟地址对应的页表项的同时，将 TLB 中对应的旧表项无效化</p>
+</li>
+<li><p>在下一次访问该虚拟地址时触发 TLB 重填异常，对 TLB 进行重填</p>
+</li>
+</ol>
+<h2 id="TLB-旧表项无效化"><a href="#TLB-旧表项无效化" class="headerlink" title="TLB 旧表项无效化"></a>TLB 旧表项无效化</h2><p>我们通过 tlb_invalidate 实现删除特定虚拟地址在 TLB 中的旧表项，函数的主要逻辑位<br>于 kern&#x2F;tlb_asm.S 中的 tlb_out 中。当 tlb_out 被 tlb_invalidate 调用时, a0 寄存器中存<br>放着传入的参数，寄存器值为旧表项的 Key(由虚拟页号和 ASID 组成)。我们使用 mtc0 将 Key<br>写入 EntryHi，随后使用 tlbp 指令，根据 EntryHi 中的 Key 查找对应的旧表项，将表项的索<br>引存入 Index。如果索引值大于等于 0（即 TLB 中存在 Key 对应的表项），我们向 EntryHi 和<br>EntryLo 中写入 0, 随后使用 tlbwi 指令，将 EntryHi 和 EntryLo 中的值写入索引指定的表项。<br>此时旧表项的 Key 和 Data 被清零，实现将其无效化</p>
+<p>翻译过来就是说，操作系统更新了页表项后，就调用tlb_invalidate函数，这个函数的内容是删除某个虚拟地址TLB旧表项，当调用的时候，首先会进入汇编代码，然后这个汇编代码会让a0寄存器存放旧表项的key参数</p>
+<p>然后a0里面这个旧表项的key，用汇编指令去查它在TLB中的索引，查到之后用cp0寄存器操作这个表项置0</p>
+<h2 id="TLB重填"><a href="#TLB重填" class="headerlink" title="TLB重填"></a>TLB重填</h2><p>重填的目的是什么？</p>
+<p>TLB存着一个哈希表，key就是一个虚拟页号，data就是它对应的物理页号。</p>
+<p>我们刚刚清除了，所以我们 现在需要完成一个</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">我们将操作页表的逻辑使用 C 语言封装在 kern/tlbex.c 中的 _do_tlb_refill() 函数中：</span><br><span class="line"><span class="number">1</span> Pte _do_tlb_refill(u_long va, u_int asid) &#123;</span><br><span class="line"><span class="number">2</span> Pte *pte;</span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">4</span> <span class="comment">/* 提示:</span></span><br><span class="line"><span class="comment">5 尝试在循环中调用&#x27;page_lookup&#x27;以查找虚拟地址 va</span></span><br><span class="line"><span class="comment">6 在当前进程页表中对应的页表项&#x27;pte&#x27;</span></span><br><span class="line"><span class="comment">7 如果&#x27;page_lookup&#x27;返回&#x27;NULL&#x27;，表明&#x27;pte&#x27;找不到，使用&#x27;passive_alloc&#x27;</span></span><br><span class="line"><span class="comment">8 为 va 所在的虚拟页面分配物理页面，</span></span><br><span class="line"><span class="comment">9 直至&#x27;page_lookup&#x27;返回不为&#x27;NULL&#x27;则退出循环。</span></span><br><span class="line"><span class="comment">10</span></span><br><span class="line"><span class="comment">11 你可以在调用函数时，使用全局变量 cur_pgdir 作为其中一个实参。</span></span><br><span class="line"><span class="comment">12 */</span></span><br><span class="line"><span class="number">13</span></span><br><span class="line"><span class="number">14</span> <span class="keyword">return</span> *pte;</span><br><span class="line"><span class="number">15</span> &#125;</span><br><span class="line">这个函数返回的值是二级页表项，拿出来的是物理页号和权限。</span><br><span class="line">cur_pgdir 是一个在 kern/pmap.c 定义的全局变量，其中存储了当前进程一级页表基地址</span><br><span class="line">位于 kseg0 的虚拟地址。</span><br></pre></td></tr></table></figure>
+<p>这个指令和page_look有啥关系？</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">	这个函数的本质，是找到这个va对应的页的指针，作用是返回一级页表基地址 pgdir 对应的两级页表结构中虚拟地址 va 映射的物理页面的页控制块，同时将ppte 指向的空间设为对应的二级页表项地址</span><br><span class="line"></span><br><span class="line">	就是说，给你一个进程的pgdir，然后根据这个进程的va，搜索到这个va所在的物理界面的页控制块。</span><br><span class="line"><span class="keyword">struct</span> Page *<span class="title function_">page_lookup</span><span class="params">(Pde *pgdir, u_long va, Pte **ppte)</span> &#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">Page</span> *<span class="title">pp</span>;</span></span><br><span class="line">	Pte *pte;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Step 1: Get the page table entry. */</span></span><br><span class="line">	pgdir_walk(pgdir, va, <span class="number">0</span>, &amp;pte);</span><br><span class="line">	不创造纯查找。</span><br><span class="line">	<span class="comment">/* Hint: Check if the page table entry doesn&#x27;t exist or is not valid. */</span></span><br><span class="line">	<span class="keyword">if</span> (pte == <span class="literal">NULL</span> || (*pte &amp; PTE_V) == <span class="number">0</span>) &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	如果没查到或者查到的无效，就是没有这个映射，返回</span><br><span class="line">	<span class="comment">/* Step 2: Get the corresponding Page struct. */</span></span><br><span class="line">	<span class="comment">/* Hint: Use function `pa2page`, defined in include/pmap.h . */</span></span><br><span class="line">	pp = pa2page(*pte);</span><br><span class="line">	<span class="keyword">if</span> (ppte) &#123;</span><br><span class="line">		*ppte = pte;</span><br><span class="line">	&#125;</span><br><span class="line">	查到了，那就让ppte的值变成查到的地址，让这个查到的映射页返回回去就行了。</span><br><span class="line">	<span class="keyword">return</span> pp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>pagelook是干啥？是给定虚拟的一级页表的地址，然后给出虚拟地址，返回va这个虚拟地址所对应的物理页的业管理模块的地址（虚拟地址）。ppte存的是二级表项的虚拟地址。</p>
+<p>如果这个没找到，代表啥？代表没有<strong>管理的物理页满足这个va所在</strong>的页管理模块，也就是说这个虚拟地址没有对应一个物理页，此时就要来个分配一下地址了。然后就新开了一个页。新开这个页拿到这个页管理模块地址。然后再次进入循环，由于开了管理模块了，也就是说已经找到管理模块之后换算成物理地址就行了。</p>
+<h3 id="分配地址用的是这个"><a href="#分配地址用的是这个" class="headerlink" title="分配地址用的是这个"></a>分配地址用的是这个</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">void</span> <span class="title function_">passive_alloc</span><span class="params">(u_int va, Pde *pgdir, u_int asid)</span> &#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">Page</span> *<span class="title">p</span> =</span> <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (va &lt; UTEMP) &#123;</span><br><span class="line">		panic(<span class="string">&quot;address too low&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (va &gt;= USTACKTOP &amp;&amp; va &lt; USTACKTOP + BY2PG) &#123;</span><br><span class="line">		panic(<span class="string">&quot;invalid memory&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (va &gt;= UENVS &amp;&amp; va &lt; UPAGES) &#123;</span><br><span class="line">		panic(<span class="string">&quot;envs zone&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (va &gt;= UPAGES &amp;&amp; va &lt; UVPT) &#123;</span><br><span class="line">		panic(<span class="string">&quot;pages zone&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (va &gt;= ULIM) &#123;</span><br><span class="line">		panic(<span class="string">&quot;kernel address&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	前面几个都是不合法的情况。</span><br><span class="line">	后面都是真正在操作了，加上panic防止出事。</span><br><span class="line">	panic_on(page_alloc(&amp;p));</span><br><span class="line">	首先对一个页调用内存分配，新开一个物理页，让这个p指针的指向新开的页的页控制模块。</span><br><span class="line">	panic_on(page_insert(pgdir, asid, p, PTE_ADDR(va), PTE_D));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>当 page_lookup() 函数在页表中找不到对应表项时，我们调用 passive_alloc() 函数进行<br>处理。若该虚拟地址合法，我们可以为此虚拟地址申请一个物理页面（page_alloc），并将虚拟<br>地址映射到该物理页面（page_insert），即进行被动页面分配。</p>
+<p>不妨想想虚拟地址是怎么回事。</p>
+<p>虚拟地址，本身是由三个偏移构成的，第一级页表的偏移，第二级页表的偏移，物理页内偏移。</p>
+<p>然后物理页号是不确定的，是在页表里面随机分配的。开了这个物理页，然后把物理页号填写到pde和pte里面。</p>
+<p>直接按照题目要求填写即可</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Pte _do_tlb_refill(u_long va, u_int asid) &#123;</span><br><span class="line">	Pte *pte;</span><br><span class="line">	<span class="comment">/* Hints:</span></span><br><span class="line"><span class="comment">	 *  Invoke &#x27;page_lookup&#x27; repeatedly in a loop to find the page table entry &#x27;pte&#x27; associated</span></span><br><span class="line"><span class="comment">	 *  with the virtual address &#x27;va&#x27; in the current address space &#x27;cur_pgdir&#x27;.</span></span><br><span class="line"><span class="comment">	 *</span></span><br><span class="line"><span class="comment">	 *  **While** &#x27;page_lookup&#x27; returns &#x27;NULL&#x27;, indicating that the &#x27;pte&#x27; could not be found,</span></span><br><span class="line"><span class="comment">	 *  allocate a new page using &#x27;passive_alloc&#x27; until &#x27;page_lookup&#x27; succeeds.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Exercise 2.9: Your code here. */</span></span><br><span class="line">	<span class="keyword">while</span> (page_lookup(cur_pgdir,va,&amp;pte)==<span class="literal">NULL</span>)</span><br><span class="line">	&#123;   </span><br><span class="line">		passive_alloc(va,cur_pgdir,asid);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> *pte;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
 
                 
             </div>
@@ -576,7 +591,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://brilliant-daffodil-eb4c4f.netlify.app/2023/03/15/OO_tiezi3/">https://brilliant-daffodil-eb4c4f.netlify.app/2023/03/15/OO_tiezi3/</a>
+                    <a href="https://brilliant-daffodil-eb4c4f.netlify.app/2023/03/18/TLB%E7%AE%A1%E7%90%86/">https://brilliant-daffodil-eb4c4f.netlify.app/2023/03/18/TLB%E7%AE%A1%E7%90%86/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -614,8 +629,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/BUAA-OO/">
-                                    <span class="chip bg-color">BUAA_OO</span>
+                                <a href="/tags/BUAA-OS/">
+                                    <span class="chip bg-color">BUAA_OS</span>
                                 </a>
                             
                         </div>
@@ -663,13 +678,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2023/03/18/bash/">
+                <a href="/2023/03/18/vscode&wsl%E9%85%8D%E7%BD%AElinux%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="关于bash">
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="wsl配置linux开发环境">
                         
-                        <span class="card-title">关于bash</span>
+                        <span class="card-title">wsl配置linux开发环境</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -708,13 +723,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2023/03/15/OO_tiezi2/">
+                <a href="/2023/03/18/print/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="讨论区第二次发帖">
+                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="自己实现print的二三事">
                         
-                        <span class="card-title">讨论区第二次发帖</span>
+                        <span class="card-title">自己实现print的二三事</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -725,7 +740,7 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-15
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-18
                             </span>
                         <span class="publish-author">
                             
@@ -738,8 +753,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/BUAA-OO/">
-                        <span class="chip bg-color">BUAA_OO</span>
+                    <a href="/tags/BUAA-OS/">
+                        <span class="chip bg-color">BUAA_OS</span>
                     </a>
                     
                 </div>

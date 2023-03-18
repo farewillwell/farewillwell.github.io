@@ -1,0 +1,1191 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="页式内存管理系统, farewell&#39;s blog">
+    <meta name="description" content="你到过许多地方，用你自己的故事记认许多城邦后，你终于抵达此城">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>页式内存管理系统 | farewell&#39;s blog</title>
+    <link rel="icon" type="image/png" href="/medias/logo.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">farewell&#39;s blog</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="" class="waves-effect waves-light">
+
+      
+      <i class="fas fa-music" style="zoom: 0.6;"></i>
+      
+      <span>Musics</span>
+      <i class="fas fa-chevron-down" aria-hidden="true" style="zoom: 0.6;"></i>
+    </a>
+    <ul class="sub-nav menus_item_child ">
+      
+      <li>
+        <a target="_blank" rel="noopener" href="https://www.kugou.com/songlist/gcid_3zsmhjkqzhz07e/">
+          
+          <i class="fas fa-music" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>Youth</span>
+        </a>
+      </li>
+      
+      <li>
+        <a target="_blank" rel="noopener" href="https://www.kugou.com/songlist/gcid_3zsmhjkqzgz054/">
+          
+          <i class="fas fa-music" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>Hurt</span>
+        </a>
+      </li>
+      
+      <li>
+        <a target="_blank" rel="noopener" href="https://www.kugou.com/songlist/gcid_3zsmhjkqzfz091/">
+          
+          <i class="fas fa-music" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>romantic</span>
+        </a>
+      </li>
+      
+    </ul>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">farewell&#39;s blog</div>
+        <div class="logo-desc">
+            
+            你到过许多地方，用你自己的故事记认许多城邦后，你终于抵达此城
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="javascript:;">
+			
+				<i class="fa-fw fas fa-music"></i>
+			
+			Musics
+			<span class="m-icon"><i class="fas fa-chevron-right"></i></span>
+		</a>
+            <ul  style="background:  ;" >
+              
+                <li>
+
+                  <a target="_blank" rel="noopener" href="https://www.kugou.com/songlist/gcid_3zsmhjkqzhz07e/ " style="margin-left:75px">
+				  
+				   <i class="fa fas fa-music" style="position: absolute;left:50px" ></i>
+			      
+		          <span>Youth</span>
+                  </a>
+                </li>
+              
+                <li>
+
+                  <a target="_blank" rel="noopener" href="https://www.kugou.com/songlist/gcid_3zsmhjkqzgz054/ " style="margin-left:75px">
+				  
+				   <i class="fa fas fa-music" style="position: absolute;left:50px" ></i>
+			      
+		          <span>Hurt</span>
+                  </a>
+                </li>
+              
+                <li>
+
+                  <a target="_blank" rel="noopener" href="https://www.kugou.com/songlist/gcid_3zsmhjkqzfz091/ " style="margin-left:75px">
+				  
+				   <i class="fa fas fa-music" style="position: absolute;left:50px" ></i>
+			      
+		          <span>romantic</span>
+                  </a>
+                </li>
+              
+            </ul>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/farewell-exiles" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>来van啊
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/farewell-exiles" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="来van啊" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/14.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">页式内存管理系统</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        padding-bottom: 30px;
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/BUAA-OS/">
+                                <span class="chip bg-color">BUAA_OS</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-03-18
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="页表管理"><a href="#页表管理" class="headerlink" title="页表管理"></a>页表管理</h1><h2 id="emm"><a href="#emm" class="headerlink" title="emm"></a>emm</h2><p>对于位于 kuseg 的虚拟地址，MOS 中采用两级页表结构对其进行地址转换</p>
+<p>这句话，页表管理这个的操作是虚拟地址的如何找真实物理地址的页。</p>
+<p>include&#x2F;mmu.h 中提供了两个宏以快速获取偏移量，PDX(va) 可以获取虚拟地址 va 的 31-22<br>位，PTX(va) 可以获取虚拟地址 va 的 21-12 位。<br>访问虚拟地址时，先通过一级页表基地址和一级页表项的偏移量，找到对应的一级页表项，<br>得到对应的二级页表的物理页号，再根据二级页表项的偏移量找到所需的二级页表项，进而得到<br>该虚拟地址对应的物理页号。</p>
+<p>流程：首先把地址移动到一级页表头，然后根据31-22的偏移找到对应的一级页表项，读出在哪个二级页表页，然后去这个页，从21-12的偏移找到对应的二级页表项，然后根据这个表项找到实际的页，根据最后几位的页偏移读入数据。</p>
+<p>在 MOS 中，无论是一级页表还是二级页表，它们的结构都一样，只不过每个页表项记录的<br>物理页号含义有所不同。每个页表均由 1024 个页表项组成，每个页表项由 32 位组成，包括 20<br>位物理页号以及 12 位标志位。其中，标志位的定义规范和 EntryLo 寄存器的规范（详见 2.6.1）<br>相同（例如标志位 PTE_V、PTE_D 就分别对应表示 EntryLo 中的 V、D 标志位）。每个页表所占<br>的空间为 4KB，<strong>恰好为一个物理页面的大小</strong></p>
+<p>事实上，<strong>这两个的页表（而不是项）的本质都是页，所以创建的时候页往往用页来管理，页表项则是里面的数据。</strong></p>
+<p>表项的1024是这么来的，而且不是字节，是字的个数。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">代码缩写对照</span><br><span class="line">PDX - Page Directory indeX（⻚⽬录索引）</span><br><span class="line">PTX - Page Table indeX（⻚表索引）</span><br><span class="line">PDBase - Base address of Page Directory（⻚⽬录基地址）</span><br><span class="line">PTBase - Base address of Page Table（⻚表基地址）</span><br><span class="line">VA - Virtual Address（虚拟地址）</span><br><span class="line">PA - Physical Address（物理地址）</span><br><span class="line">Perm - Permission（权限）</span><br><span class="line">VPN - Virtual Page Number（虚拟⻚号）</span><br><span class="line">PFN - Physical Frame Number（物理⻚框号）</span><br></pre></td></tr></table></figure>
+<p>所以页框到底是个啥？然后页框就是实际上物理地址上紧密连接的按页大小存的分区，然后调动页面的时候就放到这个分区里面就行了。</p>
+<h2 id="在mmu里面的定义"><a href="#在mmu里面的定义" class="headerlink" title="在mmu里面的定义"></a>在mmu里面的定义</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">#define PDMAP (4 * 1024 * 1024) // bytes mapped by a page directory entry</span><br><span class="line">页表</span><br><span class="line">#define PDSHIFT 22 // log2(PDMAP)</span><br><span class="line">页表大小shift</span><br><span class="line">#define PDX(va) ((((u_long)(va)) &gt;&gt; 22) &amp; 0x03FF)页表目录索引，也就是一级页表</span><br><span class="line">#define PTX(va) ((((u_long)(va)) &gt;&gt; 12) &amp; 0x03FF)页表索引，也就是真正查到的页表的索引</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">typedef u_long Pde;</span><br><span class="line">typedef u_long Pte;</span><br></pre></td></tr></table></figure>
+
+<p>由于一个<strong>页表项可以恰好由一个 32 位整型来表示</strong>，因此可以使用 Pde 来表示一个一级页表项，用 Pte 来表示一个二级页表项，这两者的本质都是 u_long，它们对应的 typedef于include&#x2F;mmu.h</p>
+<p>上面这句话的意思，一个页表项其实就是一个数据，这个数据就是32位的整形，所以其实pdepte都是数据，是页表项本身。</p>
+<p>设 pgdir 是一个 Pde * 类型的指针，表示一个一级页表的基地址，那么使用 pgdir</p>
+<ul>
+<li>i 即可得到偏移量为 i 的一级页表项（页目录项）地址，然后它取出来的就是个32位整数，然后出来的就是一级页表的页表项。</li>
+</ul>
+<h2 id="要完成的函数"><a href="#要完成的函数" class="headerlink" title="要完成的函数"></a>要完成的函数</h2><p>对于pagewalk的说明有两个，需要照顾到它的所有描述<br>1.该函数将一级页表基地址 pgdir 对应的两级页表结构中 va 虚拟地址所在的二级页表项的指针存储在 ppte 指向的空间上。如果 create 不为 0 且对应的二级页表不存在，则会使用 page_alloc 函数分配一页物理内存用于存放二级页表，如果分配失败则返回错误码。</p>
+<p>我们要做的是：首先给定了一级页表基地址，就是代表从这里开始找偏移了，然后从va这个虚拟地址里面找二级页表项（注意是页表项，不是一个真的页，它的虚拟地址，这个地址必然指了一个页，然后这个页是在二级页表的表项里面存储的，只需要把ppte的值存成这个新建的二级页表就行了.</p>
+<p>2.该函数的作用是：给定一个虚拟地址，在<strong>给定的页目录中查找这个虚拟地址对应的物理地址</strong>，<em>所以说这个是要在给定的页目录里找的，而不是在所有页目录里面找</em>如果存在这一虚拟地址对应的页表项，则返回这一页表项的地址；如果不存在这<br>一虚拟地址对应的页表项（不存在这一虚拟地址对应的二级页表、即这一虚拟地址对应的<br>页目录项为空或无效），则根据传入的参数进行创建二级页表，或返回空指针。<br>注意，这里可能会在页目录表项无效且 create 为真时，使用 page_alloc 创建一个页<br>表，此时应维护申请得到的物理页的 pp_ref 字段。</p>
+<p>返回什么？返回这一页表项的地址。就是二级页表表项的地址。</p>
+<p>有效，有效位在mmu里面定义了：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Valid bit. If 0 any address matching this entry will cause a tlb miss exception (TLBL/TLBS).</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PTE_V 0x0200</span></span><br></pre></td></tr></table></figure>
+<p>只需要与一下就知道这个位是不是有效了 。在高位和地位位运算的时候会自动高位补0冲齐</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">int</span> <span class="title function_">pgdir_walk</span><span class="params">(Pde *pgdir, u_long va, <span class="type">int</span> create, Pte **ppte)</span> &#123;</span><br><span class="line">	Pde *pgdir_entryp;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">Page</span> *<span class="title">pp</span>;</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Step 1: Get the corresponding page directory entry. */</span></span><br><span class="line">	<span class="comment">/* Exercise 2.6: Your code here. (1/3) */</span></span><br><span class="line">  </span><br><span class="line">	<span class="comment">/* Step 2: If the corresponding page table is not existent (valid) and parameter `create`</span></span><br><span class="line"><span class="comment">	 * is set, create one. Set the permission bits &#x27;PTE_D | PTE_V&#x27; for this new page in the</span></span><br><span class="line"><span class="comment">	 * page directory.</span></span><br><span class="line"><span class="comment">	 * If failed to allocate a new page (out of memory), return the error. */</span></span><br><span class="line">	<span class="comment">/* Exercise 2.6: Your code here. (2/3) */</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Step 3: Assign the kernel virtual address of the page table entry to &#x27;*ppte&#x27;. */</span></span><br><span class="line">	<span class="comment">/* Exercise 2.6: Your code here. (3/3) */</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先第一个是pgdir，就是一级页表项的地址，va是虚拟地址，create是新建位，然后页表项的指针数据放到ppte所指的地方里面。（充分理解二级指针。</p>
+<p>关键在于，谁是虚拟地址，谁是物理地址？</p>
+<p>搞清楚的一个事实是：<br>1.无论是什么内置函数，操作的都是虚拟地址<br>2.几乎所有用到的东西都是虚拟地址，指针啥的也都是虚拟地址。</p>
+<p>然后，究竟是怎么从页表项里面拿数据的？</p>
+<p>页表本身，给定的都是虚拟地址，然后拿数据其实都是从虚拟地址拿的。</p>
+<p>比如第一级页表，也就是页表目录，它的表头地址就是虚拟地址。（这个表头地址只有一个，放在内存里面）一个页表1024个页表项，所以它的第一部分是10位，第二个部分也是10位，然后一个物理页大小是2^12，所以最后一个部分12位。</p>
+<p>然后拿来一个虚拟地址，要查页表（通过查页表才知道是在物理地址的哪里），首先拿过来分成三个部分。</p>
+<p>然后第一个部分就是第几个页表目录项，直接在表头地址上加上就可以了（注意，第一个部分需要按照位的方式单独拿出来这几位，然后加也是加的这几位）</p>
+<p>然后这里得到了一个虚拟地址，这个虚拟地址就是所在的第一级页表项的位置，它的内容，也就是第一级页表项，分为两段。</p>
+<p>第一段是前20位，代表的是物理页号，也就是这个页表的下一级的数据对应的物理页号，然后后12位是权限。</p>
+<p><strong>注意，这个物理页号不是物理地址</strong>它确实跟物理页有关，然后能够提供下一级数据的物理序号。能够指出是到底是第几个物理页，也就是能给出物理地址所在的页的起始位置的物理地址（后面的需要再偏移）。然后注意，<strong>我们搞啥数据都是用的虚拟地址</strong>，然后<strong>经过把这个初始物理地址换算</strong>算出虚拟地址的位置，找到下一个页表的起始物理地址，根据二级页表的偏移找到二级页表项，然后根据这个项里面前20的位置找到物理页号，根据这个物理页号和实际的偏移找到物理地址。</p>
+<p>然后在这个过程里需要这几个函数：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> PDX(va) ((((u_long)(va)) &gt;&gt; 22) &amp; 0x03FF)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PTX(va) ((((u_long)(va)) &gt;&gt; 12) &amp; 0x03FF)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PTE_ADDR(pte) ((u_long)(pte) &amp; ~0xFFF)</span></span><br></pre></td></tr></table></figure>
+<p>pdx是截取一级页表页号的</p>
+<p>ptx是截取二级页表页号的</p>
+<p>PTE_ADDR是将pte页表项（实际上前20位才是页表号数据）转化为物理地址（就是把物理页号后面补上全是0而已，因为物理页本身就是按照次序紧密排列的）</p>
+<p>然后物理地址就拿到了，但是要计算的时候还是需要虚拟地址的。</p>
+<p>Pde*一般指的是一级页表的项的地址</p>
+<p>Pte*一般指的是二级页表的项的地址，一般可以用物理地址转虚拟地址得到。</p>
+<p>时刻注意这些取地址得到的才是页表项。然后页表项本身存的经过PTEADDR就是物理地址。</p>
+<h2 id="一些宏函数的解释"><a href="#一些宏函数的解释" class="headerlink" title="一些宏函数的解释"></a>一些宏函数的解释</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> PPN(va) (((u_long)(va)) &gt;&gt; 12)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> VPN(va) (((u_long)(va)) &gt;&gt; 12)</span></span><br><span class="line">这俩无论里面是啥，毕竟地址 的前<span class="number">20</span>位存的都是关于页面的信息。</span><br><span class="line"><span class="type">static</span> <span class="keyword">inline</span> u_long <span class="title function_">page2ppn</span><span class="params">(<span class="keyword">struct</span> Page *pp)</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> pp - pages;</span><br><span class="line">&#125;</span><br><span class="line">返回物理页框号，注意这个是按照结构体存的，然后页管理模块和物理页一一对应。</span><br><span class="line"><span class="type">static</span> <span class="keyword">inline</span> u_long <span class="title function_">page2pa</span><span class="params">(<span class="keyword">struct</span> Page *pp)</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> page2ppn(pp) &lt;&lt; PGSHIFT;</span><br><span class="line">&#125;</span><br><span class="line">返回物理地址：页框号直接移动页大小的位移就行了</span><br><span class="line"></span><br><span class="line">然后物理页框就是按照物理页号严格一个个划分成页 的。</span><br><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="keyword">struct</span> Page *<span class="title function_">pa2page</span><span class="params">(u_long pa)</span> &#123;</span><br><span class="line">	<span class="keyword">if</span> (PPN(pa) &gt;= npage) &#123;</span><br><span class="line">		panic(<span class="string">&quot;pa2page called with invalid pa: %x&quot;</span>, pa);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> &amp;pages[PPN(pa)];</span><br><span class="line">&#125;</span><br><span class="line">返回物理页管理模块本身的虚拟地址。就是物理地址算出来页号之后根据索引求页管理模块。</span><br><span class="line"></span><br><span class="line">所有页管理模块本身也都是按照虚拟地址存的。</span><br><span class="line"></span><br><span class="line">事实上页分配内存的时候页管理模块的地址就是页的地址。</span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="keyword">inline</span> u_long <span class="title function_">page2kva</span><span class="params">(<span class="keyword">struct</span> Page *pp)</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> KADDR(page2pa(pp));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="keyword">inline</span> u_long <span class="title function_">va2pa</span><span class="params">(Pde *pgdir, u_long va)</span> &#123;</span><br><span class="line">	Pte *p;</span><br><span class="line"></span><br><span class="line">	pgdir = &amp;pgdir[PDX(va)];</span><br><span class="line">	<span class="keyword">if</span> (!(*pgdir &amp; PTE_V)) &#123;</span><br><span class="line">		<span class="keyword">return</span> ~<span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	p = (Pte *)KADDR(PTE_ADDR(*pgdir));</span><br><span class="line">	<span class="keyword">if</span> (!(p[PTX(va)] &amp; PTE_V)) &#123;</span><br><span class="line">		<span class="keyword">return</span> ~<span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> PTE_ADDR(p[PTX(va)]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">int</span> <span class="title function_">pgdir_walk</span><span class="params">(Pde *pgdir, u_long va, <span class="type">int</span> create, Pte **ppte)</span> &#123;</span><br><span class="line">	Pde *pgdir_entryp;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">Page</span> *<span class="title">pp</span>;</span></span><br><span class="line">	Pte *pg_phy_entryp;<span class="comment">//这个是二级表项的地址。</span></span><br><span class="line">	<span class="comment">/* Step 1: Get the corresponding page directory entry. */</span></span><br><span class="line">	<span class="comment">/* Exercise 2.6: Your code here. (1/3) */</span></span><br><span class="line">    pgdir_entryp=(Pde*)(pgdir+PDX(va));<span class="comment">//</span></span><br><span class="line"></span><br><span class="line">    这个是什么意思？原本一级页表的表头地址pgdir，加上经过PDX(va)（就是地址偏移过后）就是真正这个一级表项的地址。它本身也是个虚拟笛之爱。</span><br><span class="line"></span><br><span class="line">	pg_phy_entryp=(Pte*)(KADDR(PTE_ADDR(*pgdir_entryp)));</span><br><span class="line">    然后这个一级表项的地址取值就是表项内容，拿出来取前<span class="number">20</span>位，PTE_ADDr一下就是物理地址，KaDD一下就是虚拟地址，记住这些东西计算的时候都是虚拟地址。这个虚拟地址就是二级页表那一页的表头。</span><br><span class="line"></span><br><span class="line">    注意，这个仅在给出的地址有效的情况下能用，无效新开的话还要覆写。</span><br><span class="line">	<span class="comment">/* Step 2: If the corresponding page table is not existent (valid) and parameter `create`</span></span><br><span class="line"><span class="comment">	 * is set, create one. Set the permission bits &#x27;PTE_D | PTE_V&#x27; for this new page in the</span></span><br><span class="line"><span class="comment">	 * page directory.</span></span><br><span class="line"><span class="comment">	 * If failed to allocate a new page (out of memory), return the error. */</span></span><br><span class="line">	<span class="comment">/* Exercise 2.6: Your code here. (2/3) */</span></span><br><span class="line">	<span class="keyword">if</span>((*pgdir_entryp&amp;PTE_V==<span class="number">0</span>))<span class="comment">//如果一级表项存的信息是无效的。</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(create!=<span class="number">0</span>)&#123;<span class="comment">//假如创造 </span></span><br><span class="line">			<span class="keyword">if</span>(page_alloc(&amp;pp)==-E_NO_MEM)</span><br><span class="line">			&#123;</span><br><span class="line">				*ppte=<span class="literal">NULL</span>;</span><br><span class="line">				<span class="keyword">return</span> -E_NO_MEM;</span><br><span class="line">			&#125;没造成直接报错</span><br><span class="line">			<span class="keyword">else</span></span><br><span class="line">			&#123;</span><br><span class="line">            pp-&gt;pp_ref=<span class="number">1</span>;<span class="comment">//注意这个并不代表一个具体的页面地址，它只是一个页管理模块的地址，除了alloc剩下都没法接触真的页物理地址。</span></span><br><span class="line">			维护新开的页的使用次数</span><br><span class="line">            pg_phy_entryp=KADDR(page2pa(pp))</span><br><span class="line">            然后新开的话，就覆写，让这个成为这个新开的页首地址(pp返回的是这个新物理页的管理模块的地址，虚拟地址，page2pa返回pp这个页管理模块对应物理页的地址)</span><br><span class="line">            (*pgdir_entryp)=(Pde)page2pa(pp);</span><br><span class="line">            然后一级表项内容改成物理地址。</span><br><span class="line">			(*pgdir_entryp)|=PTE_D | PTE_V;</span><br><span class="line">            然后修正特权位。</span><br><span class="line">            造成的话，就相当于申请了一个新的物理页，注意，只是二级页表的物理页，我要的是表项的地址。(而且是虚拟地址)</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span>  <span class="comment">//不创造的话肯定不够，返回异常就是了。</span></span><br><span class="line">		&#123;</span><br><span class="line">			*ppte=<span class="literal">NULL</span>;</span><br><span class="line">			<span class="keyword">return</span> -E_NO_MEM ;不创造的话直接报错。</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">/* Step 3: Assign the kernel virtual address of the page table entry to &#x27;*ppte&#x27;. */</span></span><br><span class="line">	<span class="comment">/* Exercise 2.6: Your code here. (3/3) */</span></span><br><span class="line">	*ppte=pg_phy_entryp+PTX(va);假如一开始有的话虚拟地址偏移之后拿出来二级页表的页内偏移，就恰好是二级表项的地址。</span><br><span class="line">    注意是虚拟地址。</span><br><span class="line"></span><br><span class="line">    然后假如新建的话，pg那个已经变成pp了，就是新申请的表的首地址，然后再偏移到这个表项就行了。</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>为啥都是虚拟地址？pagealloc这个东西，本身就是将页控制块的地址返回到要存的地址那里，控制快的地址肯定就是虚拟地址了，所以这个函数返回的是虚拟地址。都是控制块对应的物理页面，它不直接反应物理地址。</p>
+<p>页控制块和页的物理地址究竟有啥关系？完全没关系。<br>分配的时候也是memset(页控制模块地址，页的大小)</p>
+<h2 id="其他页管理函数"><a href="#其他页管理函数" class="headerlink" title="其他页管理函数"></a>其他页管理函数</h2><p>首先值得一提的是，我们先梳理一下刚刚完成的pagewalk的功能，它的功能不仅仅是查询映射而已。</p>
+<p>假如查询到二级页表项存在且有效，那么就让ppte存的内容是这个二级页表项的地址（而不是内容 ）</p>
+<p>假如不存在，其实多种可能，一种是二级页表这个物理页根本不存在，那么这个函数兼具创建这个新页面的功能，然后这个返回的项的指针就是新页面的首地址加上偏移。</p>
+<p>然后注意：<br>，此图适用于 walk 和 map、insert 系列函数，图中蓝色部分是 walk，黄色部分是 map、insert</p>
+<p><strong>walk并不具备填写表项的功能，就是返回了表项的地址</strong>，填写表项还是要看insert函数的。</p>
+<p>所以一旦需要填写啥二级表项，就用insert</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">page_insert</span><span class="params">(Pde *pgdir, u_int asid, <span class="keyword">struct</span> Page *pp, u_long va, u_int perm)</span> &#123;</span><br><span class="line"><span class="number">2</span> Pte *pte;</span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">4</span> <span class="comment">// 由于需要将 pp 对应页映射到 va，首先检查是否 va 已经存在了映射？</span></span><br><span class="line"><span class="number">5</span> pgdir_walk(pgdir, va, <span class="number">0</span>, &amp;pte);</span><br><span class="line"><span class="number">6</span></span><br><span class="line"><span class="number">7</span> <span class="comment">// 如果已经存在了映射，该映射是否有效？</span></span><br><span class="line"><span class="number">8</span> <span class="keyword">if</span> (pte != <span class="number">0</span> &amp;&amp; (*pte &amp; PTE_V) != <span class="number">0</span>) &#123;</span><br><span class="line"><span class="number">9</span> <span class="comment">// 如果存在的映射是有效的，那现有映射的页和需要插入的页是否一样？</span></span><br><span class="line"><span class="number">10</span> <span class="keyword">if</span> (pa2page(*pte) != pp) &#123;</span><br><span class="line"><span class="number">11</span> <span class="comment">// 如果不一样，那么移除现有的映射，插入新的页。</span></span><br><span class="line"><span class="number">12</span> page_remove(pgdir, asid, va);</span><br><span class="line"><span class="number">13</span> &#125; <span class="keyword">else</span> &#123;</span><br><span class="line"><span class="number">14</span> <span class="comment">// 如果一样，就只需要更新一下映射的权限位。</span></span><br><span class="line"><span class="number">15</span> <span class="comment">// 但先要将 TLB 中缓存的页表项删掉，然后更新内存中的</span></span><br><span class="line"><span class="number">16</span> <span class="comment">// 页表项。这样下次加载 va 所在页时，TLB 会重新从页</span></span><br><span class="line"><span class="number">17</span> <span class="comment">// 表中加载这一页表项了。插入完成，函数返回。</span></span><br><span class="line"><span class="number">18</span> tlb_invalidate(asid, va);</span><br><span class="line"><span class="number">19</span> *pte = page2pa(pp) | perm | PTE_V;</span><br><span class="line"><span class="number">20</span> <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"><span class="number">21</span> &#125;</span><br><span class="line"><span class="number">22</span> &#125;</span><br><span class="line"><span class="number">23</span></span><br><span class="line"><span class="number">24</span> <span class="comment">/*TODO : */</span></span><br><span class="line"><span class="number">25</span></span><br><span class="line"><span class="number">26</span> <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"><span class="number">27</span> &#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">page_insert</span><span class="params">(Pde *pgdir, u_int asid, <span class="keyword">struct</span> Page *pp, u_long va, u_int perm)</span> &#123;</span><br><span class="line">	Pte *pte;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Step 1: Get corresponding page table entry. */</span></span><br><span class="line">	pgdir_walk(pgdir, va, <span class="number">0</span>, &amp;pte);首先检索这个地址映射的二级表项的地址</span><br><span class="line">    直接pte的话，否定条件是null，create是<span class="number">0</span>，所以不创造，假如没这个表项的话，有俩情况，一种是干脆没这个页，另一种是有这个页和这个项，但是这个项位是无效的。 </span><br><span class="line"></span><br><span class="line">	null的情况是这个二级页表不存在。</span><br><span class="line">	<span class="keyword">if</span> (pte &amp;&amp; (*pte &amp; PTE_V)) &#123;</span><br><span class="line">		<span class="keyword">if</span> (pa2page(*pte) != pp) &#123;如果项对应的页的地址不是想要对应的物理页pp，那么删除这个映射关系。清空这个表项。</span><br><span class="line">			page_remove(pgdir, asid, va);</span><br><span class="line">		&#125; <span class="keyword">else</span> &#123;</span><br><span class="line">			tlb_invalidate(asid, va);假如是的话，直接改一下权限就好了。</span><br><span class="line">			*pte = page2pa(pp) | perm | PTE_V;</span><br><span class="line">			<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	现在有可能是pte是null指针，或者这个页的表项已经被清空了，但是指针存在。</span><br><span class="line">	<span class="comment">/* Step 2: Flush TLB with &#x27;tlb_invalidate&#x27;. */</span></span><br><span class="line">	<span class="comment">/* Exercise 2.7: Your code here. (1/3) */</span></span><br><span class="line">	tlb_invalidate(asid,va);</span><br><span class="line">	<span class="comment">/* Step 3: Re-get or create the page table entry. */</span></span><br><span class="line">	<span class="comment">/* If failed to create, return the error. */</span></span><br><span class="line">	<span class="comment">/* Exercise 2.7: Your code here. (2/3) */</span></span><br><span class="line">	<span class="keyword">if</span>(pgdir_walk(pgdir,va,<span class="number">1</span>,&amp;pte)==-E_NO_MEM)<span class="keyword">return</span> -E_NO_MEM;</span><br><span class="line">	在判断语句里面照样能执行。这里create是<span class="number">1</span>，就是说假如pte是空指针的话就创建一个新的页</span><br><span class="line">	<span class="comment">/* Step 4: Insert the page to the page table entry with &#x27;perm | PTE_V&#x27; and increase its</span></span><br><span class="line"><span class="comment">	 * &#x27;pp_ref&#x27;. */</span></span><br><span class="line">	<span class="comment">/* Exercise 2.7: Your code here. (3/3) */</span></span><br><span class="line">	*pte=page2pa(pp)|perm|PTE_V;</span><br><span class="line">	pp-&gt;pp_ref++;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>经过insert函数，实现了将一级页表基地址 pgdir 对应的两级页表结构中<strong>虚拟地址 va 映射到页控制块 pp 对应的物理页面</strong>，并将页表项权限为设置为 perm，其中页控制块本身对应的是一个物理页的首物理地址，va只不过是在pp这个物理页里的偏移位置而已。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*Overview:</span></span><br><span class="line"><span class="comment">    Look up the Page that virtual address `va` map to.</span></span><br><span class="line"><span class="comment">  Post-Condition:</span></span><br><span class="line"><span class="comment">    Return a pointer to corresponding Page, and store it&#x27;s page table entry to *ppte.</span></span><br><span class="line"><span class="comment">    If `va` doesn&#x27;t mapped to any Page, return NULL.*/</span></span><br><span class="line">	这个函数的本质，是找到这个va对应的页的页管理模块的指针，作用是返回一级页表基地址 pgdir 对应的两级页表结构中虚拟地址 va 映射的物理页面的页控制块，同时将ppte 指向的空间设为对应的二级页表项地址</span><br><span class="line"></span><br><span class="line">	就是说，给你一个进程的pgdir，然后根据这个进程的va，搜索到这个va所在的物理界面的页控制块。</span><br><span class="line"><span class="keyword">struct</span> Page *<span class="title function_">page_lookup</span><span class="params">(Pde *pgdir, u_long va, Pte **ppte)</span> &#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">Page</span> *<span class="title">pp</span>;</span></span><br><span class="line">	Pte *pte;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Step 1: Get the page table entry. */</span></span><br><span class="line">	pgdir_walk(pgdir, va, <span class="number">0</span>, &amp;pte);</span><br><span class="line">	不创造纯查找。</span><br><span class="line">	<span class="comment">/* Hint: Check if the page table entry doesn&#x27;t exist or is not valid. */</span></span><br><span class="line">	<span class="keyword">if</span> (pte == <span class="literal">NULL</span> || (*pte &amp; PTE_V) == <span class="number">0</span>) &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	如果没查到或者查到的无效，就是没有这个映射，返回</span><br><span class="line">	<span class="comment">/* Step 2: Get the corresponding Page struct. */</span></span><br><span class="line">	<span class="comment">/* Hint: Use function `pa2page`, defined in include/pmap.h . */</span></span><br><span class="line">	pp = pa2page(*pte);</span><br><span class="line">	<span class="keyword">if</span> (ppte) &#123;</span><br><span class="line">		*ppte = pte;</span><br><span class="line">	&#125;</span><br><span class="line">	查到了，那就让ppte的值变成查到的地址，让这个查到的映射页返回回去就行了。</span><br><span class="line">	<span class="keyword">return</span> pp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/* Overview:</span></span><br><span class="line"><span class="comment"> *   Decrease the &#x27;pp_ref&#x27; value of Page &#x27;pp&#x27;.</span></span><br><span class="line"><span class="comment"> *   When there&#x27;s no references (mapped virtual address) to this page, release it.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">page_decref</span><span class="params">(<span class="keyword">struct</span> Page *pp)</span> &#123;</span><br><span class="line">	assert(pp-&gt;pp_ref &gt; <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* If &#x27;pp_ref&#x27; reaches to 0, free this page. */</span></span><br><span class="line">	<span class="keyword">if</span> (--pp-&gt;pp_ref == <span class="number">0</span>) &#123;</span><br><span class="line">		page_free(pp);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Overview:</span></span><br><span class="line"><span class="comment">//   Unmap the physical page at virtual address &#x27;va&#x27;.</span></span><br><span class="line"><span class="type">void</span> <span class="title function_">page_remove</span><span class="params">(Pde *pgdir, u_int asid, u_long va)</span> &#123;</span><br><span class="line">	Pte *pte;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Step 1: Get the page table entry, and check if the page table entry is valid. */</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">Page</span> *<span class="title">pp</span> =</span> page_lookup(pgdir, va, &amp;pte);</span><br><span class="line">	<span class="keyword">if</span> (pp == <span class="literal">NULL</span>) &#123;</span><br><span class="line">		<span class="keyword">return</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Step 2: Decrease reference count on &#x27;pp&#x27;. */</span></span><br><span class="line">	page_decref(pp);</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Step 3: Flush TLB. */</span></span><br><span class="line">	*pte = <span class="number">0</span>;</span><br><span class="line">	tlb_invalidate(asid, va);</span><br><span class="line">	<span class="keyword">return</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="bug"><a href="#bug" class="headerlink" title="bug"></a>bug</h2><p>有个非常逆天的bug</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(((*pgdir_entryp)&amp;PTE_V==<span class="number">0</span>))<span class="comment">//如果一级表项存的信息是无效的。</span></span><br></pre></td></tr></table></figure>
+<p>这个判断是错的</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(!((*pgdir_entryp)&amp;PTE_V))<span class="comment">//如果一级表项存的信息是无效的。</span></span><br></pre></td></tr></table></figure>
+<p>这个就是对的。<br>再改一下</p>
+<pre><code>if(((*pgdir_entryp)&amp;PTE_V)==0)//如果一级表项存的信息是无效的。
+</code></pre>
+<p>这个就是对的，所以其实是括号的位置的问题。<br>&amp;x&#x3D;&#x3D;0，有没有可能x&#x3D;&#x3D;0就是一个表达式。</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">farewell</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://brilliant-daffodil-eb4c4f.netlify.app/2023/03/18/%E9%A1%B5%E8%A1%A8%E7%AE%A1%E7%90%86/">https://brilliant-daffodil-eb4c4f.netlify.app/2023/03/18/%E9%A1%B5%E8%A1%A8%E7%AE%A1%E7%90%86/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">farewell</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/BUAA-OS/">
+                                    <span class="chip bg-color">BUAA_OS</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2023/03/18/%E9%A1%B5%E8%A1%A8%E7%AE%A1%E7%90%86/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="页式内存管理系统">
+                        
+                        <span class="card-title">页式内存管理系统</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-18
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            farewell
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/BUAA-OS/">
+                        <span class="chip bg-color">BUAA_OS</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/03/18/%E5%86%85%E6%A0%B8%20%E5%AD%98%E5%82%A8/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="内核储存">
+                        
+                        <span class="card-title">内核储存</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-18
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            farewell
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/BUAA-OS/">
+                        <span class="chip bg-color">BUAA_OS</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+    <div class="container row center-align" style="margin-bottom: 15px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2022-2023</span>
+            
+            <span id="year">2022</span>
+            <a href="/about" target="_blank">farewell</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <span id="sitetime">载入运行时间...</span>
+            <script>
+                function siteTime() {
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var startYear = "2022";
+                    var startMonth = "10";
+                    var startDate = "3";
+                    var startHour = "0";
+                    var startMinute = "0";
+                    var startSecond = "0";
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth() + 1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                    var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                    var diff = t2 - t1;
+                    var diffYears = Math.floor(diff / years);
+                    var diffDays = Math.floor((diff / days) - diffYears * 365);
+                    var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+                    var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) /
+                        minutes);
+                    var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours -
+                        diffMinutes * minutes) / seconds);
+                    if (startYear == todayYear) {
+                        document.getElementById("year").innerHTML = todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已安全运行 " + diffDays + " 天 " + diffHours +
+                            " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    } else {
+                        document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已安全运行 " + diffYears + " 年 " + diffDays +
+                            " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    }
+                }
+                setInterval(siteTime, 1000);
+            </script>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/farewell-exiles" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:1284272565@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1284272565" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 1284272565" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+	
+    
+    <script type="text/javascript" color="0,0,255"
+        pointColor="0,0,255" opacity='0.7'
+        zIndex="-1" count="99"
+        src="/libs/background/canvas-nest.js"></script>
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

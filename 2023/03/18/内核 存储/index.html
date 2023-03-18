@@ -1,0 +1,1233 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="内核储存, farewell&#39;s blog">
+    <meta name="description" content="你到过许多地方，用你自己的故事记认许多城邦后，你终于抵达此城">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>内核储存 | farewell&#39;s blog</title>
+    <link rel="icon" type="image/png" href="/medias/logo.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">farewell&#39;s blog</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="" class="waves-effect waves-light">
+
+      
+      <i class="fas fa-music" style="zoom: 0.6;"></i>
+      
+      <span>Musics</span>
+      <i class="fas fa-chevron-down" aria-hidden="true" style="zoom: 0.6;"></i>
+    </a>
+    <ul class="sub-nav menus_item_child ">
+      
+      <li>
+        <a target="_blank" rel="noopener" href="https://www.kugou.com/songlist/gcid_3zsmhjkqzhz07e/">
+          
+          <i class="fas fa-music" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>Youth</span>
+        </a>
+      </li>
+      
+      <li>
+        <a target="_blank" rel="noopener" href="https://www.kugou.com/songlist/gcid_3zsmhjkqzgz054/">
+          
+          <i class="fas fa-music" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>Hurt</span>
+        </a>
+      </li>
+      
+      <li>
+        <a target="_blank" rel="noopener" href="https://www.kugou.com/songlist/gcid_3zsmhjkqzfz091/">
+          
+          <i class="fas fa-music" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>romantic</span>
+        </a>
+      </li>
+      
+    </ul>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">farewell&#39;s blog</div>
+        <div class="logo-desc">
+            
+            你到过许多地方，用你自己的故事记认许多城邦后，你终于抵达此城
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="javascript:;">
+			
+				<i class="fa-fw fas fa-music"></i>
+			
+			Musics
+			<span class="m-icon"><i class="fas fa-chevron-right"></i></span>
+		</a>
+            <ul  style="background:  ;" >
+              
+                <li>
+
+                  <a target="_blank" rel="noopener" href="https://www.kugou.com/songlist/gcid_3zsmhjkqzhz07e/ " style="margin-left:75px">
+				  
+				   <i class="fa fas fa-music" style="position: absolute;left:50px" ></i>
+			      
+		          <span>Youth</span>
+                  </a>
+                </li>
+              
+                <li>
+
+                  <a target="_blank" rel="noopener" href="https://www.kugou.com/songlist/gcid_3zsmhjkqzgz054/ " style="margin-left:75px">
+				  
+				   <i class="fa fas fa-music" style="position: absolute;left:50px" ></i>
+			      
+		          <span>Hurt</span>
+                  </a>
+                </li>
+              
+                <li>
+
+                  <a target="_blank" rel="noopener" href="https://www.kugou.com/songlist/gcid_3zsmhjkqzfz091/ " style="margin-left:75px">
+				  
+				   <i class="fa fas fa-music" style="position: absolute;left:50px" ></i>
+			      
+		          <span>romantic</span>
+                  </a>
+                </li>
+              
+            </ul>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/farewell-exiles" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>来van啊
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/farewell-exiles" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="来van啊" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/3.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">内核储存</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        padding-bottom: 30px;
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/BUAA-OS/">
+                                <span class="chip bg-color">BUAA_OS</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-03-18
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="内核存储"><a href="#内核存储" class="headerlink" title="内核存储"></a>内核存储</h1><p>先来一张R3000虚拟内存分配图。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">/*</span><br><span class="line"> o     4G -----------&gt;  +----------------------------+------------0x100000000</span><br><span class="line"> o                      |       ...                  |  kseg2</span><br><span class="line"> o      KSEG2    -----&gt; +----------------------------+------------0xc000 0000</span><br><span class="line"> o                      |          Devices           |  kseg1</span><br><span class="line"> o      KSEG1    -----&gt; +----------------------------+------------0xa000 0000</span><br><span class="line"> o                      |      Invalid Memory        |   /|\</span><br><span class="line"> o                      +----------------------------+----|-------Physical Memory Max</span><br><span class="line"> o                      |       ...                  |  kseg0</span><br><span class="line"> o      KSTACKTOP-----&gt; +----------------------------+----|-------0x8040 0000-------end</span><br><span class="line"> o                      |       Kernel Stack         |    | KSTKSIZE            /|\</span><br><span class="line"> o                      +----------------------------+----|------                |</span><br><span class="line"> o                      |       Kernel Text          |    |                    PDMAP</span><br><span class="line"> o      KERNBASE -----&gt; +----------------------------+----|-------0x8001 0000    |</span><br><span class="line"> o                      |      Exception Entry       |   \|/                    \|/</span><br><span class="line"> o      ULIM     -----&gt; +----------------------------+------------0x8000 0000-------</span><br><span class="line"> o                      |         User VPT           |     PDMAP                /|\</span><br><span class="line"> o      UVPT     -----&gt; +----------------------------+------------0x7fc0 0000    |</span><br><span class="line"> o                      |           pages            |     PDMAP                 |</span><br><span class="line"> o      UPAGES   -----&gt; +----------------------------+------------0x7f80 0000    |</span><br><span class="line"> o                      |           envs             |     PDMAP                 |</span><br><span class="line"> o  UTOP,UENVS   -----&gt; +----------------------------+------------0x7f40 0000    |</span><br><span class="line"> o  UXSTACKTOP -/       |     user exception stack   |     BY2PG                 |</span><br><span class="line"> o                      +----------------------------+------------0x7f3f f000    |</span><br><span class="line"> o                      |                            |     BY2PG                 |</span><br><span class="line"> o      USTACKTOP ----&gt; +----------------------------+------------0x7f3f e000    |</span><br><span class="line"> o                      |     normal user stack      |     BY2PG                 |</span><br><span class="line"> o                      +----------------------------+------------0x7f3f d000    |</span><br><span class="line"> a                      |                            |                           |</span><br><span class="line"> a                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~                           |</span><br><span class="line"> a                      .                            .                           |</span><br><span class="line"> a                      .                            .                         kuseg</span><br><span class="line"> a                      .                            .                           |</span><br><span class="line"> a                      |~~~~~~~~~~~~~~~~~~~~~~~~~~~~|                           |</span><br><span class="line"> a                      |                            |                           |</span><br><span class="line"> o       UTEXT   -----&gt; +----------------------------+------------0x0040 0000    |</span><br><span class="line"> o                      |      reserved for COW      |     BY2PG                 |</span><br><span class="line"> o       UCOW    -----&gt; +----------------------------+------------0x003f f000    |</span><br><span class="line"> o                      |   reversed for temporary   |     BY2PG                 |</span><br><span class="line"> o       UTEMP   -----&gt; +----------------------------+------------0x003f e000    |</span><br><span class="line"> o                      |       invalid memory       |                          \|/</span><br><span class="line"> a     0 ------------&gt;  +----------------------------+ ----------------------------</span><br><span class="line"> o</span><br><span class="line">*/</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>首先，关于4GB那个存储的东西，是虚拟地址的。所以那个布局图实际上讲的就是虚拟地址的东西。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">. kuseg 0x00000000-0x7FFFFFFF(2 GB)：这一段是用户态下唯一可用的地址空间（内核态</span><br><span class="line">下也可使用这段地址空间），大小为 2 GB，也就是 MIPS 约定的用户内存空间。需要通过</span><br><span class="line">MMU（Memory Management Unit）中的 TLB 进行虚拟地址到物理地址的变换。对这段</span><br><span class="line">地址的存取都会通过 cache。</span><br><span class="line">2. kseg0 0x80000000-0x9FFFFFFF(512 MB)：这一段是内核态下可用的地址，MMU 将地址</span><br><span class="line">的最高位清零 (&amp; 0x7fffffff) 就得到物理地址用于访存。也就是说，这段的虚拟地址被连续</span><br><span class="line">地映射到物理地址的低 512 MB 空间。对这段地址的存取都会通过 cache。</span><br><span class="line">3. kseg1 0xA0000000-0xBFFFFFFF(512 MB)：与 kseg0 类似，这段地址也是内核态下可用的</span><br><span class="line">地址，MMU 将虚拟地址的高三位清零 (&amp; 0x1fffffff) 就得到物理地址用于访存。这段</span><br><span class="line">虚拟地址也被连续地映射到物理地址的低 512 MB 空间。但是对这段地址的存取不通过</span><br><span class="line">cache，往往在这段地址上使用 MMIO（Memory-Mapped I/O）技术来访问外设。</span><br><span class="line">4. kseg2 0xC0000000-0xFFFFFFFF(1 GB)：这段地址只能在内核态下使用并且需要 MMU 中</span><br><span class="line">TLB 将虚拟地址转换为物理地址。对这段地址的存取都会通过 cache。</span><br><span class="line">MMU 需要操作系统进行配置管理，因此在载入内核时，我们不能选用需要通过 MMU 转</span><br><span class="line">换的虚拟地址空间。这样内核就只能放在 kseg0 或 kseg1 了。而 kseg1 是不经过 cache 的，一般</span><br><span class="line">来说，利用 MMIO 访问外设时才会使用 kseg1。因此我们将内核的 .text、.data、.bss 段都</span><br><span class="line">放到 kseg0 中。至于上文提到 kseg0 在 cache 未初始化前不能使用，但这里我们又将内核放在</span><br><span class="line">kseg0 段，这是因为在真实的系统中，运行在 kseg1 中的 bootloader 在载入内核前会进行 cache</span><br><span class="line">初始化工作。</span><br><span class="line">在 include/mmu.h 里有我们的 MOS 操作系统内核完整的内存布局图（代码1.3.3所示），其</span><br><span class="line">中 KERNBASE 是内核镜像的起始虚拟地址。</span><br></pre></td></tr></table></figure>
+
+<h2 id="关于外设"><a href="#关于外设" class="headerlink" title="关于外设"></a>关于外设</h2><ol start="3">
+<li>kseg1 0xA0000000-0xBFFFFFFF(512 MB)：与 kseg0 类似，这段地址也是内核态下可用的<br>地址，MMU 将虚拟地址的高三位清零 (&amp; 0x1fffffff) 就得到物理地址用于访存。这段<br>虚拟地址也被连续地映射到物理地址的低 512 MB 空间。但是对这段地址的存取不通过<br>cache，往往在这段地址上使用 MMIO（Memory-Mapped I&#x2F;O）技术来访问外设。</li>
+</ol>
+<p>所以说是在向屏幕或者其他地方输出的时候操作的都是这段内存。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">void printcharc(char ch) &#123;</span><br><span class="line">	*((volatile char *)(KSEG1 + DEV_CONS_ADDRESS + DEV_CONS_PUTGETCHAR)) = ch;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">char scancharc(void) &#123;</span><br><span class="line">	return *((volatile char *)(KSEG1 + DEV_CONS_ADDRESS + DEV_CONS_PUTGETCHAR));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">void halt(void) &#123;</span><br><span class="line">	*((volatile char *)(KSEG1 + DEV_CONS_ADDRESS + DEV_CONS_HALT)) = 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>volatile 代表易变，所以要从硬件读取数字。</p>
+<p>然后定义了若干常数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#define DEV_CONS_ADDRESS 0x10000000</span><br><span class="line">#define DEV_CONS_LENGTH 0x00000020</span><br><span class="line">#define DEV_CONS_PUTGETCHAR 0x0000</span><br><span class="line">#define DEV_CONS_HALT 0x0010</span><br></pre></td></tr></table></figure>
+<p>这几个常数代表了一些地址，像这些地址放数据就会自动显示出来。</p>
+<h2 id="关于地址"><a href="#关于地址" class="headerlink" title="关于地址"></a>关于地址</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">• 若虚拟地址处于 0x80000000~0x9fffffff (kseg0)，则将虚拟地址的最高位置 0 得到物理</span><br><span class="line">地址，通过 cache 访存。这一部分用于存放内核代码与数据结构。</span><br><span class="line">• 若虚拟地址处于 0xa0000000~0xbfffffff (kseg1)，则将虚拟地址的最高 3 位置 0 得到</span><br><span class="line">物理地址，不通过 cache 访存。这一部分可以用于映射外设。</span><br><span class="line">• 若虚拟地址处于 0x00000000~0x7fffffff (kuseg)，则需要通过 TLB 来获取物理地址，</span><br><span class="line">通过 cache 访存</span><br></pre></td></tr></table></figure>
+
+<p>512MB是<br>2^29，也就是说是去掉前三位的所有。<br>所以真实的物理地址是什么样呢？（注意地址存的都是字节的地址，第几个字节）<br>8000_0000的最高位置0，显然这两种情况的最高位（指的不是存储的最高位，而是实际的最高有1的位）<br>这一段是内核态下可用的地址，MMU 将地址<br>的最高位清零 (&amp; 0x7fffffff) 就得到物理地址用于访存。也就是说，这段的虚拟地址被连续<br>地映射到物理地址的低 512 MB 空间。对这段地址的存取都会通过 cache。</p>
+<p>事实上，由于第一位是1，所以开始位置就是0</p>
+<p>相当于整个在虚拟地址偏移了一个最高位1，然后放在了前面。</p>
+<p>a000_0000这里，最高三位也指的是从第一个有效位（事实上这里也是第一个1）</p>
+<p>与 kseg0 类似，这段地址也是内核态下可用的<br>地址，MMU 将虚拟地址的高三位清零 (&amp; 0x1fffffff) 就得到物理地址用于访存。这段<br>虚拟地址也被连续地映射到物理地址的低 512 MB 空间。但是对这段地址的存取不通过<br>cache，往往在这段地址上使用 MMIO（Memory-Mapped I&#x2F;O）技术来访问外设</p>
+<p>所以这两个地址不是重复的，一个是内存的地址，一个是外设的地址。</p>
+<h2 id="解读宏mmp-h"><a href="#解读宏mmp-h" class="headerlink" title="解读宏mmp.h"></a>解读宏mmp.h</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifndef</span> _MMU_H_</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _MMU_H_</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;error.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> BY2PG 4096		<span class="comment">// bytes to a page</span></span></span><br><span class="line">一个页的字节 数，<span class="number">2</span>^<span class="number">12</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PDMAP (4 * 1024 * 1024) <span class="comment">// bytes mapped by a page directory entry</span></span></span><br><span class="line">页目录项映射的字节。</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PGSHIFT 12</span></span><br><span class="line">页的位移大小。</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PDSHIFT 22 <span class="comment">// log2(PDMAP)</span></span></span><br><span class="line">页目录的位移大小。</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PDX(va) ((((u_long)(va)) &gt;&gt; 22) &amp; 0x03FF)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PTX(va) ((((u_long)(va)) &gt;&gt; 12) &amp; 0x03FF)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PTE_ADDR(pte) ((u_long)(pte) &amp; ~0xFFF)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Page number field of an address</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PPN(va) (((u_long)(va)) &gt;&gt; 12)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> VPN(va) (((u_long)(va)) &gt;&gt; 12)</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/* Page Table/Directory Entry flags */</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Global bit. When the G bit in a TLB entry is set, that TLB entry will match solely on the VPN</span></span><br><span class="line"><span class="comment">// field, regardless of whether the TLB entry’s ASID field matches the value in EntryHi.</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PTE_G 0x0100</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Valid bit. If 0 any address matching this entry will cause a tlb miss exception (TLBL/TLBS).</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PTE_V 0x0200</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Dirty bit, but really a write-enable bit. 1 to allow writes, 0 and any store using this</span></span><br><span class="line"><span class="comment">// translation will cause a tlb mod exception (TLB Mod).</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PTE_D 0x0400</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Uncacheable bit. 0 to make the access cacheable, 1 for uncacheable.</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PTE_N 0x0800</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Copy On Write. Reserved for software, used by fork.</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PTE_COW 0x0001</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Shared memmory. Reserved for software, used by fork.</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PTE_LIBRARY 0x0004</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Memory segments (32-bit kernel mode addresses)</span></span><br><span class="line">记录了那几个k什么g的起点范围。</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> KUSEG 0x00000000U</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> KSEG0 0x80000000U</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> KSEG1 0xA0000000U</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> KSEG2 0xC0000000U</span></span><br><span class="line">标准图</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Part 2.  Our conventions.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> KERNBASE 0x80010000</span></span><br><span class="line">内核起始点</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> KSTACKTOP (ULIM + PDMAP)</span></span><br><span class="line">内核栈顶</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> ULIM 0x80000000</span></span><br><span class="line">用户栈地址上限。</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> UVPT (ULIM - PDMAP)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> UPAGES (UVPT - PDMAP)</span></span><br><span class="line">用户页表</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> UENVS (UPAGES - PDMAP)</span></span><br><span class="line">用户进程控制块。</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> UTOP UENVS</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> UXSTACKTOP UTOP</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> USTACKTOP (UTOP - 2 * BY2PG)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> UTEXT PDMAP</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> UCOW (UTEXT - BY2PG)</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> UTEMP (UCOW - BY2PG)</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">ifndef</span> __ASSEMBLER__</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Part 3.  Our helper functions.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;string.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;types.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">extern</span> u_long npage;</span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> u_long Pde;</span><br><span class="line"><span class="keyword">typedef</span> u_long Pte;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> PADDR(kva)                                                                                 \</span></span><br><span class="line"><span class="meta">	(&#123;                                                                                         \</span></span><br><span class="line"><span class="meta">		u_long a = (u_long)(kva);                                                          \</span></span><br><span class="line"><span class="meta">		<span class="keyword">if</span> (a &lt; ULIM)                                                                      \</span></span><br><span class="line"><span class="meta">			panic(<span class="string">&quot;PADDR called with invalid kva %08lx&quot;</span>, a);                           \</span></span><br><span class="line"><span class="meta">		a - ULIM;                                                                          \</span></span><br><span class="line"><span class="meta">	&#125;)</span></span><br><span class="line">返回虚拟地址对应的物理地址的宏。注意在</span><br><span class="line"><span class="comment">// translates from physical address to kernel virtual address</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> KADDR(pa)                                                                                  \</span></span><br><span class="line"><span class="meta">	(&#123;                                                                                         \</span></span><br><span class="line"><span class="meta">		u_long ppn = PPN(pa);                                                              \</span></span><br><span class="line"><span class="meta">		<span class="keyword">if</span> (ppn &gt;= npage) &#123;                                                                \</span></span><br><span class="line"><span class="meta">			panic(<span class="string">&quot;KADDR called with invalid pa %08lx&quot;</span>, (u_long)pa);                   \</span></span><br><span class="line"><span class="meta">		&#125;                                                                                  \</span></span><br><span class="line"><span class="meta">		(pa) + ULIM;                                                                       \</span></span><br><span class="line"><span class="meta">	&#125;)</span></span><br><span class="line">返回物理地址对应的虚拟地址的宏，具体解释一下的话，就是首先根据pa算出来物理地址页号</span><br><span class="line">然后虚拟地址就是物理地址加上ULIM（上面那个大图说的就是虚拟地址。）</span><br><span class="line"><span class="meta">#<span class="keyword">define</span> assert(x)                                                                                  \</span></span><br><span class="line"><span class="meta">	do &#123;                                                                                       \</span></span><br><span class="line"><span class="meta">		<span class="keyword">if</span> (!(x)) &#123;                                                                        \</span></span><br><span class="line"><span class="meta">			panic(<span class="string">&quot;assertion failed: %s&quot;</span>, #x);                                         \</span></span><br><span class="line"><span class="meta">		&#125;                                                                                  \</span></span><br><span class="line"><span class="meta">	&#125; while (0)</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> TRUP(_p)                                                                                   \</span></span><br><span class="line"><span class="meta">	(&#123;                                                                                         \</span></span><br><span class="line"><span class="meta">		typeof((_p)) __m_p = (_p);                                                         \</span></span><br><span class="line"><span class="meta">		(u_int) __m_p &gt; ULIM ? (typeof(_p))ULIM : __m_p;                                   \</span></span><br><span class="line"><span class="meta">	&#125;)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">extern</span> <span class="type">void</span> <span class="title function_">tlb_out</span><span class="params">(u_int entryhi)</span>;</span><br><span class="line"><span class="meta">#<span class="keyword">endif</span> <span class="comment">//!__ASSEMBLER__</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span> <span class="comment">// !_MMU_H_</span></span></span><br></pre></td></tr></table></figure>
+<h2 id="关于启动函数"><a href="#关于启动函数" class="headerlink" title="关于启动函数"></a>关于启动函数</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> u_long memsize; <span class="comment">/* Maximum physical address */</span></span><br><span class="line"></span><br><span class="line"><span class="type">static</span> u_long freemem;</span><br></pre></td></tr></table></figure>
+<p>这两个变量很重要，一看这是两个static变量，分别是memsize，最大的物理地址，然后是freemem，它指的地址正是已经被占用的地址。比如占到100了，freemem就是100，从它开始都是自由的。</p>
+<p>这个变量的意义是小于 freemem 对应<strong>物理地址</strong>的物理内存都已经被分配了</p>
+<p>这俩都是物理地址。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">mips_detect_memory</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="comment">/* Step 1: Initialize memsize. */</span></span><br><span class="line">	memsize = *(<span class="keyword">volatile</span> u_int *)(KSEG1 | DEV_MP_ADDRESS | DEV_MP_MEMORY);</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Step 2: Calculate the corresponding &#x27;npage&#x27; value. */</span></span><br><span class="line">	<span class="comment">/* Exercise 2.1: Your code here. */</span></span><br><span class="line">    npage=memsize&gt;&gt;PGSHIFT;</span><br><span class="line">	printk(<span class="string">&quot;Memory size: %lu KiB, number of pages: %lu\n&quot;</span>, memsize / <span class="number">1024</span>, npage);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>然后给出了要实现这个代码，首先来看看这个是什么意思。</p>
+<p>默认一个页的大小是多少字节？4096字节。</p>
+<p>再输出的时候就是memsize&#x2F;1024，也就用kiB作为单位。</p>
+<p>memsize&#x3D;后面这三个分别都是之前定义好的宏，已经在</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#include &lt;drivers/dev_mp.h&gt;</span><br></pre></td></tr></table></figure>
+<p>这些库里面定义好了。分别指一定的特殊的地址。然后专门让这几个按位或（|)来求memsize的大小。</p>
+<p>为啥是或？因为是从外设拿的硬件地址。</p>
+<h2 id="刚开始分配内存的函数"><a href="#刚开始分配内存的函数" class="headerlink" title="刚开始分配内存的函数"></a>刚开始分配内存的函数</h2><p>在没有页式内存管理机制时，操作系统也需要建立一些数据结构来管理内存，这就会涉及<br>到内存空间的分配。alloc 函数的功能就是用于分配内存空间（在建立页式内存管理机制之前使<br>用.</p>
+<p>allocation的实现很复杂，先不管细节，先看它在干什么。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">这段代码的作用是分配 n 字节的空间并返回初始的虚拟地址，同时将地址按 align 字节对</span><br><span class="line">齐（保证 align 可以整除初始虚拟地址），若 clear 为真，则将对应内存空间的值清零，否则不</span><br><span class="line">清零。</span><br></pre></td></tr></table></figure>
+<p>注意了！！返回初始的虚拟地址，从这里开始就用虚拟地址了。也就是说，用allocation刚开始分配的地址，本身就都是虚拟地址。</p>
+<h2 id="关于物理和虚拟"><a href="#关于物理和虚拟" class="headerlink" title="关于物理和虚拟"></a>关于物理和虚拟</h2><p>开机初始化的时候，什么都没有，没有建立起内存管理机制（内存管理机制是需要c语言代码手动实现的）我们需要先对物理进行操作。</p>
+<p>物理内存是我们真正可用的内存。</p>
+<p>开机的时候先探明所有的可用的物理地址。这些物理地址，为了方便管理，是当做一个一个页来管理的。</p>
+<p>这些连续的物理地址，我们按照固定大小，分成一个一个页框，然后就计算出了物理页的总数。</p>
+<p>物理页面从来没有被真正“调度”过，它就是紧密的按照顺序在物理地址上排列。</p>
+<p>然后就是另一个函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">mips_vm_init</span><span class="params">()</span> &#123;</span><br><span class="line">	<span class="comment">/* Allocate proper size of physical memory for global array `pages`,</span></span><br><span class="line"><span class="comment">	 * for physical memory management. Then, map virtual address `UPAGES` to</span></span><br><span class="line"><span class="comment">	 * physical address `pages` allocated before. For consideration of alignment,</span></span><br><span class="line"><span class="comment">	 * you should round up the memory size before map. */</span></span><br><span class="line">	pages = (<span class="keyword">struct</span> Page *)alloc(npage * <span class="keyword">sizeof</span>(<span class="keyword">struct</span> Page), BY2PG, <span class="number">1</span>);</span><br><span class="line">	分配了页管理结构体的空间，npage指的是数目，<span class="keyword">sizeof</span>算大小，BY2pg是align算冲齐，然后<span class="number">1</span>是clear位，代表清空。</span><br><span class="line">	printk(<span class="string">&quot;to memory %x for struct Pages.\n&quot;</span>, freemem);</span><br><span class="line">    注意，在alloc函数里面已经实现了全局变量freemem的变化，所以直接输出就是正确的。</span><br><span class="line">	printk(<span class="string">&quot;pmap.c:\t mips vm init success\n&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>事实上，这个才是理论的灵魂函数。</p>
+<p>我们上面说过，alloc返回的是虚拟地址，所以就是说，pages是虚拟地址，它分配在虚拟地址上，开了size那么大的虚拟空间但是<strong>它不是页</strong>！！它只是管理页的结构体！开的大小也不是页的大小。而是页管理结构体的大小。</p>
+<h1 id="真正的灵魂"><a href="#真正的灵魂" class="headerlink" title="真正的灵魂"></a>真正的灵魂</h1><p><strong>接下来这一段话重要到爆炸</strong><br>MOS 中维护了 npage 个页控制块，也就是 Page 结构体。每一个页控制块对应一页的物理内存，<strong>注意这个结构体所在的物理内存并不是它所管理的物理内存</strong>，MOS 是用这个结构体来按页管理物理内存的分配。 <strong>npage 个 Page 和 npage 个物理页面一一顺序对应</strong>，具体来说，<strong>npage 个 Page的起始地址为 pages，则 pages[i] 对应从 0 开始计数的第 i 个物理页面</strong>。两者的转换可以使用 include&#x2F;pmap.h 中的 page2pa 和 pa2page 这两个函数。</p>
+<p>###一些内联代码</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="keyword">inline</span> u_long <span class="title function_">page2ppn</span><span class="params">(<span class="keyword">struct</span> Page *pp)</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> pp - pages;</span><br><span class="line">&#125;</span><br><span class="line">返回的是当前存的页结构体和pages初始地址的差。由于一一对应，所以其实就是物理的页号</span><br><span class="line"><span class="type">static</span> <span class="keyword">inline</span> u_long <span class="title function_">page2pa</span><span class="params">(<span class="keyword">struct</span> Page *pp)</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> page2ppn(pp) &lt;&lt; PGSHIFT;</span><br><span class="line">&#125;</span><br><span class="line">注意物理页号是从<span class="number">0</span>开始的，物理页是严格对从<span class="number">0</span>开始的物理地址一片片分成的，所以物理页号&lt;&lt;大小，就是物理地址。</span><br><span class="line">PPN是物理页号的意思。</span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="keyword">inline</span> <span class="keyword">struct</span> Page *<span class="title function_">pa2page</span><span class="params">(u_long pa)</span> &#123;</span><br><span class="line">	<span class="keyword">if</span> (PPN(pa) &gt;= npage) &#123;</span><br><span class="line">		panic(<span class="string">&quot;pa2page called with invalid pa: %x&quot;</span>, pa);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">return</span> &amp;pages[PPN(pa)];</span><br><span class="line">&#125;</span><br><span class="line">返回物理地址所在的页，对应的，页管理模块，的地址。</span><br><span class="line"></span><br><span class="line"><span class="type">static</span> <span class="keyword">inline</span> u_long <span class="title function_">page2kva</span><span class="params">(<span class="keyword">struct</span> Page *pp)</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> KADDR(page2pa(pp));</span><br><span class="line">&#125;</span><br><span class="line">根据页面管理模块的地址来计算页面的物理地址，然后转化成虚拟地址。</span><br></pre></td></tr></table></figure>
+<p>为什么会用到page2kva这种转虚拟的？</p>
+<p>这些页难道说不是物理地址吗？</p>
+<p>但是实际上会用memset来清空，memset使用的地址却是虚拟地址。</p>
+<p>除了页面管理剩下的似乎（尤其是原本c自带的宏）都是用的虚拟地址。所以一定要记得切换。</p>
+<p>注意，针对这个链表的操作，都是放到表头，然后取也是从表头取。</p>
+<h2 id="链表函数"><a href="#链表函数" class="headerlink" title="链表函数"></a>链表函数</h2><p>向前插入函数</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> LIST_INSERT_BEFORE(listelm, elm, field)                                                    \</span></span><br><span class="line"><span class="meta">	do &#123;                                </span></span><br><span class="line">		好习惯，elm全程带括号                                                       \</span><br><span class="line">		(elm)-&gt;field.le_prev = (listelm)-&gt;field.le_prev;     </span><br><span class="line">		先让插进来的元素的pre变成前一个元素的                              \</span><br><span class="line">		LIST_NEXT((elm), field) = (listelm);     </span><br><span class="line">		然后elm的next指针指向被插的</span><br><span class="line">		注意这个宏是直接相当于一个返回，elm的下一个就是当前这个                                          \</span><br><span class="line">		*(listelm)-&gt;field.le_prev = (elm);          </span><br><span class="line">		注意要取*，因为是有一个二层指针。         </span><br><span class="line">		这个取出来是个啥取出来的是 ？</span><br><span class="line">		</span><br><span class="line">		非常的神奇！记住这个prev存的地址是前一个节点的next的地址，然后修改这个就是让<span class="built_in">list</span>前面那个节点的next变成elm。（注意，elm本身也是一个地址！）                              \</span><br><span class="line">		(listelm)-&gt;field.le_prev = &amp;LIST_NEXT((elm), field);    </span><br><span class="line">		因为现在elm已经是listelm的前一个节点了，所以<span class="built_in">list</span>的pre必须指向elm的的next的地址。</span><br><span class="line">		问，这里为啥有两个操作？而且东西还不一样？                           \</span><br><span class="line">	&#125; <span class="keyword">while</span> (<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+<p>• LIST_INSERT_AFTER(listelm, elm, field)，将 elm 插到已有元素 listelm 之后。<br>• LIST_INSERT_BEFORE(listelm, elm, field)，将 elm 插到已有元素 listelm 之前。</p>
+<p>然后elm是结构体要新插入的，listelm是基准的项，然后field是个啥？</p>
+<p>在这些宏定义中，field只是一个代称，代表：elm 结构体需要包含一个名为 field 的字段，类型是一个链表项 LIST_ENTRY(type)</p>
+<p>注意，单纯的插入在前和插入在后 是不一样的。因为始终都是list在list里面，而elm不在，所以list的几个元素都有意义，elm没有</p>
+<p>然后给出这个代码</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> LIST_INSERT_AFTER(listelm, elm, field)      \</span></span><br><span class="line"><span class="meta">    do &#123;                    \</span></span><br><span class="line"><span class="meta">		LIST_NEXT((elm),field)=LIST_NEXT((listelm),field);\</span></span><br><span class="line"><span class="meta">		<span class="keyword">if</span>(LIST_NEXT((listelm),field)!=NULL)\</span></span><br><span class="line"><span class="meta">		(LIST_NEXT((listelm),field))-&gt;field.le_prev=&amp;LIST_NEXT((elm),field);                 \</span></span><br><span class="line"><span class="meta">		LIST_NEXT((listelm),field)=(elm);\</span></span><br><span class="line"><span class="meta">		(elm)-&gt;field.le_prev=&amp;LIST_NEXT( (listelm),field);\</span></span><br><span class="line"><span class="meta">	&#125; while (0)</span></span><br></pre></td></tr></table></figure>
+<p>注意，插入后面完全不一样的一个点就是，后面可能没有了。所以要加一个特判。</p>
+<p>假如不是0，再把后面那个东西赋值就行了。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> LIST_ENTRY(type)                                                                           \</span></span><br><span class="line"><span class="meta">	struct &#123;                                                                                   \</span></span><br><span class="line"><span class="meta">		struct type *le_next;  <span class="comment">/* next element */</span>                                          \</span></span><br><span class="line"><span class="meta">		struct type **le_prev; <span class="comment">/* address of previous next element */</span>                      \</span></span><br><span class="line"><span class="meta">	&#125;</span></span><br><span class="line">就是这个东西</span><br></pre></td></tr></table></figure>
+<p>在宏定义的()里面代表的是要替换的参数也就是说这个list_entry就代表一个节点，一个结构体，里面有指向type的指针le_next 这个指的是下一个struct type，没毛病，但是下一个翻译过来是：</p>
+<p>前一个元素的下一个元素的地址？</p>
+<p>也就是说这个指针，它是一个指向指针的指针，它指的这个指针是前一个节点的next指针的位置。</p>
+<p>在理解这个函数前，需要先理解这个</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> LIST_NEXT(elm, field) ((elm)-&gt;field.le_next)</span></span><br></pre></td></tr></table></figure>
+<p>这个宏取的是elm的field域的下一个。</p>
+<h1 id="page维护"><a href="#page维护" class="headerlink" title="page维护"></a>page维护</h1><p><strong>MOS 中的内存管理使用页式内存管理，采用链表法管理空闲物理页框。</strong></p>
+<p>MOS 中维护了 npage 个页控制块，也就是 Page 结构体。每一个页控制块对应一页的物理内存，注意这个结构体所在的物理内存并不是它所管理的物理内存，</p>
+<p>MOS 是用这个结构体来按页管理物理内存的分配。</p>
+<p>注意，在物理地址中页是按照数组紧密顺序排列的，所以要设计<br>Page * page;</p>
+<p>但是管理<strong>空闲</strong>页的时候确实是按照链表存页的指针来的。</p>
+<p>然后 ，memsize是整体所有的空间，它划分了不论是否使用的页数npage，freemem后面的数据都是空闲的，所以freemem实际上是已经使用了页的大小。</p>
+<p>关于page相关数据的定义是这样的。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">LIST_HEAD(Page_list, Page);</span><br><span class="line"><span class="keyword">typedef</span> <span class="title function_">LIST_ENTRY</span><span class="params">(Page)</span> Page_LIST_entry_t;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Page</span> &#123;</span></span><br><span class="line">	Page_LIST_entry_t pp_link; <span class="comment">/* free list link */</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">// Ref is the count of pointers (usually in page table entries)</span></span><br><span class="line">	<span class="comment">// to this page.  This only holds for pages allocated using</span></span><br><span class="line">	<span class="comment">// page_alloc.  Pages allocated at boot time using pmap.c&#x27;s &quot;alloc&quot;</span></span><br><span class="line">	<span class="comment">// do not have valid reference count fields.</span></span><br><span class="line"></span><br><span class="line">	u_short pp_ref;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">extern</span> <span class="class"><span class="keyword">struct</span> <span class="title">Page</span> *<span class="title">pages</span>;</span></span><br><span class="line"><span class="keyword">extern</span> <span class="class"><span class="keyword">struct</span> <span class="title">Page_list</span> <span class="title">page_free_list</span>;</span></span><br></pre></td></tr></table></figure>
+<p> 结构层次是这样的:<br> 一个页作为结构体，然后记录页的使用次数ref，然后是页链表入口pplink</p>
+<p> 然后pplink又是啥？在上面定义了，这个是listEntry（page）</p>
+<p> listEntry的宏定义又是啥？listEntry可以理解为一个访问入口 ，就是存储了page节点的指针。</p>
+<p> page-struct(**&amp;*)<br> listHead是个啥东西 ？它是一个声明结构体的宏。</p>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LIST_HEAD(Page_list, Page);</span><br></pre></td></tr></table></figure>
+<p> 实际就是：<br> <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">                                                                 \</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Page_list</span> &#123;</span>                                                                              \</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">Page</span> *<span class="title">lh_first</span>;</span> <span class="comment">/* first element */</span>                                         \</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><br> 声明了一个叫做PageList的结构体 。。以后就能直接 struct Pagelist a&#x3D;..来定义了。</p>
+<p> 然后这个定义的新的pagelist，显然满足head的条件，所以可以当做head使用。</p>
+<h2 id="page-init"><a href="#page-init" class="headerlink" title="page_init()"></a>page_init()</h2><p>，在启动过程中提到过，它实现了以下三个功能：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1. 首先利用链表相关宏初始化 page_free_list。</span><br><span class="line">2. 将已使用的空间进行页对齐。</span><br><span class="line">3. 接着将 mips_vm_init() 中用到的空间对应的物理页面的页控制块的引用次数全部</span><br><span class="line">标为 1。</span><br><span class="line">4. 最后将剩下的物理页面的引用次数全部标为 0，并将它们对应的页控制块插入到</span><br><span class="line">page_free_list。</span><br></pre></td></tr></table></figure>
+<p>那些head什么的定义是什么？首先在head宏里面定义了这个东西。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> LIST_HEAD(name, type)                                                                      \</span></span><br><span class="line"><span class="meta">	struct name &#123;                                                                              \</span></span><br><span class="line"><span class="meta">		struct type *lh_first; <span class="comment">/* first element */</span>                                         \</span></span><br><span class="line"><span class="meta">	&#125;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> LIST_EMPTY(head) ((head)-&gt;lh_first == NULL)</span></span><br><span class="line"></span><br><span class="line">注意用法，head的-&gt;lh_first也就是说这个首先要是一个带lh_first</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Return the first element in the list named &quot;head&quot;.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LIST_FIRST(head) ((head)-&gt;lh_first)</span></span><br><span class="line">这个是关键的链表第一个元素的宏，这个第一个指的是链表头第一个的，但是所有插入都是插入 到链表头的 。</span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Iterate over the elements in the list named &quot;head&quot;.</span></span><br><span class="line"><span class="comment"> * During the loop, assign the list elements to the variable &quot;var&quot;</span></span><br><span class="line"><span class="comment"> * and use the LIST_ENTRY structure member &quot;field&quot; as the link field.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LIST_FOREACH(var, head, field)                                                             \</span></span><br><span class="line"><span class="meta">	for ((var) = LIST_FIRST((head)); (var); (var) = LIST_NEXT((var), field))</span></span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Reset the list named &quot;head&quot; to the empty list.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> LIST_INIT(head)                                                                            \</span></span><br><span class="line"><span class="meta">	do &#123;                                                                                       \</span></span><br><span class="line"><span class="meta">		LIST_FIRST((head)) = NULL;                                                         \</span></span><br><span class="line"><span class="meta">	&#125; while (0)</span></span><br></pre></td></tr></table></figure>
+<p>但是LIST_INIT(page_free_list);为啥不行？因为你看这个用的是head是指针，你直接传进来一个结构体本身是不合适的。</p>
+<p>但是开好的空间不能浪费，所以：<br>LIST_INIT(&amp;page_free_list);为了防止宏出事最好多加括号（。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span> LIST_INSERT_HEAD(head, elm, field)                                                         \</span></span><br><span class="line"><span class="meta">	do &#123;                                                                                       \</span></span><br><span class="line"><span class="meta">		<span class="keyword">if</span> ((LIST_NEXT((elm), field) = LIST_FIRST((head))) != NULL)                        \</span></span><br><span class="line"><span class="meta">			LIST_FIRST((head))-&gt;field.le_prev = &amp;LIST_NEXT((elm), field);              \</span></span><br><span class="line"><span class="meta">		LIST_FIRST((head)) = (elm);                                                        \</span></span><br><span class="line"><span class="meta">		(elm)-&gt;field.le_prev = &amp;LIST_FIRST((head));                                        \</span></span><br><span class="line"><span class="meta">	&#125; while (0)</span></span><br></pre></td></tr></table></figure>
+<p>这个的作用是插入，给定一个头，然后把元素插到头节点后面。记得给这个head加上括号。然后pagefree是个结构体，需要加上地址。</p>
+<p>那么新插入的情况下elm是什么，field又是什么呢？<br>分析知道，elm是一个指针，然后它指的地方有个field是结构体，它这个结构体有一个属性就是那几个指针。<br>lsitEntry定义的结构体（注意，宏只是给了一个定义方式，真建还是要取一个真名字）符合这样的要求，可以作为那个filed，然后 传进来的type就是page了。</p>
+<p>那elm呢？elm是个指针，它指向的地址有Entry这个东西。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Page</span> &#123;</span></span><br><span class="line">	Page_LIST_entry_t pp_link; <span class="comment">/* free list link */</span>页控制块。</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Ref is the count of pointers (usually in page table entries)</span></span><br><span class="line">	<span class="comment">// to this page.  This only holds for pages allocated using</span></span><br><span class="line">	<span class="comment">// page_alloc.  Pages allocated at boot time using pmap.c&#x27;s &quot;alloc&quot;</span></span><br><span class="line">	<span class="comment">// do not have valid reference count fields.</span></span><br><span class="line"></span><br><span class="line">	u_short pp_ref;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>就是说elm应该是 Page的指针 。所以域也就是page的域pp_link.</p>
+<p>整完之后</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">page_init</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">	<span class="comment">/* Step 1: Initialize page_free_list. */</span></span><br><span class="line">	<span class="comment">/* Hint: Use macro `LIST_INIT` defined in include/queue.h. */</span></span><br><span class="line">	<span class="comment">/* Exercise 2.3: Your code here. (1/4) */</span></span><br><span class="line">		LIST_INIT((&amp;page_free_list));</span><br><span class="line">	<span class="comment">/* Step 2: Align `freemem` up to multiple of BY2PG. */</span></span><br><span class="line">	<span class="comment">/* Exercise 2.3: Your code here. (2/4) */</span></span><br><span class="line">		freemem=ROUND(freemem,BY2PG);</span><br><span class="line">	<span class="comment">/* Step 3: Mark all memory below `freemem` as used (set `pp_ref` to 1) */</span></span><br><span class="line">	<span class="comment">/* Exercise 2.3: Your code here. (3/4) */</span></span><br><span class="line">		<span class="type">int</span> size =PADDR(freemem)/BY2PG;</span><br><span class="line">		<span class="type">int</span> i;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">size_t</span> i = <span class="number">0</span>; i &lt; size; i++)</span><br><span class="line">		&#123;</span><br><span class="line">			pages[i].pp_ref=<span class="number">1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">	<span class="comment">/* Step 4: Mark the other memory as free. */</span></span><br><span class="line">	<span class="comment">/* Exercise 2.3: Your code here. (4/4) */</span></span><br><span class="line">		<span class="keyword">for</span> ( ; i &lt; npage; i++)</span><br><span class="line">		&#123;</span><br><span class="line">			LIST_INSERT_HEAD((&amp;page_free_list),(pages+i),pp_link);</span><br><span class="line">		&#125;</span><br><span class="line">		</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="page-alloc"><a href="#page-alloc" class="headerlink" title="page_alloc"></a>page_alloc</h2><p>分配页空间的函数,(struct Page **new)，这个是指定的要放的地方。</p>
+<p>假设不空的话，返回值是多少？</p>
+<p>要求： 如果空闲链表没有可用页了，返回异常返回值。</p>
+<p>查看error.h的定义</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Unspecified or unknown problem</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> E_UNSPECIFIED 1</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Environment doesn&#x27;t exist or otherwise cannot be used in requested action</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> E_BAD_ENV 2</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Invalid parameter</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> E_INVAL 3</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Request failed due to memory shortage</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> E_NO_MEM 4</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Invalid syscall number</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> E_NO_SYS 5</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Attempt to create a new environment beyond the maximum allowed</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> E_NO_FREE_ENV 6</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Attempt to send to env that is not recving.</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> E_IPC_NOT_RECV 7</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// File system error codes -- only seen in user-level</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// No free space left on disk</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> E_NO_DISK 8</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Too many files are open</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> E_MAX_OPEN 9</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// File or block not found</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> E_NOT_FOUND 10</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// Bad path</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> E_BAD_PATH 11</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// File already exists</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> E_FILE_EXISTS 12</span></span><br><span class="line"></span><br><span class="line"><span class="comment">// File not a valid executable</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> E_NOT_EXEC 13</span></span><br></pre></td></tr></table></figure>
+<p>发现是4<br>但是有一个问题，mmu里面include了error，但是p里面只include了mmu，可以吗？</p>
+<p>搜索实现发现，后面有很多assert</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">assert(page_alloc(&amp;pp) == -E_NO_MEM);</span><br></pre></td></tr></table></figure>
+<p>所以需要返回-的异常代码。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span></span><br><span class="line"><span class="title function_">page_free</span><span class="params">(<span class="keyword">struct</span> Page *pp)</span></span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">/* Step 1: If there&#x27;s still virtual address refers to this page, do nothing. */</span></span><br><span class="line">    <span class="keyword">if</span>(pp -&gt; pp_ref &gt; <span class="number">0</span>) <span class="keyword">return</span> ;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">/* Step 2: If the `pp_ref` reaches to 0, mark this page as free and return. */</span></span><br><span class="line">    <span class="keyword">if</span>(pp -&gt; pp_ref == <span class="number">0</span>) &#123; </span><br><span class="line">        LIST_INSERT_HEAD((&amp;page_free_list), (pp), pp_link);</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/* If the value of `pp_ref` less than 0, some error must occurred before,</span></span><br><span class="line"><span class="comment">     * so PANIC !!! */</span></span><br><span class="line">    panic(<span class="string">&quot;cgh:pp-&gt;pp_ref is less than zero\n&quot;</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个free函数不是强制解散的，一定要判断是不是0，否则会强制散射数据。</p>
+<h2 id="alloc"><a href="#alloc" class="headerlink" title="alloc"></a>alloc</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">page_alloc</span><span class="params">(<span class="keyword">struct</span> Page **new)</span> &#123; </span><br><span class="line">	<span class="comment">/* Step 1: Get a page from free memory. If fails, return the error code.*/</span></span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">Page</span> *<span class="title">pp</span>;</span></span><br><span class="line">	设置一个页管理模块指针</span><br><span class="line">	<span class="comment">/* Exercise 2.4: Your code here. (1/2) */</span></span><br><span class="line">	<span class="keyword">if</span>( LIST_EMPTY((&amp;page_free_list)) )&#123;</span><br><span class="line">	<span class="keyword">return</span> -E_NO_MEM ;</span><br><span class="line">	&#125;</span><br><span class="line">	pp=LIST_FIRST((&amp;page_free_list));</span><br><span class="line">	LIST_REMOVE(pp, pp_link);	</span><br><span class="line">	<span class="comment">/* Step 2: Initialize this page with zero.</span></span><br><span class="line"><span class="comment">	 * Hint: use `memset`. */</span></span><br><span class="line">	<span class="comment">/* Exercise 2.4: Your code here. (2/2) */</span></span><br><span class="line">	<span class="built_in">memset</span>((<span class="type">void</span>*)page2kva(pp),<span class="number">0</span>,BY2PG);</span><br><span class="line">	对页管理模块所管的物理页的虚拟地址清空。</span><br><span class="line">	*new = pp;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>另一个关键的函数。它是要得到一个一个页管理模块的地址。这个地址是虚拟地址。</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">farewell</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://brilliant-daffodil-eb4c4f.netlify.app/2023/03/18/%E5%86%85%E6%A0%B8%20%E5%AD%98%E5%82%A8/">https://brilliant-daffodil-eb4c4f.netlify.app/2023/03/18/%E5%86%85%E6%A0%B8%20%E5%AD%98%E5%82%A8/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">farewell</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/BUAA-OS/">
+                                    <span class="chip bg-color">BUAA_OS</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2023/03/18/%E9%A1%B5%E8%A1%A8%E7%AE%A1%E7%90%86/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="页式内存管理系统">
+                        
+                        <span class="card-title">页式内存管理系统</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-03-18
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            farewell
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/BUAA-OS/">
+                        <span class="chip bg-color">BUAA_OS</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/03/18/vscode&wsl%E9%85%8D%E7%BD%AElinux%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="wsl配置linux开发环境">
+                        
+                        <span class="card-title">wsl配置linux开发环境</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-18
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            farewell
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/BUAA-OS/">
+                        <span class="chip bg-color">BUAA_OS</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+    <div class="container row center-align" style="margin-bottom: 15px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2022-2023</span>
+            
+            <span id="year">2022</span>
+            <a href="/about" target="_blank">farewell</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <span id="sitetime">载入运行时间...</span>
+            <script>
+                function siteTime() {
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var startYear = "2022";
+                    var startMonth = "10";
+                    var startDate = "3";
+                    var startHour = "0";
+                    var startMinute = "0";
+                    var startSecond = "0";
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth() + 1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                    var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                    var diff = t2 - t1;
+                    var diffYears = Math.floor(diff / years);
+                    var diffDays = Math.floor((diff / days) - diffYears * 365);
+                    var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+                    var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) /
+                        minutes);
+                    var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours -
+                        diffMinutes * minutes) / seconds);
+                    if (startYear == todayYear) {
+                        document.getElementById("year").innerHTML = todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已安全运行 " + diffDays + " 天 " + diffHours +
+                            " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    } else {
+                        document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已安全运行 " + diffYears + " 年 " + diffDays +
+                            " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    }
+                }
+                setInterval(siteTime, 1000);
+            </script>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/farewell-exiles" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:1284272565@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1284272565" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 1284272565" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+	
+    
+    <script type="text/javascript" color="0,0,255"
+        pointColor="0,0,255" opacity='0.7'
+        zIndex="-1" count="99"
+        src="/libs/background/canvas-nest.js"></script>
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

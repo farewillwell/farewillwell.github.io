@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="讨论区第三次发帖, farewell&#39;s blog">
+    <meta name="keywords" content="关于Makefile使用, farewell&#39;s blog">
     <meta name="description" content="你到过许多地方，用你自己的故事记认许多城邦后，你终于抵达此城">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>讨论区第三次发帖 | farewell&#39;s blog</title>
+    <title>关于Makefile使用 | farewell&#39;s blog</title>
     <link rel="icon" type="image/png" href="/medias/logo.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -354,12 +354,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/7.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">讨论区第三次发帖</h1>
+                    <h1 class="description center-align post-title">关于Makefile使用</h1>
                 </div>
             </div>
         </div>
@@ -475,8 +475,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/BUAA-OO/">
-                                <span class="chip bg-color">BUAA_OO</span>
+                            <a href="/tags/BUAA-OS/">
+                                <span class="chip bg-color">BUAA_OS</span>
                             </a>
                         
                     </div>
@@ -491,7 +491,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2023-03-15
+                    2023-03-18
                 </div>
                 
 
@@ -512,44 +512,43 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="poly架构在week3"><a href="#poly架构在week3" class="headerlink" title="poly架构在week3"></a>poly架构在week3</h1><h2 id="任务划分"><a href="#任务划分" class="headerlink" title="任务划分"></a>任务划分</h2><p>如果不考虑三角大额度优化的话还是几乎不用重构，添几个方法就行了，<br>上次笔者摆了就优化了个合并，拿了好几个80</p>
-<p>根据上次的功能，化为三个阶段：实现求导功能，实现自定义函数求导功能，实现函数嵌套定义功能，这里建议按照上述顺序分层次测试实施。</p>
-<h2 id="求导功能"><a href="#求导功能" class="headerlink" title="求导功能"></a>求导功能</h2><p>poly这个架构还是很适合求导的。</p>
-<p>试想我们在人手求导一个表达式的时候，一般都是希望这个表达式就是纯纯的多项式，然后拿它的每一个单项式分别开刀，最后把所有的单项式所搞得导数都加起来。</p>
-<p>在这样的实现中，poly是统一入手点，我们把所有需要求导的东西都叫做poly，从外面访问求导功能的时候，不管它严格的定义上是一个幂函数，一个常数，一个三角函数，一个mono，还是确实的一个poly，我们都从poly这个外在的包装访问。当然，具体内部的实现还是要每一种分别设定求导方式，不过我们统一返回一个将结果包装好的poly就好了。</p>
-<p>用poly的方法访问，内部实现各种百花齐放，然后返回一个poly作为包装。</p>
-<p>针对求导功能设置一个新的因子，Derivative，这个因子在lexer读取的时候是类似sin一样，一旦确定是这个dx的情况后，立刻使用括号栈扫描后面的字符串，将dx所管辖的字符串范围读出来。然后传进该字符串作为构造参数，把它变成一个poly （把一个字符串转换成poly是我们一直在做的事情，具体操作类似sin的处理，也可以类似第一次作业程序在main里的入口，区别是main是处理input，dx仅仅是处理字符串，但是本质都是一样的）</p>
-<p>所有在建立语法结构的时候，我们对每一个读到的语法单元进行递归下降的读取，然后等它深层的子语法单元都建好之后，在“归”的过程中加到上层的语法结构里面。所以在使用构造函数建好dx()<br>仅仅是建好，还没求导呢<br>已经递归的得到了dx()括号里的字符串先转成语法结构然后转成的多项式，然后这个多项式就作为dx()的的属性存在里面。</p>
-<p>作为因子，首先应该实现factor接口，factor接口需要实现方法toPoly()</p>
-<p>Derivative应当存这样的几个属性，对谁求导的para，需要被求导的多项式poly。存这样的方法：构造函数，toPoly方法</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public class Derivative implements Factor &#123;</span><br><span class="line"></span><br><span class="line">    private Poly poly;</span><br><span class="line"></span><br><span class="line">    private char parameter;</span><br><span class="line">    public Derivative(String string)</span><br><span class="line">    &#123;</span><br><span class="line">        //按字符串构造</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Poly toPoly() &#123;</span><br><span class="line"></span><br><span class="line">        //它存的poly对它的parameter求导的结果用poly包装</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>如何实现具体的求导<br>dx(cos(cos(cos(cos(cos(x))))))&#x3D;−sin(x)sin(cos(x))sin(cos(cos(x)))sin(cos(cos(cos(x))))sin(cos(cos(cos(cos(x)))))先粘一组数据:三角嵌套，正负号</p>
-<p>进入求导流程：对Derivative这个因子进行toPoly()</p>
-<p>在toPoly的过程中，是对Derivative的poly进行求导，调用这个poly的求导方法</p>
-<p>poly的求导方法：针对每一个mono调用求导方法，然后把mono的求导方法返回的poly相加</p>
-<h3 id="mono的求导方法"><a href="#mono的求导方法" class="headerlink" title="mono的求导方法"></a>mono的求导方法</h3><p>经过第二次作业，我们的mono升级为k<em>x^xp</em> y ^yp* z^zp* &lt;三角函数们&gt;</p>
-<p>可以把前面的看成一个函数，然后把后面的三角函数分别看成一个函数。</p>
-<p>然后mono就是这些函数相乘，直接用课程组的求导公式就行了 （这里建议把前面的xyz部分单独求导之后带上后面的，然后再对每个三角函数遍历求导）</p>
-<p>三角函数求导：如何解决里面的符号问题？一般来讲sin成cos没问题，但是cos变成-sin的符号怎么体现？</p>
-<p>一个思路是，不添加任何符号（当然也可以添加一个属性），由于求导只有一次，所以可以把这个符号移进去，让三角里面的poly乘个-1（深浅拷贝？乘的这个-1乘在哪里了？会不会出现多个三角函数的poly指的都是一个？这个看各自的具体实现，总之建议能新建的一定要新建，尽量减少原地）</p>
-<p>尤其注意：小心这里面的深浅拷贝问题，在循环mono的每一个三角函数的时候返回的poly里面的mono建议新建，三角函数其实无所谓）</p>
-<h2 id="自定义函数求导功能"><a href="#自定义函数求导功能" class="headerlink" title="自定义函数求导功能"></a>自定义函数求导功能</h2><p>设定的求导方式不是太适合直接函数替换，也许是希望我们用factor对函数建类？这里采取一个不讲性能的很笨拙的方法。<br>最后一次了，懒得新开了，直接用现有的工具将就一下，除了跑的慢点剩下都能看</p>
-<p>自定义函数里面带d，这个是什么意思？其实它的意思是</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f(x)=k(x)&#x27;</span><br></pre></td></tr></table></figure>
-<p>也就是说想知道f(x)是怎么回事，只需要对k(x)求导就可以了。</p>
-<p>我们需要在带入前就把k(x)’求出来，不然先代换的话会牵连到参数的求导。所以为了防止没求导的时候被调用，需要在建造这个函数的时候就解决掉导数问题。</p>
-<p>k(x)理论上也是一个表达式啊。</p>
-<p>我们前面实现了什么？ 1.将一个不带求导的函数表达式替换到待化简表达式里（注意：函数的定义式也是一个表达式，可以用等号分开两个部分，右边的就是一个表达式），让这个待化简表达式没自定义函数符号</p>
-<p>2.将一个不带函数的表达式变成poly化简，然后这个poly再变成字符串输出（它进来的时候是字符串，出来的时候也是字符串）</p>
-<p>3.对一个poly进行求导化简，变成另一个简化的poly</p>
-<p>是字符串形式的表达式，我们就可以通过新建的一个专门为它准备的lexer和parser来解析。</p>
-<p>所以可以这样做：</p>
-<p>假如是在函数定义式里出现的d，那么这个函数的定义式就不直接按照字符串存，就先按照表达式理解，先转成poly，然后用poly求导，然后导完了化成string，就是没d的东西，然后把函数定义的字符串按照这个存起来就好了。</p>
-<h2 id="函数嵌套定义"><a href="#函数嵌套定义" class="headerlink" title="函数嵌套定义"></a>函数嵌套定义</h2><p>观察要求，可以看到对自定义的函数变成了现在的样子</p>
-<p>函数表达式与上次作业不同，允许调用其他已定义的自定义函数（保证不会出现递归调用的情况），下面是几个不合法的例子。<br>函数定义时f(x,y) &#x3D; f(x,2)+y+1,出现递归调用，不合法。<br>函数定义时f(x,y) &#x3D; g(x,y)+y,g(x,y)&#x3D;f(x,y)+y,f先定义,g后定义,f在定义时调用了未定义的函数g，不合法。<br>也就是说，这次的函数定义，可以是先给出一个纯粹的函数，然后再定义一些带它的表达式，也可以是都是纯粹的函数，但是至少可以确定的是，一定是先定义了再在其他地方出现</p>
-<p>所以可以逐个读入函数模式，第一个肯定是不带其他函数的，然后看第二个有没有，第二个要是没有的话也像第一个一样存起来，但是第二个要是有的话，就先按照第二次作业处理待化简字符串一样，把第一个函数带进去，变成没有第一个函数标识符的字符串，再存进去。</p>
-<p>其实也可以理解要化简的表达式是第四个函数u(x)，从第二个到后面的其实都一样。</p>
-<p>何立群<br>2023-03-08 22:14:51<br>补充，在解决cos求导的符号时候，由于用poly套上mono封装，所以可以在mono上直接加系数为-1修正，不用把里面的poly乘-1了</p>
+                <h1 id="Makefile是什么"><a href="#Makefile是什么" class="headerlink" title="Makefile是什么"></a>Makefile是什么</h1><p>GNU 项目中有一个叫做“make”的工具，是最常用的 C 语言项目构建工具。我们都知道，“make”是制作的意思，而 make 构建工具的作用本质上就是“制作出一个文件”。当我们开发了一个较大的项目，make 工具就可以将这些文件编译链接成可执行文件。当然 make 工具进行编译和链接的操作是需要人工指导的，这个“指导文件”就是 Makefile。make 工具可以根据时间戳自动判断项目的哪些部分是需要重新编译的，每次只重新编译必要的部分。make 工具是基于 Shell 命令运行的，所以只要项目的编译器可以通过 Shell 命令调用，make 都可以对项目进行构建。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">不使用 make 工具，我们可以使用下面的命令来对 hello.c 进行编译：</span><br><span class="line"></span><br><span class="line">$ gcc -o hello hello.c</span><br></pre></td></tr></table></figure>
+
+<p>然后</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">如果使用 make 工具来构建，我们就需要在当前目录下创建并编辑 Makefile 文件（文件名就叫做 Makefile）。Makefile 的基本格式如下。</span><br><span class="line"></span><br><span class="line">target（目标文件叫什么）: dependencies（所依赖的东西）</span><br><span class="line">然后是分别需要进行的命令</span><br><span class="line">    command 1</span><br><span class="line">    command 2</span><br><span class="line">    ...</span><br><span class="line">    command n</span><br><span class="line"></span><br><span class="line">其中，target 是我们构建（Build）的目标，可以是真的目标文件、可执行文件，也可以是一个标签（详见参考教程）。而 dependencies 是构建该目标所需的其它文件或其他目标。之后是构建出该目标所需执行的命令。有一点尤为需要注意：每一个命令（command）之前必须有一个制表符（tab）。这里必须使用制表符而不能是空格，否则 make 会报错。</span><br><span class="line"></span><br><span class="line">这些命令，就是要做的命令行 </span><br><span class="line"></span><br><span class="line">我们通过在 Makefile 中书写这些显式规则来告诉 make 工具文件间的依赖关系：如果想要构建 target，那么首先要准备好 dependencies，接着执行 command 中的命令，以得到 target。在书写完恰当的规则之后，只需要在 shell 中输入 make target（target 是目标名），即可执行相应的命令、生成相应的目标。</span><br><span class="line"></span><br><span class="line">这里target会作为命令函参数自动识别</span><br><span class="line"></span><br><span class="line">因此，我们的简易的 Makefile 可以写成如下的样子，之后执行 make hello 或是 make，即可产生 hello 这个可执行文件，使用 ./hello 就可以执行它。值得注意的是，当执行 make 指令而不附加其他参数时，默认构建第一个目标。</span><br></pre></td></tr></table></figure>
+<p><strong>这个可执行文件就不是.exe了</strong>事实上windows里的文件才是.exe<br>其中是这样的</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">all: hello</span><br><span class="line"></span><br><span class="line">hello: hello.c</span><br><span class="line">    gcc -o hello hello.c</span><br></pre></td></tr></table></figure>
+
+<p>这个hello就是生成的文件，和out一样都能用</p>
+<h1 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h1><p>Makefile不是bash，不要按照bash的语法写，就按照target ：依赖写就行了<br>其中，targrt和依赖，是可以写一串的</p>
+<p>make这个东西，假如make之后结果和之前一样，就不会输出执行了什么命令，而仅仅输出：文件已经是最新</p>
+<h1 id="概念辨析"><a href="#概念辨析" class="headerlink" title="概念辨析"></a>概念辨析</h1><p>首先make没参数的时候默认执行第一个target</p>
+<h2 id="PHONY"><a href="#PHONY" class="headerlink" title=".PHONY"></a>.PHONY</h2><p>在Makefile中，.PHONY后面的target表示的也是一个伪造的target, 而不是真实存在的文件target，注意Makefile的target默认是文件</p>
+<p>就是说我们 make 命令后面跟的参数如果出现在.PHONY 定义的伪目标中，那就直接在Makefile中就执行伪目标的依赖和命令。不管Makefile同级目录下是否有该伪目标同名的文件，即使有也不会产生冲突。</p>
+<p>就比如我新建一个目标x，假如目录有一个x，那就不能做了，但是加上phony之后，就可以无视进行x后面代表的命令和依赖了（但是不会生成这个x）</p>
+<h2 id="关于死循环"><a href="#关于死循环" class="headerlink" title="关于死循环"></a>关于死循环</h2><p>在make里面调用make是否会导致死循环？比如cd进去然后调用这个文件夹的make？<br>注意！！！在make里面cd仅仅在当行起作用，解决办法是在cd行&amp;&amp;或者cd行;来连接</p>
+<p>包括命令行在内都可以用;连接！！</p>
+<h2 id="关于内定义变量"><a href="#关于内定义变量" class="headerlink" title="关于内定义变量"></a>关于内定义变量</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">预定义变量</span><br><span class="line">　　含义</span><br><span class="line">　　$*</span><br><span class="line">　　不包含扩展名的目标文件名称。</span><br><span class="line">　　$+</span><br><span class="line">　　所有的依赖文件，以空格分开，并以出现的先后为序，可能包含重复的依赖文件。</span><br><span class="line">　　$&lt;</span><br><span class="line">　　第一个依赖文件的名称。</span><br><span class="line">　　$?</span><br><span class="line">　　所有的依赖文件，以空格分开，这些依赖文件的修改日期比目标的创建日期晚。</span><br><span class="line">　　$@</span><br><span class="line">　　目标的完整名称。</span><br><span class="line">　　$^</span><br><span class="line">　　所有的依赖文件，以空格分开，不包含重复的依赖文件。</span><br><span class="line">　　$%</span><br><span class="line">　　如果目标是归档成员，则该变量表示目标的归档成员名称。例如，如果目标名称为</span><br><span class="line">　　mytarget.so(image.o)，则 $@ 为 mytarget.so，而 $% 为 image.o。</span><br><span class="line">　　AR</span><br><span class="line">　　归档维护程序的名称，默认值为 ar。</span><br><span class="line">　　ARFLAGS</span><br><span class="line">　　归档维护程序的选项。</span><br><span class="line">　　AS</span><br><span class="line">　　汇编程序的名称，默认值为 as。</span><br><span class="line">　　ASFLAGS</span><br><span class="line">　　汇编程序的选项。</span><br><span class="line">　　CC</span><br><span class="line"></span><br><span class="line">　　C 编译器的名称，默认值为 cc。</span><br><span class="line">　　CFLAGS</span><br><span class="line">　　C 编译器的选项。</span><br><span class="line">　　CPP</span><br><span class="line">　　C 预编译器的名称，默认值为 $(CC) -E。</span><br><span class="line">　　CPPFLAGS</span><br><span class="line">　　C 预编译的选项。</span><br><span class="line">　　CXX</span><br><span class="line">　　C++ 编译器的名称，默认值为 g++。</span><br><span class="line">　　CXXFLAGS</span><br><span class="line">　　C++ 编译器的选项。</span><br><span class="line">　　FC</span><br><span class="line">　　FORTRAN 编译器的名称，默认值为 f77。</span><br><span class="line">　　FFLAGS</span><br><span class="line">　　FORTRAN 编译器的选项。</span><br><span class="line">-----------------------------------</span><br><span class="line">Makefile中预定义变量</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="变量定义"><a href="#变量定义" class="headerlink" title="变量定义"></a>变量定义</h2><p>在文件的第一行，有个</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">include include.mk</span><br></pre></td></tr></table></figure>
+<p>这里先引入了个东西。事实上这个文件的内容定义了许多变量。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">CROSS_COMPILE := mips-linux-gnu-</span><br><span class="line">2 CC := $(CROSS_COMPILE)gcc</span><br><span class="line">3 CFLAGS += --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic \</span><br><span class="line">4 -ffreestanding -fno-stack-protector -fno-builtin \</span><br><span class="line">5 -Wa,-xgot -Wall -mxgot -mfp32 -march=r3000</span><br><span class="line">6 LD := $(CROSS_COMPILE)ld</span><br><span class="line">7 LDFLAGS += -EL -G 0 -static -n -nostdlib --fatal-warnings</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mos_elf := target/mos # 最终需要生成的 ELF 可执行文件</span><br><span class="line"> modules := lib init kern</span><br><span class="line"> objects := lib/*.o \</span><br><span class="line"> init/init.o init/start.o \</span><br><span class="line"> kern/*.o # 定义了需要生成的目标文件</span><br><span class="line"> link_script := kernel.lds</span><br><span class="line"> gxemul_flags += -T -C R3000 -M 64</span><br></pre></td></tr></table></figure>
+<p>:&#x3D;左边的都是变量名字，然后右边指示的是文件名字或者路径。</p>
+<p>modules:定义了需要的三个模块，lib，init，kern</p>
+<p>object定义了需要的生成文件。</p>
+<p>解读代码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">PHONY: all $(modules) clean</span><br><span class="line">11</span><br><span class="line">12 all: $(mos_elf) # 我们的“最终目标”</span><br><span class="line">13</span><br></pre></td></tr></table></figure>
+<p>依赖，就是$的东西</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">14 $(mos_elf): $(modules) # 调用链接器 $(LD) 链接所有目标文件</span><br></pre></td></tr></table></figure>
+<p>这个指的是需要所有模块都装好了才能</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">15 $(LD) -o $(mos_elf) -N -T $(link_script) $(objects)</span><br></pre></td></tr></table></figure>
+<p>所有$类似的东西都会选择一种变量名代替的方式去整</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">16</span><br><span class="line">17 $(modules): # 进入各个子目录进行 make</span><br><span class="line">18 $(MAKE) --directory=$@</span><br><span class="line"></span><br><span class="line">19</span><br></pre></td></tr></table></figure>
+<p>这个的意思要做这个文件，需药下面的文件<br>$(make)代表本文件的名字,　　$@指的是目标的完整名称。<br>–directory的意思是指定文件读取的路径名称。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">20 clean:</span><br><span class="line">21 for d in $(modules); do \</span><br><span class="line">22 $(MAKE) --directory=$$d clean; \</span><br><span class="line">23 done; \</span><br><span class="line">24 rm -rf *.o *~ $(mos_elf)</span><br><span class="line">25</span><br><span class="line">26 run:</span><br><span class="line">27 gxemul $(gxemul_flags) $(mos_elf)</span><br></pre></td></tr></table></figure>
+
 
                 
             </div>
@@ -576,7 +575,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://brilliant-daffodil-eb4c4f.netlify.app/2023/03/15/OO_tiezi3/">https://brilliant-daffodil-eb4c4f.netlify.app/2023/03/15/OO_tiezi3/</a>
+                    <a href="https://brilliant-daffodil-eb4c4f.netlify.app/2023/03/18/makefile/">https://brilliant-daffodil-eb4c4f.netlify.app/2023/03/18/makefile/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -614,8 +613,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/BUAA-OO/">
-                                    <span class="chip bg-color">BUAA_OO</span>
+                                <a href="/tags/BUAA-OS/">
+                                    <span class="chip bg-color">BUAA_OS</span>
                                 </a>
                             
                         </div>
@@ -663,13 +662,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2023/03/18/bash/">
+                <a href="/2023/03/18/print/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="关于bash">
+                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="自己实现print的二三事">
                         
-                        <span class="card-title">关于bash</span>
+                        <span class="card-title">自己实现print的二三事</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -708,13 +707,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2023/03/15/OO_tiezi2/">
+                <a href="/2023/03/18/linux%E5%88%9D%E8%AF%86/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="讨论区第二次发帖">
+                        <img src="/medias/featureimages/13.jpg" class="responsive-img" alt="linux初识">
                         
-                        <span class="card-title">讨论区第二次发帖</span>
+                        <span class="card-title">linux初识</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -725,7 +724,7 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-15
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-18
                             </span>
                         <span class="publish-author">
                             
@@ -738,8 +737,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/BUAA-OO/">
-                        <span class="chip bg-color">BUAA_OO</span>
+                    <a href="/tags/BUAA-OS/">
+                        <span class="chip bg-color">BUAA_OS</span>
                     </a>
                     
                 </div>

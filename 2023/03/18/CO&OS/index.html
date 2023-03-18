@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="讨论区第三次发帖, farewell&#39;s blog">
+    <meta name="keywords" content="计组和操作系统的衔接, farewell&#39;s blog">
     <meta name="description" content="你到过许多地方，用你自己的故事记认许多城邦后，你终于抵达此城">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>讨论区第三次发帖 | farewell&#39;s blog</title>
+    <title>计组和操作系统的衔接 | farewell&#39;s blog</title>
     <link rel="icon" type="image/png" href="/medias/logo.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -354,12 +354,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/7.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/1.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">讨论区第三次发帖</h1>
+                    <h1 class="description center-align post-title">计组和操作系统的衔接</h1>
                 </div>
             </div>
         </div>
@@ -475,8 +475,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/BUAA-OO/">
-                                <span class="chip bg-color">BUAA_OO</span>
+                            <a href="/tags/BUAA-OS/">
+                                <span class="chip bg-color">BUAA_OS</span>
                             </a>
                         
                     </div>
@@ -491,7 +491,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2023-03-15
+                    2023-03-18
                 </div>
                 
 
@@ -512,44 +512,85 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="poly架构在week3"><a href="#poly架构在week3" class="headerlink" title="poly架构在week3"></a>poly架构在week3</h1><h2 id="任务划分"><a href="#任务划分" class="headerlink" title="任务划分"></a>任务划分</h2><p>如果不考虑三角大额度优化的话还是几乎不用重构，添几个方法就行了，<br>上次笔者摆了就优化了个合并，拿了好几个80</p>
-<p>根据上次的功能，化为三个阶段：实现求导功能，实现自定义函数求导功能，实现函数嵌套定义功能，这里建议按照上述顺序分层次测试实施。</p>
-<h2 id="求导功能"><a href="#求导功能" class="headerlink" title="求导功能"></a>求导功能</h2><p>poly这个架构还是很适合求导的。</p>
-<p>试想我们在人手求导一个表达式的时候，一般都是希望这个表达式就是纯纯的多项式，然后拿它的每一个单项式分别开刀，最后把所有的单项式所搞得导数都加起来。</p>
-<p>在这样的实现中，poly是统一入手点，我们把所有需要求导的东西都叫做poly，从外面访问求导功能的时候，不管它严格的定义上是一个幂函数，一个常数，一个三角函数，一个mono，还是确实的一个poly，我们都从poly这个外在的包装访问。当然，具体内部的实现还是要每一种分别设定求导方式，不过我们统一返回一个将结果包装好的poly就好了。</p>
-<p>用poly的方法访问，内部实现各种百花齐放，然后返回一个poly作为包装。</p>
-<p>针对求导功能设置一个新的因子，Derivative，这个因子在lexer读取的时候是类似sin一样，一旦确定是这个dx的情况后，立刻使用括号栈扫描后面的字符串，将dx所管辖的字符串范围读出来。然后传进该字符串作为构造参数，把它变成一个poly （把一个字符串转换成poly是我们一直在做的事情，具体操作类似sin的处理，也可以类似第一次作业程序在main里的入口，区别是main是处理input，dx仅仅是处理字符串，但是本质都是一样的）</p>
-<p>所有在建立语法结构的时候，我们对每一个读到的语法单元进行递归下降的读取，然后等它深层的子语法单元都建好之后，在“归”的过程中加到上层的语法结构里面。所以在使用构造函数建好dx()<br>仅仅是建好，还没求导呢<br>已经递归的得到了dx()括号里的字符串先转成语法结构然后转成的多项式，然后这个多项式就作为dx()的的属性存在里面。</p>
-<p>作为因子，首先应该实现factor接口，factor接口需要实现方法toPoly()</p>
-<p>Derivative应当存这样的几个属性，对谁求导的para，需要被求导的多项式poly。存这样的方法：构造函数，toPoly方法</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">public class Derivative implements Factor &#123;</span><br><span class="line"></span><br><span class="line">    private Poly poly;</span><br><span class="line"></span><br><span class="line">    private char parameter;</span><br><span class="line">    public Derivative(String string)</span><br><span class="line">    &#123;</span><br><span class="line">        //按字符串构造</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public Poly toPoly() &#123;</span><br><span class="line"></span><br><span class="line">        //它存的poly对它的parameter求导的结果用poly包装</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>如何实现具体的求导<br>dx(cos(cos(cos(cos(cos(x))))))&#x3D;−sin(x)sin(cos(x))sin(cos(cos(x)))sin(cos(cos(cos(x))))sin(cos(cos(cos(cos(x)))))先粘一组数据:三角嵌套，正负号</p>
-<p>进入求导流程：对Derivative这个因子进行toPoly()</p>
-<p>在toPoly的过程中，是对Derivative的poly进行求导，调用这个poly的求导方法</p>
-<p>poly的求导方法：针对每一个mono调用求导方法，然后把mono的求导方法返回的poly相加</p>
-<h3 id="mono的求导方法"><a href="#mono的求导方法" class="headerlink" title="mono的求导方法"></a>mono的求导方法</h3><p>经过第二次作业，我们的mono升级为k<em>x^xp</em> y ^yp* z^zp* &lt;三角函数们&gt;</p>
-<p>可以把前面的看成一个函数，然后把后面的三角函数分别看成一个函数。</p>
-<p>然后mono就是这些函数相乘，直接用课程组的求导公式就行了 （这里建议把前面的xyz部分单独求导之后带上后面的，然后再对每个三角函数遍历求导）</p>
-<p>三角函数求导：如何解决里面的符号问题？一般来讲sin成cos没问题，但是cos变成-sin的符号怎么体现？</p>
-<p>一个思路是，不添加任何符号（当然也可以添加一个属性），由于求导只有一次，所以可以把这个符号移进去，让三角里面的poly乘个-1（深浅拷贝？乘的这个-1乘在哪里了？会不会出现多个三角函数的poly指的都是一个？这个看各自的具体实现，总之建议能新建的一定要新建，尽量减少原地）</p>
-<p>尤其注意：小心这里面的深浅拷贝问题，在循环mono的每一个三角函数的时候返回的poly里面的mono建议新建，三角函数其实无所谓）</p>
-<h2 id="自定义函数求导功能"><a href="#自定义函数求导功能" class="headerlink" title="自定义函数求导功能"></a>自定义函数求导功能</h2><p>设定的求导方式不是太适合直接函数替换，也许是希望我们用factor对函数建类？这里采取一个不讲性能的很笨拙的方法。<br>最后一次了，懒得新开了，直接用现有的工具将就一下，除了跑的慢点剩下都能看</p>
-<p>自定义函数里面带d，这个是什么意思？其实它的意思是</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">f(x)=k(x)&#x27;</span><br></pre></td></tr></table></figure>
-<p>也就是说想知道f(x)是怎么回事，只需要对k(x)求导就可以了。</p>
-<p>我们需要在带入前就把k(x)’求出来，不然先代换的话会牵连到参数的求导。所以为了防止没求导的时候被调用，需要在建造这个函数的时候就解决掉导数问题。</p>
-<p>k(x)理论上也是一个表达式啊。</p>
-<p>我们前面实现了什么？ 1.将一个不带求导的函数表达式替换到待化简表达式里（注意：函数的定义式也是一个表达式，可以用等号分开两个部分，右边的就是一个表达式），让这个待化简表达式没自定义函数符号</p>
-<p>2.将一个不带函数的表达式变成poly化简，然后这个poly再变成字符串输出（它进来的时候是字符串，出来的时候也是字符串）</p>
-<p>3.对一个poly进行求导化简，变成另一个简化的poly</p>
-<p>是字符串形式的表达式，我们就可以通过新建的一个专门为它准备的lexer和parser来解析。</p>
-<p>所以可以这样做：</p>
-<p>假如是在函数定义式里出现的d，那么这个函数的定义式就不直接按照字符串存，就先按照表达式理解，先转成poly，然后用poly求导，然后导完了化成string，就是没d的东西，然后把函数定义的字符串按照这个存起来就好了。</p>
-<h2 id="函数嵌套定义"><a href="#函数嵌套定义" class="headerlink" title="函数嵌套定义"></a>函数嵌套定义</h2><p>观察要求，可以看到对自定义的函数变成了现在的样子</p>
-<p>函数表达式与上次作业不同，允许调用其他已定义的自定义函数（保证不会出现递归调用的情况），下面是几个不合法的例子。<br>函数定义时f(x,y) &#x3D; f(x,2)+y+1,出现递归调用，不合法。<br>函数定义时f(x,y) &#x3D; g(x,y)+y,g(x,y)&#x3D;f(x,y)+y,f先定义,g后定义,f在定义时调用了未定义的函数g，不合法。<br>也就是说，这次的函数定义，可以是先给出一个纯粹的函数，然后再定义一些带它的表达式，也可以是都是纯粹的函数，但是至少可以确定的是，一定是先定义了再在其他地方出现</p>
-<p>所以可以逐个读入函数模式，第一个肯定是不带其他函数的，然后看第二个有没有，第二个要是没有的话也像第一个一样存起来，但是第二个要是有的话，就先按照第二次作业处理待化简字符串一样，把第一个函数带进去，变成没有第一个函数标识符的字符串，再存进去。</p>
-<p>其实也可以理解要化简的表达式是第四个函数u(x)，从第二个到后面的其实都一样。</p>
-<p>何立群<br>2023-03-08 22:14:51<br>补充，在解决cos求导的符号时候，由于用poly套上mono封装，所以可以在mono上直接加系数为-1修正，不用把里面的poly乘-1了</p>
+                <h1 id="关于计组和操作系统"><a href="#关于计组和操作系统" class="headerlink" title="关于计组和操作系统"></a>关于计组和操作系统</h1><p>访存方式</p>
+<p>在计组中，我们的 CPU 运行程序时，CPU 直接发送物理地址到 DM（外设也被简化在了DM中）、IM中读取数据，这是为了简化内存操作，让大家关注 CPU 内部的计算与控制逻辑。</p>
+<p>而在操作系统课设中，我们的软件不会直接和物理内存打交道。CPU 发出的指令中的地址，被称作虚拟地址（程序中使用的地址一般称作虚拟地址），通过 MMU (负责处理CPU 的访存请求) 进行虚拟地址到物理地址的转换。<strong>所有的软件（包括 MIPS 汇编、C 语言编写的软件等）访存的地址都是虚拟地址</strong>。</p>
+<p>所以其实汇编代码里lw什么操作的也都是虚拟地址</p>
+<p>该转换过程可能涉及 TLB 的查询。在计组课程中，我们只是理论上学习了简单的页表、TLB。但在操作系统中，我们会采用软件编程的方式来系统建立我们的内存分页模式、同时通过填充建立与页表对应的硬件 TLB（作为页表的 Cache），实现我们的 MMU 的访存转换。</p>
+<h2 id="用户态和核心太"><a href="#用户态和核心太" class="headerlink" title="用户态和核心太"></a>用户态和核心太</h2><pre><code>进程：进程是程序在数据集合上的一次运行活动，是资源分配与调度的基本单位，拥有独立的地址空间，而内核负责管理系统资源和调度进程，使进程能够并发运行。
+
+用户态、内核态：它们是 CPU 运行的两种状态， 在我们课程设计使用的仿真 R3000 CPU 中，该状态由 CP0 SR 寄存器中 KUc 位的值标志。
+
+内核态即计组实验中所提到的特权态，用户态就是非特权态。
+
+在内核模式下，CPU 可以执行其架构允许的任何操作；可以执行任何指令、启动任何 I/O 操作、访问任何内存区域等等。在其他 CPU 模式下，硬件对 CPU 操作实施某些限制。通常，某些特殊指令是不被允许的（具体而言，通常是影响计算机控制或者完成 I/O 操作的指令），某些内存区域也无法访问，等等。
+
+CPU 的用户模式的功能通常是内核模式下可用功能的一个子集，但在某些特殊情况下，它们可能与标准内核模式下的功能显著不同。
+</code></pre>
+<h1 id="Leaf-amp-Nonleaf-Subroutine"><a href="#Leaf-amp-Nonleaf-Subroutine" class="headerlink" title="Leaf &amp; Nonleaf Subroutine"></a>Leaf &amp; Nonleaf Subroutine</h1><p>并不是每个函数都需要其栈帧中描述的每个部分。一般的规则是，如果程序不需要其中的一个部分，那么它可以从其栈帧中省略该部分。为了明确这一点，我们将区分 3 个不同类别的函数：</p>
+<h2 id="简单叶函数（Simple-Leaf）"><a href="#简单叶函数（Simple-Leaf）" class="headerlink" title="简单叶函数（Simple Leaf）"></a>简单叶函数（Simple Leaf）</h2><p>不调用任何其他子例程，不使用栈上的任何内存空间（因为其不需要内存来保存局部变量或寄存器的值）。这样的函数不需要栈帧，也不需要更改 sp。<br>有局部数据的叶函数（Leaf with Data）</p>
+<p>需要栈空间的叶函数（但不需要、不调用任何其他子例程），其栈帧可用于本地变量或寄存器的值的保存。这样的函数被调用后应当压栈（栈帧大小应该是 8 的倍数）。但是，ra 并不用保存在栈帧中。</p>
+<h2 id="非叶函数（Nonleaf）"><a href="#非叶函数（Nonleaf）" class="headerlink" title="非叶函数（Nonleaf）"></a>非叶函数（Nonleaf）</h2><p>函数内调用了其他函数。一个非叶函数的栈帧包含了上一节所述的大部分结构。</p>
+<p>（具体例子参阅MIPS Calling Conventions Summary P8）<br>MIPS Directives &amp; Macro</p>
+<p>本章内容精简自 IDT R30XX Family，总结一些在R3000 MIPS汇编中常见的 Directives &amp; Macro<br>.byte、.half、.word、.ascii、.asciiz</p>
+<p>这类在计组中常见的 directives，相信同学们都很熟悉，分别对应着不同数据的类型。</p>
+<h2 id="align"><a href="#align" class="headerlink" title=".align"></a>.align</h2><p>.align 的作用是“使下面的数据进行地址对齐”，下面这段代码使得下面大小为一个字的变量 var 按 4 字节进行对齐（参数 xx 代表以 2x2x 字节对齐）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">.align 2 # align to 4-byte boundary (2^2)</span><br><span class="line">var: .word 0</span><br></pre></td></tr></table></figure>
+<p>该指令允许程序员通过指定一个零对齐，来覆盖.half、.word等的自动对齐特性。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">.half 3</span><br><span class="line">.align 0 # 关闭自动对齐</span><br><span class="line">.word 100 # 使得 word 紧贴着 half</span><br></pre></td></tr></table></figure>
+<h2 id="globl、-extern"><a href="#globl、-extern" class="headerlink" title=".globl、.extern"></a>.globl、.extern</h2><p>我们在计组中的写的汇编程序往往只有一个文件。但在操作系统课中，存在跨文件的情况，例如跨文件调用函数。</p>
+<pre><code>.globl：将符号定义为具有对其他模块可见的全局符号
+.extern：要对另一个模块中的全局符号的引用（即外部符号），需要注意的是 MIPS R3000 中所有对标签引用都会自动被认为是在引用全局符号，所以我们在对另一模块中的全局标签引用时，没有必要添加 .extern（但对另一模块中的全局变量引用时，需要添加.extern）
+</code></pre>
+<p>此后在链接时，链接器要将各个目标文件的内容“合为一体”，通过上述方式标记的符号就可以被跨文件引用。</p>
+<p>例如，在未来课程设计的 asm.h 头文件中，我们定义了如下宏：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#define FEXPORT(symbol)         \   # 使symbol代指的函数对其他模块可见</span><br><span class="line">    .globl symbol;              \   # 使标签对链接器可见，使得其它文件中可以调用我们使用宏定义声明的函数。</span><br><span class="line">    .type symbol, @function;    \</span><br><span class="line">    symbol:</span><br></pre></td></tr></table></figure>
+<p>在未来内核实验的 genex.S 汇编文件中，我们通过该宏声明了一个全局函数 ret_from_exception（你可以忽略函数中的内容）</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">FEXPORT(ret_from_exception)</span><br><span class="line">    /* Do Something */</span><br></pre></td></tr></table></figure>
+<p>此时我们可以在未来内核实验的另一文件 env_asm.S 中，直接调用该函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">.text</span><br><span class="line">LEAF(env_pop_tf)</span><br><span class="line">    /* Do Something */</span><br><span class="line">    j       ret_from_exception # 直接调用该函数，默认ret_from_exception为全局标签，无需.extern</span><br><span class="line">END(env_pop_tf)</span><br></pre></td></tr></table></figure>
+<h2 id="set"><a href="#set" class="headerlink" title=".set"></a>.set</h2><p>设置汇编器的工作方式。默认情况下，汇编器会尝试通过重新排列指令，来填充分支指令和存取指令造成的空闲时间。了解即可。</p>
+<pre><code>.set noreorder 和 .set reorder：告知汇编器是否重新对指令进行顺序进行排序。reorder 模式下汇编器会自动调度指令至延迟槽，noreorder 模式下需要手动填充延迟槽。
+.set at 和 .set noat：at 模式下，1 号寄存器（$at）为汇编器保留用于实现扩展指令；noat 模式下，汇编器不会使用 1 号寄存器。
+</code></pre>
+<h1 id="LEAF、NESTED、END-三个宏"><a href="#LEAF、NESTED、END-三个宏" class="headerlink" title="LEAF、NESTED、END 三个宏"></a>LEAF、NESTED、END 三个宏</h1><p>在操作系统实验中，我们将常常会遇到三个和函数有关的宏。是我们人为定义的<br>LEAF</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#define LEAF(symbol)                        \</span><br><span class="line">    .globl  symbol;                         \</span><br><span class="line">    .align  2;                              \</span><br><span class="line">    .type   symbol,@function;               \</span><br><span class="line">    .ent    symbol;                         \</span><br><span class="line">    symbol:                                 \</span><br><span class="line">    .frame  sp,0,ra</span><br></pre></td></tr></table></figure>
+<pre><code>第一行是对 LEAF 宏的定义，后面括号中的 symbol 类似于函数的参数，在宏定义 中的作用类似，编译时在宏中会将 symbol 替换为实际传入的文本，也即我们的函数名。
+第二行中，.globl 的作用是“使标签对链接器可见”，这样即使在其它文件中也可 以引用到 symbol 标签，从而使得其它文件中可以调用我们使用宏定义声明的函数。
+第三行中，.align 2 的作用是“使下面的数据进行地址对齐”，这一行语句使得下面的 symbol 标签按 4 Byte 进行对齐，从而使得我们可以使用 jal 指令跳转到这个函数（末尾拼接两位 0）。
+第四行中，.type 的作用是设置 symbol 标签的类别，在这里我们设置了 symbol 标签为函数标签。
+第五行中，.ent 的作用是标记每个函数的开头，需要与 .end 配对使用。这些标记使得可以在 Debug 时查看调用链
+</code></pre>
+<p>LEAF宏在使用时, 我们可以这样用，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">LEAF(msyscall)</span><br><span class="line">    // Just use &#x27;syscall&#x27; instruction and return.</span><br><span class="line">    syscall</span><br><span class="line">    jr      ra</span><br><span class="line">END(msyscall)</span><br></pre></td></tr></table></figure>
+<p>NESTED</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">#define NESTED(symbol, framesize, rpc)      \</span><br><span class="line">    .globl  symbol;                         \</span><br><span class="line">    .align  2;                              \</span><br><span class="line">    .type   symbol,@function;               \</span><br><span class="line">    .ent    symbol,0;                       \</span><br><span class="line">    symbol:                                 \</span><br><span class="line">    .frame  sp, framesize, rpc</span><br></pre></td></tr></table></figure>
+<p>通过对比，我们可以发现 LEAF 宏和 NESTED 宏的区别就在于 LEAF 宏定义的函数在被调用时没有分配栈帧的空间记录自己的“运行状态”，NESTED 宏在被调用时分配了栈帧的空间用于记录自己的“运行状态”。</p>
+<p>NESTED 宏在使用时, 我们可以这样用，例如：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">NESTED(handle_int, TF_SIZE, sp) # 函数用于中断发生后的处理</span><br><span class="line">    mfc0    t0, CP0_CAUSE</span><br><span class="line">    mfc0    t2, CP0_STATUS</span><br><span class="line">    and     t0, t2</span><br><span class="line">    andi    t1, t0, STATUS_IM4</span><br><span class="line">    bnez    t1, timer_irq # 判断是否为时钟中断</span><br><span class="line">    // TODO: handle other irqs</span><br><span class="line">timer_irq:</span><br><span class="line">    sw      zero, (KSEG1 | DEV_RTC_ADDRESS | DEV_RTC_INTERRUPT_ACK)</span><br><span class="line">    li      a0, 0</span><br><span class="line">    j       schedule # 若为时钟中断，跳至函数 &#x27;schedule&#x27; 进行进程调度</span><br><span class="line">END(handle_int)</span><br></pre></td></tr></table></figure>
+<p>END</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#define END(function)                       \</span><br><span class="line">    .end    function;                       \</span><br><span class="line">    .size   function,.-function</span><br></pre></td></tr></table></figure>
+<p>第一行是对 END 宏的定义，与上面 LEAF 与 NESTED 类似。</p>
+<p>第二行的 .end 是为了与先前 LEAF 或 NESTED 声明中的 .ent 配对，标记了 symbol 函数的结束。</p>
+<p>第三行的 .size 是标记了 function 符号占用的存储空间大小，将 function 符号占用的空间大小设置为 .-function，. 代表了当前地址，当前位置的地址减去 function 标签处的地址即可计算出符号占用的空间大小。</p>
+<h2 id="关于栈的sp"><a href="#关于栈的sp" class="headerlink" title="关于栈的sp"></a>关于栈的sp</h2><p>sp始终指的是栈顶的东西-1位置的东西</p>
+<p>然后<br>sp从大开始，然后慢慢添就网上减，然后一个栈帧基本的有4个参数，a0<del>a3，然后就是必须有的S的一堆东西0</del>7，然后就是t的0~9</p>
+<p>然后为了凑mips的64位，要凑t是8的倍数注意一个单字是32位，占个4，然后所以个数应当是偶数</p>
+<p>接着，我们来看栈帧的深绿部分，即返回地址部分。返回地址部分用于存储 ra 的值。该值在执行当前函数开始时被复制到栈中，并在当前函数返回之前被复制回 ra 寄存器中。</p>
+<p>这个一般来讲是一层，所以需要空层来替补</p>
+<p>此外，我们还需要注意栈帧的灰色部分，即填充部分，其作用在于确保<strong>栈帧的总大小总是 8 的倍数</strong>。在这里插入它，以确保其上方的局部数据存储部分首地址是双字对齐的。这是为了与 MIPS 64 位体系结构的双字读取指令兼容。</p>
+<p>最后，我们看栈帧的蓝色部分，即局部数据存储部分。它用来存储函数的局部变量。函数必须为此区域的所有局部变量保留足够的存储空间，包括需要在函数调用前后保留的任何临时寄存器（t0 到 t9）值的空间。</p>
+<p>总共的一个可能的基础的栈帧是24*4&#x3D;96</p>
+<p>通常，函数的栈帧<strong>可能</strong>包含以下几个部分：<br>注意是可能，有必要了才存，比如没有用s和t就不存</p>
+<pre><code>用于存储传递给此调用的函数参数的空间。
+存储已保存寄存器值的位置（s0 到 s7）。
+一个存储子程序返回地址的地方（ra）。
+一个用于本地数据存储的地方
+</code></pre>
+<p>例如有6个参数</p>
+<p>然后是倒着存的，栈顶是最小的，然后栈底最大，把所有参数倒着存到栈里面，所以对于sp，sp位于第一个元素处</p>
+<h2 id="关于addu和add"><a href="#关于addu和add" class="headerlink" title="关于addu和add"></a>关于addu和add</h2><p>两者加减的操作都一样，只不过差别在于有没有溢出检查</p>
+<h2 id="连接后"><a href="#连接后" class="headerlink" title="连接后"></a>连接后</h2><p>连接后在汇编代码中直接填那个文件的名字就行了（不带后缀）</p>
 
                 
             </div>
@@ -576,7 +617,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://brilliant-daffodil-eb4c4f.netlify.app/2023/03/15/OO_tiezi3/">https://brilliant-daffodil-eb4c4f.netlify.app/2023/03/15/OO_tiezi3/</a>
+                    <a href="https://brilliant-daffodil-eb4c4f.netlify.app/2023/03/18/CO&OS/">https://brilliant-daffodil-eb4c4f.netlify.app/2023/03/18/CO&OS/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -614,8 +655,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/BUAA-OO/">
-                                    <span class="chip bg-color">BUAA_OO</span>
+                                <a href="/tags/BUAA-OS/">
+                                    <span class="chip bg-color">BUAA_OS</span>
                                 </a>
                             
                         </div>
@@ -663,13 +704,13 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2023/03/18/bash/">
+                <a href="/2023/03/18/c%E7%9A%84%E7%BC%96%E8%AF%91/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="关于bash">
+                        <img src="/medias/featureimages/10.jpg" class="responsive-img" alt="关于c语言编译">
                         
-                        <span class="card-title">关于bash</span>
+                        <span class="card-title">关于c语言编译</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -708,13 +749,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2023/03/15/OO_tiezi2/">
+                <a href="/2023/03/18/bash/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="讨论区第二次发帖">
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="关于bash">
                         
-                        <span class="card-title">讨论区第二次发帖</span>
+                        <span class="card-title">关于bash</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -725,7 +766,7 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-15
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-18
                             </span>
                         <span class="publish-author">
                             
@@ -738,8 +779,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/BUAA-OO/">
-                        <span class="chip bg-color">BUAA_OO</span>
+                    <a href="/tags/BUAA-OS/">
+                        <span class="chip bg-color">BUAA_OS</span>
                     </a>
                     
                 </div>
