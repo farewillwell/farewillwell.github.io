@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="lab1思考题, farewell&#39;s blog">
+    <meta name="keywords" content="lab2思考题, farewell&#39;s blog">
     <meta name="description" content="你到过许多地方，用你自己的故事记认许多城邦后，你终于抵达此城">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>lab1思考题 | farewell&#39;s blog</title>
+    <title>lab2思考题 | farewell&#39;s blog</title>
     <link rel="icon" type="image/png" href="/medias/logo.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -354,12 +354,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/2.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/19.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">lab1思考题</h1>
+                    <h1 class="description center-align post-title">lab2思考题</h1>
                 </div>
             </div>
         </div>
@@ -491,7 +491,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2023-03-21
+                    2023-04-12
                 </div>
                 
 
@@ -512,57 +512,95 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="os-lab1-实验报告"><a href="#os-lab1-实验报告" class="headerlink" title="os lab1 实验报告"></a>os lab1 实验报告</h1><h2 id="思考题"><a href="#思考题" class="headerlink" title="思考题"></a>思考题</h2><h3 id="thinking1"><a href="#thinking1" class="headerlink" title="thinking1"></a>thinking1</h3><h4 id="题目："><a href="#题目：" class="headerlink" title="题目："></a>题目：</h4><p>Thinking 1.1 请阅读附录中的编译链接详解，尝试分别使用实验环境中的原生 x86 工具链（gcc、ld、readelf、objdump 等）和 MIPS 交叉编译工具链（带有 mips-linux-gnu-前缀），重复其中的编译和解析过程，观察相应的结果，并解释其中向 objdump 传入的参数的含义。</p>
-<p>利用test.c进行操作</p>
-<p>首先输入命令</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mips-linux-gnu-gcc -c test.c</span><br></pre></td></tr></table></figure>
-<p>生成文件test.o，仅仅是目标文件，还未链接。<br>然后输入</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objdump -DS test.o&gt;test.txt</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line">test.o：     文件格式 elf64-x86-64</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Disassembly of section .text:</span><br><span class="line"></span><br><span class="line">0000000000000000 &lt;main&gt;:</span><br><span class="line">   0:   f3 0f 1e fa             endbr64 </span><br><span class="line">   4:   55                      push   %rbp</span><br><span class="line">   5:   48 89 e5                mov    %rsp,%rbp</span><br><span class="line">   8:   48 8d 05 00 00 00 00    lea    0x0(%rip),%rax        # f &lt;main+0xf&gt;</span><br><span class="line">   f:   48 89 c7                mov    %rax,%rdi</span><br><span class="line">  12:   e8 00 00 00 00          call   17 &lt;main+0x17&gt;</span><br><span class="line">  17:   b8 00 00 00 00          mov    $0x0,%eax</span><br><span class="line">  1c:   5d                      pop    %rbp</span><br><span class="line">  1d:   c3                      ret    </span><br><span class="line"></span><br><span class="line">Disassembly of section .rodata:</span><br><span class="line"></span><br><span class="line">0000000000000000 &lt;.rodata&gt;:</span><br><span class="line">   0:   74 68                   je     6a &lt;main+0x6a&gt;</span><br><span class="line">   2:   69 73 20 69 73 20 74    imul   $0x74207369,0x20(%rbx),%esi</span><br><span class="line">   9:   65 73 74                gs jae 80 &lt;main+0x80&gt;</span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">Disassembly of section .comment:</span><br><span class="line"></span><br><span class="line">0000000000000000 &lt;.comment&gt;:</span><br><span class="line">   0:   00 47 43                add    %al,0x43(%rdi)</span><br><span class="line">   3:   43 3a 20                rex.XB cmp (%r8),%spl</span><br><span class="line">   6:   28 55 62                sub    %dl,0x62(%rbp)</span><br><span class="line">   9:   75 6e                   jne    79 &lt;main+0x79&gt;</span><br><span class="line">   b:   74 75                   je     82 &lt;main+0x82&gt;</span><br><span class="line">   d:   20 31                   and    %dh,(%rcx)</span><br><span class="line">   f:   31 2e                   xor    %ebp,(%rsi)</span><br><span class="line">  11:   33 2e                   xor    (%rsi),%ebp</span><br><span class="line">  13:   30 2d 31 75 62 75       xor    %ch,0x75627531(%rip)        # 7562754a &lt;main+0x7562754a&gt;</span><br><span class="line">  19:   6e                      outsb  %ds:(%rsi),(%dx)</span><br><span class="line">  1a:   74 75                   je     91 &lt;main+0x91&gt;</span><br><span class="line">  1c:   31 7e 32                xor    %edi,0x32(%rsi)</span><br><span class="line">  1f:   32 2e                   xor    (%rsi),%ch</span><br><span class="line">  21:   30 34 29                xor    %dh,(%rcx,%rbp,1)</span><br><span class="line">  24:   20 31                   and    %dh,(%rcx)</span><br><span class="line">  26:   31 2e                   xor    %ebp,(%rsi)</span><br><span class="line">  28:   33 2e                   xor    (%rsi),%ebp</span><br><span class="line">  2a:   30 00                   xor    %al,(%rax)</span><br><span class="line"></span><br><span class="line">Disassembly of section .note.gnu.property:</span><br><span class="line"></span><br><span class="line">0000000000000000 &lt;.note.gnu.property&gt;:</span><br><span class="line">   0:   04 00                   add    $0x0,%al</span><br><span class="line">   2:   00 00                   add    %al,(%rax)</span><br><span class="line">   4:   10 00                   adc    %al,(%rax)</span><br><span class="line">   6:   00 00                   add    %al,(%rax)</span><br><span class="line">   8:   05 00 00 00 47          add    $0x47000000,%eax</span><br><span class="line">   d:   4e 55                   rex.WRX push %rbp</span><br><span class="line">   f:   00 02                   add    %al,(%rdx)</span><br><span class="line">  11:   00 00                   add    %al,(%rax)</span><br><span class="line">  13:   c0 04 00 00             rolb   $0x0,(%rax,%rax,1)</span><br><span class="line">  17:   00 03                   add    %al,(%rbx)</span><br><span class="line">  19:   00 00                   add    %al,(%rax)</span><br><span class="line">  1b:   00 00                   add    %al,(%rax)</span><br><span class="line">  1d:   00 00                   add    %al,(%rax)</span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">Disassembly of section .eh_frame:</span><br><span class="line"></span><br><span class="line">0000000000000000 &lt;.eh_frame&gt;:</span><br><span class="line">   0:   14 00                   adc    $0x0,%al</span><br><span class="line">   2:   00 00                   add    %al,(%rax)</span><br><span class="line">   4:   00 00                   add    %al,(%rax)</span><br><span class="line">   6:   00 00                   add    %al,(%rax)</span><br><span class="line">   8:   01 7a 52                add    %edi,0x52(%rdx)</span><br><span class="line">   b:   00 01                   add    %al,(%rcx)</span><br><span class="line">   d:   78 10                   js     1f &lt;.eh_frame+0x1f&gt;</span><br><span class="line">   f:   01 1b                   add    %ebx,(%rbx)</span><br><span class="line">  11:   0c 07                   or     $0x7,%al</span><br><span class="line">  13:   08 90 01 00 00 1c       or     %dl,0x1c000001(%rax)</span><br><span class="line">  19:   00 00                   add    %al,(%rax)</span><br><span class="line">  1b:   00 1c 00                add    %bl,(%rax,%rax,1)</span><br><span class="line">  1e:   00 00                   add    %al,(%rax)</span><br><span class="line">  20:   00 00                   add    %al,(%rax)</span><br><span class="line">  22:   00 00                   add    %al,(%rax)</span><br><span class="line">  24:   1e                      (bad)  </span><br><span class="line">  25:   00 00                   add    %al,(%rax)</span><br><span class="line">  27:   00 00                   add    %al,(%rax)</span><br><span class="line">  29:   45 0e                   rex.RB (bad) </span><br><span class="line">  2b:   10 86 02 43 0d 06       adc    %al,0x60d4302(%rsi)</span><br><span class="line">  31:   55                      push   %rbp</span><br><span class="line">  32:   0c 07                   or     $0x7,%al</span><br><span class="line">  34:   08 00                   or     %al,(%rax)</span><br></pre></td></tr></table></figure>
-<p>objdump中的参数：</p>
-<p>使用了两个参数</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-d	将代码段反汇编 </span><br><span class="line">-D	与 -d 类似，但反汇编所有section</span><br><span class="line">-S	将代码段反汇编的同时，将反汇编代码和源代码交替显示，源码编译时需要加-g参数，即需要调试信息</span><br></pre></td></tr></table></figure>
-<p>查阅资料后知道：<br>objdump -d &lt;file(s)&gt;: 将代码段反汇编；<br>objdump -S &lt;file(s)&gt;: 将代码段反汇编的同时，将反汇编代码与源代码交替显示，编译时需要使用-g参数，即需要调试信息；<br>objdump -C &lt;file(s)&gt;: 将C++符号名逆向解析<br>objdump -l &lt;file(s)&gt;: 反汇编代码中插入文件名和行号<br>objdump -j section &lt;file(s)&gt;: 仅反汇编指定的section</p>
-<h3 id="thinking2"><a href="#thinking2" class="headerlink" title="thinking2"></a>thinking2</h3><h4 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h4><p>Thinking 1.2 思考下述问题：<br>• 尝试使用我们编写的 readelf 程序，解析之前在 target 目录下生成的内核 ELF 文件。<br>• 也许你会发现我们编写的 readelf 程序是不能解析 readelf 文件本身的，而我们刚才介绍的系统工具 readelf 则可以解析，这是为什么呢？（提示：尝试使用 readelf-h，并阅读 tools&#x2F;readelf 目录下的 Makefile，观察 readelf 与 hello 的不同）</p>
-<p>查阅readelf –help知道，-h参数的作用是：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-h --file-header       Display the ELF file header</span><br></pre></td></tr></table></figure>
-<p>也就是查询文件的elf 头，</p>
-<p>尝试解析自己的readelf：<br>.&#x2F;readelf readelf输入后没有任何输出。</p>
-<p>使用该命令解析自己写的readelf得到：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">ELF 头：</span><br><span class="line">  Magic：   7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00 </span><br><span class="line">  类别:                              ELF64</span><br><span class="line">  数据:                              2 补码，小端序 (little endian)</span><br><span class="line">  Version:                           1 (current)</span><br><span class="line">  OS/ABI:                            UNIX - System V</span><br><span class="line">  ABI 版本:                          0</span><br><span class="line">  类型:                              DYN (Position-Independent Executable file)</span><br><span class="line">  系统架构:                          Advanced Micro Devices X86-64</span><br><span class="line">  版本:                              0x1</span><br><span class="line">  入口点地址：               0x1180</span><br><span class="line">  程序头起点：          64 (bytes into file)</span><br><span class="line">  Start of section headers:          14488 (bytes into file)</span><br><span class="line">  标志：             0x0</span><br><span class="line">  Size of this header:               64 (bytes)</span><br><span class="line">  Size of program headers:           56 (bytes)</span><br><span class="line">  Number of program headers:         13</span><br><span class="line">  Size of section headers:           64 (bytes)</span><br><span class="line">  Number of section headers:         31</span><br><span class="line">  Section header string table index: 30</span><br></pre></td></tr></table></figure>
-<p>解析hello后：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">ELF 头：</span><br><span class="line">  Magic：   7f 45 4c 46 01 01 01 03 00 00 00 00 00 00 00 00 </span><br><span class="line">  类别:                              ELF32</span><br><span class="line">  数据:                              2 补码，小端序 (little endian)</span><br><span class="line">  Version:                           1 (current)</span><br><span class="line">  OS/ABI:                            UNIX - GNU</span><br><span class="line">  ABI 版本:                          0</span><br><span class="line">  类型:                              EXEC (可执行文件)</span><br><span class="line">  系统架构:                          Intel 80386</span><br><span class="line">  版本:                              0x1</span><br><span class="line">  入口点地址：               0x8049600</span><br><span class="line">  程序头起点：          52 (bytes into file)</span><br><span class="line">  Start of section headers:          746260 (bytes into file)</span><br><span class="line">  标志：             0x0</span><br><span class="line">  Size of this header:               52 (bytes)</span><br><span class="line">  Size of program headers:           32 (bytes)</span><br><span class="line">  Number of program headers:         8</span><br><span class="line">  Size of section headers:           40 (bytes)</span><br><span class="line">  Number of section headers:         35</span><br><span class="line">  Section header string table index: 34</span><br></pre></td></tr></table></figure>
-<p>注意：<br>类别:                              ELF64<br>类别:                              ELF32<br>位数不一样。<br>阅读Makefile后发现：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> 6 readelf: main.o readelf.o</span><br><span class="line"> 7         $(CC) $^ -o $@</span><br><span class="line"> 8 </span><br><span class="line"> 9 hello: hello.c</span><br><span class="line">10         $(CC) $^ -o $@ -m32 -static -g</span><br></pre></td></tr></table></figure>
-<p>在对于hello多了三个参数：<br>-m32,-static -g<br>生成的文件应当因为这三个参数而不同</p>
-<p>查阅资料发现：<br>    $@<br>　　目标的完整名称。<br>　　$^<br>　　所有的依赖文件，以空格分开，不包含重复的依赖文件。<br>$(cc)代表所用的编译器，$^代表上面俩依赖，目标就是readelf</p>
-<p>-g，产生符号调试工具（GNU的gdb）所必要的符号资讯，要想对源代码进行调试，我们就必须加入这个选项,在可执行文件中包含标准调试信息</p>
-<p>-static对库文件进行静态链接</p>
-<p>-m32:编译的是32位程序。</p>
-<p>尝试修改参数使其一致，实验后发现了bug</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cc main.o readelf.o -o readelf -g -static -m32</span><br><span class="line">/usr/bin/ld: i386:x86-64 architecture of input file `main.o&#x27; is incompatible with i386 output</span><br><span class="line">/usr/bin/ld: i386:x86-64 architecture of input file `readelf.o&#x27; is incompatible with i386 output</span><br><span class="line">collect2: error: ld returned 1 exit status</span><br><span class="line">make: *** [Makefile:7：readelf] 错误 1</span><br></pre></td></tr></table></figure>
-<p>大概的意思是，原本的依赖都是64位架构的，你非要-32位编译，不行。</p>
-<p>所以其实是架构的问题，本身写的readelf只能支持32位的，但是本身写的这个是用64位编译出来的，所以解析失败。</p>
-<h3 id="thinking3"><a href="#thinking3" class="headerlink" title="thinking3"></a>thinking3</h3><h4 id="题目-1"><a href="#题目-1" class="headerlink" title="题目"></a>题目</h4><p>在理论课上我们了解到，MIPS 体系结构上电时，启动入口地址为 0xBFC00000<br>（其实启动入口地址是根据具体型号而定的，由硬件逻辑确定，也有可能不是这个地址，但<br>一定是一个确定的地址），但实验操作系统的内核入口并没有放在上电启动地址，而是按照<br>内存布局图放置。思考为什么这样放置内核还能保证内核入口被正确跳转到？<br>（提示：思考实验中启动过程的两阶段分别由谁执行。）<br>kernel.lds里面已经写好了.text什么的位置了，然后start.S页写清楚程序的跳转位置了。</p>
-<h2 id="难点分析"><a href="#难点分析" class="headerlink" title="难点分析"></a>难点分析</h2><h3 id="能力难点"><a href="#能力难点" class="headerlink" title="能力难点"></a>能力难点</h3><p>1.对于大量陌生的代码进行阅读。非常多得文件，不容易梳理出来文件之间的关系等等。</p>
-<p>2.不懂的代码数目显著攀升，学习初期难以隔绝一些不需要填写但是无法理解的代码带来的影响。</p>
-<p>例如Makefile的内容，虽然经过了之前的练习，但是对于一些高级的Makefile使用比如</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$(mos_elf): $(modules) # 调用链接器 $(LD) 链接所有目标文件</span><br><span class="line"> $(LD) -o $(mos_elf) -N -T $(link_script) $(objects)</span><br></pre></td></tr></table></figure>
-<p>虽然不需要去改写，但是在阅读的时候会产生一定障碍。<br>然后经过更深层次的阅读，逐渐明白了，$(LD)中，LD是变量，就是要用的连接器，本地已经设置好了。然后 $()本身就是调用的设定好的参数。</p>
-<p>3.在一个文件中读取有用的信息。</p>
-<p>例如在进行elf文件的阅读时。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">typedef struct &#123;</span><br><span class="line">8 unsigned char e_ident[EI_NIDENT]; /* Magic number and other info */</span><br><span class="line">9 // 存放魔数以及其他信息</span><br><span class="line">10 Elf32_Half e_type; /* Object file type */</span><br><span class="line">11 // 文件类型</span><br><span class="line">12 Elf32_Half e_machine; /* Architecture */</span><br><span class="line">......</span><br></pre></td></tr></table></figure>
-<p>会有很大量的信息，但是实际上有用的也就那么点。<br>4.阅读缩写名字<br>变量的命名很多都是用的缩写，导致乍一看难以区分，还是不习惯c语言工程代码的阅读模式。<br>5.阅读英文注释，英文不好，看英文注释会很难受</p>
-<h3 id="知识难点"><a href="#知识难点" class="headerlink" title="知识难点"></a>知识难点</h3><p>1.理解内存布局图，理解虚拟地址和物理地址的关系，根据内存图填写.test</p>
-<p>后来经过询问大佬，知道了内存会自动把.data和.bbs接到.test后面，所以不用怎么细改<br>2.理解ELF的文件，特别是区分segment 和section的区别和各自应用的地方。</p>
-<p>2.函数指针和typedef的理解，假如错误理解会导致不会使用传进来的函数指针out。</p>
-<p> 后来理解了typedef在定义函数类型的时候的用法<br> typedef  void(*func )(int,int)就是定义了一个，返回值为void的函数类型，这是一个类型。</p>
-<p>3.写printk的时候理解每一个函数要做的事情。理解可变参数表的用法。</p>
-<h2 id="实验体会"><a href="#实验体会" class="headerlink" title="实验体会"></a>实验体会</h2><p>在写实验的时候，一个明显的感受就是：太多东西不知道是啥了。所做的什么东西都是完全的模仿+猜测究竟应当怎么写，没有专门去了解怎么写，对于我而言就感觉有些寸步难行，看着一堆自己没见过的代码格式上网查很累。</p>
-<p>但是真正写完发现，其实很多东西并不需要专门学习怎么整，也没法完全搞清每一个文件都是干什么的，合理的屏蔽用不到的知识在有限的时间完成作业而言是一个权宜之计。都是属于模仿就好了。看着指导书的东西像模像样填写进去即可。</p>
-<p>然后对于ELF结构大量的属性还有缩写我也是陷入了困惑，一度无法区分哪个是哪个。后来仔细对照搞清楚哪个部分是哪个部分。</p>
-<p>总之针对这种debug困难的，最重要的就是细心了，既然水平有限没法做到掌控全局，就把自己写的代码部分认真想好了。</p>
-<p>写完之后感觉自己对于之前习以为常的print的理解加深了，对于如何解决这种大量不会的情况的能力也提升了。</p>
+                <h1 id="lab2实验报告"><a href="#lab2实验报告" class="headerlink" title="lab2实验报告"></a>lab2实验报告</h1><h2 id="思考题"><a href="#思考题" class="headerlink" title="思考题"></a>思考题</h2><h3 id="thinking1"><a href="#thinking1" class="headerlink" title="thinking1"></a>thinking1</h3><p>请根据上述说明，回答问题：在编写的 C 程序中，指针变量中存储的地址<br>是虚拟地址，还是物理地址？MIPS 汇编程序中 lw 和 sw 使用的是虚拟地址，还是物理地<br>址？</p>
+<p>指针中存储的地址都是虚拟地址，在汇编语言中使用的也是虚拟地址。事实上硬件给程序暴露的都是虚拟地址。</p>
+<h3 id="thinking2"><a href="#thinking2" class="headerlink" title="thinking2"></a>thinking2</h3><p>Thinking 2.2 请思考下述两个问题：<br>• 从可重用性的角度，阐述用宏来实现链表的好处。<br>• 查看实验环境中的 &#x2F;usr&#x2F;include&#x2F;sys&#x2F;queue.h，了解其中单向链表与循环链表的实<br>现，比较它们与本实验中使用的双向链表，分析三者在插入与删除操作上的性能差<br>异<br>查阅发现：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span>	SLIST_ENTRY(type)						\</span></span><br><span class="line"><span class="meta">struct &#123;								\</span></span><br><span class="line"><span class="meta">	struct type *sle_next;	<span class="comment">/* next element */</span>			\</span></span><br><span class="line"><span class="meta">&#125;</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span>	SLIST_INSERT_AFTER(slistelm, elm, field) do &#123;			\</span></span><br><span class="line"><span class="meta">	(elm)-&gt;field.sle_next = (slistelm)-&gt;field.sle_next;		\</span></span><br><span class="line"><span class="meta">	(slistelm)-&gt;field.sle_next = (elm);				\</span></span><br><span class="line"><span class="meta">&#125; while (<span class="comment">/*CONSTCOND*/</span>0)</span></span><br></pre></td></tr></table></figure>
+<p>存储上空间较小，单纯的插入步骤较少。<br>但是没有insert before，那样的话每次都要做一个遍历，性能较差。。</p>
+<p>循环链表</p>
+<p>理论上插入性能和单向链表相同，但是由于本身存储于实现了一个指向尾部的指针，所以可以直接在尾部插入</p>
+<p>双向链表，维护了两个方向的指针，所以插入效率最高，同时由于存储了双向的内容，所以所用空间和每一次修改操作开销较大。但是没有指向尾部的指针，还需要遍历。</p>
+<h2 id="thinking3"><a href="#thinking3" class="headerlink" title="thinking3"></a>thinking3</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">Thinking 2.3 请阅读 include/queue.h 以及 include/pmap.h, 将 Page_list 的结构梳</span><br><span class="line">理清楚，选择正确的展开结构。</span><br><span class="line">1 A:</span><br><span class="line">2 struct Page_list&#123;</span><br><span class="line">3 struct &#123;</span><br><span class="line">4 struct &#123;</span><br><span class="line">5 struct Page *le_next;</span><br><span class="line">6 struct Page **le_prev;</span><br><span class="line">7 &#125;* pp_link;</span><br><span class="line">8 u_short pp_ref;</span><br><span class="line">9 &#125;* lh_first;</span><br><span class="line">10 &#125;</span><br><span class="line">1 B:</span><br><span class="line">2 struct Page_list&#123;</span><br><span class="line">3 struct &#123;</span><br><span class="line">4 struct &#123;</span><br><span class="line">5 struct Page *le_next;</span><br><span class="line">6 struct Page **le_prev;</span><br><span class="line">7 &#125; pp_link;</span><br><span class="line">8 u_short pp_ref;</span><br><span class="line">9 &#125; lh_first;</span><br><span class="line">10 &#125;</span><br><span class="line">1 C:</span><br><span class="line">2 struct Page_list&#123;</span><br><span class="line">3 struct &#123;</span><br><span class="line">4 struct &#123;</span><br><span class="line">5 struct Page *le_next;</span><br><span class="line">6 struct Page **le_prev;</span><br><span class="line">7 &#125; pp_link;</span><br><span class="line">8 u_short pp_ref;</span><br><span class="line">9 &#125;* lh_first;</span><br><span class="line">10 &#125;</span><br></pre></td></tr></table></figure>
+
+<p>选A。</p>
+<p>事实上，不同结构的差别仅仅在于使用的是指针还是纯粹的结构，显然这几个用的都是指针。</p>
+<h3 id="thinking4"><a href="#thinking4" class="headerlink" title="thinking4"></a>thinking4</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Thinking 2.4 请思考下面两个问题：</span><br><span class="line">• 请阅读上面有关 R3000-TLB 的描述，从虚拟内存的实现角度，阐述 ASID 的必要性。</span><br><span class="line">• 请阅读《IDT R30xx Family Software Reference Manual》的 Chapter 6，结合 ASID</span><br><span class="line">段的位数，说明 R3000 中可容纳不同的地址空间的最大数量。</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>虚拟内存是对于每一个进程暴露一个各自的虚拟空间，通常不同的进程所用的地址空间都不同，不同的进程会将相同的虚拟地址映射到不同的物理地址，所以需要专门加上对于地址空间的标识来确定映射的是哪一个进程。</li>
+<li>ASID共6位，所以能标识2^6&#x3D;64个地址空间。</li>
+<li></li>
+</ol>
+<h3 id="Thinking5"><a href="#Thinking5" class="headerlink" title="Thinking5"></a>Thinking5</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Thinking 2.5 请回答下述三个问题：</span><br><span class="line">• tlb_invalidate 和 tlb_out 的调用关系？</span><br><span class="line">• 请用一句话概括 tlb_invalidate 的作用。</span><br><span class="line">• 逐行解释 tlb_out 中的汇编代码。</span><br></pre></td></tr></table></figure>
+
+<p><code>tlb_invalidata</code>函数中调用了<code>tlb_out</code>函数</p>
+<p>让给定的地址空间中的虚拟地址对应的页表项失效</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">LEAF(tlb_out)//这个是一个没有子函数的函数</span><br><span class="line">.set noreorder</span><br><span class="line">	mfc0    t0, CP0_ENTRYHI//CP0这个HI位的写入t0保存</span><br><span class="line">	mtc0    a0, CP0_ENTRYHI//将a0的值存进去HI位</span><br><span class="line">	nop</span><br><span class="line">	/* Step 1: Use &#x27;tlbp&#x27; to probe TLB entry */</span><br><span class="line">	/* Exercise 2.8: Your code here. (1/2) */</span><br><span class="line">	tlbp //根据 EntryHi 中的 Key（包含 VPN 与 ASID），查找 TLB 中与之对应的表项，并将</span><br><span class="line">//表项的索引存入 Index 寄存器（若未找到匹配项，则 Index 最高位被置 1</span><br><span class="line">	nop</span><br><span class="line">	/* Step 2: Fetch the probe result from CP0.Index */</span><br><span class="line">	mfc0    t1, CP0_INDEX//将index寄存器的值存到t1里面。上面的tlbp就是去寻找这个index，然后将找到的存到t1里面</span><br><span class="line">.set reorder</span><br><span class="line">	bltz    t1, NO_SUCH_ENTRY//根据t1的大小（index的值）</span><br><span class="line">.set noreorder</span><br><span class="line">	mtc0    zero, CP0_ENTRYHI//把0写到HI和LO里面，这样的话相当让他无效话。</span><br><span class="line">	mtc0    zero, CP0_ENTRYLO0</span><br><span class="line">	nop</span><br><span class="line">	/* Step 3: Use &#x27;tlbwi&#x27; to write CP0.EntryHi/Lo into TLB at CP0.Index  */</span><br><span class="line">	/* Exercise 2.8: Your code here. (2/2) */</span><br><span class="line">	tlbwi//tlbwi：以 Index 寄存器中的值为索引，将此时 EntryHi 与 EntryLo 的值写到索引指定</span><br><span class="line">//的 TLB 表项中。</span><br><span class="line">.set reorder</span><br><span class="line"></span><br><span class="line">NO_SUCH_ENTRY:</span><br><span class="line">	mtc0    t0, CP0_ENTRYHI//恢复现场，事实上只改变了lo的值。</span><br><span class="line">	j       ra//函数返回</span><br><span class="line">END(tlb_out)</span><br></pre></td></tr></table></figure>
+
+<h3 id="thinking6"><a href="#thinking6" class="headerlink" title="thinking6"></a>thinking6</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Thinking 2.6 任选下述二者之一回答：</span><br><span class="line">• 简单了解并叙述 X86 体系结构中的内存管理机制，比较 X86 和 MIPS 在内存管理上</span><br><span class="line">的区别。</span><br><span class="line">• 简单了解并叙述 RISC-V 中的内存管理机制，比较 RISC-V 与 MIPS 在内存管理上</span><br><span class="line">的区别。</span><br></pre></td></tr></table></figure>
+
+<p>选择回答：x86内存管理机制和mips在内存管理上的区别。</p>
+<p>x86架构中内存被分为三种形式，分别是<strong>逻辑地址</strong>（Logical Address），<strong>线性地址</strong>（Linear Address）和<strong>物理地址</strong>（Physical Address）</p>
+<p>在mips架构中则只有虚拟地址和物理地址。</p>
+<p>x86中，通过分段可以将逻辑地址转换为线性地址，而通过分页可以将线性地址转换为物理地址，整体上是段页式的结构。</p>
+<p>而mips则是单纯的页式架构。</p>
+<p>X86使用的是硬件页表查询，特点是：</p>
+<p>1）  操作系统并不知道有TLB存在</p>
+<p>2）  CPU保证TLB和页表一致性。即当页表改变或者切换时需要刷新TLB。</p>
+<p>3）  TLB中不存在ASID。</p>
+<p>4）  OS不能单一操作某一TLB表项，只能通过INVLPG指令无效整个TLB。</p>
+<p>MIPS使用的是软件TLB miss方法，使用ASID区分不同的用户空间。具体过程如下：</p>
+<p>1） 访问地址TLB不存在时候，陷入内核产生TLB miss异常。</p>
+<p>2） TLB miss 处理函数查询三级页表获得地址并填入TLB</p>
+<p>3） MIPS架构中访问TLB指令时：tlbwi，tlbri等。</p>
+<h3 id="thinkingA1"><a href="#thinkingA1" class="headerlink" title="thinkingA1"></a>thinkingA1</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Thinking A.1 在现代的 64 位系统中，提供了 64 位的字长，但实际上不是 64 位页式存</span><br><span class="line">储系统。假设在 64 位系统中采用三级页表机制，页面大小 4KB。由于 64 位系统中字长为</span><br><span class="line">8B，且页目录也占用一页，因此页目录中有 512 个页目录项，因此每级页表都需要 9 位。</span><br><span class="line">因此在 64 位系统下，总共需要 3 × 9 + 12 = 39 位就可以实现三级页表机制，并不需要 64</span><br><span class="line">位。</span><br><span class="line">现考虑上述 39 位的三级页式存储系统，虚拟地址空间为 512 GB，若三级页表的基地</span><br><span class="line">址为 PTbase，请计算：</span><br><span class="line">• 三级页表页目录的基地址。</span><br><span class="line">• 映射到页目录自身的页目录项（自映射）。</span><br></pre></td></tr></table></figure>
+
+<p>采用自映射的方式，则按照比例换算知，一个页面的大小是4KB，一共2^27个物理页，所以页表共2^27项，来针对所有的页面，然后一页共2^9项，所以三级页表数目为2^18页，为了表示这么多页表，二级页表项2^18个，所以需要2^9二级页表页，所以需要1个一级页表。</p>
+<p>其中，已知页表开始的范围是PTbase，所以作为它的目录，开始的点应该是相比于整个空间的比值,PTbase&#x2F;2^27*2^18&#x3D;PTbase&gt;&gt;9</p>
+<p>是实际上的二级页表的偏移量.然后再根据这二级页表的范围&#x2F;2^9*1&#x3D;PTbase&gt;&gt;9&gt;&gt;9，将两次的东西叠加起来，可知。</p>
+<p>然后映射到页目录自身的页目录项,则再次偏移即可。</p>
+<p>页目录特指一级页表，并不存在第几级页表的页目录。</p>
+<ol>
+<li>PTbase+PTbase&gt;&gt;9+PTbase&gt;&gt;18</li>
+<li>PTbase+PTbase&gt;&gt;9+PTbase&gt;&gt;18+PTbase&gt;&gt;27</li>
+</ol>
+<h2 id="实验难点"><a href="#实验难点" class="headerlink" title="实验难点"></a>实验难点</h2><h3 id="理解页控制块和页物理地址的关系"><a href="#理解页控制块和页物理地址的关系" class="headerlink" title="理解页控制块和页物理地址的关系"></a>理解页控制块和页物理地址的关系</h3><p>二者没有任何关系</p>
+<p>页控制块也不指示页的位置（不论是虚拟还是物理）</p>
+<p>页控制块也不放在每一个物理页上。</p>
+<p>二者只是一一对应，在虚拟地址中开劈与物理页地址数目相应的页控制块的空间（这个的首地址页和物理地址没任何关系）</p>
+<p>然后数组中[i]对应第几个物理页，仅仅是这样的映射，剩下的都没了。</p>
+<p>顺便经由此可以理解那几个页的转换宏函数</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">static inline u_long page2ppn(struct Page *pp) &#123;</span><br><span class="line">	return pp - pages;</span><br><span class="line">&#125;</span><br><span class="line">返回的是当前存的页结构体和pages初始地址的差。由于一一对应，所以其实就是物理的页号</span><br><span class="line">static inline u_long page2pa(struct Page *pp) &#123;</span><br><span class="line">	return page2ppn(pp) &lt;&lt; PGSHIFT;</span><br><span class="line">&#125;</span><br><span class="line">注意物理页号是从0开始的，物理页是严格对从0开始的物理地址一片片分成的，所以物理页号&lt;&lt;大小，就是物理地址。</span><br><span class="line">PPN是物理页号的意思。</span><br><span class="line"></span><br><span class="line">static inline struct Page *pa2page(u_long pa) &#123;</span><br><span class="line">	if (PPN(pa) &gt;= npage) &#123;</span><br><span class="line">		panic(&quot;pa2page called with invalid pa: %x&quot;, pa);</span><br><span class="line">	&#125;</span><br><span class="line">	return &amp;pages[PPN(pa)];</span><br><span class="line">&#125;</span><br><span class="line">返回物理地址所在的页，对应的，页管理模块，的地址。</span><br><span class="line"></span><br><span class="line">static inline u_long page2kva(struct Page *pp) &#123;</span><br><span class="line">	return KADDR(page2pa(pp));</span><br><span class="line">&#125;</span><br><span class="line">根据页面管理模块的地址来计算页面的物理地址，然后转化成虚拟地址。</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="对于何时是虚拟地址何时用的是物理地址的理解"><a href="#对于何时是虚拟地址何时用的是物理地址的理解" class="headerlink" title="对于何时是虚拟地址何时用的是物理地址的理解"></a>对于何时是虚拟地址何时用的是物理地址的理解</h3><p>页式管理中，最多接触的就是所谓虚拟地址向物理地址的转换，所以在每次写函数的时候容易疑惑哪个是物理地址，哪个是虚拟地址。</p>
+<p>比如memsize不是虚拟地址，而是单纯可用物理空间的大小。</p>
+<p>freemem也不是一个物理地址，而是指示的是已经使用的虚拟地址的范围。</p>
+<p>函数使用的都是虚拟地址。</p>
+<p>页控制块的地址也是虚拟地址，内核放的那些0x8000000也是虚拟地址，实际上只有在刚开始探测的时候拿到的才是物理地址（的大小)</p>
+<p>其他情况下，虚拟页在调用的时候都被物理地址宏包装起来了。所以几乎仅仅使用了虚拟地址。</p>
+<h3 id="对双向链表中pre机制的理解"><a href="#对双向链表中pre机制的理解" class="headerlink" title="对双向链表中pre机制的理解"></a>对双向链表中pre机制的理解</h3><p>和之前很不一样的就是在这个的双向链表实现中，指向前一个链表的指针是一个二重指针。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">struct type **le_prev; /* address of previous next element */  </span><br></pre></td></tr></table></figure>
+
+<p>它的定义也很神奇，指向前一个节点的next指针（而不是前一个节点）</p>
+<p>在一开始出了很多问题，后来搞清楚就好了。</p>
+<h3 id="pg-walk"><a href="#pg-walk" class="headerlink" title="pg_walk"></a>pg_walk</h3><p><del>最痛苦的就是写pg_walk的时候了</del></p>
+<p>没有梳理明白这个函数究竟是要干什么的，实现什么功能，然后页和项之间的对应关系。</p>
+<p>首先：walk并不具备填写表项的功能，就是返回了表项的地址。</p>
+<p>我们要做的是：首先给定了一级页表基地址，就是代表从这里开始找偏移了，然后从va这个虚拟地址里面找二级页表项（注意是页表项，不是一个真的页，它的虚拟地址，这个地址必然指了一个页，然后这个页是在二级页表的表项里面存储的，只需要把ppte的值存成这个新建的二级页表就行了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pgdir_walk(Pde *pgdir, u_long va, int create, Pte **ppte)</span><br></pre></td></tr></table></figure>
+
+<p>pgdir是页目录地址，va是虚拟地址，create是控制创造的参量，ppte指向pte的位置。</p>
+<p>为啥要用双指针？因为有可能那个pte<em>压根不存在（就是原本以为的二级页表的地址）然后直接把新建的页的页表项的地址（pte*</em>)存在里面就好了。</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">int</span> <span class="title function_">pgdir_walk</span><span class="params">(Pde *pgdir, u_long va, <span class="type">int</span> create, Pte **ppte)</span> &#123;</span><br><span class="line">	Pde *pgdir_entryp;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">Page</span> *<span class="title">pp</span>;</span></span><br><span class="line">	Pte *pg_phy_entryp;<span class="comment">//这个是二级表项的地址。</span></span><br><span class="line">	<span class="comment">/* Step 1: Get the corresponding page directory entry. */</span></span><br><span class="line">	<span class="comment">/* Exercise 2.6: Your code here. (1/3) */</span></span><br><span class="line">    pgdir_entryp=(Pde*)(pgdir+PDX(va));<span class="comment">//</span></span><br><span class="line"></span><br><span class="line">    这个是什么意思？原本一级页表的表头地址pgdir，加上经过PDX(va)（就是地址偏移过后）就是真正这个一级表项的地址。它本身也是个虚拟笛之爱。</span><br><span class="line"></span><br><span class="line">	pg_phy_entryp=(Pte*)(KADDR(PTE_ADDR(*pgdir_entryp)));</span><br><span class="line">    然后这个一级表项的地址取值就是表项内容，拿出来取前<span class="number">20</span>位，PTE_ADDr一下就是物理地址，KaDD一下就是虚拟地址，记住这些东西计算的时候都是虚拟地址。这个虚拟地址就是二级页表那一页的表头。</span><br><span class="line"></span><br><span class="line">    注意，这个仅在给出的地址有效的情况下能用，无效新开的话还要覆写。</span><br><span class="line">	<span class="comment">/* Step 2: If the corresponding page table is not existent (valid) and parameter `create`</span></span><br><span class="line"><span class="comment">	 * is set, create one. Set the permission bits &#x27;PTE_D | PTE_V&#x27; for this new page in the</span></span><br><span class="line"><span class="comment">	 * page directory.</span></span><br><span class="line"><span class="comment">	 * If failed to allocate a new page (out of memory), return the error. */</span></span><br><span class="line">	<span class="comment">/* Exercise 2.6: Your code here. (2/3) */</span></span><br><span class="line">	<span class="keyword">if</span>((*pgdir_entryp&amp;PTE_V==<span class="number">0</span>))<span class="comment">//如果一级表项存的信息是无效的。</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(create!=<span class="number">0</span>)&#123;<span class="comment">//假如创造 </span></span><br><span class="line">			<span class="keyword">if</span>(page_alloc(&amp;pp)==-E_NO_MEM)</span><br><span class="line">			&#123;</span><br><span class="line">				*ppte=<span class="literal">NULL</span>;</span><br><span class="line">				<span class="keyword">return</span> -E_NO_MEM;</span><br><span class="line">			&#125;没造成直接报错</span><br><span class="line">			<span class="keyword">else</span></span><br><span class="line">			&#123;</span><br><span class="line">            pp-&gt;pp_ref=<span class="number">1</span>;<span class="comment">//注意这个并不代表一个具体的页面地址，它只是一个页管理模块的地址，除了alloc剩下都没法接触真的页物理地址。</span></span><br><span class="line">			维护新开的页的使用次数</span><br><span class="line">            pg_phy_entryp=KADDR(page2pa(pp))</span><br><span class="line">            然后新开的话，就覆写，让这个成为这个新开的页首地址(pp返回的是这个新物理页的管理模块的地址，虚拟地址，page2pa返回pp这个页管理模块对应物理页的地址)</span><br><span class="line">            (*pgdir_entryp)=(Pde)page2pa(pp);</span><br><span class="line">            然后一级表项内容改成物理地址。</span><br><span class="line">			(*pgdir_entryp)|=PTE_D | PTE_V;</span><br><span class="line">            然后修正特权位。</span><br><span class="line">            造成的话，就相当于申请了一个新的物理页，注意，只是二级页表的物理页，我要的是表项的地址。(而且是虚拟地址)</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span>  <span class="comment">//不创造的话肯定不够，返回异常就是了。</span></span><br><span class="line">		&#123;</span><br><span class="line">			*ppte=<span class="literal">NULL</span>;</span><br><span class="line">			<span class="keyword">return</span> -E_NO_MEM ;不创造的话直接报错。</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">/* Step 3: Assign the kernel virtual address of the page table entry to &#x27;*ppte&#x27;. */</span></span><br><span class="line">	<span class="comment">/* Exercise 2.6: Your code here. (3/3) */</span></span><br><span class="line">	*ppte=pg_phy_entryp+PTX(va);假如一开始有的话虚拟地址偏移之后拿出来二级页表的页内偏移，就恰好是二级表项的地址。</span><br><span class="line">    注意是虚拟地址。</span><br><span class="line"></span><br><span class="line">    然后假如新建的话，pg那个已经变成pp了，就是新申请的表的首地址，然后再偏移到这个表项就行了。</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="实验体会"><a href="#实验体会" class="headerlink" title="实验体会"></a>实验体会</h2><p><del>刚开始看代码看的很崩溃</del></p>
+<p>还是容易对于大量的代码不是很理解，没有完全理解去搜寻文件应该在哪里搜寻（比如h和.c的关系，mmu.h都放了啥之类的）</p>
+<p>然后等到在这次的作业中彻底理解并熟悉的文件的分布和其功能时，针对性的查询理解就方便了很多。</p>
+<p>然后就是对虚实地址的理解，弯弯绕绕出了很多误区，属于是一开始就有的错误，在给别人讲解的时候才恍然大悟自己错了。</p>
+<p>所以千万不要急着写，不要觉得有的代码是自己不要看的，然后凭着自己的理解就开始写，（比如一开始就没搞清楚那几个宏函数是怎么做的，导致后面自己不全函数的时候不知道用哪个）</p>
+<p>经过这次实验，自己对于指针的理解和内存模型的理解也提升了很多。</p>
 
                 
             </div>
@@ -589,7 +627,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://brilliant-daffodil-eb4c4f.netlify.app/2023/03/21/os_lab1_paper/">https://brilliant-daffodil-eb4c4f.netlify.app/2023/03/21/os_lab1_paper/</a>
+                    <a href="https://brilliant-daffodil-eb4c4f.netlify.app/2023/04/12/os_lab2_paper/">https://brilliant-daffodil-eb4c4f.netlify.app/2023/04/12/os_lab2_paper/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -672,17 +710,18 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2023/03/21/os_lab0_paper/">
+                <a href="/2023/04/12/os_lab2_paper/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="lab0思考题">
+                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="lab2思考题">
                         
-                        <span class="card-title">lab0思考题</span>
+                        <span class="card-title">lab2思考题</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -692,9 +731,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2023-03-21
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-12
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -703,6 +742,7 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -721,13 +761,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2023/03/18/%E9%A1%B5%E8%A1%A8%E7%AE%A1%E7%90%86/">
+                <a href="/2023/04/12/os_lab3_paper/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="页式内存管理系统">
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="lab3思考题">
                         
-                        <span class="card-title">页式内存管理系统</span>
+                        <span class="card-title">lab3思考题</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -738,7 +778,7 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-18
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-12
                             </span>
                         <span class="publish-author">
                             
