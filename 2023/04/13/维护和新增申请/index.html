@@ -351,351 +351,530 @@
 </header>
 
     
-    <div class="bg-cover pd-header about-cover">
-    <div class="container">
-    <div class="row">
-    <div class="col s10 offset-s1 m8 offset-m2 l8 offset-l2">
-        <div class="brand">
-            <div class="title center-align">
-                
-                这世间荒芜，但浪漫不死
-                
-            </div>
 
-            <div class="description center-align">
-                
-                <span id="subtitle"></span>
-                <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11"></script>
-                <script>
-                    var typed = new Typed("#subtitle", {
-                        strings: ['世界上有两样东西最宝贵，那就是等待和希望','人类的时间不是一种圆形的循环，是飞速向前的一条直线，所以人不幸福，是的，幸福是对重复的渴求'],
-                        startDelay: 300,
-                        typeSpeed: 100,
-                        loop: true,
-                        backSpeed: 50,
-                        showCursor: true
-                    });
-                </script>
-                
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title"></h1>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        padding-bottom: 30px;
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                          <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                          </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-04-13
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="维护申请"><a href="#维护申请" class="headerlink" title="维护申请"></a>维护申请</h1><p>之前操纵电梯的只有电梯内部的线程，所以维修的命令想要传递进去，需要一个调度单元center。</p>
+<p>然后如何判断呢？</p>
+<p>也许应该在电梯新建的时候就把center自己放进去，传this，然后把getTODO新增加一个对电梯线程持有的center的状态的判断。center是当做一个线程吗？</p>
+<p>center显然是要当做一个线程，但是它作为线程仅仅要的是处理新增电梯的请求。所以三种命令应该分三种来存储。</p>
+<p>然后电梯处理两种请求，人的请求和维护的请求。维护开始则直接断掉。（也是break，但是和之前的不一样over）。</p>
+<p>如果维护请求加进来的时候，在休眠？（注意休眠wait等的可能是作为人的请求，维护请求进来的notify能叫起来吗？所以显然不能把两者分开放。应该都放到RequestTable里面，这样在notify的时候始终是requestTable来notify，都是统一的。</p>
+<p>Requsetable一方面是要存每一层楼的数列，另一方面存的是维修申请，然后维修申请优先。getToDo的时候先判断维修申请。</p>
+<p>然后新增电梯的请求和这些其实不是一个层次的，应该专门，开一个addTable列，然后让inputHandler来做一个分派。</p>
+<p>然后其实就差不多了。然后电梯组不是共享资源，所以直接加上就好了，有且仅有requestTable和addTable是互用的，reT是inputHandler和电梯互用，addHandler是center和inputHandler公用。</p>
+<p>同时记得关center线程！！！</p>
+<p>不要光锁requestTable，记得拿到null的时候把center的那个也给over了。</p>
+<p>问题就是，怎么保证在2的间隔？也就是说怎么保证这个指令被inputHandler读进来之后，能够立刻反馈到电梯上面？</p>
+<p>也许需要一个大的syn块，不能让add能够插进去隔断，而要把add放在里面。</p>
+<p>在两次移动楼层操作内”指的是在官方包自动输出<code>MAINTAIN_ACCEPTED</code>开始，该部电梯在输出<code>MAINTAIN_ABLE</code>之前至多输出两条<code>ARRIVE</code></p>
+<p>不妨查看一下官方包的逻辑。</p>
+<p>在maintain里面有这样的方法</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public String toString() &#123;</span><br><span class="line">    return String.format(&quot;MAINTAIN_ACCEPT-%d&quot;, this.elevatorId);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>然后在evalotr的input逻辑里面有这样的操作。：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (MaintainRequest.matches(line)) &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="type">MaintainRequest</span> <span class="variable">request</span> <span class="operator">=</span> MaintainRequest.parse(line);</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">this</span>.removedElevatorId.contains(request.getElevatorId())) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">InvalidElevatorIdException</span>(line);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        TimableOutput.println(request.toString());</span><br><span class="line">        <span class="built_in">this</span>.removedElevatorId.add(request.getElevatorId());</span><br><span class="line">        <span class="keyword">return</span> request;</span><br></pre></td></tr></table></figure>
+
+<p>也就是说，一旦这个input线程拿到了maintain的结果，就会立即输出这个！！</p>
+<p>然后最多只能上两层楼了。</p>
+<p>为了防止这个requestTable里面的那几句话的时候电梯已经走两个线程，选择直接在里面放锁，让读到request就直到变化完才能调用里面的信息。</p>
+<p>center线程需要做啥？</p>
+<p>控制新增电梯并及时开启，没了。</p>
+<p>所以仅仅需要和input公用一个addlist，然后读到addlist就没了。</p>
+<p>应当遵循这样的逻辑：</p>
+<p>读取要做的事情：</p>
+<p>假如over，也就是说addli里面没东西了，然后addlist页空了，直接break</p>
+<p>单纯空了：wait</p>
+<p>有新增的，新建一个电梯。<strong>让它启动</strong></p>
+<p>结束。</p>
+<p>然后新塞一个person回去就要修改其from floor，但是好像不提供这个功能？</p>
+<p>别忘了：相当于一个新的请求了，然后 在包里面提供了这样的函数：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public PersonRequest(int fromFloor, int toFloor, int personId) &#123;</span><br><span class="line">    this.fromFloor = fromFloor;</span><br><span class="line">    this.toFloor = toFloor;</span><br><span class="line">    this.personId = personId;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>大可以新建一个来。</p>
+<p>然后注意，不应该把maintain放在open前面，否则假设明明可以直接打开门当地的下，但是先maintain就会导致出现出入相等的情况。</p>
+<p>优先open，可优化:将赶出去和拿进来分开 ，假如是main就单纯赶出去。</p>
+<p>open和main的先后。</p>
+<p>然后本次出现了一个极其sb的错误。</p>
+<p>不知道强测测没测出来。</p>
+<p>就是假设进来人之后，把拿到的那个电梯给维护了，然后剩下的电梯由于这个人已经被接走了，所以就关闭了。</p>
+<p>所以要修改关闭逻辑，需要等所有人里面都没人了再都关了。修改over逻辑！！。</p>
+<p>惨痛教训，直接寄掉了。</p>
+<p>t了足足三个点，然后自由竞争也被制裁，没有扛住。</p>
+<p>你说你非新开一个center线程干啥？完全没必要的东西，真就离谱。</p>
+<p>直接删去就好了。</p>
+<p>然后让inputHandler读进来一个新建请求直接新建即可。完全不需要多一手。</p>
+<p>领略到如无必要勿增实体（</p>
+<p>幸亏没发帖子，不然贻笑大方力（</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">farewell</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://brilliant-daffodil-eb4c4f.netlify.app/2023/04/13/%E7%BB%B4%E6%8A%A4%E5%92%8C%E6%96%B0%E5%A2%9E%E7%94%B3%E8%AF%B7/">https://brilliant-daffodil-eb4c4f.netlify.app/2023/04/13/%E7%BB%B4%E6%8A%A4%E5%92%8C%E6%96%B0%E5%A2%9E%E7%94%B3%E8%AF%B7/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">farewell</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2023/04/13/%E7%94%B5%E6%A2%AF%E4%B8%8E%E5%A4%9A%E7%BA%BF%E7%A8%8B/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="第四次讨论区发帖">
+                        
+                        <span class="card-title">第四次讨论区发帖</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-04-13
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            farewell
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/BUAA-OO/">
+                        <span class="chip bg-color">BUAA_OO</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/04/13/%E5%B8%96%E5%AD%90/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="第五次讨论区 发帖">
+                        
+                        <span class="card-title">第五次讨论区 发帖</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-13
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            farewell
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/BUAA-OO/">
+                        <span class="chip bg-color">BUAA_OO</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
 <script>
-    $('.bg-cover').css('background-image', 'url(/medias/banner/0.jpg)');
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
 </script>
 
-
-    </div>
-</div>
-
-
-<main class="content">
-
     
-
-    
-
-    <!-- 所有文章卡片 -->
-    <article id="articles" class="container articles">
-        <div class="row article-row">
-            
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/03/21/os_lab0_paper/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="lab0思考题">
-                            
-                            <span class="card-title">lab0思考题</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                思考题Thinking 0.1 思考下列有关 Git 的问题：cat后的结果：
-1234567891011121314151617181920212223位于分支 master尚无提交未跟踪的文件:  （使用 &quot;git add &
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-21
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-user fa-fw"></i>
-                                farewell
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/BUAA-OS/">
-                            <span class="chip bg-color">BUAA_OS</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/03/21/os_lab1_paper/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="lab1思考题">
-                            
-                            <span class="card-title">lab1思考题</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                os lab1 实验报告思考题thinking1题目：Thinking 1.1 请阅读附录中的编译链接详解，尝试分别使用实验环境中的原生 x86 工具链（gcc、ld、readelf、objdump 等）和 MIPS 交叉编译工具链（带有 
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-21
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-user fa-fw"></i>
-                                farewell
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/BUAA-OS/">
-                            <span class="chip bg-color">BUAA_OS</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/03/18/%E9%A1%B5%E8%A1%A8%E7%AE%A1%E7%90%86/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="页式内存管理系统">
-                            
-                            <span class="card-title">页式内存管理系统</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                页表管理emm对于位于 kuseg 的虚拟地址，MOS 中采用两级页表结构对其进行地址转换
-这句话，页表管理这个的操作是虚拟地址的如何找真实物理地址的页。
-include&#x2F;mmu.h 中提供了两个宏以快速获取偏移量，PDX(va)
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-18
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-user fa-fw"></i>
-                                farewell
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/BUAA-OS/">
-                            <span class="chip bg-color">BUAA_OS</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/03/18/%E5%86%85%E6%A0%B8%20%E5%AD%98%E5%82%A8/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="内核储存">
-                            
-                            <span class="card-title">内核储存</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                内核存储理解，一直在座的事情都是装载内核。
-内核是直接映射到物理地址上，从0x80000开始直接映射到物理地址的0位置，然后装载那些段。
-然后用户态的地址都是依靠页表调整和取用。
-所以说注意这一张叫做内核存储，所有涉及到的函数都和内核有关，
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-18
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-user fa-fw"></i>
-                                farewell
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/BUAA-OS/">
-                            <span class="chip bg-color">BUAA_OS</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/03/18/vscode&wsl%E9%85%8D%E7%BD%AElinux%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="wsl配置linux开发环境">
-                            
-                            <span class="card-title">wsl配置linux开发环境</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-18
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-user fa-fw"></i>
-                                farewell
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/BUAA-OS/">
-                            <span class="chip bg-color">BUAA_OS</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/03/18/TLB%E7%AE%A1%E7%90%86/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="TLB管理">
-                            
-                            <span class="card-title">TLB管理</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                TLB管理基础理解TLB的本质是一个表，但是不同于32位的页表项，TLB事实上是一个由64位的表项构成的表。
-本质上TLB和硬件紧密相连的，页表都是在内存里的，TLB则是在CPU里面的一个特殊的地址转换部件（这个部件叫MMU，本实验里面MM
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-18
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-user fa-fw"></i>
-                                farewell
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/BUAA-OS/">
-                            <span class="chip bg-color">BUAA_OS</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-        </div>
-    </article>
 
 </main>
-
-
-<div class="container paging">
-    <div class="row">
-        <div class="col s6 m4 l4">
-            
-            <a href="/"
-               class="left btn-floating btn-large waves-effect waves-light bg-color">
-                <i class="fas fa-angle-left"></i>
-            </a>
-            
-        </div>
-        <div class="page-info col m4 l4 hide-on-small-only">
-            <div class="center-align b-text-gray">2 / 7</div>
-        </div>
-        <div class="col s6 m4 l4">
-            
-            <a href="/page/3/"
-               class="right btn-floating btn-large waves-effect waves-light bg-color">
-                <i class="fas fa-angle-right"></i>
-            </a>
-            
-        </div>
-    </div>
-</div>
 
 
 

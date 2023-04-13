@@ -1,0 +1,1264 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="BUAA_OO_ELEVATOR, farewell&#39;s blog">
+    <meta name="description" content="你到过许多地方，用你自己的故事记认许多城邦后，你终于抵达此城">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>BUAA_OO_ELEVATOR | farewell&#39;s blog</title>
+    <link rel="icon" type="image/png" href="/medias/logo.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">farewell&#39;s blog</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="" class="waves-effect waves-light">
+
+      
+      <i class="fas fa-music" style="zoom: 0.6;"></i>
+      
+      <span>Musics</span>
+      <i class="fas fa-chevron-down" aria-hidden="true" style="zoom: 0.6;"></i>
+    </a>
+    <ul class="sub-nav menus_item_child ">
+      
+      <li>
+        <a target="_blank" rel="noopener" href="https://www.kugou.com/songlist/gcid_3zsmhjkqzhz07e/">
+          
+          <i class="fas fa-music" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>Youth</span>
+        </a>
+      </li>
+      
+      <li>
+        <a target="_blank" rel="noopener" href="https://www.kugou.com/songlist/gcid_3zsmhjkqzgz054/">
+          
+          <i class="fas fa-music" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>Hurt</span>
+        </a>
+      </li>
+      
+      <li>
+        <a target="_blank" rel="noopener" href="https://www.kugou.com/songlist/gcid_3zsmhjkqzfz091/">
+          
+          <i class="fas fa-music" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>romantic</span>
+        </a>
+      </li>
+      
+    </ul>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">farewell&#39;s blog</div>
+        <div class="logo-desc">
+            
+            你到过许多地方，用你自己的故事记认许多城邦后，你终于抵达此城
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="javascript:;">
+			
+				<i class="fa-fw fas fa-music"></i>
+			
+			Musics
+			<span class="m-icon"><i class="fas fa-chevron-right"></i></span>
+		</a>
+            <ul  style="background:  ;" >
+              
+                <li>
+
+                  <a target="_blank" rel="noopener" href="https://www.kugou.com/songlist/gcid_3zsmhjkqzhz07e/ " style="margin-left:75px">
+				  
+				   <i class="fa fas fa-music" style="position: absolute;left:50px" ></i>
+			      
+		          <span>Youth</span>
+                  </a>
+                </li>
+              
+                <li>
+
+                  <a target="_blank" rel="noopener" href="https://www.kugou.com/songlist/gcid_3zsmhjkqzgz054/ " style="margin-left:75px">
+				  
+				   <i class="fa fas fa-music" style="position: absolute;left:50px" ></i>
+			      
+		          <span>Hurt</span>
+                  </a>
+                </li>
+              
+                <li>
+
+                  <a target="_blank" rel="noopener" href="https://www.kugou.com/songlist/gcid_3zsmhjkqzfz091/ " style="margin-left:75px">
+				  
+				   <i class="fa fas fa-music" style="position: absolute;left:50px" ></i>
+			      
+		          <span>romantic</span>
+                  </a>
+                </li>
+              
+            </ul>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/farewell-exiles" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>来van啊
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/farewell-exiles" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="来van啊" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/17.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">BUAA_OO_ELEVATOR</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        padding-bottom: 30px;
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/BUAA-OO/">
+                                <span class="chip bg-color">BUAA_OO</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-04-13
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="BUAA-OO-ELEVATOR"><a href="#BUAA-OO-ELEVATOR" class="headerlink" title="BUAA_OO_ELEVATOR"></a>BUAA_OO_ELEVATOR</h1><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>本单元的主题是：电梯调度和多线程，旨在模拟北航新主楼电梯这个情景，然后练习多线程分享共享对象、线程交互等知识点，是一次<strong>非常令人印象深刻的多线程编程体验</strong>。</p>
+<p>电梯会接受来自各个楼层的乘客的乘坐信号，然后把乘客接送到指定的楼层。</p>
+<p>虽然<strong>多线程的知识</strong>非常多且繁杂，但是在选择一种特定的锁（比如我直接选择最开始的synchronized)并熟练掌握后，多线程的知识本身反而不再是最困扰人的。<strong>细节</strong>成了后期最困扰人的一个关键点。</p>
+<p>从工程设计层面，主要练习如何更<strong>“线程安全，逻辑清晰”</strong>的组织线程类和共享资源之间的关系。</p>
+<p>从代码书写层面，主要练习的是<strong>解耦</strong>，如何让复杂的判断和行为分开，逻辑清晰地、如同书写文字般地书写自己的代码，从而减少bug和提升可维护性。</p>
+<p>在这一单元一开始在架构的选择的时候，阅读了往届学长的博客并估计了自己的其他任务后，我选择了性能不是最杰出但是正确率和简单程度都很强的”自由竞争“设计。虽然耗电量爆炸，但是速度和等待时间上都是比较优秀的，这也导致虽然最后强测分不是非常高，但是联系起来投入的时间也性价比较为适宜。</p>
+<p>在三次作业中，1和3由于时间充足，所以设计比较严密，没有出现任何bug，但是第二次作业由于各种原因没有采取足够的重视，导致金身破了，需要引以为戒。</p>
+<p>同时，我有每次写完代码后，将自己的思路和细节总结下来的习惯，一方面能和其他同学分享自己的思考，另一方面，在作为读者的角度审视我的架构的时候，我也在梳理自己的思路，精简自己的设计，实在是益处无穷。<del>第二次作业没写帖子草草了事结果就寄了</del>，因此要养成分享的好习惯，<strong>开源，分享，彼此将自己的知识传递，正是cs学习者们团结一致面对无尽知识的抗争方式</strong>。</p>
+<p>本单元中，我遵循了开闭原则，书写上采取了易于扩展的形式，为可能的功能预留了空间，除了第三次改变了信息的传递类之外（事实上，这个新类暴露的方法和之前的几乎一样）没有进行任何重构，因此大体上没有发生什么变化。</p>
+<h1 id="task1："><a href="#task1：" class="headerlink" title="task1："></a>task1：</h1><h2 id="分析三次作业中同步块的设置和锁的选择，并分析锁与同步块中处理语句之间的关系"><a href="#分析三次作业中同步块的设置和锁的选择，并分析锁与同步块中处理语句之间的关系" class="headerlink" title="分析三次作业中同步块的设置和锁的选择，并分析锁与同步块中处理语句之间的关系"></a>分析三次作业中同步块的设置和锁的选择，并分析锁与同步块中处理语句之间的关系</h2><p>三次作业中，考虑到我对synchronized块的学习最为深入，我为了稳妥都使用synchronized来控制同步块。</p>
+<p>在锁与同步块处理语句中，最重要的是：原子性</p>
+<p>我们会写同步方法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public synchronized int a();</span><br></pre></td></tr></table></figure>
+
+<p>同时也会写同步块</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sychronized (A)</span><br><span class="line">&#123;</span><br><span class="line">A.a();</span><br><span class="line">A.b();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>其中方法加锁是容易理解的，在执行完synchronized修饰的方法前，该对象所有被synchronized修饰的方法均不能被其他线程调用（当然，当前线程拿到了<strong>这个对象</strong>的锁，所以可以调用其他的同步方法。</p>
+<p>但是显然，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sychronized (A)</span><br><span class="line">&#123;</span><br><span class="line">A.a();</span><br><span class="line">A.b();</span><br><span class="line">&#125;</span><br><span class="line">A.a();</span><br><span class="line">A.b();</span><br></pre></td></tr></table></figure>
+
+<p>，上下两个方法是有区别的，区别在于原子性。</p>
+<p>在上面，A被锁住，保证这个时候在{}内的语句是可以不被其他线程打扰执行完的，在退出{}之前，其他线程不能调用A’的同步方法。</p>
+<p>但是下面，A.a()执行完后，<strong>该线程让出了A的锁</strong>其他线程可以进来执行A的同步方法，之后才是进入到A.b()继续执行。</p>
+<p>考虑到RequestTable是所有线程的共享变量，为了扩大临界区，我把所有的方法均设计成了synchronized方法，并且在线程需要多个syn方法一次性操作完成时，加上syn控制块来保证操作的原子性。</p>
+<h1 id="task2-："><a href="#task2-：" class="headerlink" title="task2 ："></a>task2 ：</h1><h2 id="总结分析三次作业中的调度器设计，并分析调度器如何与程序中的线程进行交互；总结分析三次作业中的调度策略，并分析自己的调度策略是如何适应时间、电量等多个性能指标的"><a href="#总结分析三次作业中的调度器设计，并分析调度器如何与程序中的线程进行交互；总结分析三次作业中的调度策略，并分析自己的调度策略是如何适应时间、电量等多个性能指标的" class="headerlink" title="总结分析三次作业中的调度器设计，并分析调度器如何与程序中的线程进行交互；总结分析三次作业中的调度策略，并分析自己的调度策略是如何适应时间、电量等多个性能指标的"></a>总结分析三次作业中的调度器设计，并分析调度器如何与程序中的线程进行交互；总结分析三次作业中的调度策略，并分析自己的调度策略是如何适应时间、电量等多个性能指标的</h2><p><del>笔者也想回答这个问题，可惜，对不起，做不到。</del></p>
+<h2 id="调度器设计"><a href="#调度器设计" class="headerlink" title="调度器设计"></a>调度器设计</h2><p>前言已经提到，笔者并没有采取<strong>任何主动调度器</strong>。任何电梯的控制，都是采用的<strong>把信息传递给电梯，然后让电梯自己分析应当如何抉择</strong>的look算法。</p>
+<p>因此，在回答这个问题的时候，笔者打算介绍自己如何让电梯与<strong>静态信息</strong>交互。</p>
+<p>在三次作业中，均采用了<strong>相同</strong>的设计，所以在此集中解释</p>
+<h2 id="调度器交互-amp-调度策略"><a href="#调度器交互-amp-调度策略" class="headerlink" title="调度器交互&amp;调度策略"></a>调度器交互&amp;调度策略</h2><h3 id="requestTable：等候表信息与交互"><a href="#requestTable：等候表信息与交互" class="headerlink" title="requestTable：等候表信息与交互"></a>requestTable：等候表信息与交互</h3><h4 id="与电梯线程"><a href="#与电梯线程" class="headerlink" title="与电梯线程"></a>与电梯线程</h4><p>在每一个电梯线程中，均配有一个共享对象：<code>requestTable</code>，这个对象是共享资源，向这几个线程暴露了当前总体等待队列的信息，每一个电梯便可以依据这个信息和自己当前的状态来决定接下来要做什么。</p>
+<p>实现这个的关键方法如下，顾名思义，getTODO，得到接下来要做的事情。<strong>由于电梯的状态是每一时刻都在变化，选择每次决定行动前先进行动态的查询</strong></p>
+<p>hw的情况下，采取这样的查询方式：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">private int getToDo() //这个的时机应该在每次进行一个循环时候判断，或者开门，或者反向，或者等，或者移动，每走一步看看状态。每次取这个类似状态转换了</span><br><span class="line">    &#123;</span><br><span class="line">        synchronized (requestTable) &#123;</span><br><span class="line">            int floor = elevator.getFloor();</span><br><span class="line">            boolean isUp = elevator.getDir();</span><br><span class="line">            //第一个条件，这一层里面的人要出来，或者外面的人要进去且不满或者要下人。</span><br><span class="line">            if (elevator.needToOutBecauseOfIn() ||</span><br><span class="line">                    (requestTable.needIn(floor, isUp) &amp;&amp;</span><br><span class="line">                            (!elevator.isFull()) || elevator.needToOutBecauseOfIn())) &#123;</span><br><span class="line">                return OPEN;</span><br><span class="line">            &#125;</span><br><span class="line">           if (elevator.needToContinue()) &#123;  //如果有人，需要继续往下走</span><br><span class="line">                return MOVE;</span><br><span class="line">            &#125; else &#123;    //如果没人，就是自由状态</span><br><span class="line">                if (requestTable.isEmpty()) &#123; //只要是空的，那么就不去争抢，去卡着就好了。</span><br><span class="line">                    &#123;</span><br><span class="line">                        if (requestTable.getOver()) &#123;</span><br><span class="line">                            return OVER;</span><br><span class="line">                        &#125; else &#123;</span><br><span class="line">                            return WAIT;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    if (requestTable.withAheadToGet(floor, isUp)) &#123;</span><br><span class="line">                        return MOVE;</span><br><span class="line">                    &#125; else &#123;</span><br><span class="line">                        return REVERSE;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p><strong>首先大的策略是，只上同向的，能按照原方向走绝对不转向，有目的可走绝对不wait但是这个可能引起耗电量爆炸，这就是调度的事情了）</strong></p>
+<p>第一种情况：结束进程：只有电梯里没人，然后请求队里没东西，然后input线程结束了才能-over</p>
+<p>第二种情况：开门：上面说过了，里面有人在这楼下||（外面这楼有人在这楼上&amp;&amp;（电梯没满||电梯要下人））</p>
+<p>特别的，先下再上，直到装满再走，为了减少开门次数，如果能装的有限，尽量装同一个楼层的。</p>
+<p>每一次开门都会完全解决这里这个电梯能解决的问题。</p>
+<p>第三种情况：移动：这里不需要解决了但是里面还有人，继续往上走（同一个方向的好处来了）</p>
+<p> 或者电梯里没有人了，但是在原方向上还有人，继续走。</p>
+<p>第四种情况：反向，电梯里没有人了，原方向也没人（原方向优先），反方向有人，反转（这一步只做一个反转，毕竟反正是while）</p>
+<p>第五种情况：里面没人外面没请求，wait，（注意是在<code>requestTable.wait()</code>)</p>
+<p>而在第三次作业中，考虑到残疾电梯的出现，电梯需要对自己能到达楼层的本领和现在的请求做出估计，因此选择更新getTODO的实现逻辑。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">private int getToDo() //这个的时机应该在每次进行一个循环时候判断，或者开门，或者反向，或者等，或者移动，每走一步看看状态。每次取这个类似状态转换了</span><br><span class="line">    &#123;</span><br><span class="line">        synchronized (requestTable) &#123;</span><br><span class="line">            int floor = elevator.getFloor();</span><br><span class="line">            boolean isUp = elevator.getDir();</span><br><span class="line">            //第一个条件，这一层里面的人要出来，或者外面的人要进去且不满或者要下人。</span><br><span class="line">            if (requestTable.hasMaintain(elevator.getId())) &#123;</span><br><span class="line">                return MAINTAIN;</span><br><span class="line">            &#125;</span><br><span class="line">            if (achievable.get(floor) == 1 &amp;&amp; (elevator.needToOut() ||</span><br><span class="line">                    (requestTable.needIn(floor, isUp, achievable) &amp;&amp;</span><br><span class="line">                            (elevator.notFull()) || elevator.needToOut()))) &#123;</span><br><span class="line">                return OPEN;</span><br><span class="line">            &#125;</span><br><span class="line">            if (elevator.notEmpty()) &#123;  //如果有人，需要继续往下走</span><br><span class="line">                return MOVE;</span><br><span class="line">            &#125; else &#123;    //如果没人，就是自由状态</span><br><span class="line">                if (requestTable.isEmpty()) &#123; //只要是空的，那么就不去争抢，去卡着就好了。</span><br><span class="line">                    &#123;</span><br><span class="line">                        if (requestTable.getOver() &amp;&amp; requestTable.getAllClean()) &#123;</span><br><span class="line">                            return OVER;</span><br><span class="line">                        &#125; else &#123;</span><br><span class="line">                            return WAIT;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    if (requestTable.withAheadToGet(floor, isUp, achievable)) &#123;</span><br><span class="line">                        return MOVE;</span><br><span class="line">                    &#125; else if (requestTable.withAheadToGet(floor, !isUp, achievable)) &#123;</span><br><span class="line">                        return REVERSE;</span><br><span class="line">                    &#125;</span><br><span class="line">                    else if (requestTable.needIn(floor, !isUp, achievable)) &#123;</span><br><span class="line">                        return REVERSE;</span><br><span class="line">                    &#125;</span><br><span class="line">                    else &#123;</span><br><span class="line">                        return WAIT;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Center：路径信息中心与交互"><a href="#Center：路径信息中心与交互" class="headerlink" title="Center：路径信息中心与交互"></a>Center：路径信息中心与交互</h3><p>在hw7里面，涉及到了换乘的功能，所以要找一个信息中心，存储当前所有电梯的可达性。</p>
+<p>从逻辑上讲，应该是乘客掌握这些信息，然后自己选择自己的道路，但是考虑到乘客的流动性，还是采取让所有电梯线程都拥有这个信息资源。Center里面记录了不同楼层间的可达图</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private final int[][] puzzle;</span><br></pre></td></tr></table></figure>
+
+<p>当两层楼之间可以仅仅通过一个电梯达到，那么就将这个图puzzle的[i][j]置成非0（数值的大小为有几个电梯能够完成直达）；否则就置成0.</p>
+<p>它应当被所有线程共有。当新来一个人的时候（inputHandler），应当根据自己的目的地和这个路线图规划当前的路线。当新增加一个电梯的时候或者维修一个电梯的时候，就要在图上及时的修改可达性，从而给人提供可行的路线。+</p>
+<p><strong>可以看到两个信息资源，虽然都被每一个线程共享，但是各司其职，</strong>很好的把功能分担开来，增强了可维护性。</p>
+<h3 id="适应时间和电量"><a href="#适应时间和电量" class="headerlink" title="适应时间和电量"></a>适应时间和电量</h3><p>笔者其实并未刻意去减少电量，所以并未对此进行任何努力（事实上，自从选择了这个架构，注定了电量会爆炸），但是笔者采用的<strong>自由竞争</strong>天然对<strong>随机性强的数据</strong>有着强大的处理能力。</p>
+<p>首先，当前requestTable内部的状况会实时的反馈给电梯线程，然后电梯立即响应这个变化。并根据自身当前状态做出动作。</p>
+<p>其次，假如电梯内部没有人，所有无人的电梯均会立即向新来的请求移动，能够保证尽量减少该乘客的等待时间。</p>
+<p>最后，自由竞争，本身就是<strong>将计算交给现实</strong>的操作，因为离这个楼层近的电梯，必然先到。配合look算法，每一个电梯都是选择了从自己看来的较优解，步步局部较优，能够很好的减少整体的时间。</p>
+<p>UML图中红色部分代表加了synchronized方法。</p>
+<h2 id="第一次作业"><a href="#第一次作业" class="headerlink" title="第一次作业"></a>第一次作业</h2><p><img src="/2023/04/13/%E7%AC%AC%E4%BA%8C%E5%8D%95%E5%85%83blog/bolg\source\images\hw5_uml.png"></p>
+<p>第一次作业中，我按照生产者消费者模型确定了大致的框架：由inputHandler作为生产者拿进来人的请求，放到托盘requestTable里面，然后消费者电梯从requestTable里面拿走人员并送到相应的位置。</p>
+<h2 id="第二次作业"><a href="#第二次作业" class="headerlink" title="第二次作业"></a>第二次作业</h2><p><img src="/2023/04/13/%E7%AC%AC%E4%BA%8C%E5%8D%95%E5%85%83blog/bolg\source\images\hw6_uml.png"></p>
+<p>可以看到，这一次作业中为了管理新增的电梯，仅仅是新开了一个Group来方便管理电梯，没有什么大的变化</p>
+<h2 id="第三次作业"><a href="#第三次作业" class="headerlink" title="第三次作业"></a>第三次作业</h2><p><img src="/2023/04/13/%E7%AC%AC%E4%BA%8C%E5%8D%95%E5%85%83blog/bolg\source\images\hw7_uml.png"></p>
+<p>第三次作业为了应付可达性换乘的问题，我新增了两个类，MoveMap和信息中心Center，其中Center作为新的共享资源被所有线程使用，MoveMap作为新的人员信息存储类存在，代替了PersonRequest的功能。</p>
+<p>在电梯处理乘客的时候，就不是考虑以personRequest为单元了，而是选择考虑以moveMap为单元，事实上，这个moveMap代表一个乘客未来<strong>所有</strong>的的移动策略。</p>
+<p>正常情况下，比如之前的时候，可以退化为每个moveMap里面存放一个请求乘车的信息，这个信息，事实上是当前要乘的一趟电梯的起始目的request。当然moveMap向外界暴露的还是当前personRequest的几个参数（id，from，to）。（始终暴露的是这次personRequest的那些东西）</p>
+<p>在电梯完成一段运载的时候，就是到了to或者因为maintain卡到了一个神奇的地方。做一个判断，这个to是不是这个moveMap的终点站。假如是终点站的话，就移除，代表这个乘客到了位置。</p>
+<p>假如不是，那就移除path数组里的第一个元素（已经到了）然后将该moveMap的from当前floor，to换乘现在path数组的第一个元素 。重新把这个moveMap放到requestTable里面。</p>
+<p>每次乘车，只要这个moveMap能表示类似personRequest的这一趟乘电梯的效果就行了。</p>
+<h3 id="path"><a href="#path" class="headerlink" title="path"></a>path</h3><p>在每次要放到requestTable前更新（不用放就不用更新，直接到了）。第一个是本次的to，剩下的是往后的移动路线，保证最后一个是目的地。</p>
+<p>是不存储本次的from的，指示的仅仅有往下的乘电梯表</p>
+<h2 id="时序图"><a href="#时序图" class="headerlink" title="时序图"></a>时序图</h2><p>这里做三次作业整体的时序图。</p>
+<p><img src="/2023/04/13/%E7%AC%AC%E4%BA%8C%E5%8D%95%E5%85%83blog/bolg\source\images\elevator_timer.png"></p>
+<h3 id="不变与易变"><a href="#不变与易变" class="headerlink" title="不变与易变"></a>不变与易变</h3><p>可以看出，整体的结构没有发生什么变化</p>
+<p>不变的地方很多，一方面始终采取了 <strong>生产者消费者模式</strong>，所以InputHandler始终作为上游生产者存在，然后RequestTable始终作为托盘存在，Elevator始终作为消费者存在。并且他们的主体方法几乎没有变化，我仅仅是对一些新增加的功能做了一些修正。</p>
+<p>大体的结构没有变，特定功能实现的类没有变，这些类主题的方法没有变。</p>
+<p>易变的是针对特定功能新增加的辅助信息类，这一点是容易理解的：事异则备变，题目更新了一定要新来辅助的信息类。</p>
+<h1 id="bug分析"><a href="#bug分析" class="headerlink" title="bug分析"></a>bug分析</h1><p>笔者在第一次作业的时候写完从测试到中测到强测互测都是一遍过，没有出现bug，所以没有体会到多线程的debug之苦。</p>
+<p>笔者在第二次作业的时候在线下用测评接测评和中测也都是几乎比较顺畅的通过，只有在强测中才发现t惨了（</p>
+<p>在解决这个bug的时候，在本地的测试中笔者发现这个数据并不能招致bug，所以笔者经过肉眼观察法，观看给出的输出，判断了是在线程结束的时候wait住了，然后观察新线程的结束部分，发现没有加上syn块，导致执行的时候会在某些情况下出现先读的把set的卡没了的情况。</p>
+<p>在第三次作业的时候，中测出现了bug，是几个非常惨的t，完全不知道数据究竟是什么。</p>
+<p>后来发现，是因为在修改搜索path的时候，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">if (puzzle[from][to] == 1) &#123;</span><br><span class="line">//          path.add(from);</span><br><span class="line">            path.add(to);</span><br><span class="line">            return path;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>我原本定义的是path存的数据是from to，。。。。finalfloor，但是后面发现更新路径判别有效性的时候不好用。</p>
+<p>所以改成了存to 。。。 finalFloor（去掉了from），但是在开始假如是可以直达的时候忘记了修改。所以导致出了bug。</p>
+<h2 id="多线程的debug困境"><a href="#多线程的debug困境" class="headerlink" title="多线程的debug困境"></a>多线程的debug困境</h2><p>多线程debug是非常困难的，由于语句执行的顺序不确定性，导致出现的bug常常会没法复现，所以经常自己跑很多次突然出现一个bug，但是同样的数据再跑就又没bug了。</p>
+<p>另一个更恶心的点在于，测评系统的环境和本地的环境不一样，虽然有JVM加护，但是执行的底层逻辑还是没法做到完全一样，凡是对线程安全控制做的不好的，就会因为测评报错但是相同数据本地完全找不到问题而痛不欲生。</p>
+<p>另外，多线程无法使用调试来解决，给我这种习惯使用调试的带来了很大困扰。</p>
+<h2 id="肉眼观察法"><a href="#肉眼观察法" class="headerlink" title="肉眼观察法"></a>肉眼观察法</h2><p>笔者在三次作业中尝试帮助了多名同学解决其bug，最常用的便是肉眼静态观察法，通过审视其关键的代码（停止逻辑，唤醒逻辑，接人逻辑）来发现bug，成功过几次，但是代价都很大，并且由于每个人设计不太一样，在阅读别人代码的时候很容易带入自己的设计，从而产生不严密的思考。</p>
+<h2 id="重构解耦法"><a href="#重构解耦法" class="headerlink" title="重构解耦法"></a>重构解耦法</h2><p>遇到别人的bug看不出来的，一般都是耦合性很强的，他们的代码没能将责任分开，一个方法里面既有判断的功能又有执行的功能，逻辑套起来很复杂，这个时候我都会建议针对这一部分重写，把复杂的逻辑拆解开。事实上反而是这种近乎摆烂的解决方式能解决大多数问题，因此<strong>很多bug事实上都是因为实现方法的耦合性过强，逻辑较为复杂，保持一个良好的代码设计风格，能很好的杜绝因为此类问题产生的bug</strong></p>
+<h2 id="print法"><a href="#print法" class="headerlink" title="print法"></a>print法</h2><p>在每一次变化后打印出当前对象的属性。</p>
+<p>这个可能会由于print干扰实际多线程的执行过程，所以对于是线程安全考虑的bug会影响其复现，不过由于我的错误是逻辑的错误（第三次作业），所以我print的时候没有受到类似的影响，很好的执行了任务。通过展示每一次变化的状态，我迅速定位了“不正常变化”的那次更新，同时通过print的上下文，我迅速找到了那次更新依赖的参数，从而正确确认了自己的bug。</p>
+<h2 id="提炼共性法"><a href="#提炼共性法" class="headerlink" title="提炼共性法"></a>提炼共性法</h2><p>利用测评机进行大规模测评，通过爆出的错误数据中提炼这些数据的特征，然后根据这个错误来定位搜索可能出现问题的逻辑部分。</p>
+<p>能够很好的提供充足的bug源，从几个不同数据跑出来的错误中帮助确认bug的表现和本质。比较好使。</p>
+<h1 id="心得体会"><a href="#心得体会" class="headerlink" title="心得体会"></a>心得体会</h1><h2 id="线程安全"><a href="#线程安全" class="headerlink" title="线程安全"></a>线程安全</h2><p>线程安全是多线程编程的核心问题之一。</p>
+<p>根本的解决方式是控制临界区和原子性(critical reigion)。我们只要保证，把所有共享且可以被修改的变量都放到临界区里面，保证它们每次仅被一个线程访问即可。</p>
+<p>印象很深的是，即使是i++这个看似简单到不行的语句，也不是线程安全的，事实上，他是：</p>
+<p>int temp&#x3D;i;</p>
+<p>temp&#x3D;temp+1;</p>
+<p>i&#x3D;temp;</p>
+<p>至少三句话，显然不线程安全。所以线程安全的概念真的是很有趣，一个单句也不是线程安全的，并不是一次执行一条语句的。所以，任何操作共享资源的方法和语句，都应当被放在同步块里，保证仅仅在一个时候被访问。</p>
+<p>根据和同学的交流，发现主要存在这几种手段：</p>
+<p>1.被动锁，synchronized，通过给方法加上synchronized关键字，可以保证每次这个对象的同步方法仅仅只能由一个线程调用</p>
+<p>2.主动锁 lock等</p>
+<p>3.同步数据结构，Atom，verctor等。</p>
+<p>本质上都是保证进入的唯一性，强制从逻辑上加锁。</p>
+<p>线程安全始终是一个很玄乎的问题，运行时CPU按什么顺序执行多个线程之间的指令，这个是谁也不知道的。所以一定要尽力保证无论什么执行顺序，都控制好数据被执行的逻辑，保证控制好读写的临界区，才是保证线程安全的必要操作。</p>
+<p>这也启示我，<strong>在设计对象尤其是共享对象的属性时，一定要通过特定的方法来访问</strong>，比如设置方法是同步的，然后仅仅在调用这个方法的时候才能对这个属性进行修改或者读取。从而达到良好的保护效果。</p>
+<h2 id="层次设计"><a href="#层次设计" class="headerlink" title="层次设计"></a>层次设计</h2><p>一方面又要让每一个类处理一件事情，另一方面又减少没有必要的新开的类，如何平衡好这个问题，成为了我在第三次作业思考的一个重要问题。</p>
+<h4 id="单一职责"><a href="#单一职责" class="headerlink" title="单一职责"></a>单一职责</h4><p>数据的组织层次，很大程度上决定了方法传进来的参数是怎样的，决定了方法的调用层次是怎样的。</p>
+<p>你的哪个操作调用哪个方法，在哪个类里面调用，这个方法里面又调用了哪几个对象的什么方法？几乎所有的东西都是被你的层次结构所影响的。</p>
+<p>在层次设计的时候，要严格按照功能将类分离开，避免让“一个类做好几个事情”这样不好看的事情发生，也算符合SOLID中的单一职责原则（S)了。</p>
+<p>比如在我的实现里的两个共享资源：Center和RequestTable，这两个东西在我的设计里面是需要被每个线程共享的，所以难道就可以把他俩放到一个类里面，让一个类实现这两个人的职责吗？</p>
+<p>这样显然是不合适，首先，一个类设置大量的方法不利于维护。其次，<strong>从根本上这两个类的职责完全不一样</strong>，一个提供请求信息，是所有Request的汇总，另一个是静态的现在所有Elevator的可达性的集合，维护的手段和方法的侧重都完全不同，因此我将其划分开来。</p>
+<p>有1+n个线程，1个inputHandler线程，n个电梯线程 ，他们都有同样的两个公共资源（单例），requestTable和Center，这两个资源彼此不互相包含（事实上，不应当互相包含，应该将资源之间的彼此耦合拆解开，对两个的利用在线程中完成）笔者一开始错误的搞耦合了，导致很难继续写，修改后就很好看了。</p>
+<p>由于这两个是公共资源，所以这两个的方法都要synchronized。</p>
+<p>建议让两个对象的锁不要嵌套，至多可以在一个锁里面调另一个，但是要保证这个被调的锁不会再调调用它的那个的块的对象的锁。</p>
+<p>也就是说，理想情况，应当让这两个资源的方法里，不出现另一个的资源作为参数。</p>
+<h4 id="如无必要，勿增实体"><a href="#如无必要，勿增实体" class="headerlink" title="如无必要，勿增实体"></a>如无必要，勿增实体</h4><p>如无必要，勿增实体。所有没有必要的复杂设计都是失败的。不能刻意为了线程而开线程。</p>
+<p>比如笔者在第二次作业的时候t掉，就是因为当时没有想好，想到需要处理add请求，和PersonRequest类比，便新开了一个线程，专门处理这个请求。但是由于没有处理好这个线程的关闭条件，导致强测t掉三个点。</p>
+<p>事实上，笔者意识到这个操作没有必要后，尽数删去，直接让inputHandler读到ElevatorRequest的时候就命令电梯组新开一个电梯，减少的线程减少了CPU的压力，也让这个几乎绝大多数时间都在休息的不合理线程“死得其所”。</p>
+<p>笔者很大程度上认为第二次作业的失败和加了这个没必要的线程有极大关系，增加了关闭控制的复杂度。</p>
+<h4 id="分上下游的类"><a href="#分上下游的类" class="headerlink" title="分上下游的类"></a>分上下游的类</h4><p>在设计的时候，笔者采用了生产者消费者模型。因此，类的构成，清晰的分为上中下三游层次。</p>
+<p>上游：InputHandler，作为生产者获取各种request，根据这些request的类型而分配到不同的托盘里面。</p>
+<p>中游：Center&amp;RequestTable，作为托盘，被上游和下游拥有，上游的数据流动到中游，被中游存起来。</p>
+<p>下游：电梯，作为消费者，能够解决数据请求，不直接和InputHandler直接交互，通过中游的共享资源来解决InputHandler带来的改变。</p>
+<p>严格规定好每一个类处于逻辑层次关系的哪一部分，很好的梳理了我的思路，让我写方法的时候获得了更为清晰的实现脉络。以后设计类的时候，应该思考好这个类处于那个部分，根据所处的部分设计“类被谁拥有，实现的方法需要做到哪样的特征”。</p>
+<h2 id="面向对象架构与现实生活"><a href="#面向对象架构与现实生活" class="headerlink" title="面向对象架构与现实生活"></a>面向对象架构与现实生活</h2><p>在面向对象课程中，我们所做的题目<strong>都是建立在现实生活中的情景中的</strong></p>
+<p>这一点每个同学都深有体会。第一单元的表达式，同学们从初中开始，就和无数的未知量啊表达式啊打交道，无论是导数题对函数的化简，还是物理公式的计算，我们都经常遇到表达式相乘化简的情景，也因此犯了不少计算错误。这一单元的电梯更是我们日常生活离不开的东西，每个同学都被大运村的电梯折磨过很多次了。</p>
+<p><strong>某些情况下，编写某个模块代码所做的内容，就是将原本习以为常的一件事，拆解细化到一个一个极其细微的步骤</strong></p>
+<p>比如我说，你去拿那个东西，你立刻去拿了，因为这件事情你习以为常，已经被你自己“模块化”了。</p>
+<p>但是要是控制的话，从头去写这样模块，我们需要细微到每一个步骤：机器人的胳膊应该怎样伸出去，如何的角度打开手指？每一条轴承如何转动？无尽的细节被隐藏在平常的一个活动里面。</p>
+<p>于是我想要表达式计算，我也不止一次表达式计算了，你给我个表达式我就去算，但是我怎样去算的？处理这些东西的时候我的大脑已经习惯了，但是作为一个“造轮子”的程序员，我必须要拆解开，我必须要知道我自己会怎么处理这个东西。</p>
+<p>诚然，计算机有计算机的方式，必然存在比现实情况优秀无数备的更优解。但是从现实生活中取材，确实是一种能以清晰且经过验证的思考方式来写代码的方式。</p>
+<p>比如在我这次针对第三单元的换乘中，采用了一种类似地铁换乘的方法，不仅仅是为了解释，让读者更好的理解我的思路，更是我思路完善的一个来源：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">群友发现buaa新主楼电梯这个玩意更像地铁，于是我想起了自己到北京时在北京地铁中穿梭的经历。下面拿一名乘客进入地铁需要做的事情为例子来说明如何存储乘客，不妨叫这个乘客李田所吧。</span><br><span class="line"></span><br><span class="line">地铁正常的开，不去调度。当然大部分地铁并不能满足一个乘客从A到B的直达需求。所以乘客会有百度地图，站台上会有站表，李田所想从A到B的时候，一定是先研究了这些东西，然后在心里记住究竟该从几号线做到哪里换乘几号线。比如从A站做1号线到C，然后从C坐3号线到B站。</span><br><span class="line"></span><br><span class="line">事实上，在每一次的乘坐中，他并不需要知道具体要坐第几号线，譬如第一次，1号也好2号也罢，只要这趟地铁能满足从A站到C站就行了。同样第二次，3号也好4号也罢，只要这趟线地铁能满足C站到B站即可。</span><br><span class="line"></span><br><span class="line">李田所进入地铁站，认真观摩了墙上贴的地铁图之后，迅速的规划了自己要到BUAA的路线。他于是记住了这条路线，先到A，转B，然后到C。。。。</span><br><span class="line"></span><br><span class="line">我们可以把这个要走的路线按照一个数组存起来，叫做path。这个就是李田所要经过的站点。</span><br><span class="line"></span><br><span class="line">试想现在的李田所，他严格按照自己规划的（或者说百度地图这个数据中心而不是自己规划的）路线要乘车，但是在要坐第一趟车的时候，地铁并不知道他真正要去哪里，他暴露给这趟地铁的，只有from和to，这就是这一次乘车的personRequest。</span><br></pre></td></tr></table></figure>
+
+<p>很像笔者在地铁中穿梭的经历。很多情况下，我写代码采取的架构（当然，实现方式肯定严格依据计算机和语言的特性），会取材于现实中的操作。</p>
+<p>再比如，对于look算法，如何让电梯自己判断自己怎么走的方法，我也是观察了日常生活中电梯所表现出来的样貌：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">我们不妨思考一下平时电梯的运行逻辑，我们想上楼，当我们在进入电梯前，电梯在向上走，于是按下上升键（这个上升键可以由目的层数-当前层数判断，事实上方向也是look的核心之一），发现方向一致，所以电梯来的时候开门了。从电梯上的乘客而言，他们向上走，然后发现到了 一层，然后一个方向和他们相同的人上来了，然后继续往上走。</span><br><span class="line"></span><br><span class="line">或者电梯里的人有的要在这里下，所以电梯直接打开，这时候有人在这层的话也直接上（但是一般来说，方向相反的人是不会上电梯的）。</span><br><span class="line"></span><br><span class="line">但是假如电梯满员了，</span><br><span class="line">笔者天天在上课的时候碰见</span><br><span class="line">，就连开门都不开。</span><br><span class="line"></span><br><span class="line">假如电梯送走了电梯里的所有人？比如在12楼就没人了。假如上面（16？）有人按电梯，电梯还会继续向上走。否则假如下面有人按电梯，就向下走。但是像都上课的时候，就几乎是一个专门为一个人开的专列。送到了就不动了，所以每次我回宿舍人少的时候就看见电梯停在某些楼，一按按钮才下来。</span><br><span class="line"></span><br><span class="line">虽然上面的都是废话，但是很好的解释了look是啥，也解释了look方法的构成方式：假如。。。就。。。</span><br><span class="line"></span><br><span class="line">问题是，在什么时候去“假如”？</span><br><span class="line"></span><br><span class="line">为了清晰的划分责任，在电梯线程上，需要针对上面的所有操作，每个实现一个具体的方法。move，openAndClose（其实这个中间分开开关还是合到一起见仁见智，可能合到一起出bug的机会少点？），reverse，wait，over。然后在上面那些“假如”发生后，根据假如来判定进行的方法就好了。</span><br><span class="line"></span><br><span class="line">我们可以根据对应的操作，把假如抽象成几种情况。</span><br></pre></td></tr></table></figure>
+
+<p><strong>面向对象，更是面向生活</strong>，我们抽象出来事物可以被我们观测到的实质，作为属性，抽象出来物质作为主体和客体能被做到的事情，作为方法。抽象出来现实生活中事物的思考、组织、运行逻辑，构成了自己的架构。取材于生活，发轫于实践。</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">farewell</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://brilliant-daffodil-eb4c4f.netlify.app/2023/04/13/%E7%AC%AC%E4%BA%8C%E5%8D%95%E5%85%83blog/">https://brilliant-daffodil-eb4c4f.netlify.app/2023/04/13/%E7%AC%AC%E4%BA%8C%E5%8D%95%E5%85%83blog/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">farewell</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/BUAA-OO/">
+                                    <span class="chip bg-color">BUAA_OO</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2023/04/13/%E7%AC%AC%E4%BA%8C%E5%8D%95%E5%85%83blog/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/17.jpg" class="responsive-img" alt="BUAA_OO_ELEVATOR">
+                        
+                        <span class="card-title">BUAA_OO_ELEVATOR</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-13
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            farewell
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/BUAA-OO/">
+                        <span class="chip bg-color">BUAA_OO</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/04/13/%E7%94%B5%E6%A2%AF%E4%B8%8E%E5%A4%9A%E7%BA%BF%E7%A8%8B/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="第四次讨论区发帖">
+                        
+                        <span class="card-title">第四次讨论区发帖</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-04-13
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            farewell
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/BUAA-OO/">
+                        <span class="chip bg-color">BUAA_OO</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+    <div class="container row center-align" style="margin-bottom: 15px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2022-2023</span>
+            
+            <span id="year">2022</span>
+            <a href="/about" target="_blank">farewell</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <span id="sitetime">载入运行时间...</span>
+            <script>
+                function siteTime() {
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var startYear = "2022";
+                    var startMonth = "10";
+                    var startDate = "3";
+                    var startHour = "0";
+                    var startMinute = "0";
+                    var startSecond = "0";
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth() + 1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                    var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                    var diff = t2 - t1;
+                    var diffYears = Math.floor(diff / years);
+                    var diffDays = Math.floor((diff / days) - diffYears * 365);
+                    var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+                    var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) /
+                        minutes);
+                    var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours -
+                        diffMinutes * minutes) / seconds);
+                    if (startYear == todayYear) {
+                        document.getElementById("year").innerHTML = todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已安全运行 " + diffDays + " 天 " + diffHours +
+                            " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    } else {
+                        document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已安全运行 " + diffYears + " 年 " + diffDays +
+                            " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    }
+                }
+                setInterval(siteTime, 1000);
+            </script>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/farewell-exiles" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:1284272565@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1284272565" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 1284272565" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+	
+    
+    <script type="text/javascript" color="0,0,255"
+        pointColor="0,0,255" opacity='0.7'
+        zIndex="-1" count="99"
+        src="/libs/background/canvas-nest.js"></script>
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>
