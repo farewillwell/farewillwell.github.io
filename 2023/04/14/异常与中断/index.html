@@ -595,11 +595,44 @@
 <p>这样，无论e是否为NULL,我们都已经让当前的e没意义了，所以直接从新拿取，设置时间片：</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">e=TAILQ_FIRST(&amp;env_sched_list);</span><br><span class="line">        count=e-&gt;env_pri;</span><br><span class="line">        TAILQ_REMOVE(&amp;env_sched_list,(e),env_sched_link);</span><br></pre></td></tr></table></figure>
 
+<p><strong>注意这里有错，后面会说</strong>，假设这个是可执行的话，那么前面已经放到末尾了，所以并未丢失该可执行的env块。</p>
+<p><strong>对于任意进程控制块e，e处于sched（调度队列）中当且仅当status为Runnable</strong></p>
 <p>采用每分配一次机会前就count–的方式，用count指示用完本次后剩余的机会，然后运动即可。</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">count--;</span><br><span class="line">     env_run(e);</span><br></pre></td></tr></table></figure>
 
+<h2 id="错了！！！！！"><a href="#错了！！！！！" class="headerlink" title="错了！！！！！"></a>错了！！！！！</h2><p>请同学们在维护 Lab3 实验引入的调度队列 env_sched_list 时，<strong>注意始终保证不变式：对于任意进程控制块 e，e 处于调度队列中</strong>当且仅当** e-&gt;env_status &#x3D;&#x3D; ENV_RUNNABLE<strong>。</strong></p>
+<p><strong>因此，在调度函数 schedule 中实现进程切换时，从调度队列中选中需调度的队首进程后，</strong>不应该**将其从调度队列中移除；</p>
+<p>也就是说，<strong>正在运行的进程也需要处于调度队列中</strong>。若实现未能满足这一点，可能会在 env_destroy 函数以及 Lab4 等后续实验中出现难以预料的错误。<br>具体来说，调度函数 schedule 进行进程切换，操作调度队列时，可能有以下两种合理的逻辑：</p>
+<ol>
+<li><p>首先判断 e 是否仍为就绪状态（ENV_RUNNABLE），若是则将其移动到调度队列尾部；然后再选中调度队列首部的进程（<strong>但不移出队列</strong>），将其赋值给 e，作为当前需要调度的进程。</p>
+</li>
+<li><p>首先选中调度队列首部的进程 e，作为当前需要调度的进程，然后立即将其移动到调度队列尾部。</p>
+<p>在原来的实现里面，你取出来first，然后就 remove掉，这个显然是不对的。</p>
+<p>因为你拿出来后，它还是Runnable的，所以就不应该拿出来这个队列。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">if(yield!=0||count==0||e==NULL||e-&gt;env_status==ENV_NOT_RUNNABLE)</span><br><span class="line"> &#123;</span><br><span class="line">	if(e!=NULL&amp;&amp;e-&gt;env_status==ENV_RUNNABLE)</span><br><span class="line">	&#123;</span><br><span class="line">		TAILQ_REMOVE(&amp;env_sched_list,(e),env_sched_link);</span><br><span class="line">		TAILQ_INSERT_TAIL(&amp;env_sched_list,(e),env_sched_link);</span><br><span class="line">	&#125;</span><br><span class="line">	if(TAILQ_EMPTY(&amp;env_sched_list))</span><br><span class="line">	&#123;</span><br><span class="line">		panic(&quot;no runnable envs&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	e=TAILQ_FIRST(&amp;env_sched_list);</span><br><span class="line">	count=e-&gt;env_pri;</span><br><span class="line"> &#125;</span><br><span class="line"> count--;</span><br><span class="line"> env_run(e);</span><br></pre></td></tr></table></figure>
 
+<p>就该这样。</p>
+<p>但是注意，先insert和remove的效果是不一样的。</p>
+<p>我不能：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">insert</span><br><span class="line">remove</span><br></pre></td></tr></table></figure>
 
+<p>而必须</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">remove </span><br><span class="line">insert</span><br></pre></td></tr></table></figure>
+
+<p>这个是由于数据的结构所决定的</p>
+<p>这是它的链表特性决定的</p>
+<p>是元素内包含了表域</p>
+<p>而不是一个表结构包含了元素</p>
+<p>比如，看看方法：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">#define TAILQ_REMOVE(head, elm, field)                                                             \</span><br><span class="line">	do &#123;                                                                                       \</span><br><span class="line">		if (((elm)-&gt;field.tqe_next) != NULL)                                               \</span><br><span class="line">			(elm)-&gt;field.tqe_next-&gt;field.tqe_prev = (elm)-&gt;field.tqe_prev;             \</span><br><span class="line">		else                                                                               \</span><br><span class="line">			(head)-&gt;tqh_last = (elm)-&gt;field.tqe_prev;                                  \</span><br><span class="line">		*(elm)-&gt;field.tqe_prev = (elm)-&gt;field.tqe_next;                                    \</span><br><span class="line">	&#125; while (/*CONSTCOND*/ 0)</span><br><span class="line">#define TAILQ_INSERT_TAIL(head, elm, field)                                                        \</span><br><span class="line">	do &#123;                                                                                       \</span><br><span class="line">		(elm)-&gt;field.tqe_next = NULL;                                                      \</span><br><span class="line">		(elm)-&gt;field.tqe_prev = (head)-&gt;tqh_last;                                          \</span><br><span class="line">		*(head)-&gt;tqh_last = (elm);                                                         \</span><br><span class="line">		(head)-&gt;tqh_last = &amp;(elm)-&gt;field.tqe_next;                                         \</span><br><span class="line">	&#125; while (/*CONSTCOND*/ 0)</span><br></pre></td></tr></table></figure>
+
+<p>它不像之前的链表一样，去先while循环找到和这个相同的，然后改变前后指针去掉。</p>
+<p>而是直接对自己的表域操作，双向链表的好处。</p>
+<p>我remove干了啥，其实是修改了自己<strong>所存着的前面的变量</strong>（而不是顺着找找到的）的指针，然后修改了自己的指针。</p>
+<p>假如先insert的话，你已经修改了自己表域里面的东西了。</p>
+<p>先insert元素的表域就被覆盖了，就会乱</p>
+</li>
+</ol>
 
                 
             </div>
