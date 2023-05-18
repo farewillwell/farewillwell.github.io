@@ -1,0 +1,1372 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="BUAA_OO_JML, farewell&#39;s blog">
+    <meta name="description" content="你到过许多地方，用你自己的故事记认许多城邦后，你终于抵达此城">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>BUAA_OO_JML | farewell&#39;s blog</title>
+    <link rel="icon" type="image/png" href="/medias/logo.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">farewell&#39;s blog</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="" class="waves-effect waves-light">
+
+      
+      <i class="fas fa-music" style="zoom: 0.6;"></i>
+      
+      <span>Musics</span>
+      <i class="fas fa-chevron-down" aria-hidden="true" style="zoom: 0.6;"></i>
+    </a>
+    <ul class="sub-nav menus_item_child ">
+      
+      <li>
+        <a target="_blank" rel="noopener" href="https://www.kugou.com/songlist/gcid_3zsmhjkqzhz07e/">
+          
+          <i class="fas fa-music" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>Youth</span>
+        </a>
+      </li>
+      
+      <li>
+        <a target="_blank" rel="noopener" href="https://www.kugou.com/songlist/gcid_3zsmhjkqzgz054/">
+          
+          <i class="fas fa-music" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>Hurt</span>
+        </a>
+      </li>
+      
+      <li>
+        <a target="_blank" rel="noopener" href="https://www.kugou.com/songlist/gcid_3zsmhjkqzfz091/">
+          
+          <i class="fas fa-music" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>romantic</span>
+        </a>
+      </li>
+      
+    </ul>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">farewell&#39;s blog</div>
+        <div class="logo-desc">
+            
+            你到过许多地方，用你自己的故事记认许多城邦后，你终于抵达此城
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="javascript:;">
+			
+				<i class="fa-fw fas fa-music"></i>
+			
+			Musics
+			<span class="m-icon"><i class="fas fa-chevron-right"></i></span>
+		</a>
+            <ul  style="background:  ;" >
+              
+                <li>
+
+                  <a target="_blank" rel="noopener" href="https://www.kugou.com/songlist/gcid_3zsmhjkqzhz07e/ " style="margin-left:75px">
+				  
+				   <i class="fa fas fa-music" style="position: absolute;left:50px" ></i>
+			      
+		          <span>Youth</span>
+                  </a>
+                </li>
+              
+                <li>
+
+                  <a target="_blank" rel="noopener" href="https://www.kugou.com/songlist/gcid_3zsmhjkqzgz054/ " style="margin-left:75px">
+				  
+				   <i class="fa fas fa-music" style="position: absolute;left:50px" ></i>
+			      
+		          <span>Hurt</span>
+                  </a>
+                </li>
+              
+                <li>
+
+                  <a target="_blank" rel="noopener" href="https://www.kugou.com/songlist/gcid_3zsmhjkqzfz091/ " style="margin-left:75px">
+				  
+				   <i class="fa fas fa-music" style="position: absolute;left:50px" ></i>
+			      
+		          <span>romantic</span>
+                  </a>
+                </li>
+              
+            </ul>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/farewell-exiles" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>来van啊
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/farewell-exiles" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="来van啊" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/10.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">BUAA_OO_JML</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        padding-bottom: 30px;
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/BUAA-OO/">
+                                <span class="chip bg-color">BUAA_OO</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-05-18
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="BUAA-OO-UNIT3"><a href="#BUAA-OO-UNIT3" class="headerlink" title="BUAA_OO_UNIT3"></a>BUAA_OO_UNIT3</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>本单元的主题是JML与算法，一方面，按照课程组给出的JML规格实现课程组所规定的方法。另一方面，采取恰当的数据结构和算法来组织所引入的社交关系结构。</p>
+<p>虽然课程组说明了不注重算法的考察，但是实际上观察强测的时间，即使使用了我已知的比较好的算法，一些比较强的点都会时间过半，因此对算法的考察还是十分明显的体现出来的。所以一定要保证自己采取了一个精益求精的态度，做东西的时候把性能做好，才能扛住各种数据（x）</p>
+<p>本三次作业，模拟了一个微信社交网络，以每个人为节点，每个人分进不同的用户群组，然后执行发消息等操作来维护关系值和社交值的具体应用场景。</p>
+<p>由于一个真实的社交网络常常能被抽象为图，所以在这一单元的某些算法考察的都是图的算法。</p>
+<p>代码书写层面，几乎忽视了架构的作用。甚至已经由于按照课程组规定好的代码文件要求而较为死板僵硬，被离散的分割成了一个一个一个小块。但是这个也变相训练了我们按照规格设计实现具体一个小方法的能力。</p>
+<p>第一次由于课下没有进行充分的测试，导致代码执行不会严格按照规格，甚至是由于一个极小的一个变量名字写错了，所以惨痛的错了一个一个点。这警示我，千万不能对自己的代码有太大的信心，充分的测试是必须且必要的。</p>
+<h2 id="黑箱测试和白箱测试"><a href="#黑箱测试和白箱测试" class="headerlink" title="黑箱测试和白箱测试"></a>黑箱测试和白箱测试</h2><h3 id="黑箱测试"><a href="#黑箱测试" class="headerlink" title="黑箱测试"></a>黑箱测试</h3><p>黑箱测试，是指不知道软件内部的构成，单纯投入数据然后根据输出的结果来判定软件的正确与否。</p>
+<p>我们平时自己写的测评机就类似这种，生成数据，然后测评机根据这个数据进行计算并投喂给我们待测试的程序，依据程序的输出比较来判定执行的正确性。</p>
+<p>事实上，由于采用了黑盒，程序的每一个部分对我们来说都是完全封闭的，并不能知道任何信息。因此，在出现漏洞的时候，程序是作为一个整体出现的，因此定位bug会显得困难。</p>
+<p>并且，由于不知道会出什么问题，对整个程序的测试会涉及很多方面，整个的测试会将所有各个方面的数据投入给一个程序整体，这就导致了效率的低下。</p>
+<p>同时，构造的数据也难以保证全面性，所以测试上并不能严格的发现所有问题，还有可能在一些情况下会出现的奇怪bug可能并没有人能想到从而构造数据。</p>
+<p>但是好处是，由于软件是作为黑盒而使用的，因此我们作为使用者只需要关心软件的黑盒性质，与软件具体实现无关，如果软件实现发生了变化，在黑盒测试中花费经历和时间测试用例仍可用。</p>
+<p>总而言之，黑盒测试更关注是否能执行要求的任务，关注它对外暴露的功能</p>
+<h3 id="白箱测试"><a href="#白箱测试" class="headerlink" title="白箱测试"></a>白箱测试</h3><p>和黑盒测试相反，白箱测试更少的关注了程序的外在整体表现，而是更多的关注程序的具体实现。</p>
+<p>查阅资料知道，它也称结构测试或逻辑驱动测试，它是知道产品内部工作过程，可通过测试来检测产品内部动作是否按照规格说明书的规定正常进行，按照程序内部的结构测试程序，检验程序中的每条通路是否都有能按预定要求正确工作，而不侧重于关注程序作为一个整体的实现。</p>
+<p>了解程序内部逻辑结构、对所有逻辑路径进行测试。“白盒”法是穷举路径测试。在使用这一方案时，测试者必须检查程序的内部结构，从检查程序的逻辑着手，得出测试数据。</p>
+<p>一方面，可以由专业的人员来看源码，直接而专业的梳理出每一条程序执行的路径，根据代码的具体实现而分析出程序的问题所在，</p>
+<p>我们知道具体要实现什么方法了，所以就针对该方法编写实现它是否满足规格的测试。</p>
+<p>好处是，这样做，可以直接x光般透彻的进入代码内部审查，可以明晰的分辨代码的具体问题所在，并由于可以针对每一个内部路径编写相应的测试，覆盖率和检测精确度比黑盒的盲投喂要强。</p>
+<p>坏处是，阅读代码分析问题，再针对的编写对板块的测试程序，本身就是个成本极高的工作，譬如我们的OKtest就是很费力写的，同时，笔者帮同学看代码bug和邀请同学审查笔者代码的时候便了解这样的痛苦。</p>
+<p>另外，一个程序的内部执行路径数目可能是相当恐怖的，因此白箱测试的代价可能是十分甚至九分的巨大。</p>
+<h2 id="其他测试"><a href="#其他测试" class="headerlink" title="其他测试"></a>其他测试</h2><h3 id="单元测试"><a href="#单元测试" class="headerlink" title="单元测试"></a>单元测试</h3><p>单元测试就是对代码中测试者划定的最小单元为对象测试的方法。</p>
+<p>这个单元可以是函数，可以是类，总之是一个有意义的整体。</p>
+<p>可以根据这个整体的理想表现，来编写相应的测试程序。</p>
+<p>单元测试是建立在白箱的基础上，只有透明了，才能知道单元都是什么。</p>
+<p>例如OKtest，就是对一个方法作为单元来编写的测试。</p>
+<p>使用这样的测试方法，可以测试每一个模块的执行正确性 ，是否符合规格，是能做到逻辑上正确的方法。</p>
+<p>难点在于，编写的时候对每一个单元编写代价较大。</p>
+<h3 id="功能测试"><a href="#功能测试" class="headerlink" title="功能测试"></a>功能测试</h3><p>功能测试其实和上面说的黑盒测试有类似。</p>
+<p>因为投入使用的软件，都必然是对用户不可见的，暴露的只有执行前投入的数据和执行后返回的结果。</p>
+<p>因此，只要测试这个软件暴露的结果是否符合设计要求的功能就行了。，确保程序按照预期的方式运行，通过测试系统的所有特性和功能来确保程序与规范的一致即可。</p>
+<p>优势和劣势与黑盒类似</p>
+<h3 id="集成测试"><a href="#集成测试" class="headerlink" title="集成测试"></a>集成测试</h3><p>假设之前说的程序已经测完了，没问题，但是我们是一个大的项目，每一个交出去的程序，都是更大的一部分呢？</p>
+<p>那必然有必要把这些程序都整合成整体，然后再次进行测试。</p>
+<p>通常，每一个模块，都是一组开发人员进行开发的，由于人的理解和水平差异导致约定和交互接口实现不可能完全精确，很容易出现责任推脱、接口错误、异常不完全等情况。</p>
+<p>所以有必要把原本测试好的模块再合并到一起进行测试。</p>
+<p>同时，与单元测试相对（每一个模块都根据单元测试进行测试了），在集成测试的时候不必过多关注每一个单元的功能，而更应该关注单元之间通信的正确与否。</p>
+<p>和单元测试相结合，有助于一个合格的大型软件。</p>
+<h3 id="压力测试"><a href="#压力测试" class="headerlink" title="压力测试"></a>压力测试</h3><p><del>针对卡t的必然要压力狠狠的测试</del></p>
+<p>程序的性能可能有着要求，或者在数据边界的一些极端情况，程序因为内部设计的问题导致时间过于慢或者内存爆炸（比如开的数组大小不够）。</p>
+<p>另外，在定义了一些极限值（比如max）之类的时候，可能在边界条件处理有问题，压力测试就是用极端情况排除这些问题。</p>
+<p>好处是，经历压力测试，可以很好的模拟现实生活中的极端情况，从而加强修正或者应对。</p>
+<p>缺点是压力测试需要的代价很大，大量数据或者高频率访问，对于现实设备和资源是十分消耗巨大的。</p>
+<p>例如在课下的时候，把测评机的数据调大，或者专门开一个点qlm，然后极端的测试qlm的性能。</p>
+<h3 id="回归测试"><a href="#回归测试" class="headerlink" title="回归测试"></a>回归测试</h3><p>在oo单元中，我们每三次作业都是一个迭代的过程，都是在原有基础上进行开发。</p>
+<p>因此，理论上，新一版的代码，也必须能做到原有的功能。</p>
+<p>现实上，系统更新或者升级的过程中，本身也需要保证之前的一些没有被去掉的功能也正常实现。</p>
+<p>我们必须保证不被新引入的功能和改变来影响原本的执行能力。</p>
+<p>在我的实践中，就是每添一个功能，先跑一跑之前的测评机和数据，看看是否依然正确，这样可以保证能够不丢失原有的功能</p>
+<h2 id="测试工具"><a href="#测试工具" class="headerlink" title="测试工具"></a>测试工具</h2><p>本次使用的测试工具主要是测评机。</p>
+<p>事实上，本单元的数据无法通过外界像电梯一样从输出判断是否符合条件。</p>
+<p>因此，能采取的手段仅仅是和同学对拍。</p>
+<p>因此我选择使用测评机然后和同学对拍。</p>
+<h2 id="数据构造策略"><a href="#数据构造策略" class="headerlink" title="数据构造策略"></a>数据构造策略</h2><p>由于本次是按照图模拟的社交网络，在自己手动构造数据的时候，我选择先根据要测的函数可能面临的几种情况，分别画图然后设计好图，之后转化为命令输入到程序中，好处是，由于是自己设计的，在哪里出的问题很容易定位。</p>
+<p>在大规模的测评中，主要是修改的同学分享的测评机。修改不同指令分布的参数和和数目来进行随机测评。</p>
+<p>事实上，完全的随机会产生大量的nofound异常，导致实际上千行数据全是异常，没什么效果，因此在测试异常之后，在评测机上加一些已经出现的id作为限制，从这些id里面随机，会减少很多异常。</p>
+<h2 id="架构设计"><a href="#架构设计" class="headerlink" title="架构设计"></a>架构设计</h2><p>由于课程组已经给好了每一个具体的要实现的方法，所以这次作业我几乎没有外在架构的设计。</p>
+<p>但是我还是写一下几次注意需要注意的点（。</p>
+<h2 id="hw9"><a href="#hw9" class="headerlink" title="hw9"></a>hw9</h2><p>在这次作业中，困难的算法是三元环算法.</p>
+<h3 id="queryTripleSum"><a href="#queryTripleSum" class="headerlink" title="queryTripleSum"></a>queryTripleSum</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">/*@ ensures \result ==</span><br><span class="line">  @         (\sum int i; 0 &lt;= i &amp;&amp; i &lt; people.length;</span><br><span class="line">  @             (\sum int j; i &lt; j &amp;&amp; j &lt; people.length;</span><br><span class="line">  @                 (\sum int k; j &lt; k &amp;&amp; k &lt; people.length</span><br><span class="line">  @                     &amp;&amp; getPerson(people[i].getId()).isLinked(getPerson(people[j].getId()))</span><br><span class="line">  @                     &amp;&amp; getPerson(people[j].getId()).isLinked(getPerson(people[k].getId()))</span><br><span class="line">  @                     &amp;&amp; getPerson(people[k].getId()).isLinked(getPerson(people[i].getId()));</span><br><span class="line">  @                     1)));</span><br><span class="line">  @*/</span><br></pre></td></tr></table></figure>
+
+<p>有多少个三人组，这三个人彼此都认识。</p>
+<p>就是图中有多少个三角形，有多少个三元环。在使用了hash时，显然不能用这种带顺序的直接翻译。</p>
+<p>据说有个1.5的方法</p>
+<p>洛谷的P1989题。</p>
+<p><a target="_blank" rel="noopener" href="https://www.luogu.com.cn/problem/solution/P1989">点击前往</a></p>
+<p>笔者在这里作为一个菜鸡，一个对算法理解为0的人，展示一下容易理解的方式（我也不知道这方法咋想出来的，姑且作为算法小白给一个较为合理的理解方式吧）。</p>
+<p><del>大佬勿嘲</del></p>
+<h4 id="三元环查找"><a href="#三元环查找" class="headerlink" title="三元环查找"></a>三元环查找</h4><p>我们需要，找到所有的三角形，而这三角形，我在hash的情况下，先遍历每一个点，但是从a找到的abc，和从b找到的abc就重了（当然有能解决的，这里先打个引子而已）。</p>
+<p>有什么办法，能让这个abc的重复，被剪掉，或者说，在找的时候，就不去找？</p>
+<p>并查集里面查询连通块的时候，采取了一种方法：给每个集合指定了一个代表元素，这样只需要计算代表元素的个数就行了。</p>
+<p>那么对于一个三角形，我们能不能找到一个点，让他，且仅有他，能代表这个 三角形？这样数三角形的时候，只有在从他这里开始数这个三角形才算数。</p>
+<p>必须让这个点和另外两个点有不同之处，看在都是点的份上，就是“最小”吧。</p>
+<p>我们利用度的概念，来找最小，一个点，连了几个点，就是度数。（度数相同用id）</p>
+<p>我们让这个三角形被最小的点代表。</p>
+<p>这样，由于id唯一， <strong>所以我们对于每一个三角形，必然能找到一个点，它另外两个点都小，它能代表这个三角形</strong></p>
+<p>这样，我们遍历所有点的时候，如果发现，A连接的一个点比A小，<strong>那么A一定不能代表这个三角形</strong>（如果A和这个点都处在一个三角形里的话）。</p>
+<p>用题解的话说，我们给每条边找一个“方向”，让这个方向，满足由小的指向大的。这样，在遍历A周围的点的时候，只需要遍历所有他的出边就行了。</p>
+<p>同样的问题下一层遍历的时候还会出现：两条出边，一个和B连，一个和C连，从B算还是从C算？</p>
+<p>采取和上面一样的方式，还是选择遍历 出边。比如A找到了出边AB，然后寻找第三个点。我仅仅去遍历B的出边，然后找到的点才算。</p>
+<p>这样，从B找到了C，从C的时候便不会找到B。</p>
+<p>别忘了，我们始终可以保证A是这个三角形里面最小的。所以，走到这一步，A&lt;B,B&lt;C是可以确定的。</p>
+<p>这样，假如A和C之间有边的话，自然这就是一个以A为代表的三角形了。</p>
+<p>从B开始遍历的时候，A比B小，也比C小，所以无论如何不会重复。</p>
+<p>（当然算法的本身还是为了优化时间，这么说就图一乐）</p>
+<p>同时，时间上，是 1.5次方的，这个笔者不擅长解释，直接用题解罢（</p>
+<p>因此，实现这个方法时，我们先遍历所有点，然后遍历他们相连且大于他们的点（本身存起来了），再遍历就完了。</p>
+<p>建议设计一个方法，判断大小,比如笔者设计的是：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">getDegree</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.acquaintance.size();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isLesserThan</span><span class="params">(MyPerson myPerson)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">degree</span> <span class="operator">=</span> myPerson.getDegree();</span><br><span class="line">        <span class="type">int</span> <span class="variable">size</span> <span class="operator">=</span> <span class="built_in">this</span>.acquaintance.size();</span><br><span class="line">        <span class="keyword">if</span> (degree &lt; size) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (degree &gt; size) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">this</span>.id &lt; myPerson.getId();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>具体实现代码如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">queryTripleSum</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (tripleClean) &#123;</span><br><span class="line">            <span class="keyword">return</span> tripleSum;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (Integer integerA : people.keySet()) &#123;</span><br><span class="line">            <span class="type">MyPerson</span> <span class="variable">myPersonA</span> <span class="operator">=</span> people.get(integerA);</span><br><span class="line">            HashMap&lt;Integer, MyPerson&gt; acquaintanceA = myPersonA.getAcquaintance();</span><br><span class="line">            <span class="keyword">for</span> (Integer integerB : acquaintanceA.keySet()) &#123;</span><br><span class="line">                <span class="type">MyPerson</span> <span class="variable">myPersonB</span> <span class="operator">=</span> acquaintanceA.get(integerB);</span><br><span class="line">                <span class="keyword">if</span> (myPersonA.isLesserThan(myPersonB)) &#123;</span><br><span class="line">                    HashMap&lt;Integer, MyPerson&gt; acquaintanceB = myPersonB.getAcquaintance();</span><br><span class="line">                    <span class="keyword">for</span> (Integer integerC : acquaintanceB.keySet()) &#123;</span><br><span class="line">                        <span class="type">MyPerson</span> <span class="variable">myPersonC</span> <span class="operator">=</span> acquaintanceB.get(integerC);</span><br><span class="line">                        <span class="keyword">if</span> (myPersonB.isLesserThan(myPersonC) &amp;&amp; myPersonA.isLinked(myPersonC)) &#123;</span><br><span class="line">                            count++;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        tripleClean = <span class="literal">true</span>;</span><br><span class="line">        tripleSum = count;</span><br><span class="line">        <span class="keyword">return</span> count;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="hw10"><a href="#hw10" class="headerlink" title="hw10"></a>hw10</h2><p>这次作业除了删边新增了需要处理图，还有一个求bestid和couple and维护一个group的各项特征数值。</p>
+<h4 id="bestid："><a href="#bestid：" class="headerlink" title="bestid："></a>bestid：</h4><p> 由于查询的时候是需要每个都遍历一遍，所以采取动态维护的手段增加性能</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">addAcquaintance</span><span class="params">(MyPerson person, <span class="type">int</span> val)</span> &#123;</span><br><span class="line">        acquaintance.put(person.getId(), person);</span><br><span class="line">        value.put(person.getId(), val);</span><br><span class="line">        <span class="keyword">if</span> (val == bestValue &amp;&amp; person.getId() &lt; bestId) &#123;</span><br><span class="line">            bestId = person.getId();</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (val &gt; bestValue) &#123;</span><br><span class="line">            bestId = person.getId();</span><br><span class="line">            bestValue = val;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>然后假设删除边正好是当前的best，就必须重新将数据置脏位。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">removeAcquaintance</span><span class="params">(<span class="type">int</span> id)</span> &#123;</span><br><span class="line">        value.remove(id);</span><br><span class="line">        acquaintance.remove(id);</span><br><span class="line">        <span class="keyword">if</span> (id == bestId) &#123;</span><br><span class="line">            clean = <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>同时，修改的时候也要比较一下修改的值是否对best造成影响</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">addValue</span><span class="params">(<span class="type">int</span> id, <span class="type">int</span> val)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">newValue</span> <span class="operator">=</span> value.get(id) + val;</span><br><span class="line">        value.put(id, newValue);</span><br><span class="line">        <span class="keyword">if</span> (id == bestId) &#123;</span><br><span class="line">            clean = <span class="literal">false</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (newValue &gt; bestValue) &#123;</span><br><span class="line">            bestValue = newValue;</span><br><span class="line">            bestId = id;</span><br><span class="line">        &#125; <span class="keyword">else</span> <span class="keyword">if</span> (newValue == bestValue &amp;&amp; id &lt; bestId) &#123;</span><br><span class="line">            bestId = id;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>这样，计算couple的时候就可以以很快的速度完成了</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">queryCoupleSum</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (coupleClean) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="built_in">this</span>.coupleSum;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">for</span> (Integer id : people.keySet()) &#123;</span><br><span class="line">            <span class="type">MyPerson</span> <span class="variable">personFrom</span> <span class="operator">=</span> people.get(id);</span><br><span class="line">            <span class="keyword">if</span> (personFrom.getDegree() != <span class="number">0</span>) &#123;</span><br><span class="line">                <span class="type">MyPerson</span> <span class="variable">personTo</span> <span class="operator">=</span> people.get(personFrom.getBestId());</span><br><span class="line">                <span class="keyword">if</span> (personTo.getBestId() == id) &#123;</span><br><span class="line">                    count++;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        coupleSum = count / <span class="number">2</span>;</span><br><span class="line">        coupleClean = <span class="literal">true</span>;</span><br><span class="line">        <span class="keyword">return</span> coupleSum;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>同时，在维护group的参数的时候，也需要采用动态维护的策略来提升性能：</p>
+<p>我们需要维护俩;年龄平均值和方差。</p>
+<p>假设不加以动态维护，每次求就是o(n)</p>
+<p>但是我们可以在每次加人的时候：</p>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public <span class="type">void</span> <span class="title function_">addPerson</span><span class="params">(Person person)</span> &#123;</span><br><span class="line">        persons.put(person.getId(), (MyPerson) person);</span><br><span class="line">        this.agePowSum += person.getAge() * person.getAge();</span><br><span class="line">        this.ageSum += person.getAge();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>删人的时候：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">delPerson</span><span class="params">(Person person)</span> &#123;</span><br><span class="line">        persons.remove(person.getId());</span><br><span class="line">        <span class="built_in">this</span>.agePowSum -= person.getAge() * person.getAge();</span><br><span class="line">        <span class="built_in">this</span>.ageSum -= person.getAge();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这样，在求mean的时候，</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">getAgeMean</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (persons.size() == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ageSum / persons.size();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>十分的迅速。</p>
+<p>在求方差的时候</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">getAgeVar</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (persons.size() == <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> (agePowSum + persons.size() * getAgeMean() *</span><br><span class="line">                getAgeMean() - <span class="number">2</span> * getAgeMean() * ageSum) / persons.size();</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>具体原因可以看hyggge的博客</p>
+<p>(<a target="_blank" rel="noopener" href="https://hyggge.github.io/">https://hyggge.github.io</a>)</p>
+<h2 id="hw11"><a href="#hw11" class="headerlink" title="hw11"></a>hw11</h2><p>没啥变化，主要是多了个最小环，这个后面说。</p>
+<p>唯二主要参与的设计就是图的架构和数据结构的选择。</p>
+<h3 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h3><p>由于知道这个单元会卡t，所以基本所有的数据结构都是选择的hashmap。</p>
+<p>所有的对象，以id-&gt;obj的方式作为键值对存到hashmap里面，这样，在获取的时候直接get，在查询是否存在该对象的时候直接containskey即可在o(1)的复杂度内完成。</p>
+<h4 id="并查集"><a href="#并查集" class="headerlink" title="并查集"></a>并查集</h4><p>第九次作业，为了图方便，我选择了较为容易实现的并查集，而且速度也很快。</p>
+<p>由于第九次作业仅仅实现了查询连通性，所以与边权值无关，只需要存起来。</p>
+<p>所谓并查集，就是将一群连通的点用一个点来代表，这样，求两个点是否连通，我们仅仅需要对比其所在的连通块里面的代表点即可。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> HashMap&lt;Integer, Integer&gt; pre;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> HashMap&lt;Integer, Integer&gt; rank;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>同时，为了合并的时候不出现退化的树，我实现了按秩合并和路径压缩，需要实现rank数据结构，来存储每一个点的深度。pre来存当前点树的父节点</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">add</span><span class="params">(<span class="type">int</span> id)</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (!pre.containsKey(id)) &#123;</span><br><span class="line">            rank.put(id, <span class="number">0</span>);</span><br><span class="line">            pre.put(id, id);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>在每引入一个人的时候，我都会在这个network的graph里面加一个id。显然现在它不与任何点相连，所以父节点是它自己。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">find</span><span class="params">(<span class="type">int</span> id)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">rep</span> <span class="operator">=</span> id;</span><br><span class="line">        <span class="keyword">while</span> (rep != pre.get(rep)) &#123;</span><br><span class="line">            rep = pre.get(rep);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="type">int</span> <span class="variable">now</span> <span class="operator">=</span> id;</span><br><span class="line">        <span class="keyword">while</span> (now != rep) &#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">fa</span> <span class="operator">=</span> pre.get(now);</span><br><span class="line">            pre.put(now, rep);</span><br><span class="line">            rank.put(now,rank.get(rep)+<span class="number">1</span>);</span><br><span class="line">            now = fa;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> rep;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>找到元素的代表节点。</p>
+<p>不断找父节点，然后直到找到这一组的代表点，这个代表点的的特征是它的父节点等于它本身。</p>
+<p>此外也要实现路径压缩（下面的while）：</p>
+<p>找到代表节点后，把路上经过的所有点的父亲都直接设置为这个代表节点。</p>
+<p>（表现上，就是把层层下降的树的深处的直接连到根部，形成一个扁平的树，这样可以减少while循环的次数）</p>
+<p>为了不爆栈，建议用while而不是函数递归。之前好像有人因此错过。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">askBlock</span><span class="params">()</span> &#123;</span><br><span class="line">       <span class="type">int</span> <span class="variable">sum</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">       <span class="keyword">for</span> (Integer integer : pre.keySet()) &#123;</span><br><span class="line">           <span class="keyword">if</span> (integer == find(integer)) &#123;</span><br><span class="line">               sum++;</span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">       <span class="keyword">return</span> sum;</span><br><span class="line">   &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>查询连通块数。</p>
+<p>显然每个块都有一个代表节点，它的特征是父节点是它自己，只需要遍历所有的点，搜索其中代表节点的数目即可。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">merge</span><span class="params">(<span class="type">int</span> id1, <span class="type">int</span> id2)</span> &#123;</span><br><span class="line">        <span class="type">int</span> <span class="variable">fa1</span> <span class="operator">=</span> find(id1);</span><br><span class="line">        <span class="type">int</span> <span class="variable">fa2</span> <span class="operator">=</span> find(id2);</span><br><span class="line">        <span class="keyword">if</span> (fa1 == fa2) &#123;</span><br><span class="line">            <span class="keyword">return</span> -<span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span> <span class="variable">rank1</span> <span class="operator">=</span> rank.get(fa1);</span><br><span class="line">        <span class="type">int</span> <span class="variable">rank2</span> <span class="operator">=</span> rank.get(fa2);</span><br><span class="line">        <span class="keyword">if</span> (rank1 &lt; rank2) &#123;</span><br><span class="line">            pre.put(fa1, fa2);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (rank1 == rank2) &#123;</span><br><span class="line">                rank.put(fa1, rank1 + <span class="number">1</span>);</span><br><span class="line">            &#125;</span><br><span class="line">            pre.put(fa2, fa1);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>按秩合并。中所周知，两个集合合并，只会有一个代表节点，必然从原本的两个代表节点选出，为防止树退化成链表，需要找到深度较小的树，然后合并到深度较为深的树上，（通过让一个代表节点的直接连到另一个的根）这样可以尽量减少树深度的增加。</p>
+<h3 id="图设计"><a href="#图设计" class="headerlink" title="图设计"></a>图设计</h3><p>在社交网络的每一个都是一个节点，所以理论上这个是一个现成的图。</p>
+<p>但是考虑到network行数太多，并且一些图的计算等基本已经完全和network本身的属性脱离开了，仅仅就是一些点的图算法，我抽象了一个专门的图类，graph，专门用来处理抽象后的点。</p>
+<p>在第十次作业，我才正式引入图，因为之前的东西可以完全用并查集解决。</p>
+<p>在引入图后，我采用了两层hash来存储图的数据。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">final</span> HashMap&lt;Integer, HashMap&lt;Integer, Integer&gt;&gt; graph;</span><br></pre></td></tr></table></figure>
+
+<p>第一层是点id-&gt;点的边hashmap集合。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">addPoint</span><span class="params">(<span class="type">int</span> id)</span> &#123;</span><br><span class="line">        clean = <span class="literal">false</span>;</span><br><span class="line">        graph.put(id, <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;());</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">addEdge</span><span class="params">(<span class="type">int</span> id1, <span class="type">int</span> id2, <span class="type">int</span> value)</span> &#123;</span><br><span class="line">        clean = <span class="literal">false</span>;</span><br><span class="line">        HashMap&lt;Integer, Integer&gt; edge1 = graph.get(id1);</span><br><span class="line">        HashMap&lt;Integer, Integer&gt; edge2 = graph.get(id2);</span><br><span class="line">        edge1.put(id2, value);</span><br><span class="line">        edge2.put(id1, value);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">modifyEdge</span><span class="params">(<span class="type">int</span> id1, <span class="type">int</span> id2, <span class="type">int</span> valueChange)</span> &#123;</span><br><span class="line">        HashMap&lt;Integer, Integer&gt; edge1 = graph.get(id1);</span><br><span class="line">        HashMap&lt;Integer, Integer&gt; edge2 = graph.get(id2);</span><br><span class="line">        <span class="type">int</span> <span class="variable">value</span> <span class="operator">=</span> edge1.get(id2) + valueChange;</span><br><span class="line">        edge1.put(id2, value);</span><br><span class="line">        edge2.put(id1, value);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">deleteEdge</span><span class="params">(<span class="type">int</span> id1, <span class="type">int</span> id2)</span> &#123;</span><br><span class="line">        clean = <span class="literal">false</span>;</span><br><span class="line">        HashMap&lt;Integer, Integer&gt; edge1 = graph.get(id1);</span><br><span class="line">        HashMap&lt;Integer, Integer&gt; edge2 = graph.get(id2);</span><br><span class="line">        edge1.remove(id2);</span><br><span class="line">        edge2.remove(id1);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>利用如上这几个函数可以很简单的维护图的状态。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">queryBlockSum</span><span class="params">()</span> &#123;</span><br><span class="line">        <span class="keyword">if</span> (clean) &#123;</span><br><span class="line">            <span class="keyword">return</span> blockSum;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            clean = <span class="literal">true</span>;</span><br><span class="line">            HashSet&lt;Integer&gt; visited = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">            <span class="type">int</span> <span class="variable">count</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span> (Integer id : graph.keySet()) &#123;</span><br><span class="line">                <span class="keyword">if</span> (!visited.contains(id)) &#123;</span><br><span class="line">                    count++;</span><br><span class="line">                    visited.add(id);</span><br><span class="line">                    LinkedList&lt;Integer&gt; queue = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;();</span><br><span class="line">                    queue.add(id);</span><br><span class="line">                    <span class="keyword">while</span> (queue.size() != <span class="number">0</span>) &#123;</span><br><span class="line">                        <span class="type">int</span> <span class="variable">theOne</span> <span class="operator">=</span> queue.getFirst();</span><br><span class="line">                        queue.removeFirst();</span><br><span class="line">                        <span class="keyword">for</span> (Integer others : graph.get(theOne).keySet()) &#123;</span><br><span class="line">                            <span class="keyword">if</span> (!visited.contains(others)) &#123;</span><br><span class="line">                                visited.add(others);</span><br><span class="line">                                queue.add(others);</span><br><span class="line">                            &#125;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            blockSum = count;</span><br><span class="line">            clean = <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">return</span> count;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>在图中查询queryblock的时候，采用bfs，设置一个已经访问过的集合。</p>
+<p>遍历所有点，然后假设这个点没有被访问过，就对它进行bfs，将所有和它相连的点加入访问集合，同时block数目++。</p>
+<p>这样每次进行一个bfs遍历都可以完全的过所有连接的点一遍，就确定了一个连通块。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">isCircle</span><span class="params">(<span class="type">int</span> id1, <span class="type">int</span> id2)</span> &#123;</span><br><span class="line">        LinkedList&lt;Integer&gt; queueOfOne = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;();</span><br><span class="line">        LinkedList&lt;Integer&gt; queueOfTwo = <span class="keyword">new</span> <span class="title class_">LinkedList</span>&lt;&gt;();</span><br><span class="line">        <span class="keyword">final</span> HashSet&lt;Integer&gt; reachedOne = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">        <span class="keyword">final</span> HashSet&lt;Integer&gt; reachedTwo = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">        queueOfOne.add(id1);</span><br><span class="line">        reachedOne.add(id1);</span><br><span class="line">        queueOfTwo.add(id2);</span><br><span class="line">        reachedTwo.add(id2);</span><br><span class="line">        <span class="keyword">while</span> (queueOfOne.size() != <span class="number">0</span> &amp;&amp; queueOfTwo.size() != <span class="number">0</span>) &#123;</span><br><span class="line">            <span class="keyword">if</span> (queueOfOne.size() &lt;= queueOfTwo.size()) &#123;</span><br><span class="line">                <span class="type">int</span> <span class="variable">head</span> <span class="operator">=</span> queueOfOne.getFirst();</span><br><span class="line">                queueOfOne.remove();</span><br><span class="line">                <span class="keyword">for</span> (Integer point : graph.get(head).keySet()) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (reachedTwo.contains(point)) &#123;</span><br><span class="line">                        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">if</span> (!reachedOne.contains(point)) &#123;</span><br><span class="line">                        queueOfOne.add(point);</span><br><span class="line">                        reachedOne.add(point);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line"></span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="type">int</span> <span class="variable">head</span> <span class="operator">=</span> queueOfTwo.getFirst();</span><br><span class="line">                queueOfTwo.remove();</span><br><span class="line">                <span class="keyword">for</span> (Integer point : graph.get(head).keySet()) &#123;</span><br><span class="line">                    <span class="keyword">if</span> (reachedOne.contains(point)) &#123;</span><br><span class="line">                        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                    <span class="keyword">if</span> (!reachedTwo.contains(point)) &#123;</span><br><span class="line">                        queueOfTwo.add(point);</span><br><span class="line">                        reachedTwo.add(point);</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>对于两个点的连通性，选择双向bfs，每次从两个队列里面各拿出来一个点，假设这个点已经被另个一个点访问过，那么自然判定了这两个点连通。</p>
+<p>为了防止退化成普通bfs，每次从队列长度较小的那个队列中取点。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">findMinCircle</span><span class="params">(<span class="type">int</span> id)</span> &#123;</span><br><span class="line">        HashMap&lt;Integer, Integer&gt; distance = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        PriorityQueue&lt;Point&gt; heap = <span class="keyword">new</span> <span class="title class_">PriorityQueue</span>&lt;&gt;(POINT_COMPARATOR);</span><br><span class="line">        <span class="keyword">for</span> (Integer point : graph.keySet()) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!point.equals(id)) &#123;</span><br><span class="line">                distance.put(point, graph.get(id).getOrDefault(point, Integer.MAX_VALUE));</span><br><span class="line">                heap.add(<span class="keyword">new</span> <span class="title class_">Point</span>(point, distance.get(point)));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        HashSet&lt;Integer&gt; reach = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">        reach.add(id);</span><br><span class="line">        HashMap&lt;Integer, Integer&gt; preTree = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (Integer side : graph.get(id).keySet()) &#123;</span><br><span class="line">            preTree.put(side, side);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; graph.size() - <span class="number">1</span>; i++) &#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">k</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">while</span> (!heap.isEmpty()) &#123;</span><br><span class="line">                <span class="type">Point</span> <span class="variable">find</span> <span class="operator">=</span> heap.poll();</span><br><span class="line">                <span class="keyword">if</span> (!reach.contains(find.getId())) &#123;</span><br><span class="line">                    k = find.getId();</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (distance.get(k) == Integer.MAX_VALUE) &#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            reach.add(k);</span><br><span class="line">            <span class="keyword">for</span> (Integer point : graph.get(k).keySet()) &#123;</span><br><span class="line">                <span class="type">int</span> <span class="variable">tmp</span> <span class="operator">=</span> graph.get(k).get(point) + distance.get(k);</span><br><span class="line">                <span class="keyword">if</span> (!reach.contains(point) &amp;&amp; distance.get(point) &gt; tmp) &#123;</span><br><span class="line">                    distance.put(point, tmp);</span><br><span class="line">                    heap.add(<span class="keyword">new</span> <span class="title class_">Point</span>(point, tmp));</span><br><span class="line">                    preTree.put(point, preTree.get(k));</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span> <span class="variable">ans</span> <span class="operator">=</span> Integer.MAX_VALUE;</span><br><span class="line">        <span class="keyword">for</span> (Integer point : graph.get(id).keySet()) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!point.equals(preTree.get(point))) &#123;</span><br><span class="line">                ans = Math.min(ans, graph.get(id).get(point) + distance.get(point));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (Integer point1 : graph.keySet()) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!preTree.containsKey(point1) || point1 == id) &#123;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span> (Integer point2 : graph.get(point1).keySet()) &#123;</span><br><span class="line">                <span class="keyword">if</span> (!preTree.containsKey(point2)) &#123;</span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (point2 != id &amp;&amp; !preTree.get(point2).equals(preTree.get(point1))) &#123;</span><br><span class="line">                    ans = Math.min(ans, distance.get(point1) +</span><br><span class="line">                            distance.get(point2) + graph.get(point1).get(point2));</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans == Integer.MAX_VALUE ? -<span class="number">1</span> : ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>求过一个点的最小环长。</p>
+<p>采用最短路树的方式，使用堆优化迪杰来找到所有最短路径长度，并存起来每一个点所在的子树（类似并查集，不过代表元素是与源点直接相连的子树）</p>
+<h2 id="性能问题"><a href="#性能问题" class="headerlink" title="性能问题"></a>性能问题</h2><p>在具体实现中，没有遇到性能问题。</p>
+<p>在每个比较考察速度的算法里，都采取了较快的算法（比如bfs加了双向，迪杰用了堆优化）</p>
+<h2 id="规格与实现分离"><a href="#规格与实现分离" class="headerlink" title="规格与实现分离"></a>规格与实现分离</h2><p>对于规格与实现，我已经在我的帖子(oktest:规格、实现方法和验证方法)里面说明了，在此摘要：</p>
+<p>当作为程序员，要实现这个单元的内容，我们应该不会选择严格的按照JML翻译，毕</p>
+<p>竟，JML作为客户描述想要的东西究竟满足什么样的特征，为了表达的尽可能严谨，</p>
+<p>实现可能会起来效率差且复杂。</p>
+<p>我们会选择：阅读JML，理解JML让我们想干什么，然后按照我们自己的理解用自己</p>
+<p>的方法去写一个我们认为符合JML想让我们做什么的代码。</p>
+<p>比如，我们会进行数据结构的转换。规格给的是[]数组，我们使用&lt;id,Person&gt;的</p>
+<p>hashMap&gt;，建立在我们的经过性能或者逻辑组织的考量上做出的选择。我认为这个</p>
+<p>能实现[]能实现的。</p>
+<p>比如，里面的isCircle方法，我阅读后发现，就是看这两个点是否互相可达，我就会</p>
+<p>按照并查集的方法去做。在我看来，作为一个代码的提供方，我认为我是完成了JML</p>
+<p>的要求的。</p>
+<p>实现方法，就是我们作为程序员，将JML理解后实现要求所满足的方法。</p>
+<p><strong>因此</strong></p>
+<p>规格，是希望我们实现的功能，而不管我们怎么实现的。我们只要对外暴露的符合要求描述即可。</p>
+<h3 id="OK"><a href="#OK" class="headerlink" title="OK"></a>OK</h3><p>对于实现目的的手段，我们（作为程序员）做了一个叙述的变换：</p>
+<p>我们将JML设想的，用户的需求，变换成了我们（程序员）便于实现的、性能高的叙</p>
+<p>述方式，然后按照我们的叙述来写代码。</p>
+<p>当然，这个变换，很有可能不是等价的 。</p>
+<p>可能从数据结构上不等价，从算法上不等价。</p>
+<p>上面我用hashMap代替了[]，两个数据结构可能不等价。</p>
+<p>上面我用并查集求联通而不是找到一个以id1,id2为起始的数组，两个方法可能不等</p>
+<p>价。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">HashMap&lt;Integer, HashMap&lt;Integer, Integer&gt;&gt; beforeData,</span><br><span class="line"></span><br><span class="line">HashMap&lt;Integer, HashMap&lt;Integer, Integer&gt;&gt; afterData,</span><br><span class="line"></span><br><span class="line">int result</span><br></pre></td></tr></table></figure>
+
+<p>当然写的正确的话，效果相同，但是直观看来客户会认为不等价，想证明等价，就</p>
+<p>需要验证）</p>
+<p>所以，OKTEST，它作为一个验证方法，就是要看我们（程序员）是不是做出了等价</p>
+<p>的变换。</p>
+<p>现在，回到客户的视角，程序员给你提供了经过变换的一个方法，你看不懂里面是</p>
+<p>啥，他宣称这个方法符合你的要求，你不信。</p>
+<p>但是你可以找出很多种情况，然后让这个方法工作一下，看看它是不是<strong>严格</strong>符合你想</p>
+<p>要的结果。</p>
+<p>对于这个ok测试就是我们测试这个“严格性”的手段。</p>
+<p>作为客户，假设我们要验收程序员给我们的A方法，</p>
+<p>我们需要一个检测器（就是OK方法），来检测程序员实现的方法A的正确性。</p>
+<p>我们并不观察给出其他人实现的方法A的代码，而是通过给出实现的方法A执行前的</p>
+<p>状态beforeData和执行后的状态afterData，由我们的ok方法来检验这个方法A执行</p>
+<p>的正确性。</p>
+<p>这里， 我们要做的，就是<strong>严格对照</strong>JML<strong>的要求</strong>来看一下是不是满足条件。</p>
+<p>譬如：JML说：\result &#x3D;&#x3D; x</p>
+<p>那么我们就要严格的检查，result&#x3D;&#x3D;x</p>
+<p>譬如说：JML说到：</p>
+<p><code>(\exists int i; 0 &lt;= i &amp;&amp; i &lt; acquaintance.length;</code></p>
+<p><code>@ acquaintance[i].getId() == person.getId());</code></p>
+<p>那么我们一定就要去在acquaintance里面去找，一定要找到一个</p>
+<p>acquaintance[i].getId() &#x3D;&#x3D; person.getId()); 才算完成目标。</p>
+<p>就像这样：</p>
+<p><code>boolean exist_check=false;</code></p>
+<p><code>for(MyPerson myPerson:acquaintance)</code></p>
+<p><code>&#123;</code></p>
+<p><code>if(myPerson.getId()==person.getId())</code></p>
+<p><code>&#123;</code></p>
+<p><code>exist_check=true;</code></p>
+<p><code>&#125;</code></p>
+<p><code>&#125;</code></p>
+<p>譬如说：JML说到：那么我们就要用真的去遍历这个三重循环，然后将所有满足上面说的条件的数目加起</p>
+<p>来，看看 result是不是等于这个值。</p>
+<p><strong>注意，我们在做一个合格的<strong><strong>OK</strong></strong>测试的时候，并不能用任何逻辑和数学的推导来推理</strong></p>
+<p><strong>出来符合要求，我们必须直观的得到和JML 要求的效果一模一样的效果，这个</strong></p>
+<p><strong>OKTEST</strong>才算是成功的</p>
+<p><strong>法，调用方法前后的状态应该一致，如果前后状态不一致，那么我们认为这不符合给</strong></p>
+<p><strong>定的</strong>JML</p>
+<p>作为一个OKTEST，我们不能依赖任何推导，只接受摆在眼前的结果</p>
+<h3 id="改进建议"><a href="#改进建议" class="headerlink" title="改进建议"></a>改进建议</h3><p>OKtest不应该作为一个普通方法放到network里面，而专门应该作为一个静态类的静态方法。</p>
+<p>不应该在实验让学生自己写代码然后用自己写的OKtest自己测试自己的代码。</p>
+<h2 id="单元学习体会"><a href="#单元学习体会" class="headerlink" title="单元学习体会"></a>单元学习体会</h2><p>首先，这么简单的单元，身边人几乎都是全ak，但是我却惨痛的错了一个点。</p>
+<p>确实令人悲伤，但是本身也是因为课下没有好好测试的原因。</p>
+<p>千万不能对自己写的代码有过多的自信，对于一个复杂的代码，测试多少都不嫌多。</p>
+<p>在阅读jml的时候，遇到了困难，因为读不下去jml而导致课下后两次自己测试的时候出现了很多的bug。幸而得到mfhdl和dzsl的帮助，订正了我的错误，让我能后两次不出bug。</p>
+<p>在算法层面，我是一个之前没学过算法的人，所以这次没有发帖子班门弄斧。</p>
+<p>但是看群里大佬们讨论各种算法，给萌新涨了很多见识，同时也通过自己写算法而体会到了计算的奥妙。</p>
+<p>在实现规格的时候，我深切的理解了客户需求和程序员实现之间的统一与差异。</p>
+<p>在充分理解规格要求的基础上，充分发挥程序员的主观知识，来做出性能优越的方法。</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">farewell</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://brilliant-daffodil-eb4c4f.netlify.app/2023/05/18/%E7%AC%AC%E4%B8%89%E5%8D%95%E5%85%83%E5%8D%9A%E5%AE%A2/">https://brilliant-daffodil-eb4c4f.netlify.app/2023/05/18/%E7%AC%AC%E4%B8%89%E5%8D%95%E5%85%83%E5%8D%9A%E5%AE%A2/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">farewell</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/BUAA-OO/">
+                                    <span class="chip bg-color">BUAA_OO</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2023/05/18/%E9%9A%BE%E9%A1%B6%E7%9A%84%E7%AC%AC%E4%BA%8C%E6%AC%A1%E4%BD%9C%E4%B8%9A/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="记录因为脏位课下测试出的bug">
+                        
+                        <span class="card-title">记录因为脏位课下测试出的bug</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-05-18
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            farewell
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/BUAA-OO/">
+                        <span class="chip bg-color">BUAA_OO</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/05/18/JML%E5%92%8C%E8%A7%84%E6%A0%BC%E5%88%9D%E7%AA%A5%E6%8E%A2/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/12.jpg" class="responsive-img" alt="JML 第一次作业">
+                        
+                        <span class="card-title">JML 第一次作业</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-18
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            farewell
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/BUAA-OO/">
+                        <span class="chip bg-color">BUAA_OO</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+    <div class="container row center-align" style="margin-bottom: 15px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2022-2023</span>
+            
+            <span id="year">2022</span>
+            <a href="/about" target="_blank">farewell</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <span id="sitetime">载入运行时间...</span>
+            <script>
+                function siteTime() {
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var startYear = "2022";
+                    var startMonth = "10";
+                    var startDate = "3";
+                    var startHour = "0";
+                    var startMinute = "0";
+                    var startSecond = "0";
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth() + 1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                    var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                    var diff = t2 - t1;
+                    var diffYears = Math.floor(diff / years);
+                    var diffDays = Math.floor((diff / days) - diffYears * 365);
+                    var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+                    var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) /
+                        minutes);
+                    var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours -
+                        diffMinutes * minutes) / seconds);
+                    if (startYear == todayYear) {
+                        document.getElementById("year").innerHTML = todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已安全运行 " + diffDays + " 天 " + diffHours +
+                            " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    } else {
+                        document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已安全运行 " + diffYears + " 年 " + diffDays +
+                            " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    }
+                }
+                setInterval(siteTime, 1000);
+            </script>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/farewell-exiles" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:1284272565@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1284272565" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 1284272565" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+	
+    
+    <script type="text/javascript" color="0,0,255"
+        pointColor="0,0,255" opacity='0.7'
+        zIndex="-1" count="99"
+        src="/libs/background/canvas-nest.js"></script>
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

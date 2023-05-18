@@ -1,0 +1,1243 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="菜鸡对最小环算法的尝试, farewell&#39;s blog">
+    <meta name="description" content="你到过许多地方，用你自己的故事记认许多城邦后，你终于抵达此城">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>菜鸡对最小环算法的尝试 | farewell&#39;s blog</title>
+    <link rel="icon" type="image/png" href="/medias/logo.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+
+
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">farewell&#39;s blog</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="" class="waves-effect waves-light">
+
+      
+      <i class="fas fa-music" style="zoom: 0.6;"></i>
+      
+      <span>Musics</span>
+      <i class="fas fa-chevron-down" aria-hidden="true" style="zoom: 0.6;"></i>
+    </a>
+    <ul class="sub-nav menus_item_child ">
+      
+      <li>
+        <a target="_blank" rel="noopener" href="https://www.kugou.com/songlist/gcid_3zsmhjkqzhz07e/">
+          
+          <i class="fas fa-music" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>Youth</span>
+        </a>
+      </li>
+      
+      <li>
+        <a target="_blank" rel="noopener" href="https://www.kugou.com/songlist/gcid_3zsmhjkqzgz054/">
+          
+          <i class="fas fa-music" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>Hurt</span>
+        </a>
+      </li>
+      
+      <li>
+        <a target="_blank" rel="noopener" href="https://www.kugou.com/songlist/gcid_3zsmhjkqzfz091/">
+          
+          <i class="fas fa-music" style="margin-top: -20px; zoom: 0.6;"></i>
+          
+          <span>romantic</span>
+        </a>
+      </li>
+      
+    </ul>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">farewell&#39;s blog</div>
+        <div class="logo-desc">
+            
+            你到过许多地方，用你自己的故事记认许多城邦后，你终于抵达此城
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="javascript:;">
+			
+				<i class="fa-fw fas fa-music"></i>
+			
+			Musics
+			<span class="m-icon"><i class="fas fa-chevron-right"></i></span>
+		</a>
+            <ul  style="background:  ;" >
+              
+                <li>
+
+                  <a target="_blank" rel="noopener" href="https://www.kugou.com/songlist/gcid_3zsmhjkqzhz07e/ " style="margin-left:75px">
+				  
+				   <i class="fa fas fa-music" style="position: absolute;left:50px" ></i>
+			      
+		          <span>Youth</span>
+                  </a>
+                </li>
+              
+                <li>
+
+                  <a target="_blank" rel="noopener" href="https://www.kugou.com/songlist/gcid_3zsmhjkqzgz054/ " style="margin-left:75px">
+				  
+				   <i class="fa fas fa-music" style="position: absolute;left:50px" ></i>
+			      
+		          <span>Hurt</span>
+                  </a>
+                </li>
+              
+                <li>
+
+                  <a target="_blank" rel="noopener" href="https://www.kugou.com/songlist/gcid_3zsmhjkqzfz091/ " style="margin-left:75px">
+				  
+				   <i class="fa fas fa-music" style="position: absolute;left:50px" ></i>
+			      
+		          <span>romantic</span>
+                  </a>
+                </li>
+              
+            </ul>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/farewell-exiles" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>来van啊
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/farewell-exiles" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="来van啊" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/2.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">菜鸡对最小环算法的尝试</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        padding-bottom: 30px;
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/BUAA-OO/">
+                                <span class="chip bg-color">BUAA_OO</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-05-18
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="最小环算法"><a href="#最小环算法" class="headerlink" title="最小环算法"></a>最小环算法</h1><p>在oo的第三次作业里面，笔者遇到了这样的一个方法需要实现：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">/*@ public normal_behavior</span><br><span class="line">      @ requires contains(id) &amp;&amp; (\exists Person[] path;</span><br><span class="line">      @         path.length &gt;= 4;</span><br><span class="line">      @         path[0].equals(getPerson(id)) &amp;&amp;</span><br><span class="line">      @         path[path.length - 1].equals(getPerson(id)) &amp;&amp;</span><br><span class="line">      @         (\forall int i; 1 &lt;= i &amp;&amp; i &lt; path.length; path[i - 1].isLinked(path[i])) &amp;&amp;</span><br><span class="line">      @         (\forall int i, j; 1 &lt;= i &amp;&amp; i &lt; j &amp;&amp; j &lt; path.length; !path[i].equals(path[j])));</span><br><span class="line">      @ ensures (\exists Person[] pathM;</span><br><span class="line">      @         pathM.length &gt;= 4 &amp;&amp;</span><br><span class="line">      @         pathM[0].equals(getPerson(id)) &amp;&amp;</span><br><span class="line">      @         pathM[pathM.length - 1].equals(getPerson(id)) &amp;&amp;</span><br><span class="line">      @         (\forall int i; 1 &lt;= i &amp;&amp; i &lt; pathM.length; pathM[i - 1].isLinked(pathM[i])) &amp;&amp;</span><br><span class="line">      @         (\forall int i, j; 1 &lt;= i &amp;&amp; i &lt; j &amp;&amp; j &lt; pathM.length; !pathM[i].equals(pathM[j]));</span><br><span class="line">      @         (\forall Person[] path;</span><br><span class="line">      @         path.length &gt;= 4 &amp;&amp;</span><br><span class="line">      @         path[0].equals(getPerson(id)) &amp;&amp;</span><br><span class="line">      @         path[path.length - 1].equals(getPerson(id)) &amp;&amp;</span><br><span class="line">      @         (\forall int i; 1 &lt;= i &amp;&amp; i &lt; path.length; path[i - 1].isLinked(path[i])) &amp;&amp;</span><br><span class="line">      @         (\forall int i, j; 1 &lt;= i &amp;&amp; i &lt; j &amp;&amp; j &lt; path.length; !path[i].equals(path[j]));</span><br><span class="line">      @         (\sum int i; 1 &lt;= i &amp;&amp; i &lt; path.length; path[i - 1].queryValue(path[i])) &gt;=</span><br><span class="line">      @         (\sum int i; 1 &lt;= i &amp;&amp; i &lt; pathM.length; pathM[i - 1].queryValue(pathM[i]))) &amp;&amp;</span><br><span class="line">      @         \result==(\sum int i; 1 &lt;= i &amp;&amp; i &lt; pathM.length; pathM[i - 1].queryValue(pathM[i])));</span><br><span class="line">      @ also</span><br><span class="line">      @ public exceptional_behavior</span><br><span class="line">      @ signals (PersonIdNotFoundException e) !contains(id);</span><br><span class="line">      @ signals (PathNotFoundException e) contains(id) &amp;&amp; !(\exists Person[] path;</span><br><span class="line">      @         path.length &gt;= 4;</span><br><span class="line">      @         path[0].equals(getPerson(id)) &amp;&amp;</span><br><span class="line">      @         path[path.length - 1].equals(getPerson(id)) &amp;&amp;</span><br><span class="line">      @         (\forall int i; 1 &lt;= i &amp;&amp; i &lt; path.length; path[i - 1].isLinked(path[i])) &amp;&amp;</span><br><span class="line">      @         (\forall int i, j; 1 &lt;= i &amp;&amp; i &lt; j &amp;&amp; j &lt; path.length; !path[i].equals(path[j])));</span><br><span class="line">      @*/</span><br><span class="line">    public int queryLeastMoments(int id) throws PersonIdNotFoundException, PathNotFoundException;</span><br></pre></td></tr></table></figure>
+
+<p>查询最小的环。</p>
+<p>一看，这不是&gt;&#x3D;4嘛，还要限制4元环？</p>
+<p>事实上，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">path[0].equals(getPerson(id)) &amp;&amp;</span><br><span class="line">      @         path[path.length - 1].equals(getPerson(id))</span><br></pre></td></tr></table></figure>
+
+<p>第一个是id，最后一个也是id。</p>
+<p>这俩加上是&gt;&#x3D;4，所以其他点数目&gt;&#x3D;2即可。</p>
+<p>这个正是一个标准的环，3元环以上都可以。假如能找到这个最小的（事实上，找不到的话，就代表它不在任何一个环里面）就返回这个环的权值之和，否则，爆异常，没找到环。</p>
+<p><strong>考虑到本次题目不需要输出路径，所以在以下算法实现里，仅仅使用dis存起来，不必要的路径不加存储</strong></p>
+<h1 id="Floyd算法"><a href="#Floyd算法" class="headerlink" title="Floyd算法"></a>Floyd算法</h1><p>在搜索相应资料的时候，笔者看到了Floyd算法，之前一直找的都是迪杰斯特拉。</p>
+<p>下面介绍Floyd：</p>
+<p>与迪杰不同的是，迪杰是找到 <strong>单源（也就是一个点）</strong>到所有 <strong>其他点</strong>的最短路径。</p>
+<p>但是，</p>
+<p>Floyd <strong>所有点</strong>到 <strong>所有点</strong>的最短路径，所以效率上会有所不良。</p>
+<p>考虑到我们是求的单点最小环，所以实际上，用Floyd实在是并不适合，这里仅做学习之用。</p>
+<p>它的本质，是 <strong>贪心</strong>，并且是一个n^3的算法</p>
+<h2 id="维护数据"><a href="#维护数据" class="headerlink" title="维护数据"></a>维护数据</h2><p>需要维护一个n*n的矩阵D，其中D[i][j]为i到j的最短距离。其当前状态为D0</p>
+<h2 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h2><p>设置一个上界max，然后让两个点直接相连的是其权值，否则设置为上界max</p>
+<p>设置循环变量k&#x3D;&#x3D;1</p>
+<h2 id="循环"><a href="#循环" class="headerlink" title="循环"></a>循环</h2><p>对k进行循环，k作为第i个点，在第k次循环中，作为一个中转站，通过计算过它的两条边长度来刷新长度。</p>
+<p>然后对i和j做一个2重循环</p>
+<p>在循环里层做一个判断，</p>
+<p>假如 dij&gt;dik+dkj，则用dik+dkj代替dij</p>
+<p>ijk三者各不相同</p>
+<p>（考虑到对称性，ij前后等效）</p>
+<p>遍历所有ij后k++</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dp[i][j]=min(dp[i][j],dp[i][k]+dp[k][j])</span><br></pre></td></tr></table></figure>
+
+<h2 id="理论证明"><a href="#理论证明" class="headerlink" title="理论证明"></a>理论证明</h2><p>首先，要明确的一点是，每次所谓中转k，其实会遍历到所有k之前的点（通过ij）</p>
+<p>每次刷新，都要针对ij全部的扫描一遍的。</p>
+<p>那么，我们为什么这么做一遍就能得到点到另一个点的最短距离了呢？</p>
+<p>不妨我们设置一个要求ij最短距离。</p>
+<p>不妨我们可以针对每一次中转的k中，遍历的ij来看</p>
+<p>刚开始，ij的距离是两者之间边的长度。</p>
+<p>第一次，用1做中转，把能刷新的刷新了。这个时候，假如ij与1相连，就可以比较是否被刷新。</p>
+<p>但是，当前中转的k，ik是不刷新的。</p>
+<p>比如i1，肯定不刷新。</p>
+<p>第二次，用2做中转。这个时候，在前面1的作用下，2和其他点的最短距离大小可能改变，比如j，这样12,2j就可能会发生变化，修改1j，从而更新值.</p>
+<p>说中转，是为了方便理解当前循环进行的操作，实际上，本次的中转，在下一次和以后次都有保留</p>
+<p>它的思想是这样的：</p>
+<p>我们需要的是，考虑到可以经过任何一个点，的两个点之间的最短路径。</p>
+<p>但是，我们一开始，并不是直接考虑所有点，而是把一些点不予考虑，在不考虑这个点的时候，我们除了它自己到另一个人，都不考虑经过它。</p>
+<p>比如刚开始到2，那么3就不被考虑，它到1的距离可以通过2的加入考虑而修改。但是它只有在自己作为中转之后才被考虑作为经过。</p>
+<p>因此，遍历 k，就是一个一个的把点加入到考虑的可作为中间的点集里面。</p>
+<p>所以说，当没有枚举到 k 时，<code>d[i,j]</code> 中存的是，从 i 到 j，经过所有编号小于 k 的所有节点的最短距离。节点 k 不在这个路径中</p>
+<p>因此，遍历顺序不重要，只要完成k的遍历，必然是考虑了所有点在里面的效果。</p>
+<p>那为啥是最短呢？</p>
+<p>我们只考虑结果：</p>
+<p>每次，采取中转的时候，都是比较两个边和当前距离的大小。</p>
+<p>比如想更新i到j，之前可能已经更新i到j的了，当然每次也更新i到其他的了，由于每次遍历ij的时候，自然的会遍历所有点，所以也会更新ik和jk之间的距离（通过之前纳入考虑的点）</p>
+<p>之前已经考虑了所有k之前的点作为中转的情况，现在就比较一下k作为中转的，其中，ik，本身就是之前考虑到某个点而更新的距离，它是一系列链路经过考虑的结果。</p>
+<p>但是可能会问，下一次可能又会更新ik的值，那这一次通过未更新的ik求出来的最小路径ij不就泡汤了吗？</p>
+<p>事实上，在下一次，不妨叫m吧。</p>
+<p>ik，它代表了一个链路的权值和，它上面的链节点，都是在k之前出现过的节点。</p>
+<p>现在ij的值是ik+kj。</p>
+<p>下一次更新ik的时候，需要引入m在ik之间，从而才能修改ik的值。</p>
+<p>也就是说，ik的值，变成了im+mk，</p>
+<p>同时，显然也会更新kj的值，可能不变，可能变成km+mj。</p>
+<p>显然，im&lt;ik,mj&lt;kj,所以im+mj&lt;ik+kj&#x3D;ij（上一次的）</p>
+<p>所以引入m后，自然会更新到更好的值。</p>
+<h2 id="在本题的应用"><a href="#在本题的应用" class="headerlink" title="在本题的应用"></a>在本题的应用</h2><p>在本题并不是需要这个的结果，而是需要这个的过程，</p>
+<p>在遍历时如果我们让节点 k 和节点 i 和节点 j 相连，那么就构成了一个至少为三个节点的环，环中没有重复节点。</p>
+<p>这个环的权值就是：此时求得的从 i 到 j 的最短距离 + (i,k)的边权 + (k, j) 的边权，即 <code>d[i,j] + d[i,k] + d[k,j]</code></p>
+<p>这样，如果要更新的话，显然dist[i,j]是之前最短的，新的d[i,k]+d[k,j]更是现在对端，自然成为最短小环</p>
+<p>如果不更新的话，有可能这个新的d[i,k]+d[k,j]是加上后第二小的，和之前的结果比较以下就好了</p>
+<p>所以我们设定一个ans，假设遍历中i&#x2F;j&#x2F;k有一个为所求点，就更新尝试ans即可。</p>
+<h2 id="效果分析"><a href="#效果分析" class="headerlink" title="效果分析"></a>效果分析</h2><p>n^3，每次求一个点，所有人都要算一遍，动态维护也很麻烦，散了吧</p>
+<h1 id="spfa算法"><a href="#spfa算法" class="headerlink" title="spfa算法"></a>spfa算法</h1><p>特别容易被卡，据说spfa已死，所以不理他。</p>
+<h1 id="堆优化迪杰斯特拉算法"><a href="#堆优化迪杰斯特拉算法" class="headerlink" title="堆优化迪杰斯特拉算法"></a>堆优化迪杰斯特拉算法</h1><p>之前已经说过迪杰了。</p>
+<p>迪杰要求是边权值为正，显然我们这个题目符合要求。</p>
+<p>它可以求给定一个点作为源，到其他各个点的距离。</p>
+<p>初始化的时候，把所有点边存起来，然后存一个一维数组dis，代表源到各个点的min距离。</p>
+<p>刚开始一定有某些点是可达的，显然这些点的距离已经是最短的了，所以以后不会更新</p>
+<p>设可达集合为s，每次取到s中的点距离（假设是和p）最短的点q，然后把这个加入集合，它的距离就是source+p+pd，</p>
+<p>然后更新其他点到s中点的距离</p>
+<p>现在说一下堆优化的迪杰：</p>
+<p>堆的性质，是迅速找到最小的，而不管其他顺序。</p>
+<p><strong>每次取到s中的点距离（假设是和p）最短的点q</strong>这个找到最小是很耗时间的。</p>
+<p>我们可以把每个顶点当前到可达集合的最短距离用堆来维护，在更新最短距离时，把对应的元素往根的方向移动以满足堆的性质。而每次从堆中取出的最小值就是下一次要用的顶点。</p>
+<p>这样对于稀疏图可以很好简化时间。</p>
+<p>但是对于稠密图反而得不偿失。</p>
+<h2 id="在本题中的应用：删边法"><a href="#在本题中的应用：删边法" class="headerlink" title="在本题中的应用：删边法"></a>在本题中的应用：删边法</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/weixin_44499508/article/details/106869947">(21条消息) HDU 6005 Pandaland（dijkstra求最小环）_蒋卫升的博客-CSDN博客</a></p>
+<p>复杂度m ∗ ( n + m ) l o g ( n ) </p>
+<p>是一个稀疏图，所以这个m比n小不少，是一个很快很快的方法。</p>
+<p>而且，一旦寻找到固定的点之后（由于直接就是最短路径不更新了），直接可以break掉。</p>
+<p>那么，这个该如何应用呢？</p>
+<p>和bean交流他在讨论区提供的删边法后，总结如下：</p>
+<p>最短路，不能直接用，因为要是环的话，必然和源点是连着的，这个就必然是最短了。</p>
+<p>上面说了，用最短的+第二短的就是最小环。</p>
+<p>那么，无视最短的，那不就是第二短的了嘛。</p>
+<p>所以，我们可以先删去 这个边，然后算出来最小路，之后再添上，就是从这个边出发的最小环了。</p>
+<p>但是，在java里面，删可以，加可以，又删又加必然就寄了（比如hash，ArrayList当然可行）</p>
+<p>所以，选择无视，不去真正删改是一个较好的选择。</p>
+<h2 id="具体实现"><a href="#具体实现" class="headerlink" title="具体实现"></a>具体实现</h2><p>关键在于，怎么无视？</p>
+<p>而且，是要它每相邻一个边，都迪杰一次，求出最短路。</p>
+<p>假设边数是m，迪杰堆优化后是nlogn</p>
+<p>那就是nmlogn</p>
+<p>效果还是可以的。</p>
+<p>不妨回顾一下迪杰：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> ArrayList&lt;Integer&gt; <span class="title function_">findPath</span><span class="params">(<span class="type">int</span> from, <span class="type">int</span> to)</span> &#123;</span><br><span class="line">        ArrayList&lt;Integer&gt; path = <span class="keyword">new</span> <span class="title class_">ArrayList</span>&lt;&gt;();</span><br><span class="line">        <span class="comment">// init prev</span></span><br><span class="line">        <span class="type">int</span>[] prev = <span class="keyword">new</span> <span class="title class_">int</span>[<span class="number">12</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt;= <span class="number">11</span>; i++) &#123;</span><br><span class="line">            prev[i] = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// init isVisit</span></span><br><span class="line">        <span class="type">boolean</span>[] isVisit = <span class="keyword">new</span> <span class="title class_">boolean</span>[<span class="number">12</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt;= <span class="number">11</span>; i++) &#123;</span><br><span class="line">            isVisit[i] = <span class="literal">false</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// init distance , the distance to the achieved points collection S</span></span><br><span class="line">        <span class="type">int</span>[] distance = <span class="keyword">new</span> <span class="title class_">int</span>[<span class="number">12</span>];</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt;= <span class="number">11</span>; i++) &#123;</span><br><span class="line">            <span class="keyword">if</span> (puzzle[to][i] == <span class="number">0</span>) &#123;</span><br><span class="line">                distance[i] = <span class="number">100</span>;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                distance[i] = <span class="number">1</span>;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">// init to ,for the order put into the path ,to first.</span></span><br><span class="line">        <span class="comment">// panic !! the point next to the &quot;to&quot; ,its prev =0;</span></span><br><span class="line">        isVisit[to] = <span class="literal">true</span>;</span><br><span class="line">        <span class="type">int</span> <span class="variable">k</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">        <span class="comment">// to do</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">1</span>; i &lt;= <span class="number">11</span>; i++) &#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">min</span> <span class="operator">=</span> <span class="number">100</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">1</span>; j &lt;= <span class="number">11</span>; j++) &#123;</span><br><span class="line">                <span class="keyword">if</span> (!isVisit[j] &amp;&amp; distance[j] &lt; min) &#123;</span><br><span class="line">                    min = distance[j];</span><br><span class="line">                    k = j;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            isVisit[k] = <span class="literal">true</span>;</span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">j</span> <span class="operator">=</span> <span class="number">1</span>; j &lt;= <span class="number">11</span>; j++) &#123;</span><br><span class="line">                <span class="type">int</span> <span class="variable">tmp</span> <span class="operator">=</span> (puzzle[j][k] == <span class="number">0</span> ? <span class="number">100</span> : <span class="number">1</span>);</span><br><span class="line">                tmp = (tmp == <span class="number">100</span> ? <span class="number">100</span> : (min + tmp));</span><br><span class="line">                <span class="keyword">if</span> (!isVisit[j] &amp;&amp; tmp &lt; distance[j]) &#123;</span><br><span class="line">                    distance[j] = tmp;</span><br><span class="line">                    prev[j] = k;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span> <span class="variable">now</span> <span class="operator">=</span> from;</span><br><span class="line">        <span class="keyword">while</span> (prev[now] != <span class="number">0</span>) &#123;</span><br><span class="line">            path.add(prev[now]);</span><br><span class="line">            now = prev[now];</span><br><span class="line">        &#125;</span><br><span class="line">        path.add(to);</span><br><span class="line">        <span class="keyword">return</span> path;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>这个是给定11个作为id范围的，但是id范围不固定，又该怎么办呢？</p>
+<p>如何构建这个图？</p>
+<p>或者又如何堆优化？</p>
+<p>堆优化下的迪杰，复杂度单次询问是：<em>O</em>((<em>n</em>+<em>m)log</em> <em>n</em>)</p>
+<p>非常的轻松的。</p>
+<p>一直困惑的一个点是，如何在遍历的时候修改distance，为了这个distance用什么数据存储。</p>
+<p>事实上，distance用哈希就好了。</p>
+<p>put修改hashcode？遍历的时候不用distance的keyset即可，保证distance的keyset和graph的keyset一样即可。<br>于是，可以采用堆优化了。</p>
+<p>维护一个已达到的ans，保证distance里面仅仅有已经存在未达到的。</p>
+<p>ans里面默认有源点。</p>
+<h2 id="在本题中的应用：叉边法"><a href="#在本题中的应用：叉边法" class="headerlink" title="在本题中的应用：叉边法"></a>在本题中的应用：叉边法</h2><p><a target="_blank" rel="noopener" href="https://rogerdtz.github.io/2018/10/06/%E3%80%90GDOI2018%E3%80%91%E5%B7%A1%E9%80%BB/">【GDOI2018】巡逻 | RogerDTZ</a></p>
+<h2 id="在本题中的应用-：路径树枚举法"><a href="#在本题中的应用-：路径树枚举法" class="headerlink" title="在本题中的应用 ：路径树枚举法"></a>在本题中的应用 ：路径树枚举法</h2><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_33362864/article/details/77466841">https://blog.csdn.net/qq_33362864/article/details/77466841</a></p>
+<p>使用路径树枚举法，效果如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">int</span> <span class="title function_">findMinCircle</span><span class="params">(<span class="type">int</span> id)</span> &#123;</span><br><span class="line">        HashMap&lt;Integer, Integer&gt; distance = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        PriorityQueue&lt;Point&gt; heap = <span class="keyword">new</span> <span class="title class_">PriorityQueue</span>&lt;&gt;(POINT_COMPARATOR);</span><br><span class="line">        <span class="keyword">for</span> (Integer point : graph.keySet()) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!point.equals(id)) &#123;</span><br><span class="line">                distance.put(point, graph.get(id).getOrDefault(point, Integer.MAX_VALUE));</span><br><span class="line">                heap.add(<span class="keyword">new</span> <span class="title class_">Point</span>(point, distance.get(point)));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        HashSet&lt;Integer&gt; reach = <span class="keyword">new</span> <span class="title class_">HashSet</span>&lt;&gt;();</span><br><span class="line">        reach.add(id);</span><br><span class="line">        HashMap&lt;Integer, Integer&gt; preTree = <span class="keyword">new</span> <span class="title class_">HashMap</span>&lt;&gt;();</span><br><span class="line">        <span class="keyword">for</span> (Integer side : graph.get(id).keySet()) &#123;</span><br><span class="line">            preTree.put(side, side);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> <span class="variable">i</span> <span class="operator">=</span> <span class="number">0</span>; i &lt; graph.size() - <span class="number">1</span>; i++) &#123;</span><br><span class="line">            <span class="type">int</span> <span class="variable">k</span> <span class="operator">=</span> <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">while</span> (!heap.isEmpty()) &#123;</span><br><span class="line">                <span class="type">Point</span> <span class="variable">find</span> <span class="operator">=</span> heap.poll();</span><br><span class="line">                <span class="keyword">if</span> (!reach.contains(find.getId())) &#123;</span><br><span class="line">                    k = find.getId();</span><br><span class="line">                    <span class="keyword">break</span>;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">if</span> (distance.get(k) == Integer.MAX_VALUE) &#123;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            reach.add(k);</span><br><span class="line">            HashMap&lt;Integer, Integer&gt; sideSet = graph.get(k);</span><br><span class="line">            <span class="keyword">for</span> (Integer point : graph.keySet()) &#123;</span><br><span class="line">                <span class="type">int</span> <span class="variable">tmp</span> <span class="operator">=</span> (sideSet.getOrDefault(point, Integer.MAX_VALUE));</span><br><span class="line">                tmp = (tmp == Integer.MAX_VALUE ? Integer.MAX_VALUE : distance.get(k) + tmp);</span><br><span class="line">                <span class="keyword">if</span> (!reach.contains(point) &amp;&amp; distance.get(point) &gt; tmp) &#123;</span><br><span class="line">                    distance.put(point, tmp);</span><br><span class="line">                    heap.add(<span class="keyword">new</span> <span class="title class_">Point</span>(point, tmp));</span><br><span class="line">                    preTree.put(point, preTree.get(k));</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="type">int</span> <span class="variable">ans</span> <span class="operator">=</span> Integer.MAX_VALUE;</span><br><span class="line">        <span class="keyword">for</span> (Integer point : graph.get(id).keySet()) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!point.equals(preTree.get(point))) &#123;</span><br><span class="line">                ans = Math.min(ans, graph.get(id).get(point) + distance.get(point));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">for</span> (Integer point1 : graph.keySet()) &#123;</span><br><span class="line">            <span class="keyword">if</span> (!preTree.containsKey(point1) || point1 == id) &#123;</span><br><span class="line">                <span class="keyword">continue</span>;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">for</span> (Integer point2 : graph.get(point1).keySet()) &#123;</span><br><span class="line">                <span class="keyword">if</span> (!preTree.containsKey(point2)) &#123;</span><br><span class="line">                    <span class="keyword">continue</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span> (point2 != id &amp;&amp; !preTree.get(point2).equals(preTree.get(point1))) &#123;</span><br><span class="line">                    ans = Math.min(ans, distance.get(point1) +</span><br><span class="line">                            distance.get(point2) + graph.get(point1).get(point2));</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> ans == Integer.MAX_VALUE ? -<span class="number">1</span> : ans;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+
+<p>但是很慢非常慢。</p>
+<p>即使开了堆优化也一样慢。</p>
+<p>原来是写假了算法。</p>
+<p><code>for (Integer point : graph.keySet())</code>更新的时候怎么能这样呢。。</p>
+<p>必然是要</p>
+<p><code>for (Integer point : graph.get(k).keyset())</code></p>
+<p>不然相当于多遍历了一圈。</p>
+
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">farewell</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://brilliant-daffodil-eb4c4f.netlify.app/2023/05/18/%E6%B1%82%E6%9C%80%E5%B0%8F%E7%8E%AF%E7%AE%97%E6%B3%95/">https://brilliant-daffodil-eb4c4f.netlify.app/2023/05/18/%E6%B1%82%E6%9C%80%E5%B0%8F%E7%8E%AF%E7%AE%97%E6%B3%95/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">farewell</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/BUAA-OO/">
+                                    <span class="chip bg-color">BUAA_OO</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2023/05/18/OKtest%E2%80%94%E2%80%94%E8%A7%84%E6%A0%BC%E3%80%81%E5%AE%9E%E7%8E%B0%E5%92%8C%E6%B5%8B%E8%AF%95/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="what is oktest">
+                        
+                        <span class="card-title">what is oktest</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-05-18
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            farewell
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/BUAA-OO/">
+                        <span class="chip bg-color">BUAA_OO</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/05/18/%E9%9A%BE%E9%A1%B6%E7%9A%84%E7%AC%AC%E4%BA%8C%E6%AC%A1%E4%BD%9C%E4%B8%9A/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="记录因为脏位课下测试出的bug">
+                        
+                        <span class="card-title">记录因为脏位课下测试出的bug</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-18
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            farewell
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/BUAA-OO/">
+                        <span class="chip bg-color">BUAA_OO</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+    <div class="container row center-align" style="margin-bottom: 15px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            
+                <span id="year">2022-2023</span>
+            
+            <span id="year">2022</span>
+            <a href="/about" target="_blank">farewell</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <span id="sitetime">载入运行时间...</span>
+            <script>
+                function siteTime() {
+                    var seconds = 1000;
+                    var minutes = seconds * 60;
+                    var hours = minutes * 60;
+                    var days = hours * 24;
+                    var years = days * 365;
+                    var today = new Date();
+                    var startYear = "2022";
+                    var startMonth = "10";
+                    var startDate = "3";
+                    var startHour = "0";
+                    var startMinute = "0";
+                    var startSecond = "0";
+                    var todayYear = today.getFullYear();
+                    var todayMonth = today.getMonth() + 1;
+                    var todayDate = today.getDate();
+                    var todayHour = today.getHours();
+                    var todayMinute = today.getMinutes();
+                    var todaySecond = today.getSeconds();
+                    var t1 = Date.UTC(startYear, startMonth, startDate, startHour, startMinute, startSecond);
+                    var t2 = Date.UTC(todayYear, todayMonth, todayDate, todayHour, todayMinute, todaySecond);
+                    var diff = t2 - t1;
+                    var diffYears = Math.floor(diff / years);
+                    var diffDays = Math.floor((diff / days) - diffYears * 365);
+                    var diffHours = Math.floor((diff - (diffYears * 365 + diffDays) * days) / hours);
+                    var diffMinutes = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours) /
+                        minutes);
+                    var diffSeconds = Math.floor((diff - (diffYears * 365 + diffDays) * days - diffHours * hours -
+                        diffMinutes * minutes) / seconds);
+                    if (startYear == todayYear) {
+                        document.getElementById("year").innerHTML = todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已安全运行 " + diffDays + " 天 " + diffHours +
+                            " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    } else {
+                        document.getElementById("year").innerHTML = startYear + " - " + todayYear;
+                        document.getElementById("sitetime").innerHTML = "本站已安全运行 " + diffYears + " 年 " + diffDays +
+                            " 天 " + diffHours + " 小时 " + diffMinutes + " 分钟 " + diffSeconds + " 秒";
+                    }
+                }
+                setInterval(siteTime, 1000);
+            </script>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/farewell-exiles" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:1284272565@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1284272565" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 1284272565" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$(function () {
+    var searchFunc = function (path, search_id, content_id) {
+        'use strict';
+        $.ajax({
+            url: path,
+            dataType: "xml",
+            success: function (xmlResponse) {
+                // get the contents from search data
+                var datas = $("entry", xmlResponse).map(function () {
+                    return {
+                        title: $("title", this).text(),
+                        content: $("content", this).text(),
+                        url: $("url", this).text()
+                    };
+                }).get();
+                var $input = document.getElementById(search_id);
+                var $resultContent = document.getElementById(content_id);
+                $input.addEventListener('input', function () {
+                    var str = '<ul class=\"search-result-list\">';
+                    var keywords = this.value.trim().toLowerCase().split(/[\s\-]+/);
+                    $resultContent.innerHTML = "";
+                    if (this.value.trim().length <= 0) {
+                        return;
+                    }
+                    // perform local searching
+                    datas.forEach(function (data) {
+                        var isMatch = true;
+                        var data_title = data.title.trim().toLowerCase();
+                        var data_content = data.content.trim().replace(/<[^>]+>/g, "").toLowerCase();
+                        var data_url = data.url;
+                        data_url = data_url.indexOf('/') === 0 ? data.url : '/' + data_url;
+                        var index_title = -1;
+                        var index_content = -1;
+                        var first_occur = -1;
+                        // only match artiles with not empty titles and contents
+                        if (data_title !== '' && data_content !== '') {
+                            keywords.forEach(function (keyword, i) {
+                                index_title = data_title.indexOf(keyword);
+                                index_content = data_content.indexOf(keyword);
+                                if (index_title < 0 && index_content < 0) {
+                                    isMatch = false;
+                                } else {
+                                    if (index_content < 0) {
+                                        index_content = 0;
+                                    }
+                                    if (i === 0) {
+                                        first_occur = index_content;
+                                    }
+                                }
+                            });
+                        }
+                        // show search results
+                        if (isMatch) {
+                            str += "<li><a href='" + data_url + "' class='search-result-title'>" + data_title + "</a>";
+                            var content = data.content.trim().replace(/<[^>]+>/g, "");
+                            if (first_occur >= 0) {
+                                // cut out 100 characters
+                                var start = first_occur - 20;
+                                var end = first_occur + 80;
+                                if (start < 0) {
+                                    start = 0;
+                                }
+                                if (start === 0) {
+                                    end = 100;
+                                }
+                                if (end > content.length) {
+                                    end = content.length;
+                                }
+                                var match_content = content.substr(start, end);
+                                // highlight all keywords
+                                keywords.forEach(function (keyword) {
+                                    var regS = new RegExp(keyword, "gi");
+                                    match_content = match_content.replace(regS, "<em class=\"search-keyword\">" + keyword + "</em>");
+                                });
+
+                                str += "<p class=\"search-result\">" + match_content + "...</p>"
+                            }
+                            str += "</li>";
+                        }
+                    });
+                    str += "</ul>";
+                    $resultContent.innerHTML = str;
+                });
+            }
+        });
+    };
+
+    searchFunc('/search.xml', 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+	
+    
+    <script type="text/javascript" color="0,0,255"
+        pointColor="0,0,255" opacity='0.7'
+        zIndex="-1" count="99"
+        src="/libs/background/canvas-nest.js"></script>
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="TLB管理, farewell&#39;s blog">
+    <meta name="keywords" content="what is oktest, farewell&#39;s blog">
     <meta name="description" content="你到过许多地方，用你自己的故事记认许多城邦后，你终于抵达此城">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>TLB管理 | farewell&#39;s blog</title>
+    <title>what is oktest | farewell&#39;s blog</title>
     <link rel="icon" type="image/png" href="/medias/logo.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -354,12 +354,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/23.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/8.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">TLB管理</h1>
+                    <h1 class="description center-align post-title">what is oktest</h1>
                 </div>
             </div>
         </div>
@@ -475,8 +475,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/BUAA-OS/">
-                                <span class="chip bg-color">BUAA_OS</span>
+                            <a href="/tags/BUAA-OO/">
+                                <span class="chip bg-color">BUAA_OO</span>
                             </a>
                         
                     </div>
@@ -491,7 +491,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2023-03-18
+                    2023-05-18
                 </div>
                 
 
@@ -512,58 +512,98 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="TLB管理"><a href="#TLB管理" class="headerlink" title="TLB管理"></a>TLB管理</h1><h2 id="基础理解"><a href="#基础理解" class="headerlink" title="基础理解"></a>基础理解</h2><p>TLB的本质是一个表，但是不同于32位的页表项，TLB事实上是一个由64位的表项构成的表。</p>
-<p>本质上TLB和硬件紧密相连的，页表都是在内存里的，TLB则是在CPU里面的一个特殊的地址转换部件（这个部件叫MMU，本实验里面MMU只有TLB一个部件。</p>
-<p>R3000的CP0不是一个寄存器，而是一个寄存器体系。按照编号 有很多寄存器，每个寄存器32位。</p>
-<p>每一个 TLB 表项都有 64 位，其中高 32 位是 Key，低 32 位是 Data。</p>
-<p>物理页号始终是20位的数据。</p>
-<h2 id="TLB的功能"><a href="#TLB的功能" class="headerlink" title="TLB的功能"></a>TLB的功能</h2><p>当处理 器要在主内存寻址时，不是直接在内存的物理地址里查找的，而是通过一组虚拟地址转换到主内存的物理地址，TLB就是负责将虚拟内存地址翻译成实际的物理内 存地址，而CPU寻址时会优先在TLB中进行寻址</p>
-<p>所以说，TLB存着一个哈希表，key就是一个虚拟地址，data就是它对应的物理地址。</p>
-<p>这里，这个所谓地址是不准确的，因为地址那么多，不可能一一存起来的。</p>
-<p>所以要做的事情，其实是存页号，建立VPN和PPN的联系</p>
-<p>仅仅是用虚拟地值算出虚拟页号，然后不用二级页表了，直接返回物理页号，拼一下直接就成物理地址了</p>
-<p>仅仅是方便查页号而已。</p>
-<h2 id="TLB的构成"><a href="#TLB的构成" class="headerlink" title="TLB的构成"></a>TLB的构成</h2><p>EntryHi、EntryLo<br>EntryHi、EntryLo 都是 CP0 中的寄存器，他们只是分别对应到 TLB 的 Key 与 Data，<br>并不是 TLB 本身</p>
-<p>HI寄存器的内容：</p>
-<p>VPN（虚页号） :31-12   ASID（地址空间代号） :11-6</p>
-<p>PFN（物理页框号） :31-12   然后剩下的东西依次排开。</p>
-<p>– N：Non-cachable。当该位为 1 时，后续的物理地址访存将不通过 cache。</p>
-<p>– D：Dirty。事实上是可写位。当该位为 1 时，该地址可写；否则任何写操作都将引发<br>TLB 异常。</p>
-<p>– V：Valid。如果该位为 0，则任何访问该地址的操作都将引发 TLB 异常。</p>
-<p>– G：Global。如果该位为 1，则 CPU 发出的虚拟地址只需要与该表项的 VPN 匹配，即<br>可与此 TLB 项匹配成功（不需要检查 ASID 是否匹配）。<br>由于TLB在CPU中，所以有着十分重要的功能，所以专门开了几个指令来管理。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">• tlbr：以 Index 寄存器中的值为索引，读出 TLB 中对应的表项到 EntryHi 与 EntryLo。</span><br><span class="line">• tlbwi：以 Index 寄存器中的值为索引，将此时 EntryHi 与 EntryLo 的值写到索引指定</span><br><span class="line">的 TLB 表项中。</span><br><span class="line">• tlbwr：将 EntryHi 与 EntryLo 的数据随机写到一个 TLB 表项中（此处使用 Random 寄</span><br><span class="line">存器来“随机”指定表项，Random 寄存器本质上是一个不停运行的循环计数器）。</span><br><span class="line">• tlbp：根据 EntryHi 中的 Key（包含 VPN 与 ASID），查找 TLB 中与之对应的表项，并将</span><br><span class="line">表项的索引存入 Index 寄存器（若未找到匹配项，则 Index 最高位被置 1）。</span><br></pre></td></tr></table></figure>
-<p>注意，这几个指令都是无操作数指令，都是直接用就相当于一个操作的。</p>
-<p>比如直接<br>tlbp，就可以根据 EntryHi 中的 Key（包含 VPN 与 ASID），查找 TLB 中与之对应的表项，并将<br>表项的索引存入 Index 寄存器（若未找到匹配项，则 Index 最高位被置 1）。</p>
-<h2 id="TLB维护"><a href="#TLB维护" class="headerlink" title="TLB维护"></a>TLB维护</h2><p>操作系统可以修改页表中虚拟地址映射的物理页号或映射的权限位。如果 TLB 中已暂存了<br>页表中某一虚拟地址对应的页表项内容，之后操作系统更新了该页表项但没有更新 TLB，则访<br>问该虚拟地址可能会得到错误的物理页面。所以我们需要维护 TLB 的表项，使得当 TLB 能够<br>查询到虚拟地址相应的页号时，取得的物理地址和实际在页表中对应的物理地址一致。<br>具体来说，维护 TLB 的流程如下：</p>
-<ol>
-<li><p>更新页表中虚拟地址对应的页表项的同时，将 TLB 中对应的旧表项无效化</p>
-</li>
-<li><p>在下一次访问该虚拟地址时触发 TLB 重填异常，对 TLB 进行重填</p>
-</li>
-</ol>
-<h2 id="TLB-旧表项无效化"><a href="#TLB-旧表项无效化" class="headerlink" title="TLB 旧表项无效化"></a>TLB 旧表项无效化</h2><p>我们通过 tlb_invalidate 实现删除特定虚拟地址在 TLB 中的旧表项，函数的主要逻辑位<br>于 kern&#x2F;tlb_asm.S 中的 tlb_out 中。当 tlb_out 被 tlb_invalidate 调用时, a0 寄存器中存<br>放着传入的参数，寄存器值为旧表项的 Key(由虚拟页号和 ASID 组成)。我们使用 mtc0 将 Key<br>写入 EntryHi，随后使用 tlbp 指令，根据 EntryHi 中的 Key 查找对应的旧表项，将表项的索<br>引存入 Index。如果索引值大于等于 0（即 TLB 中存在 Key 对应的表项），我们向 EntryHi 和<br>EntryLo 中写入 0, 随后使用 tlbwi 指令，将 EntryHi 和 EntryLo 中的值写入索引指定的表项。<br>此时旧表项的 Key 和 Data 被清零，实现将其无效化</p>
-<p>翻译过来就是说，操作系统更新了页表项后，就调用tlb_invalidate函数，这个函数的内容是删除某个虚拟地址TLB旧表项，当调用的时候，首先会进入汇编代码，然后这个汇编代码会让a0寄存器存放旧表项的key参数</p>
-<p>然后a0里面这个旧表项的key，用汇编指令去查它在TLB中的索引，查到之后用cp0寄存器操作这个表项置0</p>
-<h2 id="TLB重填"><a href="#TLB重填" class="headerlink" title="TLB重填"></a>TLB重填</h2><p>重填的目的是什么？</p>
-<p>TLB存着一个哈希表，key就是一个虚拟页号，data就是它对应的物理页号。</p>
-<p>我们刚刚清除了，所以我们 现在需要完成一个</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">我们将操作页表的逻辑使用 C 语言封装在 kern/tlbex.c 中的 _do_tlb_refill() 函数中：</span><br><span class="line"><span class="number">1</span> Pte _do_tlb_refill(u_long va, u_int asid) &#123;</span><br><span class="line"><span class="number">2</span> Pte *pte;</span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">4</span> <span class="comment">/* 提示:</span></span><br><span class="line"><span class="comment">5 尝试在循环中调用&#x27;page_lookup&#x27;以查找虚拟地址 va</span></span><br><span class="line"><span class="comment">6 在当前进程页表中对应的页表项&#x27;pte&#x27;</span></span><br><span class="line"><span class="comment">7 如果&#x27;page_lookup&#x27;返回&#x27;NULL&#x27;，表明&#x27;pte&#x27;找不到，使用&#x27;passive_alloc&#x27;</span></span><br><span class="line"><span class="comment">8 为 va 所在的虚拟页面分配物理页面，</span></span><br><span class="line"><span class="comment">9 直至&#x27;page_lookup&#x27;返回不为&#x27;NULL&#x27;则退出循环。</span></span><br><span class="line"><span class="comment">10</span></span><br><span class="line"><span class="comment">11 你可以在调用函数时，使用全局变量 cur_pgdir 作为其中一个实参。</span></span><br><span class="line"><span class="comment">12 */</span></span><br><span class="line"><span class="number">13</span></span><br><span class="line"><span class="number">14</span> <span class="keyword">return</span> *pte;</span><br><span class="line"><span class="number">15</span> &#125;</span><br><span class="line">这个函数返回的值是二级页表项，拿出来的是物理页号和权限。</span><br><span class="line">cur_pgdir 是一个在 kern/pmap.c 定义的全局变量，其中存储了当前进程一级页表基地址</span><br><span class="line">位于 kseg0 的虚拟地址。</span><br></pre></td></tr></table></figure>
-<p>这个指令和page_look有啥关系？</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">	这个函数的本质，是找到这个va对应的页的指针，作用是返回一级页表基地址 pgdir 对应的两级页表结构中虚拟地址 va 映射的物理页面的页控制块，同时将ppte 指向的空间设为对应的二级页表项地址</span><br><span class="line"></span><br><span class="line">	就是说，给你一个进程的pgdir，然后根据这个进程的va，搜索到这个va所在的物理界面的页控制块。</span><br><span class="line"><span class="keyword">struct</span> Page *<span class="title function_">page_lookup</span><span class="params">(Pde *pgdir, u_long va, Pte **ppte)</span> &#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">Page</span> *<span class="title">pp</span>;</span></span><br><span class="line">	Pte *pte;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Step 1: Get the page table entry. */</span></span><br><span class="line">	pgdir_walk(pgdir, va, <span class="number">0</span>, &amp;pte);</span><br><span class="line">	不创造纯查找。</span><br><span class="line">	<span class="comment">/* Hint: Check if the page table entry doesn&#x27;t exist or is not valid. */</span></span><br><span class="line">	<span class="keyword">if</span> (pte == <span class="literal">NULL</span> || (*pte &amp; PTE_V) == <span class="number">0</span>) &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	如果没查到或者查到的无效，就是没有这个映射，返回</span><br><span class="line">	<span class="comment">/* Step 2: Get the corresponding Page struct. */</span></span><br><span class="line">	<span class="comment">/* Hint: Use function `pa2page`, defined in include/pmap.h . */</span></span><br><span class="line">	pp = pa2page(*pte);</span><br><span class="line">	<span class="keyword">if</span> (ppte) &#123;</span><br><span class="line">		*ppte = pte;</span><br><span class="line">	&#125;</span><br><span class="line">	查到了，那就让ppte的值变成查到的地址，让这个查到的映射页返回回去就行了。</span><br><span class="line">	<span class="keyword">return</span> pp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>pagelook是干啥？是给定虚拟的一级页表的地址，然后给出虚拟地址，返回va这个虚拟地址所对应的物理页的业管理模块的地址（虚拟地址）。ppte存的是二级表项的虚拟地址。</p>
-<p>如果这个没找到，代表啥？代表没有<strong>管理的物理页满足这个va所在</strong>的页管理模块，也就是说这个虚拟地址没有对应一个物理页，此时就要来个分配一下地址了。然后就新开了一个页。新开这个页拿到这个页管理模块地址。然后再次进入循环，由于开了管理模块了，也就是说已经找到管理模块之后换算成物理地址就行了。</p>
-<h3 id="分配地址用的是这个"><a href="#分配地址用的是这个" class="headerlink" title="分配地址用的是这个"></a>分配地址用的是这个</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">void</span> <span class="title function_">passive_alloc</span><span class="params">(u_int va, Pde *pgdir, u_int asid)</span> &#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">Page</span> *<span class="title">p</span> =</span> <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (va &lt; UTEMP) &#123;</span><br><span class="line">		panic(<span class="string">&quot;address too low&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (va &gt;= USTACKTOP &amp;&amp; va &lt; USTACKTOP + BY2PG) &#123;</span><br><span class="line">		panic(<span class="string">&quot;invalid memory&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (va &gt;= UENVS &amp;&amp; va &lt; UPAGES) &#123;</span><br><span class="line">		panic(<span class="string">&quot;envs zone&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (va &gt;= UPAGES &amp;&amp; va &lt; UVPT) &#123;</span><br><span class="line">		panic(<span class="string">&quot;pages zone&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (va &gt;= ULIM) &#123;</span><br><span class="line">		panic(<span class="string">&quot;kernel address&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	前面几个都是不合法的情况。</span><br><span class="line">	后面都是真正在操作了，加上panic防止出事。</span><br><span class="line">	panic_on(page_alloc(&amp;p));</span><br><span class="line">	首先对一个页调用内存分配，新开一个物理页，让这个p指针的指向新开的页的页控制模块。</span><br><span class="line">	panic_on(page_insert(pgdir, asid, p, PTE_ADDR(va), PTE_D));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>当 page_lookup() 函数在页表中找不到对应表项时，我们调用 passive_alloc() 函数进行<br>处理。若该虚拟地址合法，我们可以为此虚拟地址申请一个物理页面（page_alloc），并将虚拟<br>地址映射到该物理页面（page_insert），即进行被动页面分配。</p>
-<p>不妨想想虚拟地址是怎么回事。</p>
-<p>虚拟地址，本身是由三个偏移构成的，第一级页表的偏移，第二级页表的偏移，物理页内偏移。</p>
-<p>然后物理页号是不确定的，是在页表里面随机分配的。开了这个物理页，然后把物理页号填写到pde和pte里面。</p>
-<p>直接按照题目要求填写即可</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Pte _do_tlb_refill(u_long va, u_int asid) &#123;</span><br><span class="line">	Pte *pte;</span><br><span class="line">	<span class="comment">/* Hints:</span></span><br><span class="line"><span class="comment">	 *  Invoke &#x27;page_lookup&#x27; repeatedly in a loop to find the page table entry &#x27;pte&#x27; associated</span></span><br><span class="line"><span class="comment">	 *  with the virtual address &#x27;va&#x27; in the current address space &#x27;cur_pgdir&#x27;.</span></span><br><span class="line"><span class="comment">	 *</span></span><br><span class="line"><span class="comment">	 *  **While** &#x27;page_lookup&#x27; returns &#x27;NULL&#x27;, indicating that the &#x27;pte&#x27; could not be found,</span></span><br><span class="line"><span class="comment">	 *  allocate a new page using &#x27;passive_alloc&#x27; until &#x27;page_lookup&#x27; succeeds.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Exercise 2.9: Your code here. */</span></span><br><span class="line">	<span class="keyword">while</span> (page_lookup(cur_pgdir,va,&amp;pte)==<span class="literal">NULL</span>)</span><br><span class="line">	&#123;   </span><br><span class="line">		passive_alloc(va,cur_pgdir,asid);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> *pte;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+                <h1 id="OKTEST：规格、实现方法和验证方法"><a href="#OKTEST：规格、实现方法和验证方法" class="headerlink" title="OKTEST：规格、实现方法和验证方法"></a>OKTEST：规格、实现方法和验证方法</h1><p>在指导书里面，有这样的一句话：</p>
+<p>需要同学们了解OK方法，以及具备为较简单规格写OK测试的能力。</p>
+<p>OK测试，到底是在做什么呢？</p>
+<p>在这次的作业里面，我们就见到了一个这样的方法，需要我们自己完成。</p>
+<p>接下来，我想用客户A和程序员B的视角，分别看一下我们的工作。</p>
+<p>客户A：我需要一个queryTripleSum方法，我把我想要的效果，用JML表达出来，交给了我雇佣的程序员。</p>
+<p>程序员B：我按照他给的JML，依照自己程序员的经验，完成了一个代码。</p>
+<p>现在，作业要求我们，实现一个让客户能够验收的代码，就是下面的OKTEST。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">queryTripleSumOKTest</span><span class="params">(</span></span><br><span class="line"><span class="params">    HashMap&lt;Integer, HashMap&lt;Integer, Integer&gt;&gt; beforeData, </span></span><br><span class="line"><span class="params">    HashMap&lt;Integer, HashMap&lt;Integer, Integer&gt;&gt; afterData, </span></span><br><span class="line"><span class="params">    <span class="type">int</span> result)</span>;</span><br></pre></td></tr></table></figure>
 
+<p>为了搞清楚它到底要我们干啥，除了指导书之外，让我们看看官方包源码,这个函数究竟是在什么情况下被调用的：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">queryTripleSumOKTest</span><span class="params">()</span> &#123;</span><br><span class="line">        ArrayList&lt;String&gt; cmdList = <span class="keyword">new</span> <span class="title class_">ArrayList</span>(Arrays.asList(<span class="built_in">this</span>.cmds));</span><br><span class="line">        cmdList.remove(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            HashMap&lt;Integer, HashMap&lt;Integer, Integer&gt;&gt; beforeData = <span class="built_in">this</span>.getModifyRelationOKData(cmdList, <span class="literal">true</span>);</span><br><span class="line">            HashMap&lt;Integer, HashMap&lt;Integer, Integer&gt;&gt; afterData = <span class="built_in">this</span>.getModifyRelationOKData(cmdList, <span class="literal">false</span>);</span><br><span class="line">            <span class="type">int</span> <span class="variable">result</span> <span class="operator">=</span> Integer.parseInt((String)cmdList.remove(<span class="number">0</span>));</span><br><span class="line">            <span class="type">Network</span> <span class="variable">tmpNetwork</span> <span class="operator">=</span> (Network)<span class="built_in">this</span>.networkConstructor.newInstance();</span><br><span class="line">            System.out.println(tmpNetwork.queryTripleSumOKTest(beforeData, afterData, result));</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception var6) &#123;</span><br><span class="line">            System.out.println(var6.getMessage());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 
+<p><code>ArrayList&lt;String&gt; cmdList</code></p>
+<p>所有的东西，都来自于这个输入的string</p>
+<p>事实上，输入里面，</p>
+<p><code>qtsok 3 1 2 3 1 2 3 2 1 3 3 4 1 2 4 3 1 2 3 1 2 3 2 1 2 3 4 1 2 4 0</code></p>
+<p>也是一个string。</p>
+<p>我们看，其中，result，是作为末尾那个0被传进来的。</p>
+<p>同时，<code>int result = Integer.parseInt((String)cmdList.remove(0));</code></p>
+<p>我们并没有给出其他的方法去得到这个result，也就是说，这个result，是要靠外界输入传进来的。</p>
+<p>也就是说，你需要对result做的事，就是外面给你一个result传进来，写代码验证看这个result对不对。</p>
+<p>（当然，这个仅仅是对result要做的事，剩下的看下面）</p>
+<h2 id="规格"><a href="#规格" class="headerlink" title="规格"></a>规格</h2><p>注意，客户将自己想要的东西，严格的转化成了JML。</p>
+<p>这个就是规格。</p>
+<p>在给定JML的情况下，验证这个方法（叫A吧）对不对，我们能不能称它“满足规格” 需要看的是， <strong>这个方法A，是否严格的满足JML里面的每一个条件</strong></p>
+<p>但是，对于一个方法，由于这个方法在调用的时候，已经被封装好了，所以我们能从这个方法获得的信息，有且仅有这个方法执行前后程序数据的状态，还有这个方法的返回结果。</p>
+<p>事实上，这些东西，也正是代表了这个方法所造成的全部影响。</p>
+<p>因此，在官方给定的接口方法中，向我们传递了一个方法作用的环境，和它作用完后环境的结果。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">HashMap&lt;Integer, HashMap&lt;Integer, Integer&gt;&gt; beforeData, </span><br><span class="line">    HashMap&lt;Integer, HashMap&lt;Integer, Integer&gt;&gt; afterData, </span><br><span class="line">    <span class="type">int</span> result</span><br></pre></td></tr></table></figure>
 
+<p>before，就是这个方法执行前的环境，after，就是这个方法执行后的环境。</p>
+<p>result，就是这个方法得到的结果。上面一起构成了该方法造成的影响。</p>
+<p>我们需要根据传进来的这些信息，来判断这个方法A的执行，是否<strong>严格</strong>的满足了JML的要求。</p>
+<h2 id="实现方法"><a href="#实现方法" class="headerlink" title="实现方法"></a>实现方法</h2><p>当作为程序员，要实现这个单元的内容，我们应该不会选择严格的按照JML翻译，毕竟，JML作为客户描述想要的东西究竟满足什么样的特征，为了表达的尽可能严谨，实现可能会起来效率差且复杂。</p>
+<p>我们会选择：阅读JML，理解JML让我们想干什么，然后按照我们自己的理解用自己的方法去写一个我们认为符合JML想让我们做什么的代码。</p>
+<p>比如，我们会进行数据结构的转换。规格给的是[]数组，我们使用&lt;id,Person&gt;的hashMap&gt;，建立在我们的经过性能或者逻辑组织的考量上做出的选择。我认为这个能实现[]能实现的。</p>
+<p>比如，里面的isCircle方法，我阅读后发现，就是看这两个点是否互相可达，我就会按照并查集的方法去做。在我看来，作为一个代码的提供方，我认为我是完成了JML的要求的。</p>
+<p>实现方法，就是我们作为程序员，将JML理解后实现要求所满足的方法。</p>
+<p>但是这个真的满足要求吗？</p>
+<h2 id="OKTEST：验证方法"><a href="#OKTEST：验证方法" class="headerlink" title="OKTEST：验证方法"></a>OKTEST：验证方法</h2><p>事实上，对于实现目的的手段，我们（作为程序员）做了一个叙述的变换：</p>
+<p>我们将JML设想的，用户的需求，变换成了我们（程序员）便于实现的、性能高的叙述方式，然后按照我们的叙述来写代码。</p>
+<p>当然，这个变换，很有可能不是等价的 。</p>
+<p>可能从数据结构上不等价，从算法上不等价。</p>
+<p>上面我用hashMap代替了[]，两个数据结构可能不等价。</p>
+<p>上面我用并查集求联通而不是找到一个以id1,id2为起始的数组，两个方法可能不等价。</p>
+<p>（当然写的正确的话，效果相同，但是直观看来客户会认为不等价，想证明等价，就需要验证）</p>
+<p>所以，OKTEST，它作为一个验证方法，就是要看我们（程序员）是不是做出了等价的变换。</p>
+<p>现在，回到客户的视角，程序员给你提供了经过变换的一个方法，你看不懂里面是啥，他宣称这个方法符合你的要求，你不信。</p>
+<p>但是你可以找出很多种情况，然后让这个方法工作一下，看看它是不是<strong>严格</strong>符合你想要的结果。</p>
+<p>对于这个ok测试就是我们测试这个“严格性”的手段。</p>
+<p>作为客户，假设我们要验收程序员给我们的A方法，</p>
+<p>我们需要一个检测器（就是OK方法），来检测程序员实现的方法A的正确性。</p>
+<p>我们并不观察给出其他人实现的方法A的代码，而是通过给出实现的方法A执行前的状态beforeData和执行后的状态afterData，由我们的ok方法来检验这个方法A执行的正确性。</p>
+<p>这里， 我们要做的，就是<strong>严格对照JML的要求</strong>来看一下是不是满足条件。</p>
+<p>譬如：JML说：\result &#x3D;&#x3D; x</p>
+<p>那么我们就要严格的检查，result&#x3D;&#x3D;x</p>
+<p>譬如说：JML说到：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(\exists int i; 0 &lt;= i &amp;&amp; i &lt; acquaintance.length; </span><br><span class="line">      @          acquaintance[i].getId() == person.getId());</span><br></pre></td></tr></table></figure>
 
+<p>那么我们一定就要去在acquaintance里面去找，一定要找到一个<code>acquaintance[i].getId() == person.getId());</code>才算完成目标。</p>
+<p>就像这样：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">boolean</span> exist_check=<span class="literal">false</span>;</span><br><span class="line"><span class="keyword">for</span>(MyPerson myPerson:acquaintance)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span>(myPerson.getId()==person.getId())</span><br><span class="line">	&#123;</span><br><span class="line">	exist_check=<span class="literal">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
+<p>譬如说：JML说到：</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">/*@ ensures \result ==</span><br><span class="line">      @         (\sum int i; 0 &lt;= i &amp;&amp; i &lt; people.length;</span><br><span class="line">      @             (\sum int j; i &lt; j &amp;&amp; j &lt; people.length;</span><br><span class="line">      @                 (\sum int k; j &lt; k &amp;&amp; k &lt; people.length</span><br><span class="line">      @                     &amp;&amp; getPerson(people[i].getId()).isLinked(getPerson(people[j].getId()))</span><br><span class="line">      @                     &amp;&amp; getPerson(people[j].getId()).isLinked(getPerson(people[k].getId()))</span><br><span class="line">      @                     &amp;&amp; getPerson(people[k].getId()).isLinked(getPerson(people[i].getId()));</span><br><span class="line">      @                     1)));</span><br></pre></td></tr></table></figure>
+
+<p>那么我们就要用真的去遍历这个三重循环，然后将所有满足上面说的条件的数目加起来，看看 result是不是等于这个值。</p>
+<p><strong>注意，我们在做一个合格的OK测试的时候，并不能用任何逻辑和数学的推导来推理出来符合要求，我们必须直观的得到和JML 要求的效果一模一样的效果，这个OKTEST才算是成功的</strong></p>
+<p>正如指导书所说：<strong>在OKTest中，你需要对JML的全部内容进行检查，除了检验requires和ensures，还有pure、assignable语句等等。例如，对于一个pure方法，调用方法前后的状态应该一致，如果前后状态不一致，那么我们认为这不符合给定的JML</strong></p>
+<p>作为一个OKTEST，我们不能依赖任何推导，只接受摆在眼前的结果。</p>
+<h2 id="回到题目"><a href="#回到题目" class="headerlink" title="回到题目"></a>回到题目</h2><p>回到题目，</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">                # beforeData</span><br><span class="line">3                 # 有三个人</span><br><span class="line">1 2 3             # 三个人id分别为 1 2 3</span><br><span class="line">1 2 3             # 第1个人有1个熟人，id为2、value为3</span><br><span class="line">2 1 3 3 4         # 第2个人有2个熟人，第1个id为1、value为3，第2个id为3、value为4</span><br><span class="line">1 2 4             # 第3个人有1个熟人，id为2、value为4</span><br><span class="line">                # afterData</span><br><span class="line">3</span><br><span class="line">1 2 3 </span><br><span class="line">1 2 3 </span><br><span class="line">2 1 3 3 4 </span><br><span class="line">1 2 4 </span><br><span class="line">                # result</span><br><span class="line">0</span><br></pre></td></tr></table></figure>
+
+<p>官方的包，提供了这样的一个别人queryTripleNum执行前的环境、执行后的环境、执行的结果，我们需要 <strong>严格的</strong>验证这些对外暴露的影响，是否满足JML的要求。</p>
+<p>在具体实现上，可能有以下几个误区：</p>
+<p>1：我们需要用两种不同的 方法算。</p>
+<p>错误：这个是让你测别人，不是自己测自己。传进来的result就是 别人执行后的结果。</p>
+<p>2：我只需要用自己设计的方法跑一下，结果一样就行了</p>
+<p>错误：你的设计和别人的设计一样，都没有说服力，你需要一个严格符合JML的测试方式。</p>
+<p>正确的观点：我们只需要用一个方法算一遍，但是不是自己转化后的方法。</p>
+<p>就比如说，我自己实现了一个三元环算法的东西来算三角形个数（不符合规格提供的方式，但是符合规格需要的结果），但是为了写这个OKtest，我必须要严格的按规格的过程翻译 一下，而不是拿我自己的方法去比较。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">/*@ ensures \result ==</span><br><span class="line">      @         (\sum int i; 0 &lt;= i &amp;&amp; i &lt; people.length;</span><br><span class="line">      @             (\sum int j; i &lt; j &amp;&amp; j &lt; people.length;</span><br><span class="line">      @                 (\sum int k; j &lt; k &amp;&amp; k &lt; people.length</span><br><span class="line">      @                     &amp;&amp; getPerson(people[i].getId()).isLinked(getPerson(people[j].getId()))</span><br><span class="line">      @                     &amp;&amp; getPerson(people[j].getId()).isLinked(getPerson(people[k].getId()))</span><br><span class="line">      @                     &amp;&amp; getPerson(people[k].getId()).isLinked(getPerson(people[i].getId()));</span><br><span class="line">      @                     1)));</span><br></pre></td></tr></table></figure>
+
+<p>一个合格的OKTEST，我们需要严格的把这个翻译成代码。这中间和我自己写的query没任何关系。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/*@ pure @*/ </span><br></pre></td></tr></table></figure>
+
+<p>就要我们把pure的含义，直观的翻译成代码去检查，而不是我实现里没改就默认pure了这种。在这个题目里，就是比较这前后两个HASH是否一模一样。</p>
+<p>（需要我们实现的OKTEST方法，参数本身是用的hashMap表示。但是从更严格的角度讲，ok方法内部也要像类定义里面一样，构建出规格那样的[]数组)</p>
+<p>由于本次的 query 是无副作用的方法，所以有的同学（比如我之前），自己调用一遍自己的 query 然后比对结果。并没有什么意义。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这其实就是强调，规格（JML）是一个很强的可判定的东西<br>它可以直接转换成ok方法，调用就知道某个具体的“实现代码”是否符合规格<br>而实现代码只需要满足规格就行，具体实现方法那是另一回事。</p>
+<p>OKTEST，做的就是用直观的手段判断<code>只需要满足规格就行</code>这个条件是否满足的方法。</p>
 
                 
             </div>
@@ -590,7 +630,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://brilliant-daffodil-eb4c4f.netlify.app/2023/03/18/TLB%E7%AE%A1%E7%90%86/">https://brilliant-daffodil-eb4c4f.netlify.app/2023/03/18/TLB%E7%AE%A1%E7%90%86/</a>
+                    <a href="https://brilliant-daffodil-eb4c4f.netlify.app/2023/05/18/OKtest%E2%80%94%E2%80%94%E8%A7%84%E6%A0%BC%E3%80%81%E5%AE%9E%E7%8E%B0%E5%92%8C%E6%B5%8B%E8%AF%95/">https://brilliant-daffodil-eb4c4f.netlify.app/2023/05/18/OKtest%E2%80%94%E2%80%94%E8%A7%84%E6%A0%BC%E3%80%81%E5%AE%9E%E7%8E%B0%E5%92%8C%E6%B5%8B%E8%AF%95/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -628,8 +668,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/BUAA-OS/">
-                                    <span class="chip bg-color">BUAA_OS</span>
+                                <a href="/tags/BUAA-OO/">
+                                    <span class="chip bg-color">BUAA_OO</span>
                                 </a>
                             
                         </div>
@@ -673,17 +713,18 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2023/03/18/vscode&wsl%E9%85%8D%E7%BD%AElinux%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">
+                <a href="/2023/05/18/OKtest%E2%80%94%E2%80%94%E8%A7%84%E6%A0%BC%E3%80%81%E5%AE%9E%E7%8E%B0%E5%92%8C%E6%B5%8B%E8%AF%95/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="wsl配置linux开发环境">
+                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="what is oktest">
                         
-                        <span class="card-title">wsl配置linux开发环境</span>
+                        <span class="card-title">what is oktest</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -693,9 +734,9 @@
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2023-03-18
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-18
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -704,11 +745,12 @@
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/BUAA-OS/">
-                        <span class="chip bg-color">BUAA_OS</span>
+                    <a href="/tags/BUAA-OO/">
+                        <span class="chip bg-color">BUAA_OO</span>
                     </a>
                     
                 </div>
@@ -722,13 +764,13 @@
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2023/03/18/print/">
+                <a href="/2023/05/18/%E6%B1%82%E6%9C%80%E5%B0%8F%E7%8E%AF%E7%AE%97%E6%B3%95/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="自己实现print的二三事">
+                        <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="菜鸡对最小环算法的尝试">
                         
-                        <span class="card-title">自己实现print的二三事</span>
+                        <span class="card-title">菜鸡对最小环算法的尝试</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
@@ -739,7 +781,7 @@
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-18
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-18
                             </span>
                         <span class="publish-author">
                             
@@ -752,8 +794,8 @@
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/BUAA-OS/">
-                        <span class="chip bg-color">BUAA_OS</span>
+                    <a href="/tags/BUAA-OO/">
+                        <span class="chip bg-color">BUAA_OO</span>
                     </a>
                     
                 </div>
