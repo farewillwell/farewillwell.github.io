@@ -29,7 +29,7 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 
@@ -507,6 +507,9 @@
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
 
         
 
@@ -525,14 +528,46 @@
 <h2 id="关于作业细节"><a href="#关于作业细节" class="headerlink" title="关于作业细节"></a>关于作业细节</h2><p>1.本质上，在操作系统中，结构体是一个模板，这个东西它的意思是按照这个结构体的数据分布来套内存的。</p>
 <p>拥有强转性，不管是不是真的是这个结构体，所以实际上会发现通常在用的时候还没新建结构体就出现了结构体指针。</p>
 <p>事实上结构体在其他文件里是已经存好的，但是我在写其他函数的时候并没有传进来数据，只是传进来一个指针</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> <span class="title function_">readelf</span><span class="params">(<span class="type">const</span> <span class="type">void</span> *binary, <span class="type">size_t</span> size)</span> &#123;</span><br><span class="line">	Elf32_Ehdr *ehdr = (Elf32_Ehdr *)binary;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Check whether `binary` is a ELF file.</span></span><br><span class="line">	<span class="keyword">if</span> (!is_elf_format(binary, size)) &#123;</span><br><span class="line">		<span class="built_in">fputs</span>(<span class="string">&quot;not an elf file\n&quot;</span>, <span class="built_in">stderr</span>);</span><br><span class="line">		<span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// Get the address of the section table, the number of section headers and the size of a</span></span><br><span class="line">	<span class="comment">// section header.</span></span><br><span class="line">	<span class="type">const</span> <span class="type">void</span> *sh_table;</span><br><span class="line">	Elf32_Half sh_entry_count;</span><br><span class="line">	Elf32_Half sh_entry_size;</span><br><span class="line">	<span class="comment">/* Exercise 1.1: Your code here. (1/2) */</span></span><br><span class="line">	sh_table=binary+ehdr-&gt;e_shoff;</span><br><span class="line">	sh_entry_count=ehdr-&gt;e_shnum;</span><br><span class="line">	sh_entry_size=ehdr-&gt;e_shentsize;</span><br><span class="line">	<span class="comment">// For each section header, output its index and the section address.</span></span><br><span class="line">	<span class="comment">// The index should start from 0.</span></span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; sh_entry_count; i++) &#123;</span><br><span class="line">		<span class="type">const</span> Elf32_Shdr *shdr;</span><br><span class="line">		<span class="type">unsigned</span> <span class="type">int</span> addr;</span><br><span class="line">		<span class="comment">/* Exercise 1.1: Your code here. (2/2) */</span></span><br><span class="line">		shdr=(Elf32_Addr*)sh_table+i*sh_entry_size;</span><br><span class="line">		addr=shdr-&gt;sh_addr;</span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">&quot;%d:0x%x\n&quot;</span>, i, addr);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-c" data-language="c"><code class="language-c"><span class="token keyword">int</span> <span class="token function">readelf</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">void</span> <span class="token operator">*</span>binary<span class="token punctuation">,</span> <span class="token class-name">size_t</span> size<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	Elf32_Ehdr <span class="token operator">*</span>ehdr <span class="token operator">=</span> <span class="token punctuation">(</span>Elf32_Ehdr <span class="token operator">*</span><span class="token punctuation">)</span>binary<span class="token punctuation">;</span>
+
+	<span class="token comment">// Check whether `binary` is a ELF file.</span>
+	<span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token function">is_elf_format</span><span class="token punctuation">(</span>binary<span class="token punctuation">,</span> size<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token function">fputs</span><span class="token punctuation">(</span><span class="token string">"not an elf file\n"</span><span class="token punctuation">,</span> <span class="token constant">stderr</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+		<span class="token keyword">return</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+
+	<span class="token comment">// Get the address of the section table, the number of section headers and the size of a</span>
+	<span class="token comment">// section header.</span>
+	<span class="token keyword">const</span> <span class="token keyword">void</span> <span class="token operator">*</span>sh_table<span class="token punctuation">;</span>
+	Elf32_Half sh_entry_count<span class="token punctuation">;</span>
+	Elf32_Half sh_entry_size<span class="token punctuation">;</span>
+	<span class="token comment">/* Exercise 1.1: Your code here. (1/2) */</span>
+	sh_table<span class="token operator">=</span>binary<span class="token operator">+</span>ehdr<span class="token operator">-></span>e_shoff<span class="token punctuation">;</span>
+	sh_entry_count<span class="token operator">=</span>ehdr<span class="token operator">-></span>e_shnum<span class="token punctuation">;</span>
+	sh_entry_size<span class="token operator">=</span>ehdr<span class="token operator">-></span>e_shentsize<span class="token punctuation">;</span>
+	<span class="token comment">// For each section header, output its index and the section address.</span>
+	<span class="token comment">// The index should start from 0.</span>
+	<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> sh_entry_count<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token keyword">const</span> Elf32_Shdr <span class="token operator">*</span>shdr<span class="token punctuation">;</span>
+		<span class="token keyword">unsigned</span> <span class="token keyword">int</span> addr<span class="token punctuation">;</span>
+		<span class="token comment">/* Exercise 1.1: Your code here. (2/2) */</span>
+		shdr<span class="token operator">=</span><span class="token punctuation">(</span>Elf32_Addr<span class="token operator">*</span><span class="token punctuation">)</span>sh_table<span class="token operator">+</span>i<span class="token operator">*</span>sh_entry_size<span class="token punctuation">;</span>
+		addr<span class="token operator">=</span>shdr<span class="token operator">-></span>sh_addr<span class="token punctuation">;</span>
+		<span class="token function">printf</span><span class="token punctuation">(</span><span class="token string">"%d:0x%x\n"</span><span class="token punctuation">,</span> i<span class="token punctuation">,</span> addr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+
+	<span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
 <p>比如这个代码，传进来一个指针但是是一个void*</p>
 <p>void*的意思是不定指针，没有规定类型，（事实上，在操作系统的硬件文件里面很少有真正存在类型的，都是纯粹的数据，比如elf就是二进制文件罢了），所以它的意思就是任意形式的地址，管的很宽。</p>
 <p>然后binary就是传进来的二进制文件的地址。</p>
 <p>然后记住，这种指针型的 操作，一般都是直接读取硬件，所以都是指针，然后使用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Elf32_Ehdr *ehdr = (Elf32_Ehdr *)binary;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">Elf32_Ehdr *ehdr &#x3D; (Elf32_Ehdr *)binary;</code></pre>
 <p>这种强转就是代表这个新的指针可以按照Elf32的类型去从binary的地址那里读取数值了。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sh_table=binary+ehdr-&gt;e_shoff;</span><br><span class="line">sh_entry_count=ehdr-&gt;e_shnum;</span><br><span class="line">sh_entry_size=ehdr-&gt;e_shentsize;</span><br></pre></td></tr></table></figure>
+<pre class="language-c" data-language="c"><code class="language-c">sh_table<span class="token operator">=</span>binary<span class="token operator">+</span>ehdr<span class="token operator">-></span>e_shoff<span class="token punctuation">;</span>
+sh_entry_count<span class="token operator">=</span>ehdr<span class="token operator">-></span>e_shnum<span class="token punctuation">;</span>
+sh_entry_size<span class="token operator">=</span>ehdr<span class="token operator">-></span>e_shentsize<span class="token punctuation">;</span></code></pre>
 <p>这三行代码代表从Elf表头那里读取数据，binary+shoff代表取偏移值来计算具体的sh位置。</p>
 <p>count代表计算有多少个节</p>
 <p>sh_entry_size代表计算的这个表里面存的每一个节的大小</p>

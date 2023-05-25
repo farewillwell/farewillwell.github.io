@@ -29,7 +29,7 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 
@@ -507,6 +507,9 @@
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
 
         
 
@@ -517,7 +520,9 @@
 <p>执行 Shell 脚本很容易。还记得 gcc 编译产生的可执行文件是如何运行的吗？Shell 脚本也一样：.&#x2F;文件名（文件名包含 .sh，因为这是文件名的一部分。<strong>再次强调，Linux 中没有扩展名的概念</strong>）即可运行。.就是他名字的一部分</p>
 <p>需要注意的是，被执行的脚本文件必须有“执行”权限。在 Linux 系统中，每个文件对于拥有者、用户组和其他用户都分别有“读”、“写”、“执行”的权限。<strong>我们使用 touch 命令创建的文件默认是没有“执行”权限的，需要手动添加</strong>。若发现 Shell 脚本执行时出现了“Permission denied”的错误，多半是因为没有添加“执行”权限。我们可以使用下面的命令手动添加“执行”权限</p>
 <p>首先用 touch 命令创建一个新文件 hello.sh，使用 Vim 输入以下内容。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">#My first Shell script!</span><br><span class="line">echo &quot;Hello, world!&quot;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">#!&#x2F;bin&#x2F;bash
+#My first Shell script!
+echo &quot;Hello, world!&quot;</code></pre>
 <p>保存退出，修改权限，运行。我们可以看到终端输出了 Hello, world!。下面对程序进行逐行解释。</p>
 <p>第一行：指定脚本的默认运行程序（即解释器）。在这里指定为 bash，这是我们最常使用的脚本运行程序。</p>
 <pre><code>其中，#! 出现在脚本文件的第一行的前两个字符，被称为 Shebang。当文件中存在 Shebang 的情况下，程序加载器会分析 Shebang 后面的内容，并且将这些内容作为脚本文件的解释器
@@ -535,7 +540,9 @@
 <p>之前学习命令的时候，我们发现很多命令都需要传入参数和选项。在 Shell 脚本中，传递参数是完全支持的，这也大大提高了 Shell 脚本的通用性和便捷性。下面我们简单讲解如何传递参数。</p>
 <p>参数在 Shell 脚本中体现为特殊的变量。在执行语句中，参数以空格分隔，每一个参数在脚本中都是一个字符串变量。第一个参数映射到变量名 1，第二个参数映射到变量名 2，以此类推……</p>
 <p>我们用一个实例来说明参数的传递。我们将 hello.sh 的内容修改为：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">str=&quot;Hello, $1 and $2!&quot;</span><br><span class="line">echo $str</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">#!&#x2F;bin&#x2F;bash
+str&#x3D;&quot;Hello, $1 and $2!&quot;
+echo $str</code></pre>
 <p>其中，这个1，和2代表传进来的第几个参数，在使用的时候依次分配到文件里面</p>
 <p>请在双引号中引用变量。<strong>如果将上述的双引号改成单引号，则会原文输出引号内的内容</strong>，你可以尝试一下。</p>
 <p>需要补充的是，对于传递的参数，不仅有 $1、$2 这样的特殊变量，还提供了其他的特殊变量：</p>
@@ -545,27 +552,75 @@ $*一个字符串，内容是传递的全部参数。
 <p>条件与循环</p>
 <p>如果我们想对大批量的文件进行复杂操作，我们一般需要用到条件控制和循环控制。这也是自动化操作的精髓所在。下面我们对 if 和 while 关键字进行简单讲解。</p>
 <p>if 语句块的格式如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">if condition1</span><br><span class="line">then</span><br><span class="line">    command11</span><br><span class="line">    command12</span><br><span class="line">    ......</span><br><span class="line">elif condition2</span><br><span class="line">then</span><br><span class="line">    command21</span><br><span class="line">    command22</span><br><span class="line">    ......</span><br><span class="line">else</span><br><span class="line">    command31</span><br><span class="line">    command32</span><br><span class="line">    ......</span><br><span class="line">fi</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">if condition1
+then
+    command11
+    command12
+    ......
+elif condition2
+then
+    command21
+    command22
+    ......
+else
+    command31
+    command32
+    ......
+fi</code></pre>
 <p>其中，fi 是“if”的倒写，代表 if 语句块的结束；elif 意为“else if”。elif 和 else 可以按需省略。</p>
 <p>其中 (()) 是用于比较整数之间大小的表达方式。传入字符串或浮点数，则是未定义的行为。可以试着传入不同的参数，看看程序输出了什么。</p>
 <p>while 语句块的格式如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">while condition</span><br><span class="line">do</span><br><span class="line">    command1</span><br><span class="line">    command2</span><br><span class="line">    ...</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">while condition
+do
+    command1
+    command2
+    ...
+done</code></pre>
 
 <p>其中 done 表示“do”语句块的结束。下面举例说明。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">mkdir files</span><br><span class="line">cd files</span><br><span class="line">i=1</span><br><span class="line">while (($i &lt;= $1))这个$i代表i的值，然后$1代表第一个传进来的参数</span><br><span class="line">do</span><br><span class="line">        touch &quot;file$i.txt&quot;</span><br><span class="line">        let i=i+1 # or i=$((i+1))</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">#!&#x2F;bin&#x2F;bash
+mkdir files
+cd files
+i&#x3D;1
+while (($i &lt;&#x3D; $1))这个$i代表i的值，然后$1代表第一个传进来的参数
+do
+        touch &quot;file$i.txt&quot;
+        let i&#x3D;i+1 # or i&#x3D;$((i+1))
+done</code></pre>
 <p>这里，let 是为变量赋值的命令，与之等价地，也可以使用 i&#x3D;$((i+1))。同学们很容易理解这个程序是做什么的，可以运行试一试。</p>
-<h2 id="for循环"><a href="#for循环" class="headerlink" title="for循环"></a>for循环</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">for 变量名 in 取值列表</span><br><span class="line">do</span><br><span class="line">  命令</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<h2 id="for循环"><a href="#for循环" class="headerlink" title="for循环"></a>for循环</h2><pre class="language-none"><code class="language-none">for 变量名 in 取值列表
+do
+  命令
+done</code></pre>
 
 <p>函数</p>
 <p>Shell 脚本也支持函数。函数的定义方式如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">function fun_name() &#123;</span><br><span class="line">    body...</span><br><span class="line">    return int_value;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">function fun_name() &#123;
+    body...
+    return int_value;
+&#125;</code></pre>
 <p>其中 function 和 () 可以省略其中一个。其中返回语句是可选的，函数可以不返回值。int_value 是一个[0,255][0,255]之间的整数，返回其他值是未定义的行为，一般会返回一个错误的结果。</p>
 <p>函数的调用方法如下：</p>
 <p>fun_name param1 param2 … paramN</p>
 <p>其中第 N 个参数在函数体内使用 $N 来获取，且不需要在函数定义开头声明。值得注意的是，<strong>当 N&gt;&#x3D;10 时，需要用 ${N} 来获取参数，否则 $ 只会带第一位数字</strong>。如果函数有返回值，则在函数调用的后面需要使用 $? 获取返回值。下面用一个例子说明函数是如何定义和调用的。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/bash</span><br><span class="line">function fun1() &#123;</span><br><span class="line">        echo &quot;Hello, world!&quot;</span><br><span class="line">&#125;</span><br><span class="line">function fun2() &#123;</span><br><span class="line">        echo &quot;I&#x27;ve got &quot;$1&quot; and &quot;$2&quot;!&quot;</span><br><span class="line">&#125;</span><br><span class="line">function fun3() &#123;</span><br><span class="line">        echo &quot;I&#x27;m computing first + second!&quot;</span><br><span class="line">        return $(($1 + $2))</span><br><span class="line">&#125;</span><br><span class="line">fun1</span><br><span class="line">fun2 2 3</span><br><span class="line">fun3 4 5</span><br><span class="line">echo &quot;The sum is &quot;$?&quot;.&quot;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">#!&#x2F;bin&#x2F;bash
+function fun1() &#123;
+        echo &quot;Hello, world!&quot;
+&#125;
+function fun2() &#123;
+        echo &quot;I&#39;ve got &quot;$1&quot; and &quot;$2&quot;!&quot;
+&#125;
+function fun3() &#123;
+        echo &quot;I&#39;m computing first + second!&quot;
+        return $(($1 + $2))
+&#125;
+fun1
+fun2 2 3
+fun3 4 5
+echo &quot;The sum is &quot;$?&quot;.&quot;</code></pre>
 <p><strong>好习惯：俩括号，代表合成之后再次取值</strong><br>其中，$(($1 + $2)) 的意思是先计算 $1 + $2 的值。同学们可以猜测一下运行结果，然后运行一下程序，看看是否符合期望。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a=1</span><br><span class="line"> if [ $a -ne 1 ]; then echo ok; fi</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">a&#x3D;1
+ if [ $a -ne 1 ]; then echo ok; fi</code></pre>
 <p> <strong>注意留空格，尤其是[]的两端</strong><br>条件部分可能会让同学们感到疑惑，实际上 &lt; condition&gt; 的位置上也是命令，一条<br>命令的<strong>返回值为 0 时表示其成功执行，作为条件时则视为成立。可以使用特殊变量 $?获取前一个命令的返回值</strong>，比如刚执行完 diff &lt; file1&gt; &lt; file2&gt; 后，若两文件内容相同，则 $? 为 0。</p>
 <p>左中括号 [ 是一种常用作条件的命令，其参数是一个条件表达式和末尾的 ]，在上例中为$a、-ne、1 和 ]。该命令在关系成立时返回 0，其完整形式为 test 命令，可以在终端中使用</p>
 <p>但是假如想要做的事情是整数比较大小呢？</p>
@@ -574,25 +629,47 @@ $*一个字符串，内容是传递的全部参数。
 <h2 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h2><p>首先如何理解这个AAA？就是一个参数，用$1应该可以解决.</p>
 <p>然后如何读取文件行的固定内容？</p>
 <p>注意read是从stdin读的，所以要重定向或者把catch的当做一个值<br>但是这些方法没法保证完全！！<br>echo并不会保留空格！！<br>最佳方法：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sed -n &#x27;12p&#x27; filename &gt;newfile</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">sed -n &#39;12p&#39; filename &gt;newfile</code></pre>
 <p>1.使用while循环，效率最高，最常用的方法</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">while read -r line</span><br><span class="line">do</span><br><span class="line">   echo $line</span><br><span class="line">done &lt; filename#这个是放在下面的！</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">while read -r line
+do
+   echo $line
+done &lt; filename#这个是放在下面的！</code></pre>
 <pre><code>1
 2
 3
 4
 </code></pre>
 <p>2.利用for循环的方法</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">for line in `cat filename`</span><br><span class="line">do</span><br><span class="line"> echo $line</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">for line in &#96;cat filename&#96;
+do
+ echo $line
+done</code></pre>
 <pre><code>1
 2
 3
 4
 </code></pre>
 <p>或</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">for line in $(cat filename)</span><br><span class="line">do</span><br><span class="line"> echo $line</span><br><span class="line">done</span><br><span class="line">`````</span><br><span class="line">    1</span><br><span class="line">    2</span><br><span class="line">    3</span><br><span class="line">    4</span><br><span class="line"></span><br><span class="line">While循环中read命令从标准输入中读取一行，并将内容保存到变量line中。在这里，-r选项保证读入的内容是原始的内容，意味着反斜杠转义的行为不会发生。输入重定向操作符&lt; file打开并读取文件file，然后将它作为read命令的标准输入。</span><br><span class="line">3.重定向管道法</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">for line in $(cat filename)
+do
+ echo $line
+done
+&#96;&#96;&#96;&#96;&#96;
+    1
+    2
+    3
+    4
+
+While循环中read命令从标准输入中读取一行，并将内容保存到变量line中。在这里，-r选项保证读入的内容是原始的内容，意味着反斜杠转义的行为不会发生。输入重定向操作符&lt; file打开并读取文件file，然后将它作为read命令的标准输入。
+3.重定向管道法</code></pre>
 <p>cat filename | while read line<br>do<br>    echo $line<br>done</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">    1</span><br><span class="line">    2</span><br><span class="line">    3</span><br><span class="line">    4</span><br><span class="line"></span><br><span class="line">4.文件描述符法</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">    1
+    2
+    3
+    4
+
+4.文件描述符法</code></pre>
 <p>exec 3&lt;&amp;0<br>exec 0&lt; $FILENAME<br>while read LINE<br>do<br>    echo $LINE<br>done<br>exec 0&lt;&amp;3</p>
 <pre><code>    1
     2

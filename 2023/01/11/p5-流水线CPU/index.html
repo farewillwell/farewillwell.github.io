@@ -29,7 +29,7 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 
@@ -507,6 +507,9 @@
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
 
         
 
@@ -606,27 +609,72 @@
 </tbody></table>
 <p>然后根据来源是前级接受是后级组合就行了。注意不论这个后面的指令是后面才立即需要（比如add指令在D级，明明在ALUE级的时候才是马上需要的，但是只要前面有一个相关寄存器的数据生成就要在add在D级的时候转给它，尽早转！）</p>
 <p>那么这么多来源，该以什么样的优先级选择呢？用roife的话就是</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">选择的顺序按照就近原则，优先选择下一级的数据，不行就下两级，如果都不行就采用本级寄存器的数据</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">选择的顺序按照就近原则，优先选择下一级的数据，不行就下两级，如果都不行就采用本级寄存器的数据</code></pre>
 
 
 <h3 id="关于流水线寄存器"><a href="#关于流水线寄存器" class="headerlink" title="关于流水线寄存器"></a>关于流水线寄存器</h3><p>具体的信号承载不再陈述，这里仅仅说明应用于阻塞的功能信号</p>
 <p>阻塞的时候，仅仅需要考虑一种情况，总结来就是</p>
 <p>FD锁，E清空，MW走</p>
 <p>（具体原因在实现AT法部分解释）<br>D寄存器</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">else    //指的是阻塞信号生效的情况</span><br><span class="line">begin</span><br><span class="line">    instr&lt;=instr;</span><br><span class="line">    WPC&lt;=WPC;</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">else    &#x2F;&#x2F;指的是阻塞信号生效的情况
+begin
+    instr&lt;&#x3D;instr;
+    WPC&lt;&#x3D;WPC;
+end</code></pre>
 <p>E寄存器</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"> if(reset==1||clr==1)</span><br><span class="line">      begin</span><br><span class="line">          RegWrite&lt;=0;</span><br><span class="line">          MemtoReg&lt;=0;</span><br><span class="line">          MemWrite&lt;=0;</span><br><span class="line">          Aluop&lt;=0;</span><br><span class="line">          link&lt;=0;</span><br><span class="line">          RFD1&lt;=0;</span><br><span class="line">          RFD2&lt;=0;</span><br><span class="line">          signImm&lt;=0;</span><br><span class="line">          RS&lt;=0;</span><br><span class="line">          RT&lt;=0;</span><br><span class="line">          A3&lt;=0;</span><br><span class="line">          Tnew&lt;=0;</span><br><span class="line">          Alusrc&lt;=0;</span><br><span class="line">          shamt&lt;=0;</span><br><span class="line">	WPC&lt;=0;</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none"> if(reset&#x3D;&#x3D;1||clr&#x3D;&#x3D;1)
+      begin
+          RegWrite&lt;&#x3D;0;
+          MemtoReg&lt;&#x3D;0;
+          MemWrite&lt;&#x3D;0;
+          Aluop&lt;&#x3D;0;
+          link&lt;&#x3D;0;
+          RFD1&lt;&#x3D;0;
+          RFD2&lt;&#x3D;0;
+          signImm&lt;&#x3D;0;
+          RS&lt;&#x3D;0;
+          RT&lt;&#x3D;0;
+          A3&lt;&#x3D;0;
+          Tnew&lt;&#x3D;0;
+          Alusrc&lt;&#x3D;0;
+          shamt&lt;&#x3D;0;
+	WPC&lt;&#x3D;0;
+end</code></pre>
 
 <h2 id="需要实现的部件"><a href="#需要实现的部件" class="headerlink" title="需要实现的部件"></a>需要实现的部件</h2><p>P5中，需要对每一个阶段的数据进行存储，因此需要针对FDEMW每个阶段准备一个状态寄存器，每个状态寄存器都需要记录当前的指令地址。<br>由于主体部分已经在P4中涉及了，所以对于有的一些部件不进行深入介绍。<br>（下面提到的所有转发多路选择器的选择信号、F,D,E级的暂停或者清空信号均由 HAZARD UNIT给出）</p>
 <hr>
 <p>F级：</p>
 <p>PC，用来存储当前F段的PC值，相当于F级的寄存器</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">module PC (</span><br><span class="line">    input [31:0] newPc,</span><br><span class="line">    input clk,</span><br><span class="line">    input reset,</span><br><span class="line">    input En, //这个En是在流水线阻塞的时候用的，后面会提到</span><br><span class="line">    output [31:0]WPC//当前寄存器输出的PC值</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">module PC (
+    input [31:0] newPc,
+    input clk,
+    input reset,
+    input En, &#x2F;&#x2F;这个En是在流水线阻塞的时候用的，后面会提到
+    output [31:0]WPC&#x2F;&#x2F;当前寄存器输出的PC值
+);</code></pre>
 <p>NPC，用来生成下一个PC值（一个完全的组合逻辑）</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">module NPC (</span><br><span class="line">    input [31:0]signImm_D,//指令下一条的立即数</span><br><span class="line">    input [25:0]JPC_D,//J指令存的跳转的地址</span><br><span class="line">    input [31:0]Jrdata_D,//JR指令的寄存器的数据的值</span><br><span class="line">    input beqsrc,//beq的信号</span><br><span class="line">    input [31:0]WPC,//现在F级的PC</span><br><span class="line">    input new_jump,//为了新的跳转指令预留的控制信号</span><br><span class="line">    input [31:0] new_pos,//为了新的跳转指令预留的地址</span><br><span class="line">    input Jr_D,//是jr指令吗</span><br><span class="line">    input Jump_D,// 是j类指令吗</span><br><span class="line">    output [31:0]newPc,// 下一个PC</span><br><span class="line">    output wire [31:0]pc_8_F//现在的 pc + 8</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">module NPC (
+    input [31:0]signImm_D,&#x2F;&#x2F;指令下一条的立即数
+    input [25:0]JPC_D,&#x2F;&#x2F;J指令存的跳转的地址
+    input [31:0]Jrdata_D,&#x2F;&#x2F;JR指令的寄存器的数据的值
+    input beqsrc,&#x2F;&#x2F;beq的信号
+    input [31:0]WPC,&#x2F;&#x2F;现在F级的PC
+    input new_jump,&#x2F;&#x2F;为了新的跳转指令预留的控制信号
+    input [31:0] new_pos,&#x2F;&#x2F;为了新的跳转指令预留的地址
+    input Jr_D,&#x2F;&#x2F;是jr指令吗
+    input Jump_D,&#x2F;&#x2F; 是j类指令吗
+    output [31:0]newPc,&#x2F;&#x2F; 下一个PC
+    output wire [31:0]pc_8_F&#x2F;&#x2F;现在的 pc + 8
+);</code></pre>
 
 <p>IM，指令存储器，存的是指令数据，也可以兼顾一些其他功能（比如清空延迟槽）</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">module IM (</span><br><span class="line">    input  [31:0] WPC,</span><br><span class="line">    output [31:0] instr_F,</span><br><span class="line">    input Nullify（清空延迟槽指令，通过课下并不需要）</span><br><span class="line">);</span><br><span class="line">清空延迟槽：</span><br><span class="line">assign instr_F=(Nullify==0)? mem[need]:32&#x27;b0;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">module IM (
+    input  [31:0] WPC,
+    output [31:0] instr_F,
+    input Nullify（清空延迟槽指令，通过课下并不需要）
+);
+清空延迟槽：
+assign instr_F&#x3D;(Nullify&#x3D;&#x3D;0)? mem[need]:32&#39;b0;</code></pre>
 <p>这里的清空延迟槽指的是：当该信号生效，那么这个D级检测到的跳转指令的延迟槽当做nop而不执行，所以可以直接让IM出来的时候就出来0就好了。</p>
 <p><strong>特别提醒</strong>：<strong>一定一定注意这玩意的大小，21级的学生有不少因为这个开小了然后课上寄了</strong></p>
 <hr>
@@ -636,7 +684,12 @@
 <p>缺点：写起来每一级寄存器要携带的信息太多，可能会很长什么的（比如笔者的E寄存器的接口就写了60多行）<br>课件上给的是这个理由：</p>
 <p>在具体生成控制信号的时候，相比P4，还有具体的Tuse和Tnew，这个会在后面的AT法那一节详细说明。</p>
 <p>RF：寄存器堆（<em>需要实现内部转发</em>），还没有写入寄存器的时候，写入的地址假如恰好是要读入的地址（尤其注意0的时候要特判，因为不知道0写进来个什么玩意）那么就把应该写入的值提前反馈到输出端上。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">assign RD1=(A1==0)?32&#x27;b0:</span><br><span class="line">(A3==A1&amp;&amp;RegWrite==1&#x27;b1)? WriteData: mem[A1];</span><br><span class="line">assign RD2=(A2==0)?32&#x27;b0:</span><br><span class="line">(A3==A2&amp;&amp;RegWrite==1&#x27;b1)? WriteData: mem[A2];</span><br><span class="line"></span><br><span class="line">其中RD是指的笔者设计的寄存器读出的值，A3是寄存器写入的地址，A1A2是读出的地址</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">assign RD1&#x3D;(A1&#x3D;&#x3D;0)?32&#39;b0:
+(A3&#x3D;&#x3D;A1&amp;&amp;RegWrite&#x3D;&#x3D;1&#39;b1)? WriteData: mem[A1];
+assign RD2&#x3D;(A2&#x3D;&#x3D;0)?32&#39;b0:
+(A3&#x3D;&#x3D;A2&amp;&amp;RegWrite&#x3D;&#x3D;1&#39;b1)? WriteData: mem[A2];
+
+其中RD是指的笔者设计的寄存器读出的值，A3是寄存器写入的地址，A1A2是读出的地址</code></pre>
 
 <p>Extop：符号扩展单元（其实没啥用，注意ori是无符号扩展其他是符号扩展就行）可有可无</p>
 <p>judge：提前的分支跳转判断单元，其实用一个三目就能实现，可有可无。</p>
@@ -650,7 +703,7 @@
 <p>ALU的入口套着两层多路选择器，分别是E级转发的多路选择器和signimm&#x2F;RT的多路选择器</p>
 <p>MUXRS_E&#x2F;MUXRT_E</p>
 <p>对应ALU的inA和inB。其中<br>按照0，1，2的优先级逐渐上升，2是转发的W级的上面</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MUX_RF_W:写入寄存器堆的数值</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">MUX_RF_W:写入寄存器堆的数值</code></pre>
 <p>1是M级的AluAnsorPC_M,具体的含义看M级</p>
 <p>然后再多一个多路选择器接到inB口，分别是MUXRT_E和signimm_E</p>
 <p>除了常规的信号，还需要传递RS_E和RT_E来深入到冒险控制单元进行冒险控制信号的判定。</p>
@@ -695,7 +748,14 @@
 <p>A:要知道各级读的寄存器和各级要写的寄存器，<strong>注意这个“要写”指的就是一个标准指令RD的位置的5位二进制代表的</strong>，</p>
 <p>B:然后就是看这个指令是啥指令，用不用管它。</p>
 <p>对于A，肯定要传进来那各级的寄存器地址罢？，就像这样</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">input [4:0]RS_D,</span><br><span class="line">input [4:0]RT_D,</span><br><span class="line">input [4:0]RS_E,</span><br><span class="line">input [4:0]RT_E,</span><br><span class="line">input [4:0]RT_M,</span><br><span class="line">input [4:0]A3_E,//这个A3笔者是默认写寄存器的地址</span><br><span class="line">input [4:0]A3_M,</span><br><span class="line">input [4:0]A3_W,</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">input [4:0]RS_D,
+input [4:0]RT_D,
+input [4:0]RS_E,
+input [4:0]RT_E,
+input [4:0]RT_M,
+input [4:0]A3_E,&#x2F;&#x2F;这个A3笔者是默认写寄存器的地址
+input [4:0]A3_M,
+input [4:0]A3_W,</code></pre>
 <p>对于B<br>如果我选择懒的提炼方式（不要管这个方法，就看个乐就行了），不提炼，直接看指令，把DEMW这四个阶段的是啥指令全传进UNIT里，然后针对所有指令的组合情况打个硕大无比的表（指的是排列组合D是谁，E是谁，M是谁，W是谁，然后针对排出来的一种情况交给UNIT中存的各级是什么情况输出什么控制信号），然后就行了。</p>
 <p><del>不得不说模块化写代码的时候就有一个想法，我在这里不需要写这么多这么复杂，反正有个什么什么模块专门管这个的，我只把想法在写出来，具体细节实现写这个模块的时候再说，像极了把作业推到第二天的笔者</del></p>
 <p>理论上可行，实际上直接去世。</p>
@@ -761,24 +821,30 @@
 <p>除此之外就是add要用寄存器值，lw要写寄存器值，一切指令写不写都可以用一个简单的regwrite信号代替，而不必暴露这个指令是啥的具体细节；指令用不用的话，我们可以当做无穷的时间才要用，也不用无穷，比一个指令待的时间长就行了。</p>
 <p>注意，在D级这个识别的时候，我已经知道了上面的一大堆东西了，这是指令识别出来本身决定的，但是每个指令这方面的性质都能以这样的方式描述：从D级知道还有多长时间用数据，从D级知道还有多长时间生成数据。</p>
 <p>同时，考虑到分在不同的EMW级有不同的指令，</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">我知道它在E级的时候还要走俩周期才能生成，在M级的时候还有1个周期才能生成，W级的时候已经生成了。</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">我知道它在E级的时候还要走俩周期才能生成，在M级的时候还有1个周期才能生成，W级的时候已经生成了。</code></pre>
 <p>在流水线寄存器上记录这个指令还有几个周期生成，我们就不用管E，M，W这些名号了，在哪个寄存器上本身就是一个信息不是吗？所以你看我们只需要几个数字就行了：</p>
 <p>在D级还有多少周期需要数据，在EMW级还有多长时间生成数据。</p>
 <p>这样TUSE ,TNEW很自然了，这样的两个数字，是在CTRL中对一个指令要做的事情和在每个阶段做到什么层次的一个最好的总结和提炼。其中，笔者是在D级的CTRL，也就是说在D级解释每一个指令都要在什么节点做什么。Tnew，Tuse应该都是从D级开始算的，仅在D级生成，然后根据流动而变化。</p>
 <p>在这一节，我们梳理了需要什么就够了：对于每一级的指令，要完成阻塞和转发，我们需要知道他们用和写的寄存器的编号，我们要知道这俩T的时间，我们要知道它写不写寄存器，是否真正生成数据。</p>
 <h3 id="工程化实现"><a href="#工程化实现" class="headerlink" title="工程化实现"></a>工程化实现</h3><p>给出下列定义：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">    Tuse：（仅在D级体现）D级的这个指令最晚还有多少周期才用寄存器的值</span><br><span class="line"></span><br><span class="line">    Tnew：（分级，每级的指令都有）当前级的指令还差多少个周期就能生成要写入RF的数据，W级Tnew=0。一个指令在级之间流动的转化方程是</span><br><span class="line"></span><br><span class="line">Tnew_(n+1)=max(0,Tnew_n-1)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">
+    Tuse：（仅在D级体现）D级的这个指令最晚还有多少周期才用寄存器的值
+
+    Tnew：（分级，每级的指令都有）当前级的指令还差多少个周期就能生成要写入RF的数据，W级Tnew&#x3D;0。一个指令在级之间流动的转化方程是
+
+Tnew_(n+1)&#x3D;max(0,Tnew_n-1)
+</code></pre>
 <p>其中，Tuse仅仅是用来判断阻塞用的，Tnew则是都需要用到。</p>
 <p>如何使用这俩数据？</p>
 <p>首先是要针对每一级比较要写的寄存器是不是一个东西，不是的话就完全不用管了，我们每一个判断都必须先有这个，否则无数据关联。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">A3_E!=5&#x27;b0&amp;&amp;A3_E==RS_D</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">A3_E!&#x3D;5&#39;b0&amp;&amp;A3_E&#x3D;&#x3D;RS_D</code></pre>
 
 <p>阻塞，在且仅在D级，我还有Tuse那么长时间就要用数据了，当前EMW三个级的指令，分别有Tnew_E,Tnew_M,Tnew_w的时间才生成数据。</p>
 <p>假如说D级用数据的时候，那时的这三个指令Tnew有一个不为0，也就是还没生成，自然需要阻塞了,从D级来看的话，也就是说当时的Tnew比Tuse要大。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Tnew_E&gt;Tuse_RS&amp;&amp;(A3_E!=5&#x27;b0&amp;&amp;A3_E==RS_D)</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">Tnew_E&gt;Tuse_RS&amp;&amp;(A3_E!&#x3D;5&#39;b0&amp;&amp;A3_E&#x3D;&#x3D;RS_D)</code></pre>
 
 <p>转发，数据已经生成了才能转发，只要生成了数据就是Tnew&#x3D;0，只要有数据关联还确定是写寄存器的话直接转发就完了</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">A3_E!=5&#x27;b0&amp;&amp;A3_E==RS_D&amp;&amp;Tnew_E==2&#x27;b0&amp;&amp;RegWrite_E==1&#x27;b1</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">A3_E!&#x3D;5&#39;b0&amp;&amp;A3_E&#x3D;&#x3D;RS_D&amp;&amp;Tnew_E&#x3D;&#x3D;2&#39;b0&amp;&amp;RegWrite_E&#x3D;&#x3D;1&#39;b1</code></pre>
 <p>其中，数据一旦生成之后，往后这条指令的Tnew都是0了，随时可以用。</p>
 <p>需要解释的是，我们采取的是“盲目转发”，不论是不是真用寄存器的值都转发，所以Tuse只是在D级被使用，用来判断需不需要阻塞，假如需要阻塞的话就卡到D级，不需要阻塞的话就走掉，下一个周期CTRL的Tuse端暴露的是下一个D级指令的使用时间，反正已经知道了走了的那条指令需要数据的时候前面的指令一定已经生成了数据。</p>
 <p>那么如何知道指令的Tnew和Tuse？</p>
@@ -901,20 +967,74 @@
 <p>针对每一个指令的Tuse和Tnew,我们只需要在CTRL中识别指令的时候根据识别出来的指令assign它的T值然后传出去就行了。<br>Tuse&#x3D;&#x2F;代表不需要，那么取一个比2大的数字比如3就行了</p>
 <p>|    |Tuse|  |Tnew| |  | regwrite|<br>|—-|—-|–|—|–|–|———|			<br>| 指令  |rs	|rt	|E	|M	|W	| | 		<br>|add	|1	|1	|1	|0	|0	|1	|			<br>|sub	|1	|1	|1	|0	|0	|1	|			<br>|ori	|1	|x	|1	|0	|0	|1	|		<br>|lw	    |1	|x	|2	|1	|0	|1	|			<br>|sw	    |1	|2	|0	|0	|0	|0	|			<br>|beq	|0	|0	|0	|0	|0	|0	|			<br>|lui	|x	|x	|1	|0	|0	|1	|			<br>|jal	|x	|x	|0	|0	|0	|1	|			<br>|jr     |0	|x	|0	|0	|0	|0	|			<br>|nop	|x	|x	|0	|0	|0	|0	|</p>
 <p>这里给出具体在CTRL中的时间实现</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">assign Tnew_D=(opcode==lw)?2&#x27;b10:</span><br><span class="line">((RIop==opcode&amp;&amp;(func==add||func==sub))||opcode==lui||opcode==ori)?2&#x27;b01:2&#x27;b0;</span><br><span class="line"></span><br><span class="line">assign Tuse_RS=((RIop==opcode&amp;&amp;(func==add||func==sub))||opcode==ori||opcode==lw||opcode==sw)?2&#x27;b1:</span><br><span class="line">               ((RIop==opcode&amp;&amp;func==jr)||opcode==beq)?2&#x27;b0:2&#x27;b11;</span><br><span class="line"></span><br><span class="line">assign Tuse_RT=(RIop==opcode&amp;&amp;(func==add||func==sub)?2&#x27;b01:</span><br><span class="line">               (opcode==sw)?2&#x27;b10:</span><br><span class="line">				(opcode==beq)?2&#x27;b00:2&#x27;b11;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">assign Tnew_D&#x3D;(opcode&#x3D;&#x3D;lw)?2&#39;b10:
+((RIop&#x3D;&#x3D;opcode&amp;&amp;(func&#x3D;&#x3D;add||func&#x3D;&#x3D;sub))||opcode&#x3D;&#x3D;lui||opcode&#x3D;&#x3D;ori)?2&#39;b01:2&#39;b0;
+
+assign Tuse_RS&#x3D;((RIop&#x3D;&#x3D;opcode&amp;&amp;(func&#x3D;&#x3D;add||func&#x3D;&#x3D;sub))||opcode&#x3D;&#x3D;ori||opcode&#x3D;&#x3D;lw||opcode&#x3D;&#x3D;sw)?2&#39;b1:
+               ((RIop&#x3D;&#x3D;opcode&amp;&amp;func&#x3D;&#x3D;jr)||opcode&#x3D;&#x3D;beq)?2&#39;b0:2&#39;b11;
+
+assign Tuse_RT&#x3D;(RIop&#x3D;&#x3D;opcode&amp;&amp;(func&#x3D;&#x3D;add||func&#x3D;&#x3D;sub)?2&#39;b01:
+               (opcode&#x3D;&#x3D;sw)?2&#39;b10:
+				(opcode&#x3D;&#x3D;beq)?2&#39;b00:2&#39;b11;</code></pre>
 
 
 <h3 id="HAzArd-UNITd的内部构造"><a href="#HAzArd-UNITd的内部构造" class="headerlink" title="HAzArd UNITd的内部构造"></a>HAzArd UNITd的内部构造</h3><p>也许上面列了很多但是，还是没能说清楚怎么实现的？</p>
 <p>这里先给出按笔者采用的方案实现UNIT所需要的信号</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">module UNIT (</span><br><span class="line">    output STALL_PC,</span><br><span class="line">    output STALL_D,</span><br><span class="line">    output Flush_E,</span><br><span class="line"></span><br><span class="line">    //上面三个是控制阻塞的，分别对应FDE三个流水线寄存器</span><br><span class="line"></span><br><span class="line">    output [1:0]FORWARD_S_D,//FORWARD，转发,S：RS,D：D级的控制信号</span><br><span class="line">    output [1:0]FORWARD_T_D,</span><br><span class="line">    output [1:0]FORWARD_S_E,</span><br><span class="line">    output [1:0]FORWARD_T_E,</span><br><span class="line">    output [1:0]FORWARD_T_M,</span><br><span class="line"></span><br><span class="line">    //这五个是控制上面列出来的几个转发MUX</span><br><span class="line"></span><br><span class="line">    input [4:0]RS_D,</span><br><span class="line">    input [4:0]RT_D,</span><br><span class="line">    input [4:0]RS_E,</span><br><span class="line">    input [4:0]RT_E,</span><br><span class="line">    input [4:0]RT_M,</span><br><span class="line">    input [4:0]A3_E,</span><br><span class="line">    input [4:0]A3_M,</span><br><span class="line">    input [4:0]A3_W,</span><br><span class="line"></span><br><span class="line">    //这一堆是每个级指令用的寄存器的编号和要写的寄存器的编号，比较这个才能知道存在数据冒险</span><br><span class="line">    input [2:0]Tnew_E,</span><br><span class="line">    input [2:0]Tnew_M,</span><br><span class="line">    input [2:0]Tnew_W,</span><br><span class="line">    input [2:0]Tuse_RS,</span><br><span class="line">    input [2:0]Tuse_RT,</span><br><span class="line">    //这些是D级进来的当前D级的Tuse和每一级的Tnew</span><br><span class="line"></span><br><span class="line">    input RegWrite_E,</span><br><span class="line">    input RegWrite_M,</span><br><span class="line">    input RegWrite_W</span><br><span class="line">    //这些是写RF控制信号，假如根本不是写的话也没必要转发了。</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">module UNIT (
+    output STALL_PC,
+    output STALL_D,
+    output Flush_E,
+
+    &#x2F;&#x2F;上面三个是控制阻塞的，分别对应FDE三个流水线寄存器
+
+    output [1:0]FORWARD_S_D,&#x2F;&#x2F;FORWARD，转发,S：RS,D：D级的控制信号
+    output [1:0]FORWARD_T_D,
+    output [1:0]FORWARD_S_E,
+    output [1:0]FORWARD_T_E,
+    output [1:0]FORWARD_T_M,
+
+    &#x2F;&#x2F;这五个是控制上面列出来的几个转发MUX
+
+    input [4:0]RS_D,
+    input [4:0]RT_D,
+    input [4:0]RS_E,
+    input [4:0]RT_E,
+    input [4:0]RT_M,
+    input [4:0]A3_E,
+    input [4:0]A3_M,
+    input [4:0]A3_W,
+
+    &#x2F;&#x2F;这一堆是每个级指令用的寄存器的编号和要写的寄存器的编号，比较这个才能知道存在数据冒险
+    input [2:0]Tnew_E,
+    input [2:0]Tnew_M,
+    input [2:0]Tnew_W,
+    input [2:0]Tuse_RS,
+    input [2:0]Tuse_RT,
+    &#x2F;&#x2F;这些是D级进来的当前D级的Tuse和每一级的Tnew
+
+    input RegWrite_E,
+    input RegWrite_M,
+    input RegWrite_W
+    &#x2F;&#x2F;这些是写RF控制信号，假如根本不是写的话也没必要转发了。
+);</code></pre>
 <p>其中，转发stall_pc对标PC中的EN，该信号生效的时候，PC不更新，stall_D对标D级寄存器的阻塞使能，该信号生效的时候D级寄存器不接受IM传进来的指令（保留当前的指令）Flush_E指的是在该情况生效的情况下清空E级寄存器，对标E级寄存器的clr（上面展示过了）</p>
 <p>但是，其实这三个都是一种情况：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">assign STALL_D=STALL;</span><br><span class="line">assign STALL_PC=STALL;</span><br><span class="line">assign Flush_E=STALL;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">assign STALL_D&#x3D;STALL;
+assign STALL_PC&#x3D;STALL;
+assign Flush_E&#x3D;STALL;</code></pre>
 <p>举例如下，其余可仿照此写（怕查重的话再改改？）</p>
 <p>解释：<br>STALL：E&#x2F;M级的指令，它想生成数据，而且和E级的存在数据冲突了，但是当前离他生成的时间比D级要用的时间要长，所以不得不暂停</p>
 <p>FORWARD：存在数据冲突，而且前面的指令是要写寄存器，而且前面的指令确实已经生成数据了(Tnew&#x3D;0)</p>
 <p><strong>注意要写的是0的的话绝不能转发，要特判！</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">assign STALL=STALL_RS|STALL_RT;</span><br><span class="line"></span><br><span class="line">assign STALL_RS=(Tnew_E&gt;Tuse_RS&amp;&amp;(A3_E!=5&#x27;b0&amp;&amp;A3_E==RS_D))||(Tnew_M&gt;Tuse_RS&amp;&amp;(A3_M!=5&#x27;b0&amp;&amp;A3_M==RS_D))?1&#x27;b1:1&#x27;b0;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">assign FORWARD_S_D=(A3_E!=5&#x27;b0&amp;&amp;A3_E==RS_D&amp;&amp;Tnew_E==2&#x27;b0&amp;&amp;RegWrite_E==1&#x27;b1)?2&#x27;b10:</span><br><span class="line">                   (A3_M!=5&#x27;b0&amp;&amp;A3_M==RS_D&amp;&amp;Tnew_M==2&#x27;b0&amp;&amp;RegWrite_M==1&#x27;b1)?2&#x27;b01:2&#x27;b0;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">
+assign STALL&#x3D;STALL_RS|STALL_RT;
+
+assign STALL_RS&#x3D;(Tnew_E&gt;Tuse_RS&amp;&amp;(A3_E!&#x3D;5&#39;b0&amp;&amp;A3_E&#x3D;&#x3D;RS_D))||(Tnew_M&gt;Tuse_RS&amp;&amp;(A3_M!&#x3D;5&#39;b0&amp;&amp;A3_M&#x3D;&#x3D;RS_D))?1&#39;b1:1&#39;b0;
+
+
+assign FORWARD_S_D&#x3D;(A3_E!&#x3D;5&#39;b0&amp;&amp;A3_E&#x3D;&#x3D;RS_D&amp;&amp;Tnew_E&#x3D;&#x3D;2&#39;b0&amp;&amp;RegWrite_E&#x3D;&#x3D;1&#39;b1)?2&#39;b10:
+                   (A3_M!&#x3D;5&#39;b0&amp;&amp;A3_M&#x3D;&#x3D;RS_D&amp;&amp;Tnew_M&#x3D;&#x3D;2&#39;b0&amp;&amp;RegWrite_M&#x3D;&#x3D;1&#39;b1)?2&#39;b01:2&#39;b0;
+</code></pre>
 <h2 id="关于工程"><a href="#关于工程" class="headerlink" title="关于工程"></a>关于工程</h2><h3 id="关于工程：信号"><a href="#关于工程：信号" class="headerlink" title="关于工程：信号"></a>关于工程：信号</h3><p>经历过P3P4的同学应该知道，课上对于cpu的快速且逻辑清晰的修改是通过考试必要条件，在P5中由于流水线的分级，导致信号多了很多，信号的层次和逻辑也变得很复杂，针对新增加的信号，课上或者课下经常会导致“这里添了那里没添”的bug。</p>
 <p>还有一种情况就是，自行设定的一些信号之间的关联度太强，在修改信号的时候。并不能完全的剥离其具体细致的功能，导致明明在逻辑上一些功能是应该分开的，但是却在实现上莫名其妙牵连了。</p>
 <p>这里给出的建议是：将信号设定的时候尽可能的“独立”，减少一个特殊信号（比如各种条件跳转+写入系列的）与其他信号的功能交集。</p>

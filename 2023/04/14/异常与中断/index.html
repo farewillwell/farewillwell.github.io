@@ -29,7 +29,7 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 
@@ -507,6 +507,9 @@
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
 
         
 
@@ -527,7 +530,21 @@
 <p><strong>4</strong> CPU 开始从异常入口位置取指，此后一切交给软件处理</p>
 <h2 id="异常-分发"><a href="#异常-分发" class="headerlink" title="异常 分发"></a>异常 分发</h2><p>当发生异常时，处理器会进入一个用于分发异常的程序，这个程序的作用就是检测发生了哪种异常，并调用相应的异常处理程序。一般来说，异常分发程序会被要求放在固定的某个物理地址上（根据处理器的区别有所不同），以保证处理器能在检测到异常时正确地跳转到那里。这个分发程序可以认为是操作系统的一部分。</p>
 <p>下述代码就是异常分发代码，我们先将下面代码填充到 entry.S 中，然后分析其功能。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">.section .text.exc_gen_entry</span><br><span class="line"></span><br><span class="line">exc_gen_entry:</span><br><span class="line"></span><br><span class="line">SAVE_ALL</span><br><span class="line"></span><br><span class="line">mfc0  t0, CP0_CAUSE</span><br><span class="line"></span><br><span class="line">andi </span><br><span class="line"></span><br><span class="line">t0, 0x7c</span><br><span class="line"></span><br><span class="line">lw  t0, exception_handlers(t0)</span><br><span class="line"></span><br><span class="line">jr t0</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">.section .text.exc_gen_entry
+
+exc_gen_entry:
+
+SAVE_ALL
+
+mfc0  t0, CP0_CAUSE
+
+andi 
+
+t0, 0x7c
+
+lw  t0, exception_handlers(t0)
+
+jr t0</code></pre>
 
 <p>这段异常分发代码的作用流程1如下：</p>
 <p>\1. 使用 SAVE_ALL 宏将当前上下文保存到内核的异常栈中。</p>
@@ -568,37 +585,67 @@
 <p>因为其他的几乎都是按照上下文填写1行代码即可，非常的自然，但是schedule却需要自己依靠去写整个一串代码，十分的痛苦。</p>
 <p>因此本部分主要着重在：我是怎么写schedule的？</p>
 <p>在代码里，给出了这样的提示：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">static int count = 0; // remaining time slices of current env</span><br><span class="line">    struct Env *e = curenv;</span><br><span class="line"></span><br><span class="line">    /* We always decrease the &#x27;count&#x27; by 1.</span><br><span class="line">     *</span><br><span class="line">     * If &#x27;yield&#x27; is set, or &#x27;count&#x27; has been decreased to 0, or &#x27;e&#x27; (previous &#x27;curenv&#x27;) is</span><br><span class="line">     * &#x27;NULL&#x27;, or &#x27;e&#x27; is not runnable, then we pick up a new env from &#x27;env_sched_list&#x27; (list of</span><br><span class="line">     * all runnable envs), set &#x27;count&#x27; to its priority, and schedule it with &#x27;env_run&#x27;. **Panic</span><br><span class="line">     * if that list is empty**.</span><br><span class="line">     *</span><br><span class="line">     * (Note that if &#x27;e&#x27; is still a runnable env, we should move it to the tail of</span><br><span class="line">     * &#x27;env_sched_list&#x27; before picking up another env from its head, or we will schedule the</span><br><span class="line">     * head env repeatedly.)</span><br><span class="line">     *</span><br><span class="line">     * Otherwise, we simply schedule &#x27;e&#x27; again.</span><br><span class="line">     *</span><br><span class="line">     * You may want to use macros below:</span><br><span class="line">     *   &#x27;TAILQ_FIRST&#x27;, &#x27;TAILQ_REMOVE&#x27;, &#x27;TAILQ_INSERT_TAIL&#x27;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">static int count &#x3D; 0; &#x2F;&#x2F; remaining time slices of current env
+    struct Env *e &#x3D; curenv;
+
+    &#x2F;* We always decrease the &#39;count&#39; by 1.
+     *
+     * If &#39;yield&#39; is set, or &#39;count&#39; has been decreased to 0, or &#39;e&#39; (previous &#39;curenv&#39;) is
+     * &#39;NULL&#39;, or &#39;e&#39; is not runnable, then we pick up a new env from &#39;env_sched_list&#39; (list of
+     * all runnable envs), set &#39;count&#39; to its priority, and schedule it with &#39;env_run&#39;. **Panic
+     * if that list is empty**.
+     *
+     * (Note that if &#39;e&#39; is still a runnable env, we should move it to the tail of
+     * &#39;env_sched_list&#39; before picking up another env from its head, or we will schedule the
+     * head env repeatedly.)
+     *
+     * Otherwise, we simply schedule &#39;e&#39; again.
+     *
+     * You may want to use macros below:
+     *   &#39;TAILQ_FIRST&#39;, &#39;TAILQ_REMOVE&#39;, &#39;TAILQ_INSERT_TAIL&#39;</code></pre>
 
 <p>首先第一行可以看到，count&#x3D;0；它是一个static，也就是说这个东西是不仅仅在函数中生效的，它一直全局生效，而写在这个函数里就代表仅仅有这个函数操作这个变量。</p>
 <p>接下来是一句：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">We always decrease the &#x27;count&#x27; by 1.</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">We always decrease the &#39;count&#39; by 1.</code></pre>
 
 <p>不得不承认这个会让我想先count–，但是显然不行，因为我注意到，后面有一个</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">or &#x27;e&#x27; (previous &#x27;curenv&#x27;) is* &#x27;NULL&#x27;，set &#x27;count&#x27; to its priority</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">or &#39;e&#39; (previous &#39;curenv&#39;) is* &#39;NULL&#39;，set &#39;count&#39; to its priority</code></pre>
 
 <p>这个属于一种很有意思的写法，就是自初始化，由于对这一变量初始化需要的步骤和后面的函数几乎一样，所以不去专门设置一个函数初始化，而在这个函数运作的时候判断是不是第一次使用这个函数。剩下的功能也能保证可以恰当的初始化。</p>
 <p>之前没有初始化的时候，cur_env就是NULL，也就是说这个兼具count初始化的功能。所以刚开始不能–了，要等确认或分配后再–。</p>
 <p>接下来就是确认该干啥：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">If &#x27;yield&#x27; is set, or &#x27;count&#x27; has been decreased to 0, or &#x27;e&#x27; (previous &#x27;curenv&#x27;) is</span><br><span class="line">     * &#x27;NULL&#x27;, or &#x27;e&#x27; is not runnable, then we pick up a new env from &#x27;env_sched_list&#x27; (list of</span><br><span class="line">     * all runnable envs)</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">If &#39;yield&#39; is set, or &#39;count&#39; has been decreased to 0, or &#39;e&#39; (previous &#39;curenv&#39;) is
+     * &#39;NULL&#39;, or &#39;e&#39; is not runnable, then we pick up a new env from &#39;env_sched_list&#39; (list of
+     * all runnable envs)</code></pre>
 
 <p>直接翻译即可，注意这些情况仅仅是需要操作的并列，接下来要对每一个情况分别搞一下。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if(yield!=0||count==0||e==NULL||e-&gt;env_status==ENV_NOT_RUNNABLE)</span><br><span class="line">set &#x27;count&#x27; to its priority   schedule it with &#x27;env_run&#x27;. **Panic</span><br><span class="line">     * if that list is empty</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">if(yield!&#x3D;0||count&#x3D;&#x3D;0||e&#x3D;&#x3D;NULL||e-&gt;env_status&#x3D;&#x3D;ENV_NOT_RUNNABLE)
+set &#39;count&#39; to its priority   schedule it with &#39;env_run&#39;. **Panic
+     * if that list is empty</code></pre>
 
 <p>注意，在这个里面，要分别考虑panic，一旦是空的，就panic</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if(TAILQ_EMPTY(&amp;env_sched_list))</span><br><span class="line">        &#123;</span><br><span class="line">            panic(&quot;no runnable envs&quot;);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">if(TAILQ_EMPTY(&amp;env_sched_list))
+        &#123;
+            panic(&quot;no runnable envs&quot;);
+        &#125;</code></pre>
 
 <p>然后假如这个是原本可以执行，不过当前根据优先级分配的机会已经用完了，就是count&#x3D;0.那么：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if(e!=NULL&amp;&amp;e-&gt;env_status==ENV_RUNNABLE)</span><br><span class="line">        &#123;</span><br><span class="line">            TAILQ_INSERT_TAIL(&amp;env_sched_list,(e),env_sched_link);</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">if(e!&#x3D;NULL&amp;&amp;e-&gt;env_status&#x3D;&#x3D;ENV_RUNNABLE)
+        &#123;
+            TAILQ_INSERT_TAIL(&amp;env_sched_list,(e),env_sched_link);
+        &#125;</code></pre>
 
 <p>插到最尾部。</p>
 <p>这样，无论e是否为NULL,我们都已经让当前的e没意义了，所以直接从新拿取，设置时间片：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">e=TAILQ_FIRST(&amp;env_sched_list);</span><br><span class="line">        count=e-&gt;env_pri;</span><br><span class="line">        TAILQ_REMOVE(&amp;env_sched_list,(e),env_sched_link);</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">e&#x3D;TAILQ_FIRST(&amp;env_sched_list);
+        count&#x3D;e-&gt;env_pri;
+        TAILQ_REMOVE(&amp;env_sched_list,(e),env_sched_link);</code></pre>
 
 <p><strong>注意这里有错，后面会说</strong>，假设这个是可执行的话，那么前面已经放到末尾了，所以并未丢失该可执行的env块。</p>
 <p><strong>对于任意进程控制块e，e处于sched（调度队列）中当且仅当status为Runnable</strong></p>
 <p>采用每分配一次机会前就count–的方式，用count指示用完本次后剩余的机会，然后运动即可。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">count--;</span><br><span class="line">     env_run(e);</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">count--;
+     env_run(e);</code></pre>
 
 <h2 id="错了！！！！！"><a href="#错了！！！！！" class="headerlink" title="错了！！！！！"></a>错了！！！！！</h2><p>请同学们在维护 Lab3 实验引入的调度队列 env_sched_list 时，<strong>注意始终保证不变式：对于任意进程控制块 e，e 处于调度队列中</strong>当且仅当** e-&gt;env_status &#x3D;&#x3D; ENV_RUNNABLE<strong>。</strong></p>
 <p><strong>因此，在调度函数 schedule 中实现进程切换时，从调度队列中选中需调度的队首进程后，</strong>不应该**将其从调度队列中移除；</p>
@@ -609,22 +656,53 @@
 <li><p>首先选中调度队列首部的进程 e，作为当前需要调度的进程，然后立即将其移动到调度队列尾部。</p>
 <p>在原来的实现里面，你取出来first，然后就 remove掉，这个显然是不对的。</p>
 <p>因为你拿出来后，它还是Runnable的，所以就不应该拿出来这个队列。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">if(yield!=0||count==0||e==NULL||e-&gt;env_status==ENV_NOT_RUNNABLE)</span><br><span class="line"> &#123;</span><br><span class="line">	if(e!=NULL&amp;&amp;e-&gt;env_status==ENV_RUNNABLE)</span><br><span class="line">	&#123;</span><br><span class="line">		TAILQ_REMOVE(&amp;env_sched_list,(e),env_sched_link);</span><br><span class="line">		TAILQ_INSERT_TAIL(&amp;env_sched_list,(e),env_sched_link);</span><br><span class="line">	&#125;</span><br><span class="line">	if(TAILQ_EMPTY(&amp;env_sched_list))</span><br><span class="line">	&#123;</span><br><span class="line">		panic(&quot;no runnable envs&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	e=TAILQ_FIRST(&amp;env_sched_list);</span><br><span class="line">	count=e-&gt;env_pri;</span><br><span class="line"> &#125;</span><br><span class="line"> count--;</span><br><span class="line"> env_run(e);</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">if(yield!&#x3D;0||count&#x3D;&#x3D;0||e&#x3D;&#x3D;NULL||e-&gt;env_status&#x3D;&#x3D;ENV_NOT_RUNNABLE)
+ &#123;
+	if(e!&#x3D;NULL&amp;&amp;e-&gt;env_status&#x3D;&#x3D;ENV_RUNNABLE)
+	&#123;
+		TAILQ_REMOVE(&amp;env_sched_list,(e),env_sched_link);
+		TAILQ_INSERT_TAIL(&amp;env_sched_list,(e),env_sched_link);
+	&#125;
+	if(TAILQ_EMPTY(&amp;env_sched_list))
+	&#123;
+		panic(&quot;no runnable envs&quot;);
+	&#125;
+	e&#x3D;TAILQ_FIRST(&amp;env_sched_list);
+	count&#x3D;e-&gt;env_pri;
+ &#125;
+ count--;
+ env_run(e);</code></pre>
 
 <p>就该这样。</p>
 <p>但是注意，先insert和remove的效果是不一样的。</p>
 <p>我不能：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">insert</span><br><span class="line">remove</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">insert
+remove</code></pre>
 
 <p>而必须</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">remove </span><br><span class="line">insert</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">remove 
+insert</code></pre>
 
 <p>这个是由于数据的结构所决定的</p>
 <p>这是它的链表特性决定的</p>
 <p>是元素内包含了表域</p>
 <p>而不是一个表结构包含了元素</p>
 <p>比如，看看方法：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">#define TAILQ_REMOVE(head, elm, field)                                                             \</span><br><span class="line">	do &#123;                                                                                       \</span><br><span class="line">		if (((elm)-&gt;field.tqe_next) != NULL)                                               \</span><br><span class="line">			(elm)-&gt;field.tqe_next-&gt;field.tqe_prev = (elm)-&gt;field.tqe_prev;             \</span><br><span class="line">		else                                                                               \</span><br><span class="line">			(head)-&gt;tqh_last = (elm)-&gt;field.tqe_prev;                                  \</span><br><span class="line">		*(elm)-&gt;field.tqe_prev = (elm)-&gt;field.tqe_next;                                    \</span><br><span class="line">	&#125; while (/*CONSTCOND*/ 0)</span><br><span class="line">#define TAILQ_INSERT_TAIL(head, elm, field)                                                        \</span><br><span class="line">	do &#123;                                                                                       \</span><br><span class="line">		(elm)-&gt;field.tqe_next = NULL;                                                      \</span><br><span class="line">		(elm)-&gt;field.tqe_prev = (head)-&gt;tqh_last;                                          \</span><br><span class="line">		*(head)-&gt;tqh_last = (elm);                                                         \</span><br><span class="line">		(head)-&gt;tqh_last = &amp;(elm)-&gt;field.tqe_next;                                         \</span><br><span class="line">	&#125; while (/*CONSTCOND*/ 0)</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">#define TAILQ_REMOVE(head, elm, field)                                                             \
+	do &#123;                                                                                       \
+		if (((elm)-&gt;field.tqe_next) !&#x3D; NULL)                                               \
+			(elm)-&gt;field.tqe_next-&gt;field.tqe_prev &#x3D; (elm)-&gt;field.tqe_prev;             \
+		else                                                                               \
+			(head)-&gt;tqh_last &#x3D; (elm)-&gt;field.tqe_prev;                                  \
+		*(elm)-&gt;field.tqe_prev &#x3D; (elm)-&gt;field.tqe_next;                                    \
+	&#125; while (&#x2F;*CONSTCOND*&#x2F; 0)
+#define TAILQ_INSERT_TAIL(head, elm, field)                                                        \
+	do &#123;                                                                                       \
+		(elm)-&gt;field.tqe_next &#x3D; NULL;                                                      \
+		(elm)-&gt;field.tqe_prev &#x3D; (head)-&gt;tqh_last;                                          \
+		*(head)-&gt;tqh_last &#x3D; (elm);                                                         \
+		(head)-&gt;tqh_last &#x3D; &amp;(elm)-&gt;field.tqe_next;                                         \
+	&#125; while (&#x2F;*CONSTCOND*&#x2F; 0)</code></pre>
 
 <p>它不像之前的链表一样，去先while循环找到和这个相同的，然后改变前后指针去掉。</p>
 <p>而是直接对自己的表域操作，双向链表的好处。</p>

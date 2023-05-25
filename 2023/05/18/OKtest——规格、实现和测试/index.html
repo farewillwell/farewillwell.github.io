@@ -29,7 +29,7 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 
@@ -507,6 +507,9 @@
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
 
         
 
@@ -520,10 +523,27 @@
 <p>客户A：我需要一个queryTripleSum方法，我把我想要的效果，用JML表达出来，交给了我雇佣的程序员。</p>
 <p>程序员B：我按照他给的JML，依照自己程序员的经验，完成了一个代码。</p>
 <p>现在，作业要求我们，实现一个让客户能够验收的代码，就是下面的OKTEST。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="type">boolean</span> <span class="title function_">queryTripleSumOKTest</span><span class="params">(</span></span><br><span class="line"><span class="params">    HashMap&lt;Integer, HashMap&lt;Integer, Integer&gt;&gt; beforeData, </span></span><br><span class="line"><span class="params">    HashMap&lt;Integer, HashMap&lt;Integer, Integer&gt;&gt; afterData, </span></span><br><span class="line"><span class="params">    <span class="type">int</span> result)</span>;</span><br></pre></td></tr></table></figure>
+<pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">queryTripleSumOKTest</span><span class="token punctuation">(</span>
+    <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">,</span> <span class="token class-name">HashMap</span><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">,</span> <span class="token class-name">Integer</span><span class="token punctuation">></span><span class="token punctuation">></span></span> beforeData<span class="token punctuation">,</span> 
+    <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">,</span> <span class="token class-name">HashMap</span><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">,</span> <span class="token class-name">Integer</span><span class="token punctuation">></span><span class="token punctuation">></span></span> afterData<span class="token punctuation">,</span> 
+    <span class="token keyword">int</span> result<span class="token punctuation">)</span><span class="token punctuation">;</span></code></pre>
 
 <p>为了搞清楚它到底要我们干啥，除了指导书之外，让我们看看官方包源码,这个函数究竟是在什么情况下被调用的：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">queryTripleSumOKTest</span><span class="params">()</span> &#123;</span><br><span class="line">        ArrayList&lt;String&gt; cmdList = <span class="keyword">new</span> <span class="title class_">ArrayList</span>(Arrays.asList(<span class="built_in">this</span>.cmds));</span><br><span class="line">        cmdList.remove(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            HashMap&lt;Integer, HashMap&lt;Integer, Integer&gt;&gt; beforeData = <span class="built_in">this</span>.getModifyRelationOKData(cmdList, <span class="literal">true</span>);</span><br><span class="line">            HashMap&lt;Integer, HashMap&lt;Integer, Integer&gt;&gt; afterData = <span class="built_in">this</span>.getModifyRelationOKData(cmdList, <span class="literal">false</span>);</span><br><span class="line">            <span class="type">int</span> <span class="variable">result</span> <span class="operator">=</span> Integer.parseInt((String)cmdList.remove(<span class="number">0</span>));</span><br><span class="line">            <span class="type">Network</span> <span class="variable">tmpNetwork</span> <span class="operator">=</span> (Network)<span class="built_in">this</span>.networkConstructor.newInstance();</span><br><span class="line">            System.out.println(tmpNetwork.queryTripleSumOKTest(beforeData, afterData, result));</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception var6) &#123;</span><br><span class="line">            System.out.println(var6.getMessage());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">queryTripleSumOKTest</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">ArrayList</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">String</span><span class="token punctuation">></span></span> cmdList <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ArrayList</span><span class="token punctuation">(</span><span class="token class-name">Arrays</span><span class="token punctuation">.</span><span class="token function">asList</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>cmds<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        cmdList<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+        <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">,</span> <span class="token class-name">HashMap</span><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">,</span> <span class="token class-name">Integer</span><span class="token punctuation">></span><span class="token punctuation">></span></span> beforeData <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getModifyRelationOKData</span><span class="token punctuation">(</span>cmdList<span class="token punctuation">,</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">,</span> <span class="token class-name">HashMap</span><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">,</span> <span class="token class-name">Integer</span><span class="token punctuation">></span><span class="token punctuation">></span></span> afterData <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getModifyRelationOKData</span><span class="token punctuation">(</span>cmdList<span class="token punctuation">,</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">int</span> result <span class="token operator">=</span> <span class="token class-name">Integer</span><span class="token punctuation">.</span><span class="token function">parseInt</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">)</span>cmdList<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">Network</span> tmpNetwork <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">Network</span><span class="token punctuation">)</span><span class="token keyword">this</span><span class="token punctuation">.</span>networkConstructor<span class="token punctuation">.</span><span class="token function">newInstance</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>tmpNetwork<span class="token punctuation">.</span><span class="token function">queryTripleSumOKTest</span><span class="token punctuation">(</span>beforeData<span class="token punctuation">,</span> afterData<span class="token punctuation">,</span> result<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">Exception</span> var6<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>var6<span class="token punctuation">.</span><span class="token function">getMessage</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+
+    <span class="token punctuation">&#125;</span></code></pre>
 
 <p><code>ArrayList&lt;String&gt; cmdList</code></p>
 <p>所有的东西，都来自于这个输入的string</p>
@@ -541,7 +561,9 @@
 <p>但是，对于一个方法，由于这个方法在调用的时候，已经被封装好了，所以我们能从这个方法获得的信息，有且仅有这个方法执行前后程序数据的状态，还有这个方法的返回结果。</p>
 <p>事实上，这些东西，也正是代表了这个方法所造成的全部影响。</p>
 <p>因此，在官方给定的接口方法中，向我们传递了一个方法作用的环境，和它作用完后环境的结果。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">HashMap&lt;Integer, HashMap&lt;Integer, Integer&gt;&gt; beforeData, </span><br><span class="line">    HashMap&lt;Integer, HashMap&lt;Integer, Integer&gt;&gt; afterData, </span><br><span class="line">    <span class="type">int</span> result</span><br></pre></td></tr></table></figure>
+<pre class="language-java" data-language="java"><code class="language-java"><span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">,</span> <span class="token class-name">HashMap</span><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">,</span> <span class="token class-name">Integer</span><span class="token punctuation">></span><span class="token punctuation">></span></span> beforeData<span class="token punctuation">,</span> 
+    <span class="token class-name">HashMap</span><span class="token generics"><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">,</span> <span class="token class-name">HashMap</span><span class="token punctuation">&lt;</span><span class="token class-name">Integer</span><span class="token punctuation">,</span> <span class="token class-name">Integer</span><span class="token punctuation">></span><span class="token punctuation">></span></span> afterData<span class="token punctuation">,</span> 
+    <span class="token keyword">int</span> result</code></pre>
 
 <p>before，就是这个方法执行前的环境，after，就是这个方法执行后的环境。</p>
 <p>result，就是这个方法得到的结果。上面一起构成了该方法造成的影响。</p>
@@ -570,21 +592,49 @@
 <p>譬如：JML说：\result &#x3D;&#x3D; x</p>
 <p>那么我们就要严格的检查，result&#x3D;&#x3D;x</p>
 <p>譬如说：JML说到：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">(\exists int i; 0 &lt;= i &amp;&amp; i &lt; acquaintance.length; </span><br><span class="line">      @          acquaintance[i].getId() == person.getId());</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">(\exists int i; 0 &lt;&#x3D; i &amp;&amp; i &lt; acquaintance.length; 
+      @          acquaintance[i].getId() &#x3D;&#x3D; person.getId());</code></pre>
 
 <p>那么我们一定就要去在acquaintance里面去找，一定要找到一个<code>acquaintance[i].getId() == person.getId());</code>才算完成目标。</p>
 <p>就像这样：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">boolean</span> exist_check=<span class="literal">false</span>;</span><br><span class="line"><span class="keyword">for</span>(MyPerson myPerson:acquaintance)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span>(myPerson.getId()==person.getId())</span><br><span class="line">	&#123;</span><br><span class="line">	exist_check=<span class="literal">true</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">boolean</span> exist_check<span class="token operator">=</span><span class="token boolean">false</span><span class="token punctuation">;</span>
+<span class="token keyword">for</span><span class="token punctuation">(</span><span class="token class-name">MyPerson</span> myPerson<span class="token operator">:</span>acquaintance<span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+	<span class="token keyword">if</span><span class="token punctuation">(</span>myPerson<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">==</span>person<span class="token punctuation">.</span><span class="token function">getId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+	<span class="token punctuation">&#123;</span>
+	exist_check<span class="token operator">=</span><span class="token boolean">true</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span></code></pre>
 
 <p>譬如说：JML说到：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">/*@ ensures \result ==</span><br><span class="line">      @         (\sum int i; 0 &lt;= i &amp;&amp; i &lt; people.length;</span><br><span class="line">      @             (\sum int j; i &lt; j &amp;&amp; j &lt; people.length;</span><br><span class="line">      @                 (\sum int k; j &lt; k &amp;&amp; k &lt; people.length</span><br><span class="line">      @                     &amp;&amp; getPerson(people[i].getId()).isLinked(getPerson(people[j].getId()))</span><br><span class="line">      @                     &amp;&amp; getPerson(people[j].getId()).isLinked(getPerson(people[k].getId()))</span><br><span class="line">      @                     &amp;&amp; getPerson(people[k].getId()).isLinked(getPerson(people[i].getId()));</span><br><span class="line">      @                     1)));</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">&#x2F;*@ ensures \result &#x3D;&#x3D;
+      @         (\sum int i; 0 &lt;&#x3D; i &amp;&amp; i &lt; people.length;
+      @             (\sum int j; i &lt; j &amp;&amp; j &lt; people.length;
+      @                 (\sum int k; j &lt; k &amp;&amp; k &lt; people.length
+      @                     &amp;&amp; getPerson(people[i].getId()).isLinked(getPerson(people[j].getId()))
+      @                     &amp;&amp; getPerson(people[j].getId()).isLinked(getPerson(people[k].getId()))
+      @                     &amp;&amp; getPerson(people[k].getId()).isLinked(getPerson(people[i].getId()));
+      @                     1)));</code></pre>
 
 <p>那么我们就要用真的去遍历这个三重循环，然后将所有满足上面说的条件的数目加起来，看看 result是不是等于这个值。</p>
 <p><strong>注意，我们在做一个合格的OK测试的时候，并不能用任何逻辑和数学的推导来推理出来符合要求，我们必须直观的得到和JML 要求的效果一模一样的效果，这个OKTEST才算是成功的</strong></p>
 <p>正如指导书所说：<strong>在OKTest中，你需要对JML的全部内容进行检查，除了检验requires和ensures，还有pure、assignable语句等等。例如，对于一个pure方法，调用方法前后的状态应该一致，如果前后状态不一致，那么我们认为这不符合给定的JML</strong></p>
 <p>作为一个OKTEST，我们不能依赖任何推导，只接受摆在眼前的结果。</p>
 <h2 id="回到题目"><a href="#回到题目" class="headerlink" title="回到题目"></a>回到题目</h2><p>回到题目，</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">                # beforeData</span><br><span class="line">3                 # 有三个人</span><br><span class="line">1 2 3             # 三个人id分别为 1 2 3</span><br><span class="line">1 2 3             # 第1个人有1个熟人，id为2、value为3</span><br><span class="line">2 1 3 3 4         # 第2个人有2个熟人，第1个id为1、value为3，第2个id为3、value为4</span><br><span class="line">1 2 4             # 第3个人有1个熟人，id为2、value为4</span><br><span class="line">                # afterData</span><br><span class="line">3</span><br><span class="line">1 2 3 </span><br><span class="line">1 2 3 </span><br><span class="line">2 1 3 3 4 </span><br><span class="line">1 2 4 </span><br><span class="line">                # result</span><br><span class="line">0</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">                # beforeData
+3                 # 有三个人
+1 2 3             # 三个人id分别为 1 2 3
+1 2 3             # 第1个人有1个熟人，id为2、value为3
+2 1 3 3 4         # 第2个人有2个熟人，第1个id为1、value为3，第2个id为3、value为4
+1 2 4             # 第3个人有1个熟人，id为2、value为4
+                # afterData
+3
+1 2 3 
+1 2 3 
+2 1 3 3 4 
+1 2 4 
+                # result
+0</code></pre>
 
 <p>官方的包，提供了这样的一个别人queryTripleNum执行前的环境、执行后的环境、执行的结果，我们需要 <strong>严格的</strong>验证这些对外暴露的影响，是否满足JML的要求。</p>
 <p>在具体实现上，可能有以下几个误区：</p>
@@ -594,10 +644,17 @@
 <p>错误：你的设计和别人的设计一样，都没有说服力，你需要一个严格符合JML的测试方式。</p>
 <p>正确的观点：我们只需要用一个方法算一遍，但是不是自己转化后的方法。</p>
 <p>就比如说，我自己实现了一个三元环算法的东西来算三角形个数（不符合规格提供的方式，但是符合规格需要的结果），但是为了写这个OKtest，我必须要严格的按规格的过程翻译 一下，而不是拿我自己的方法去比较。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">/*@ ensures \result ==</span><br><span class="line">      @         (\sum int i; 0 &lt;= i &amp;&amp; i &lt; people.length;</span><br><span class="line">      @             (\sum int j; i &lt; j &amp;&amp; j &lt; people.length;</span><br><span class="line">      @                 (\sum int k; j &lt; k &amp;&amp; k &lt; people.length</span><br><span class="line">      @                     &amp;&amp; getPerson(people[i].getId()).isLinked(getPerson(people[j].getId()))</span><br><span class="line">      @                     &amp;&amp; getPerson(people[j].getId()).isLinked(getPerson(people[k].getId()))</span><br><span class="line">      @                     &amp;&amp; getPerson(people[k].getId()).isLinked(getPerson(people[i].getId()));</span><br><span class="line">      @                     1)));</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">&#x2F;*@ ensures \result &#x3D;&#x3D;
+      @         (\sum int i; 0 &lt;&#x3D; i &amp;&amp; i &lt; people.length;
+      @             (\sum int j; i &lt; j &amp;&amp; j &lt; people.length;
+      @                 (\sum int k; j &lt; k &amp;&amp; k &lt; people.length
+      @                     &amp;&amp; getPerson(people[i].getId()).isLinked(getPerson(people[j].getId()))
+      @                     &amp;&amp; getPerson(people[j].getId()).isLinked(getPerson(people[k].getId()))
+      @                     &amp;&amp; getPerson(people[k].getId()).isLinked(getPerson(people[i].getId()));
+      @                     1)));</code></pre>
 
 <p>一个合格的OKTEST，我们需要严格的把这个翻译成代码。这中间和我自己写的query没任何关系。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/*@ pure @*/ </span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">&#x2F;*@ pure @*&#x2F; </code></pre>
 
 <p>就要我们把pure的含义，直观的翻译成代码去检查，而不是我实现里没改就默认pure了这种。在这个题目里，就是比较这前后两个HASH是否一模一样。</p>
 <p>（需要我们实现的OKTEST方法，参数本身是用的hashMap表示。但是从更严格的角度讲，ok方法内部也要像类定义里面一样，构建出规格那样的[]数组)</p>

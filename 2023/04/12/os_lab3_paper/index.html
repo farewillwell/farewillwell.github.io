@@ -29,7 +29,7 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 
@@ -507,41 +507,56 @@
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
 
         
 
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h1 id="Lab3实验报告"><a href="#Lab3实验报告" class="headerlink" title="Lab3实验报告"></a>Lab3实验报告</h1><h2 id="思考题"><a href="#思考题" class="headerlink" title="思考题"></a>思考题</h2><h3 id="Thinking1"><a href="#Thinking1" class="headerlink" title="Thinking1"></a>Thinking1</h3><p>请结合 MOS 中的页目录自映射应用解释代码中 e-&gt;env_pgdir[PDX(UVPT)]&#x3D; PADDR(e-&gt;env_pgdir) | PTE_V 的含义。 </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#define UVPT (ULIM - PDMAP)</span><br><span class="line">#define PDMAP (4 * 1024 * 1024) // bytes mapped by a page directory entry</span><br><span class="line">#define ULIM 0x80000000</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">#define UVPT (ULIM - PDMAP)
+#define PDMAP (4 * 1024 * 1024) &#x2F;&#x2F; bytes mapped by a page directory entry
+#define ULIM 0x80000000</code></pre>
 
 <p>UVPT是ULIM-PDMAP的值，而虚拟地址ULIM是进程和内核地址的分界线从 UVPT 往上到 ULIM 之间则是进程自己的页表。</p>
 <p>UTOP &#x3D; 0x7f400000 ，是为用户所能操纵的地址空间的最大值； ULIM &#x3D; 0x80000000 ，是操作系统分配给用户地址空间的最大值。两者之间的区域对用户进程而言是一个只读片段，保存着用户页表 UVPT、 struct Page 、 struct Env ，显然这些都是用户程序不允许动的。UTOP 以下的区域就可以被用户程序所读写</p>
 <p>宏PDX的定义是这样的 ：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">#define PDX(va) ((((u_long)(va)) &gt;&gt; 22) &amp; 0x03FF)</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">#define PDX(va) ((((u_long)(va)) &gt;&gt; 22) &amp; 0x03FF)</code></pre>
 
 <p>是取这个虚拟地址所对应的页目录编号。</p>
 <p>所以env_pgdir[PDX(UVPT)]就是这个地址对应的页目录项的位置（页目录项也是页表项）。</p>
 <p>而由于自映射，这个页表项的值，存的应该是这个页目录的物理页号。</p>
 <p>所以&#x3D;PADDR(e-&gt;env_pgdir) ，同时要设置为有效，所以或上PTE_V</p>
 <h3 id="Thinking2"><a href="#Thinking2" class="headerlink" title="Thinking2"></a>Thinking2</h3><p>elf_load_seg 以函数指针的形式，接受外部自定义的回调函数 map_page。请你找到与之相关的 data 这一参数在此处的来源，并思考它的作用。没有这个参数可不可以？为什么？ </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ELF_FOREACH_PHDR_OFF (ph_off, ehdr) &#123;</span><br><span class="line">		Elf32_Phdr *ph = (Elf32_Phdr *)(binary + ph_off);</span><br><span class="line">		if (ph-&gt;p_type == PT_LOAD) &#123;</span><br><span class="line">			// &#x27;elf_load_seg&#x27; is defined in lib/elfloader.c</span><br><span class="line">			// &#x27;load_icode_mapper&#x27; defines the way in which a page in this segment</span><br><span class="line">			// should be mapped.</span><br><span class="line">			panic_on(elf_load_seg(ph, binary + ph-&gt;p_offset, load_icode_mapper, e));</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">ELF_FOREACH_PHDR_OFF (ph_off, ehdr) &#123;
+		Elf32_Phdr *ph &#x3D; (Elf32_Phdr *)(binary + ph_off);
+		if (ph-&gt;p_type &#x3D;&#x3D; PT_LOAD) &#123;
+			&#x2F;&#x2F; &#39;elf_load_seg&#39; is defined in lib&#x2F;elfloader.c
+			&#x2F;&#x2F; &#39;load_icode_mapper&#39; defines the way in which a page in this segment
+			&#x2F;&#x2F; should be mapped.
+			panic_on(elf_load_seg(ph, binary + ph-&gt;p_offset, load_icode_mapper, e));
+		&#125;
+	&#125;</code></pre>
 
 <p>在代码中，可以看到</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">panic_on(elf_load_seg(ph, binary + ph-&gt;p_offset, load_icode_mapper, e));</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">panic_on(elf_load_seg(ph, binary + ph-&gt;p_offset, load_icode_mapper, e));</code></pre>
 
 <p>参数是ph，其中ph是每次所针对的段地址的值。</p>
 <p>显然不能没有这个参数，如果没有它，就不能指示现在在加载的段是文件中的哪一个段了，也就无从使用了。</p>
 <h3 id="Thinking3"><a href="#Thinking3" class="headerlink" title="Thinking3"></a>Thinking3</h3><p>结合 elf_load_seg 的参数和实现，考虑该函数需要处理哪些页面加载的情况。 </p>
 <p>参数有：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Elf32_Phdr *ph, const void *bin, elf_mapper_t map_page, void *data)</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">Elf32_Phdr *ph, const void *bin, elf_mapper_t map_page, void *data)</code></pre>
 
 <p>分别为段解析结构体地址ph，二进制文件地址bin，回调函数map_page，和进程块地址data。</p>
 <p>在使用上，体现为</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">elf_load_seg(ph, binary + ph-&gt;p_offset, load_icode_mapper, e)</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">elf_load_seg(ph, binary + ph-&gt;p_offset, load_icode_mapper, e)</code></pre>
 
 <p>然后在函数内部的分支里面，有：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">offset != 0</span><br><span class="line">i = offset ? MIN(bin_size, BY2PG - offset) : 0; i &lt; bin_size; i += BY2PG</span><br><span class="line">i &lt; sgsize</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">offset !&#x3D; 0
+i &#x3D; offset ? MIN(bin_size, BY2PG - offset) : 0; i &lt; bin_size; i +&#x3D; BY2PG
+i &lt; sgsize</code></pre>
 
 <p>这样几个判断。</p>
 <p>情况1：若offset！&#x3D;0先从offset位置开始装载。</p>
@@ -558,23 +573,72 @@
 <p><strong>8</strong> 号异常 的处理函数为 handle_sys，表示系统调用，用户进程通过执行 syscall 指令陷入内核</p>
 <p>试找出上述 5 个异常处理函数的具体实现位置。 </p>
 <p>0号：genex.S里面</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">NESTED(handle_int, TF_SIZE, zero)</span><br><span class="line">	mfc0    t0, CP0_CAUSE</span><br><span class="line">	mfc0    t2, CP0_STATUS</span><br><span class="line">	and     t0, t2</span><br><span class="line">	andi    t1, t0, STATUS_IM4</span><br><span class="line">	bnez    t1, timer_irq</span><br><span class="line">	// TODO: handle other irqs</span><br><span class="line">timer_irq:</span><br><span class="line">	sw      zero, (KSEG1 | DEV_RTC_ADDRESS | DEV_RTC_INTERRUPT_ACK)</span><br><span class="line">	li      a0, 0</span><br><span class="line">	j       schedule</span><br><span class="line">END(handle_int)</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">NESTED(handle_int, TF_SIZE, zero)
+	mfc0    t0, CP0_CAUSE
+	mfc0    t2, CP0_STATUS
+	and     t0, t2
+	andi    t1, t0, STATUS_IM4
+	bnez    t1, timer_irq
+	&#x2F;&#x2F; TODO: handle other irqs
+timer_irq:
+	sw      zero, (KSEG1 | DEV_RTC_ADDRESS | DEV_RTC_INTERRUPT_ACK)
+	li      a0, 0
+	j       schedule
+END(handle_int)</code></pre>
 
 <p>12,3,8号：也是genex.S，不过是通过宏实现的</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">.macro BUILD_HANDLER exception handler</span><br><span class="line">NESTED(handle_\exception, TF_SIZE, zero)</span><br><span class="line">	move    a0, sp</span><br><span class="line">	jal     \handler</span><br><span class="line">	j       ret_from_exception</span><br><span class="line">END(handle_\exception)</span><br><span class="line"></span><br><span class="line">以上是定义的宏</span><br><span class="line">BUILD_HANDLER tlb do_tlb_refill</span><br><span class="line"></span><br><span class="line">#if !defined(LAB) || LAB &gt;= 4</span><br><span class="line">BUILD_HANDLER mod do_tlb_mod</span><br><span class="line">BUILD_HANDLER sys do_syscall</span><br><span class="line">#endif</span><br><span class="line"></span><br><span class="line">BUILD_HANDLER reserved do_reserved</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">.macro BUILD_HANDLER exception handler
+NESTED(handle_\exception, TF_SIZE, zero)
+	move    a0, sp
+	jal     \handler
+	j       ret_from_exception
+END(handle_\exception)
+
+以上是定义的宏
+BUILD_HANDLER tlb do_tlb_refill
+
+#if !defined(LAB) || LAB &gt;&#x3D; 4
+BUILD_HANDLER mod do_tlb_mod
+BUILD_HANDLER sys do_syscall
+#endif
+
+BUILD_HANDLER reserved do_reserved</code></pre>
 
 <h3 id="Thinking6"><a href="#Thinking6" class="headerlink" title="Thinking6"></a>Thinking6</h3><p>阅读 init.c、kclock.S、env_asm.S 和 genex.S 这几个文件，并尝试说出enable_irq 和 timer_irq 中每行汇编代码的作用。</p>
 <p>注释随行解释。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">LEAF(enable_irq)//是一个叶子函数，不再调用子函数</span><br><span class="line">	li      t0, (STATUS_CU0 | STATUS_IM4 | STATUS_IEc)//后面定义的是一些各个位的宏，用t0存起来</span><br><span class="line">	mtc0    t0, CP0_STATUS//把上面那些值存到cp0的status里面，相当于启用这些中断。</span><br><span class="line">	jr      ra//转到ra存的地址，相当于返回</span><br><span class="line">END(enable_irq)//结束定义</span><br><span class="line">timer_irq://时钟中断</span><br><span class="line">	sw      zero, (KSEG1 | DEV_RTC_ADDRESS | DEV_RTC_INTERRUPT_ACK)//通过向后面的地址写0，来实现相应时钟中断。其中后面的地址是gexmul模拟出来的地址。</span><br><span class="line">	li      a0, 0//给参数传成0</span><br><span class="line">	j       schedule//跳转到schedule函数</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">LEAF(enable_irq)&#x2F;&#x2F;是一个叶子函数，不再调用子函数
+	li      t0, (STATUS_CU0 | STATUS_IM4 | STATUS_IEc)&#x2F;&#x2F;后面定义的是一些各个位的宏，用t0存起来
+	mtc0    t0, CP0_STATUS&#x2F;&#x2F;把上面那些值存到cp0的status里面，相当于启用这些中断。
+	jr      ra&#x2F;&#x2F;转到ra存的地址，相当于返回
+END(enable_irq)&#x2F;&#x2F;结束定义
+timer_irq:&#x2F;&#x2F;时钟中断
+	sw      zero, (KSEG1 | DEV_RTC_ADDRESS | DEV_RTC_INTERRUPT_ACK)&#x2F;&#x2F;通过向后面的地址写0，来实现相应时钟中断。其中后面的地址是gexmul模拟出来的地址。
+	li      a0, 0&#x2F;&#x2F;给参数传成0
+	j       schedule&#x2F;&#x2F;跳转到schedule函数</code></pre>
 
 <p>其中，schedule是在shed.c的这个函数</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">void schedule(int yield) &#123;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">void schedule(int yield) &#123;</code></pre>
 
 <p>事实上，<strong>handle_int</strong> 函数的最后跳转到了 schedule 函数，而由于调度使用的是时间片轮转，所以时间片正好在被用完后调用这个中断，利用schedule重新规划。</p>
 <h3 id="Thinking7"><a href="#Thinking7" class="headerlink" title="Thinking7"></a>Thinking7</h3><p>阅读相关代码，思考操作系统是怎么根据时钟中断切换进程的。</p>
 <p>事实上，是在时钟中断的timer_irq里面调用的schedule函数,也就是说，每次调用时钟中断，就会依据情况判断执行schedule。</p>
 <p>具体执行的进程切换，则采取schedule的函数：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">if(yield!=0||count==0||e==NULL||e-&gt;env_status==ENV_NOT_RUNNABLE)</span><br><span class="line">	 &#123;</span><br><span class="line">		if(e!=NULL&amp;&amp;e-&gt;env_status==ENV_RUNNABLE)</span><br><span class="line">		&#123;</span><br><span class="line">			TAILQ_INSERT_TAIL(&amp;env_sched_list,(e),env_sched_link);</span><br><span class="line">		&#125;</span><br><span class="line">		if(TAILQ_EMPTY(&amp;env_sched_list))</span><br><span class="line">		&#123;</span><br><span class="line">			panic(&quot;no runnable envs&quot;);</span><br><span class="line">		&#125;</span><br><span class="line">		e=TAILQ_FIRST(&amp;env_sched_list);</span><br><span class="line">		count=e-&gt;env_pri;</span><br><span class="line">		TAILQ_REMOVE(&amp;env_sched_list,(e),env_sched_link);</span><br><span class="line">	 &#125;</span><br><span class="line">	 count--;</span><br><span class="line">	 env_run(e);</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">if(yield!&#x3D;0||count&#x3D;&#x3D;0||e&#x3D;&#x3D;NULL||e-&gt;env_status&#x3D;&#x3D;ENV_NOT_RUNNABLE)
+	 &#123;
+		if(e!&#x3D;NULL&amp;&amp;e-&gt;env_status&#x3D;&#x3D;ENV_RUNNABLE)
+		&#123;
+			TAILQ_INSERT_TAIL(&amp;env_sched_list,(e),env_sched_link);
+		&#125;
+		if(TAILQ_EMPTY(&amp;env_sched_list))
+		&#123;
+			panic(&quot;no runnable envs&quot;);
+		&#125;
+		e&#x3D;TAILQ_FIRST(&amp;env_sched_list);
+		count&#x3D;e-&gt;env_pri;
+		TAILQ_REMOVE(&amp;env_sched_list,(e),env_sched_link);
+	 &#125;
+	 count--;
+	 env_run(e);</code></pre>
 
 <p>根据当前的count等等来判断是否需要轮换。</p>
 <p>其中，由于a0&#x3D;0（上面代码的设置），yeild&#x3D;0，默认仅仅查看count和e的状态。</p>
@@ -583,35 +647,65 @@
 <p>因为其他的几乎都是按照上下文填写1行代码即可，非常的自然，但是schedule却需要自己依靠去写整个一串代码，十分的痛苦。</p>
 <p>因此本部分主要着重在：我是怎么写schedule的？</p>
 <p>在代码里，给出了这样的提示：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">static int count = 0; // remaining time slices of current env</span><br><span class="line">	struct Env *e = curenv;</span><br><span class="line"></span><br><span class="line">	/* We always decrease the &#x27;count&#x27; by 1.</span><br><span class="line">	 *</span><br><span class="line">	 * If &#x27;yield&#x27; is set, or &#x27;count&#x27; has been decreased to 0, or &#x27;e&#x27; (previous &#x27;curenv&#x27;) is</span><br><span class="line">	 * &#x27;NULL&#x27;, or &#x27;e&#x27; is not runnable, then we pick up a new env from &#x27;env_sched_list&#x27; (list of</span><br><span class="line">	 * all runnable envs), set &#x27;count&#x27; to its priority, and schedule it with &#x27;env_run&#x27;. **Panic</span><br><span class="line">	 * if that list is empty**.</span><br><span class="line">	 *</span><br><span class="line">	 * (Note that if &#x27;e&#x27; is still a runnable env, we should move it to the tail of</span><br><span class="line">	 * &#x27;env_sched_list&#x27; before picking up another env from its head, or we will schedule the</span><br><span class="line">	 * head env repeatedly.)</span><br><span class="line">	 *</span><br><span class="line">	 * Otherwise, we simply schedule &#x27;e&#x27; again.</span><br><span class="line">	 *</span><br><span class="line">	 * You may want to use macros below:</span><br><span class="line">	 *   &#x27;TAILQ_FIRST&#x27;, &#x27;TAILQ_REMOVE&#x27;, &#x27;TAILQ_INSERT_TAIL&#x27;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">static int count &#x3D; 0; &#x2F;&#x2F; remaining time slices of current env
+	struct Env *e &#x3D; curenv;
+
+	&#x2F;* We always decrease the &#39;count&#39; by 1.
+	 *
+	 * If &#39;yield&#39; is set, or &#39;count&#39; has been decreased to 0, or &#39;e&#39; (previous &#39;curenv&#39;) is
+	 * &#39;NULL&#39;, or &#39;e&#39; is not runnable, then we pick up a new env from &#39;env_sched_list&#39; (list of
+	 * all runnable envs), set &#39;count&#39; to its priority, and schedule it with &#39;env_run&#39;. **Panic
+	 * if that list is empty**.
+	 *
+	 * (Note that if &#39;e&#39; is still a runnable env, we should move it to the tail of
+	 * &#39;env_sched_list&#39; before picking up another env from its head, or we will schedule the
+	 * head env repeatedly.)
+	 *
+	 * Otherwise, we simply schedule &#39;e&#39; again.
+	 *
+	 * You may want to use macros below:
+	 *   &#39;TAILQ_FIRST&#39;, &#39;TAILQ_REMOVE&#39;, &#39;TAILQ_INSERT_TAIL&#39;</code></pre>
 
 <p>首先第一行可以看到，count&#x3D;0；它是一个static，也就是说这个东西是不仅仅在函数中生效的，它一直全局生效，而写在这个函数里就代表仅仅有这个函数操作这个变量。</p>
 <p>接下来是一句：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">We always decrease the &#x27;count&#x27; by 1.</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">We always decrease the &#39;count&#39; by 1.</code></pre>
 
 <p>不得不承认这个会让我想先count–，但是显然不行，因为我注意到，后面有一个</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">or &#x27;e&#x27; (previous &#x27;curenv&#x27;) is* &#x27;NULL&#x27;，set &#x27;count&#x27; to its priority</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">or &#39;e&#39; (previous &#39;curenv&#39;) is* &#39;NULL&#39;，set &#39;count&#39; to its priority</code></pre>
 
 <p>这个属于一种很有意思的写法，就是自初始化，由于对这一变量初始化需要的步骤和后面的函数几乎一样，所以不去专门设置一个函数初始化，而在这个函数运作的时候判断是不是第一次使用这个函数。剩下的功能也能保证可以恰当的初始化。</p>
 <p>之前没有初始化的时候，cur_env就是NULL，也就是说这个兼具count初始化的功能。所以刚开始不能–了，要等确认或分配后再–。</p>
 <p>接下来就是确认该干啥：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">If &#x27;yield&#x27; is set, or &#x27;count&#x27; has been decreased to 0, or &#x27;e&#x27; (previous &#x27;curenv&#x27;) is</span><br><span class="line">	 * &#x27;NULL&#x27;, or &#x27;e&#x27; is not runnable, then we pick up a new env from &#x27;env_sched_list&#x27; (list of</span><br><span class="line">	 * all runnable envs)</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">If &#39;yield&#39; is set, or &#39;count&#39; has been decreased to 0, or &#39;e&#39; (previous &#39;curenv&#39;) is
+	 * &#39;NULL&#39;, or &#39;e&#39; is not runnable, then we pick up a new env from &#39;env_sched_list&#39; (list of
+	 * all runnable envs)</code></pre>
 
 <p>直接翻译即可，注意这些情况仅仅是需要操作的并列，接下来要对每一个情况分别搞一下。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if(yield!=0||count==0||e==NULL||e-&gt;env_status==ENV_NOT_RUNNABLE)</span><br><span class="line">set &#x27;count&#x27; to its priority   schedule it with &#x27;env_run&#x27;. **Panic</span><br><span class="line">	 * if that list is empty</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">if(yield!&#x3D;0||count&#x3D;&#x3D;0||e&#x3D;&#x3D;NULL||e-&gt;env_status&#x3D;&#x3D;ENV_NOT_RUNNABLE)
+set &#39;count&#39; to its priority   schedule it with &#39;env_run&#39;. **Panic
+	 * if that list is empty</code></pre>
 
 <p>注意，在这个里面，要分别考虑panic，一旦是空的，就panic</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if(TAILQ_EMPTY(&amp;env_sched_list))</span><br><span class="line">		&#123;</span><br><span class="line">			panic(&quot;no runnable envs&quot;);</span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">if(TAILQ_EMPTY(&amp;env_sched_list))
+		&#123;
+			panic(&quot;no runnable envs&quot;);
+		&#125;</code></pre>
 
 <p>然后假如这个是原本可以执行，不过当前根据优先级分配的机会已经用完了，就是count&#x3D;0.那么：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if(e!=NULL&amp;&amp;e-&gt;env_status==ENV_RUNNABLE)</span><br><span class="line">		&#123;</span><br><span class="line">			TAILQ_INSERT_TAIL(&amp;env_sched_list,(e),env_sched_link);</span><br><span class="line">		&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">if(e!&#x3D;NULL&amp;&amp;e-&gt;env_status&#x3D;&#x3D;ENV_RUNNABLE)
+		&#123;
+			TAILQ_INSERT_TAIL(&amp;env_sched_list,(e),env_sched_link);
+		&#125;</code></pre>
 
 <p>插到最尾部。</p>
 <p>这样，无论e是否为NULL,我们都已经让当前的e没意义了，所以直接从新拿取，设置时间片：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">e=TAILQ_FIRST(&amp;env_sched_list);</span><br><span class="line">		count=e-&gt;env_pri;</span><br><span class="line">		TAILQ_REMOVE(&amp;env_sched_list,(e),env_sched_link);</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">e&#x3D;TAILQ_FIRST(&amp;env_sched_list);
+		count&#x3D;e-&gt;env_pri;
+		TAILQ_REMOVE(&amp;env_sched_list,(e),env_sched_link);</code></pre>
 
 <p>采用每分配一次机会前就count–的方式，用count指示用完本次后剩余的机会，然后运动即可。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">count--;</span><br><span class="line">	 env_run(e);</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">count--;
+	 env_run(e);</code></pre>
 
 <h1 id="实验感悟"><a href="#实验感悟" class="headerlink" title="实验感悟"></a>实验感悟</h1><p>经过之前的磨练对指针和去地址的应用，比之前刚lab2的时候要熟练的多，也逐渐搞清楚了虚拟内存地址的原理，逐渐形成了略微体系化的知识。</p>
 <p>对于填空比较好填写，但是对于需要自己写好几行的还是会犯迷糊，明显还是翻译英文注释的能力比较差。</p>

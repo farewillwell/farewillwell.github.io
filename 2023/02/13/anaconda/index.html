@@ -29,7 +29,7 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 
@@ -507,6 +507,9 @@
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
 
         
 
@@ -563,7 +566,8 @@
 <h1 id="anaconda与包安装"><a href="#anaconda与包安装" class="headerlink" title="anaconda与包安装"></a>anaconda与包安装</h1><p>首先，理解anaconda是个什么东西</p>
 <p>它可以于创造了多个Python的环境，可以在创造的环境里单独隔绝的运行Python程序（对不同版本的有奇效)</p>
 <p>众所周知，在Python里，下载包，是十分必要的操作，包不行，什么都做不到，而下载包是一个很令人苦恼的过程，一些高级的包，并不能轻易下载出来，anaconda相当于给了我们一个下载包的好去处，相比于pip install，个人感觉下面的命令比较好用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">conda install &lt;name&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">conda install &lt;name&gt;
+</code></pre>
 
 <p>其中conda是anaconda的使用命令，install是安装，不解释.</p>
 <p>而且这个东西相当于一个管理Python大量库的一个东西，通过它能很好的管理库（不过还是最稳妥的是上网单独搜库来下载）</p>
@@ -574,32 +578,36 @@
 <h2 id="解释器是什么？"><a href="#解释器是什么？" class="headerlink" title="解释器是什么？"></a>解释器是什么？</h2><p>解释器，是你的电脑理解Python代码的方式，根据不同的解释器，你在代码里提到的东西会有不同的作用</p>
 <h1 id="不同库的下载方式"><a href="#不同库的下载方式" class="headerlink" title="不同库的下载方式"></a>不同库的下载方式</h1><h2 id="torch"><a href="#torch" class="headerlink" title="torch"></a>torch</h2><p>使用anaconda下载</p>
 <h2 id="dlib"><a href="#dlib" class="headerlink" title="dlib"></a>dlib</h2><p>在anaconda里面使用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">conda install dlib</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">conda install dlib</code></pre>
 <p>发现失败了</p>
 <p>其实是首先dlib是一个较多牵涉的库，需要下载很多前置的东西才行。</p>
 <h2 id="foundations"><a href="#foundations" class="headerlink" title="foundations"></a>foundations</h2><p>笔者下载换源啥的出了点问题，这里选择下载安装包<br>但是下载的时候输入这样的代码从豆瓣下载，出现了这个：NameError: name ‘reload’ is not defined<br>，Python版本的更替，以上代码已经被删除或者替换了，悲！也就是说这个版本的Python下不了这个。<br>在经典的报错，有个这个：  </p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">reload(sys)</span><br><span class="line">NameError: name &#x27;reload&#x27; is not defined</span><br><span class="line">[end of output]</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">reload(sys)
+NameError: name &#39;reload&#39; is not defined
+[end of output]</code></pre>
 <pre><code>  能在很多地方看见这个报错
 </code></pre>
 <p>（万万注意，还有一个包叫foundation，这俩不一样！！！）<br>然后生成了一个这个样的文件</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">foundations-0.1.0a0.dev1.tar.gz</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">foundations-0.1.0a0.dev1.tar.gz</code></pre>
 <p>该怎么使用这个包呢？<br>理论上这个包的使用方式：<br>1.用bandzip解压到一个文件夹里，然后从终端进去，然后点击setup.py<br>2.然后遇到报错：没reload这个东西，逼我改源码是吧<br>查资料发现</p>
 <p>reload是一个函数，然后“在 Python2.x 版本中 reload() 是内置函数，在 Python2.x ~ Python3.3 版本移到 imp 包中(Python2.x 也可以导入 imp 包使用)，Python3.4 之后到版本移到了 importlib 包中。”</p>
 <p>所以我们只需要把这个包导进来就行了</p>
 <p>我们打开源码，找到load这一行</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">import sys</span><br><span class="line">reload(sys)</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">import sys
+reload(sys)</code></pre>
 <p>就是这里的报错，说没这个函数，但是实际上这个函数是在importlib里的，用pip你也没法直接改源码，所以还是要从网站下下来改源码。</p>
 <p>然后又出了一个bug（绝望）</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">AttributeError: module &#x27;sys&#x27; has no attribute &#x27;setdefaultencoding&#x27;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">AttributeError: module &#39;sys&#39; has no attribute &#39;setdefaultencoding&#39;</code></pre>
 <p>原因：Python 3 系统默认使用的就是utf-8编码，就不需要sys.setdefaultencoding(“utf-8”)这段代码，所以Python 3 的 sys 库里面已经没有 setdefaultencoding() 函数了！！删掉报错代码即可。<br>然后又报错</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NameError: name &#x27;reload&#x27; is not defined</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">NameError: name &#39;reload&#39; is not defined</code></pre>
 <p>原来是另一个函数里也有这个玩意，逼我大改md</p>
 <p>改了之后又弹出来一个</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sys.setdefaultencoding(DEFAULT_CODEC)</span><br><span class="line">AttributeError: module &#x27;sys&#x27; has no attribute &#x27;setdefaultencoding&#x27;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">sys.setdefaultencoding(DEFAULT_CODEC)
+AttributeError: module &#39;sys&#39; has no attribute &#39;setdefaultencoding&#39;</code></pre>
 <p>还是已经没这个函数了，删掉删掉！<br>然后又报错。。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">UnicodeDecodeError: &#x27;gbk&#x27; codec can&#x27;t decode byte 0x93 in position 4102: illegal multibyte sequence</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">UnicodeDecodeError: &#39;gbk&#39; codec can&#39;t decode byte 0x93 in position 4102: illegal multibyte sequence</code></pre>
 <p>行，然后发现需要这么改，找到那行代码：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">with open(file) as f: 改成 with open(file, ‘r’, encoding=‘utf-8’) as f:</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">with open(file) as f: 改成 with open(file, ‘r’, encoding&#x3D;‘utf-8’) as f:</code></pre>
 <p>然后终于能跑了！但是出了更多的bug…但是至少下载下来了，报错还是依旧是reload没定义，我一怒之下全找一遍这个文件，看有没有其他的.</p>
 
                 

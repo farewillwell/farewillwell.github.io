@@ -29,7 +29,7 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 
@@ -507,6 +507,9 @@
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
 
         
 
@@ -516,9 +519,9 @@
 <h2 id="vi和vim"><a href="#vi和vim" class="headerlink" title="vi和vim"></a>vi和vim</h2><h3 id="下载"><a href="#下载" class="headerlink" title="下载"></a>下载</h3><p>linux一个最大的特点就是图形化界面很拉，基本很多都是靠着终端完成的，然后打开也是在终端打开。</p>
 <p>linux自带的文本编辑器是vi，然后一个升级版的高功能编辑器是vim（是的，Windows也有这个玩意，但是好像是linux里这个地位比较高，被某佬成为编辑器之神）</p>
 <p>vim下载还是很容易的，直接</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum -y install vim</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">yum -y install vim</code></pre>
 <p>但是笔者用的Ubuntu，要用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo apt install vim</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">sudo apt install vim</code></pre>
 <p>下载好之后，用 vim +文件名打开文件名编辑（当然是在终端里编辑，可能很奇怪）</p>
 <p>但是假如像笔者一样蛋疼非喜欢图形化，就用gvim（直接输入这个玩意打开）然后就行了。</p>
 <h3 id="vi-x2F-vim-的使用"><a href="#vi-x2F-vim-的使用" class="headerlink" title="vi&#x2F;vim 的使用"></a>vi&#x2F;vim 的使用</h3><p>基本上 vi&#x2F;vim 共分为三种模式，分别是命令模式（Command mode），输入模式（Insert mode）和底线命令模式（Last line mode）。 这三种模式的作用分别是：<br>命令模式：</p>

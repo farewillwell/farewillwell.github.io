@@ -29,7 +29,7 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 
@@ -507,6 +507,9 @@
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
 
         
 
@@ -573,7 +576,9 @@
 <h2 id="存储期"><a href="#存储期" class="headerlink" title="存储期"></a>存储期</h2><p>存储期（storage duration） 描述一个对象（object） 在内存中的生命周期。注意，这里出现了一个新的名词：对象（object）。C 语言中的对象与面向对象编程中的对象不是一个概念，一定不要混淆。在 C 语言中，对象就是连续的一片内存空间，具有起始地址与大小这两个属性。与对象对应的另一个概念是标识符（identifier）。标识符是一个符合 C 语言规定的变量命名规则的字符串，在程序中我们可以使用标识符访问修改对象</p>
 <p>在 C 语言中，对象一共有四种存储期：静态存储期，自动存储期，动态分配存储期和线程存储期。</p>
 <p>这里插入一段Cprimer里的内容</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">一个东西，例如dio=3,dio就是代表了一个空间，它dio是一个标识符，指定了一个对象（一片内存空间）</span><br><span class="line">但是*p=&amp;dio都代表了dio的那一片东西，*p虽然确实的只想了一个对象，但是不是标识符</span><br><span class="line">不论是不是标识符，指向对象的叫做左值</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">一个东西，例如dio&#x3D;3,dio就是代表了一个空间，它dio是一个标识符，指定了一个对象（一片内存空间）
+但是*p&#x3D;&amp;dio都代表了dio的那一片东西，*p虽然确实的只想了一个对象，但是不是标识符
+不论是不是标识符，指向对象的叫做左值</code></pre>
 
 <p>静态存储期：在函数中使用 static 关键字定义的变量，<strong>或者在函数外定义的变量</strong>(比如main函数外定义的在main执行的时候就是静态的)，它们所对应的对象具有静态存储期。如果对象具有静态存储期，那么它<strong>在程序执行期间一直存在</strong>，并且在程序执行过程中对象所占据的内存空间大小和对象的起始地址不会发生变化。如果不对该对象进行初始化，那么该对象的值会自动初始化为 0。由于这种对象在程序执行期间地址和大小不会发生变化，因此称为静态的。</p>
 <p>自动存储期：在函数中不使用 static 关键字定义的变量所对应的对象具有自动存储期属性。程序执行到该变量声明的时候会创建变量对应的对象(比如函数里面声明，所以函数进行依次声明一次，每次的大抵都不一样)，在执行到该变量作用域结束时会释放掉该对象，<strong>随后该对象所占据的内存空间可做他用</strong>。如果在变量定义时不进行初始化，那么该变量的值不确定。因为对于对象的分配和释放并不需要程序员手动操作，因此称为自动的。也可以使用 auto 关键字在定义变量时显式指出该变量对应的对象具有自动存储期。注意：C 中的 auto 与 C++ 的 auto 是不一样的——前者表示自动存储期，后者表示自动类型推导</p>
@@ -581,7 +586,16 @@
 <p>作用域（scope） 描述一个标识符在程序中可以被使用的区域。一个 C 变量具有的常见的作用域包括块作用域，函数作用域或者文件作用域。</p>
 <pre><code>块作用域（block scope）：块（block）是用一对花括号括起来的代码区域。定义在块中的变量具有块作用域，块作用域变量的可见范围是从定义处到包含该定义的块的结尾。此外，虽然函数的形式参数声明在函数体的花括号外，但是它们也具有块作用域，属于函数体这个块。
 </code></pre>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">int foo(int a, int b) &#123; // a,b 作用域开始</span><br><span class="line">    int c;  // c 作用域开始</span><br><span class="line">    &#123;</span><br><span class="line">        int d; // d 作用域开始</span><br><span class="line">        ...</span><br><span class="line">        d = 0; // d 作用域结束</span><br><span class="line">    &#125;</span><br><span class="line">    ...</span><br><span class="line">    return a + b + c;</span><br><span class="line">&#125; // a , b, c 的作用域结束。</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">int foo(int a, int b) &#123; &#x2F;&#x2F; a,b 作用域开始
+    int c;  &#x2F;&#x2F; c 作用域开始
+    &#123;
+        int d; &#x2F;&#x2F; d 作用域开始
+        ...
+        d &#x3D; 0; &#x2F;&#x2F; d 作用域结束
+    &#125;
+    ...
+    return a + b + c;
+&#125; &#x2F;&#x2F; a , b, c 的作用域结束。</code></pre>
 
 <pre><code>文件作用域（file scope）：如果变量定义在函数的外部，那么这个变量具有文件作用域。具有文件作用域的变量，从它的定义处到该定义所在的文件末尾均可见。由于这样的变量可以在多个函数中使用，因此也叫做全局变量。
 </code></pre>

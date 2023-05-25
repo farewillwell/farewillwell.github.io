@@ -29,7 +29,7 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 
@@ -507,18 +507,43 @@
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
 
         
 
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h1 id="Makefile是什么"><a href="#Makefile是什么" class="headerlink" title="Makefile是什么"></a>Makefile是什么</h1><p>GNU 项目中有一个叫做“make”的工具，是最常用的 C 语言项目构建工具。我们都知道，“make”是制作的意思，而 make 构建工具的作用本质上就是“制作出一个文件”。当我们开发了一个较大的项目，make 工具就可以将这些文件编译链接成可执行文件。当然 make 工具进行编译和链接的操作是需要人工指导的，这个“指导文件”就是 Makefile。make 工具可以根据时间戳自动判断项目的哪些部分是需要重新编译的，每次只重新编译必要的部分。make 工具是基于 Shell 命令运行的，所以只要项目的编译器可以通过 Shell 命令调用，make 都可以对项目进行构建。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">不使用 make 工具，我们可以使用下面的命令来对 hello.c 进行编译：</span><br><span class="line"></span><br><span class="line">$ gcc -o hello hello.c</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">不使用 make 工具，我们可以使用下面的命令来对 hello.c 进行编译：
+
+$ gcc -o hello hello.c</code></pre>
 
 <p>然后</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">如果使用 make 工具来构建，我们就需要在当前目录下创建并编辑 Makefile 文件（文件名就叫做 Makefile）。Makefile 的基本格式如下。</span><br><span class="line"></span><br><span class="line">target（目标文件叫什么）: dependencies（所依赖的东西）</span><br><span class="line">然后是分别需要进行的命令</span><br><span class="line">    command 1</span><br><span class="line">    command 2</span><br><span class="line">    ...</span><br><span class="line">    command n</span><br><span class="line"></span><br><span class="line">其中，target 是我们构建（Build）的目标，可以是真的目标文件、可执行文件，也可以是一个标签（详见参考教程）。而 dependencies 是构建该目标所需的其它文件或其他目标。之后是构建出该目标所需执行的命令。有一点尤为需要注意：每一个命令（command）之前必须有一个制表符（tab）。这里必须使用制表符而不能是空格，否则 make 会报错。</span><br><span class="line"></span><br><span class="line">这些命令，就是要做的命令行 </span><br><span class="line"></span><br><span class="line">我们通过在 Makefile 中书写这些显式规则来告诉 make 工具文件间的依赖关系：如果想要构建 target，那么首先要准备好 dependencies，接着执行 command 中的命令，以得到 target。在书写完恰当的规则之后，只需要在 shell 中输入 make target（target 是目标名），即可执行相应的命令、生成相应的目标。</span><br><span class="line"></span><br><span class="line">这里target会作为命令函参数自动识别</span><br><span class="line"></span><br><span class="line">因此，我们的简易的 Makefile 可以写成如下的样子，之后执行 make hello 或是 make，即可产生 hello 这个可执行文件，使用 ./hello 就可以执行它。值得注意的是，当执行 make 指令而不附加其他参数时，默认构建第一个目标。</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">如果使用 make 工具来构建，我们就需要在当前目录下创建并编辑 Makefile 文件（文件名就叫做 Makefile）。Makefile 的基本格式如下。
+
+target（目标文件叫什么）: dependencies（所依赖的东西）
+然后是分别需要进行的命令
+    command 1
+    command 2
+    ...
+    command n
+
+其中，target 是我们构建（Build）的目标，可以是真的目标文件、可执行文件，也可以是一个标签（详见参考教程）。而 dependencies 是构建该目标所需的其它文件或其他目标。之后是构建出该目标所需执行的命令。有一点尤为需要注意：每一个命令（command）之前必须有一个制表符（tab）。这里必须使用制表符而不能是空格，否则 make 会报错。
+
+这些命令，就是要做的命令行 
+
+我们通过在 Makefile 中书写这些显式规则来告诉 make 工具文件间的依赖关系：如果想要构建 target，那么首先要准备好 dependencies，接着执行 command 中的命令，以得到 target。在书写完恰当的规则之后，只需要在 shell 中输入 make target（target 是目标名），即可执行相应的命令、生成相应的目标。
+
+这里target会作为命令函参数自动识别
+
+因此，我们的简易的 Makefile 可以写成如下的样子，之后执行 make hello 或是 make，即可产生 hello 这个可执行文件，使用 .&#x2F;hello 就可以执行它。值得注意的是，当执行 make 指令而不附加其他参数时，默认构建第一个目标。</code></pre>
 <p><strong>这个可执行文件就不是.exe了</strong>事实上windows里的文件才是.exe<br>其中是这样的</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">all: hello</span><br><span class="line"></span><br><span class="line">hello: hello.c</span><br><span class="line">    gcc -o hello hello.c</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">all: hello
+
+hello: hello.c
+    gcc -o hello hello.c</code></pre>
 
 <p>这个hello就是生成的文件，和out一样都能用</p>
 <h1 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h1><p>Makefile不是bash，不要按照bash的语法写，就按照target ：依赖写就行了<br>其中，targrt和依赖，是可以写一串的</p>
@@ -529,25 +554,95 @@
 <p>就比如我新建一个目标x，假如目录有一个x，那就不能做了，但是加上phony之后，就可以无视进行x后面代表的命令和依赖了（但是不会生成这个x）</p>
 <h2 id="关于死循环"><a href="#关于死循环" class="headerlink" title="关于死循环"></a>关于死循环</h2><p>在make里面调用make是否会导致死循环？比如cd进去然后调用这个文件夹的make？<br>注意！！！在make里面cd仅仅在当行起作用，解决办法是在cd行&amp;&amp;或者cd行;来连接</p>
 <p>包括命令行在内都可以用;连接！！</p>
-<h2 id="关于内定义变量"><a href="#关于内定义变量" class="headerlink" title="关于内定义变量"></a>关于内定义变量</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">预定义变量</span><br><span class="line">　　含义</span><br><span class="line">　　$*</span><br><span class="line">　　不包含扩展名的目标文件名称。</span><br><span class="line">　　$+</span><br><span class="line">　　所有的依赖文件，以空格分开，并以出现的先后为序，可能包含重复的依赖文件。</span><br><span class="line">　　$&lt;</span><br><span class="line">　　第一个依赖文件的名称。</span><br><span class="line">　　$?</span><br><span class="line">　　所有的依赖文件，以空格分开，这些依赖文件的修改日期比目标的创建日期晚。</span><br><span class="line">　　$@</span><br><span class="line">　　目标的完整名称。</span><br><span class="line">　　$^</span><br><span class="line">　　所有的依赖文件，以空格分开，不包含重复的依赖文件。</span><br><span class="line">　　$%</span><br><span class="line">　　如果目标是归档成员，则该变量表示目标的归档成员名称。例如，如果目标名称为</span><br><span class="line">　　mytarget.so(image.o)，则 $@ 为 mytarget.so，而 $% 为 image.o。</span><br><span class="line">　　AR</span><br><span class="line">　　归档维护程序的名称，默认值为 ar。</span><br><span class="line">　　ARFLAGS</span><br><span class="line">　　归档维护程序的选项。</span><br><span class="line">　　AS</span><br><span class="line">　　汇编程序的名称，默认值为 as。</span><br><span class="line">　　ASFLAGS</span><br><span class="line">　　汇编程序的选项。</span><br><span class="line">　　CC</span><br><span class="line"></span><br><span class="line">　　C 编译器的名称，默认值为 cc。</span><br><span class="line">　　CFLAGS</span><br><span class="line">　　C 编译器的选项。</span><br><span class="line">　　CPP</span><br><span class="line">　　C 预编译器的名称，默认值为 $(CC) -E。</span><br><span class="line">　　CPPFLAGS</span><br><span class="line">　　C 预编译的选项。</span><br><span class="line">　　CXX</span><br><span class="line">　　C++ 编译器的名称，默认值为 g++。</span><br><span class="line">　　CXXFLAGS</span><br><span class="line">　　C++ 编译器的选项。</span><br><span class="line">　　FC</span><br><span class="line">　　FORTRAN 编译器的名称，默认值为 f77。</span><br><span class="line">　　FFLAGS</span><br><span class="line">　　FORTRAN 编译器的选项。</span><br><span class="line">-----------------------------------</span><br><span class="line">Makefile中预定义变量</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="关于内定义变量"><a href="#关于内定义变量" class="headerlink" title="关于内定义变量"></a>关于内定义变量</h2><pre class="language-none"><code class="language-none">预定义变量
+　　含义
+　　$*
+　　不包含扩展名的目标文件名称。
+　　$+
+　　所有的依赖文件，以空格分开，并以出现的先后为序，可能包含重复的依赖文件。
+　　$&lt;
+　　第一个依赖文件的名称。
+　　$?
+　　所有的依赖文件，以空格分开，这些依赖文件的修改日期比目标的创建日期晚。
+　　$@
+　　目标的完整名称。
+　　$^
+　　所有的依赖文件，以空格分开，不包含重复的依赖文件。
+　　$%
+　　如果目标是归档成员，则该变量表示目标的归档成员名称。例如，如果目标名称为
+　　mytarget.so(image.o)，则 $@ 为 mytarget.so，而 $% 为 image.o。
+　　AR
+　　归档维护程序的名称，默认值为 ar。
+　　ARFLAGS
+　　归档维护程序的选项。
+　　AS
+　　汇编程序的名称，默认值为 as。
+　　ASFLAGS
+　　汇编程序的选项。
+　　CC
+
+　　C 编译器的名称，默认值为 cc。
+　　CFLAGS
+　　C 编译器的选项。
+　　CPP
+　　C 预编译器的名称，默认值为 $(CC) -E。
+　　CPPFLAGS
+　　C 预编译的选项。
+　　CXX
+　　C++ 编译器的名称，默认值为 g++。
+　　CXXFLAGS
+　　C++ 编译器的选项。
+　　FC
+　　FORTRAN 编译器的名称，默认值为 f77。
+　　FFLAGS
+　　FORTRAN 编译器的选项。
+-----------------------------------
+Makefile中预定义变量
+</code></pre>
 <h2 id="变量定义"><a href="#变量定义" class="headerlink" title="变量定义"></a>变量定义</h2><p>在文件的第一行，有个</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">include include.mk</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">include include.mk</code></pre>
 <p>这里先引入了个东西。事实上这个文件的内容定义了许多变量。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">CROSS_COMPILE := mips-linux-gnu-</span><br><span class="line">2 CC := $(CROSS_COMPILE)gcc</span><br><span class="line">3 CFLAGS += --std=gnu99 -EL -G 0 -mno-abicalls -fno-pic \</span><br><span class="line">4 -ffreestanding -fno-stack-protector -fno-builtin \</span><br><span class="line">5 -Wa,-xgot -Wall -mxgot -mfp32 -march=r3000</span><br><span class="line">6 LD := $(CROSS_COMPILE)ld</span><br><span class="line">7 LDFLAGS += -EL -G 0 -static -n -nostdlib --fatal-warnings</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mos_elf := target/mos # 最终需要生成的 ELF 可执行文件</span><br><span class="line"> modules := lib init kern</span><br><span class="line"> objects := lib/*.o \</span><br><span class="line"> init/init.o init/start.o \</span><br><span class="line"> kern/*.o # 定义了需要生成的目标文件</span><br><span class="line"> link_script := kernel.lds</span><br><span class="line"> gxemul_flags += -T -C R3000 -M 64</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">CROSS_COMPILE :&#x3D; mips-linux-gnu-
+2 CC :&#x3D; $(CROSS_COMPILE)gcc
+3 CFLAGS +&#x3D; --std&#x3D;gnu99 -EL -G 0 -mno-abicalls -fno-pic \
+4 -ffreestanding -fno-stack-protector -fno-builtin \
+5 -Wa,-xgot -Wall -mxgot -mfp32 -march&#x3D;r3000
+6 LD :&#x3D; $(CROSS_COMPILE)ld
+7 LDFLAGS +&#x3D; -EL -G 0 -static -n -nostdlib --fatal-warnings</code></pre>
+<pre class="language-none"><code class="language-none">mos_elf :&#x3D; target&#x2F;mos # 最终需要生成的 ELF 可执行文件
+ modules :&#x3D; lib init kern
+ objects :&#x3D; lib&#x2F;*.o \
+ init&#x2F;init.o init&#x2F;start.o \
+ kern&#x2F;*.o # 定义了需要生成的目标文件
+ link_script :&#x3D; kernel.lds
+ gxemul_flags +&#x3D; -T -C R3000 -M 64</code></pre>
 <p>:&#x3D;左边的都是变量名字，然后右边指示的是文件名字或者路径。</p>
 <p>modules:定义了需要的三个模块，lib，init，kern</p>
 <p>object定义了需要的生成文件。</p>
 <p>解读代码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">PHONY: all $(modules) clean</span><br><span class="line">11</span><br><span class="line">12 all: $(mos_elf) # 我们的“最终目标”</span><br><span class="line">13</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">PHONY: all $(modules) clean
+11
+12 all: $(mos_elf) # 我们的“最终目标”
+13</code></pre>
 <p>依赖，就是$的东西</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">14 $(mos_elf): $(modules) # 调用链接器 $(LD) 链接所有目标文件</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">14 $(mos_elf): $(modules) # 调用链接器 $(LD) 链接所有目标文件</code></pre>
 <p>这个指的是需要所有模块都装好了才能</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">15 $(LD) -o $(mos_elf) -N -T $(link_script) $(objects)</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">15 $(LD) -o $(mos_elf) -N -T $(link_script) $(objects)</code></pre>
 <p>所有$类似的东西都会选择一种变量名代替的方式去整</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">16</span><br><span class="line">17 $(modules): # 进入各个子目录进行 make</span><br><span class="line">18 $(MAKE) --directory=$@</span><br><span class="line"></span><br><span class="line">19</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">16
+17 $(modules): # 进入各个子目录进行 make
+18 $(MAKE) --directory&#x3D;$@
+
+19</code></pre>
 <p>这个的意思要做这个文件，需药下面的文件<br>$(make)代表本文件的名字,　　$@指的是目标的完整名称。<br>–directory的意思是指定文件读取的路径名称。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">20 clean:</span><br><span class="line">21 for d in $(modules); do \</span><br><span class="line">22 $(MAKE) --directory=$$d clean; \</span><br><span class="line">23 done; \</span><br><span class="line">24 rm -rf *.o *~ $(mos_elf)</span><br><span class="line">25</span><br><span class="line">26 run:</span><br><span class="line">27 gxemul $(gxemul_flags) $(mos_elf)</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">20 clean:
+21 for d in $(modules); do \
+22 $(MAKE) --directory&#x3D;$$d clean; \
+23 done; \
+24 rm -rf *.o *~ $(mos_elf)
+25
+26 run:
+27 gxemul $(gxemul_flags) $(mos_elf)</code></pre>
 
 
                 

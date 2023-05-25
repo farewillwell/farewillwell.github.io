@@ -29,7 +29,7 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 
@@ -507,6 +507,9 @@
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
 
         
 
@@ -528,10 +531,21 @@
 <p>在两次移动楼层操作内”指的是在官方包自动输出<code>MAINTAIN_ACCEPTED</code>开始，该部电梯在输出<code>MAINTAIN_ABLE</code>之前至多输出两条<code>ARRIVE</code></p>
 <p>不妨查看一下官方包的逻辑。</p>
 <p>在maintain里面有这样的方法</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public String toString() &#123;</span><br><span class="line">    return String.format(&quot;MAINTAIN_ACCEPT-%d&quot;, this.elevatorId);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">public String toString() &#123;
+    return String.format(&quot;MAINTAIN_ACCEPT-%d&quot;, this.elevatorId);
+&#125;</code></pre>
 
 <p>然后在evalotr的input逻辑里面有这样的操作。：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">else</span> <span class="keyword">if</span> (MaintainRequest.matches(line)) &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        <span class="type">MaintainRequest</span> <span class="variable">request</span> <span class="operator">=</span> MaintainRequest.parse(line);</span><br><span class="line">        <span class="keyword">if</span> (<span class="built_in">this</span>.removedElevatorId.contains(request.getElevatorId())) &#123;</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">InvalidElevatorIdException</span>(line);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        TimableOutput.println(request.toString());</span><br><span class="line">        <span class="built_in">this</span>.removedElevatorId.add(request.getElevatorId());</span><br><span class="line">        <span class="keyword">return</span> request;</span><br></pre></td></tr></table></figure>
+<pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token class-name">MaintainRequest</span><span class="token punctuation">.</span><span class="token function">matches</span><span class="token punctuation">(</span>line<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+    <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+        <span class="token class-name">MaintainRequest</span> request <span class="token operator">=</span> <span class="token class-name">MaintainRequest</span><span class="token punctuation">.</span><span class="token function">parse</span><span class="token punctuation">(</span>line<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>removedElevatorId<span class="token punctuation">.</span><span class="token function">contains</span><span class="token punctuation">(</span>request<span class="token punctuation">.</span><span class="token function">getElevatorId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">InvalidElevatorIdException</span><span class="token punctuation">(</span>line<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">&#125;</span>
+
+        <span class="token class-name">TimableOutput</span><span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span>request<span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>removedElevatorId<span class="token punctuation">.</span><span class="token function">add</span><span class="token punctuation">(</span>request<span class="token punctuation">.</span><span class="token function">getElevatorId</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> request<span class="token punctuation">;</span></code></pre>
 
 <p>也就是说，一旦这个input线程拿到了maintain的结果，就会立即输出这个！！</p>
 <p>然后最多只能上两层楼了。</p>
@@ -547,7 +561,11 @@
 <p>结束。</p>
 <p>然后新塞一个person回去就要修改其from floor，但是好像不提供这个功能？</p>
 <p>别忘了：相当于一个新的请求了，然后 在包里面提供了这样的函数：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">public PersonRequest(int fromFloor, int toFloor, int personId) &#123;</span><br><span class="line">    this.fromFloor = fromFloor;</span><br><span class="line">    this.toFloor = toFloor;</span><br><span class="line">    this.personId = personId;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">public PersonRequest(int fromFloor, int toFloor, int personId) &#123;
+    this.fromFloor &#x3D; fromFloor;
+    this.toFloor &#x3D; toFloor;
+    this.personId &#x3D; personId;
+&#125;</code></pre>
 
 <p>大可以新建一个来。</p>
 <p>然后注意，不应该把maintain放在open前面，否则假设明明可以直接打开门当地的下，但是先maintain就会导致出现出入相等的情况。</p>

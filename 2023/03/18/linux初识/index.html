@@ -29,7 +29,7 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 
@@ -507,6 +507,9 @@
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
 
         
 
@@ -531,15 +534,23 @@
 <h2 id="pwd"><a href="#pwd" class="headerlink" title="pwd"></a>pwd</h2><p>pwd<br>用法：pwd [选项]<br>作用：输出当前目录的绝对路径</p>
 <h2 id="rmdir"><a href="#rmdir" class="headerlink" title="rmdir"></a>rmdir</h2><p>与 mkdir 对应，我们还有删除空目录的命令 rmdir，请注意，这个命令只能删除空目录。至于我们心目中“典型的”删除命令 rm，我们稍后介绍。</p>
 <p>rmdir<br>用法：rmdir [选项] 目录<br>作用：删除一个空的目录。请注意，只有空的目录才能被删除。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rmdir: 删除 &#x27;dio&#x27; 失败: 目录非空，必须用rm</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">rmdir: 删除 &#39;dio&#39; 失败: 目录非空，必须用rm</code></pre>
 <h2 id="echo"><a href="#echo" class="headerlink" title="echo"></a>echo</h2><p>echo String 可以有空格</p>
 <p>在echo中使用””内包字符串可以引入变量的值，’’则不行</p>
 <p>echo -e开启转义字符换行<br>echo -c开启转义字符不换行，就是下一个输入进来的东西和这个命令在一行</p>
 <p>echo `  `<br>显示命令输出的结果</p>
 <h2 id="read"><a href="#read" class="headerlink" title="read"></a>read</h2><p>read和cat有异曲同工之妙，都是个读，但是read可以读取一行东西<br>read 命令的用法为：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">read [-options] [variables]</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">read [-options] [variables]</code></pre>
 <p>一个表。<br>read可以直接读取一行，就是read line</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">-a array 	把读取的数据赋值给数组 array，从下标 0 开始。</span><br><span class="line">-d delimiter 	用字符串 delimiter 指定读取结束的位置，而不是一个换行符（读取到的数据不包括 delimiter）。</span><br><span class="line">-e 	在获取用户输入的时候，对功能键进行编码转换，不会直接显式功能键对应的字符。</span><br><span class="line">-n num 	读取 num 个字符，而不是整行字符。</span><br><span class="line">-p prompt 	显示提示信息，提示内容为 prompt。</span><br><span class="line">-r 	原样读取（Raw mode），不把反斜杠字符解释为转义字符。</span><br><span class="line">-s 	静默模式（Silent mode），不会在屏幕上显示输入的字符。当输入密码和其它确认信息的时候，这是很有必要的。</span><br><span class="line">-t seconds 	设置超时时间，单位为秒。如果用户没有在指定时间内输入完成，那么 read 将会返回一个非 0 的退出状态，表示读取失败。</span><br><span class="line">-u fd 	使用文件描述符 fd 作为输入源，而不是标准输入，类似于重定向。</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">-a array 	把读取的数据赋值给数组 array，从下标 0 开始。
+-d delimiter 	用字符串 delimiter 指定读取结束的位置，而不是一个换行符（读取到的数据不包括 delimiter）。
+-e 	在获取用户输入的时候，对功能键进行编码转换，不会直接显式功能键对应的字符。
+-n num 	读取 num 个字符，而不是整行字符。
+-p prompt 	显示提示信息，提示内容为 prompt。
+-r 	原样读取（Raw mode），不把反斜杠字符解释为转义字符。
+-s 	静默模式（Silent mode），不会在屏幕上显示输入的字符。当输入密码和其它确认信息的时候，这是很有必要的。
+-t seconds 	设置超时时间，单位为秒。如果用户没有在指定时间内输入完成，那么 read 将会返回一个非 0 的退出状态，表示读取失败。
+-u fd 	使用文件描述符 fd 作为输入源，而不是标准输入，类似于重定向。</code></pre>
 <p>options表示选项，如下表所示；variables表示用来存储数据的变量，可以有一个，也可以有多个。</p>
 <p>options和variables都是可选的，如果没有提供变量名，那么读取的数据将存放到环境变量 REPLY 中。</p>
 <h2 id="touch"><a href="#touch" class="headerlink" title="touch"></a>touch</h2><p>接下来我们介绍文件相关的操作。在 Linux 的哲学下一切皆文件，包括目录、设备等等全部是以文件方式存在于操作系统中的。上一节之所以叫做”目录操作“，是因为所介绍的几个命令是“目录”这种文件独有的命令。这一节叫做“文件操作”，介绍的命令是一般文件（包括目录）都可以操作的命令。例如复制和删除操作，其对象可以是几乎所有文件，也包含目录。</p>
@@ -557,12 +568,32 @@ B. rm -rf /*
 C. rm -rf ./*
 </code></pre>
 <p>注意在本文件夹里一定要用.&#x2F;不然可能删除错误！！。</p>
-<h2 id="cp"><a href="#cp" class="headerlink" title="cp"></a>cp</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">cp</span><br><span class="line">用法：cp [选项] 源文件 目标路径(要是绝对的，可以./)</span><br><span class="line">作用：将源文件（也可以是目录）复制为目标路径对应的文件（如果目标路径是文件）或复制到目标路径（如果目标路径是目录）。</span><br><span class="line">选项（常用）：</span><br><span class="line">-r              递归复制目录及其子目录内的所有内容。</span><br><span class="line"></span><br><span class="line">注意这些东西的-r，一般使用的时候都是要这个的</span><br><span class="line"></span><br><span class="line">然后理解源文件 ，就是你要复制一份的文件，目标路径，一定要是一个路径，放到一个文件夹里面，就是名字+/代表(加不加/都行） 是这个文件夹里面</span><br></pre></td></tr></table></figure>
+<h2 id="cp"><a href="#cp" class="headerlink" title="cp"></a>cp</h2><pre class="language-none"><code class="language-none">cp
+用法：cp [选项] 源文件 目标路径(要是绝对的，可以.&#x2F;)
+作用：将源文件（也可以是目录）复制为目标路径对应的文件（如果目标路径是文件）或复制到目标路径（如果目标路径是目录）。
+选项（常用）：
+-r              递归复制目录及其子目录内的所有内容。
+
+注意这些东西的-r，一般使用的时候都是要这个的
+
+然后理解源文件 ，就是你要复制一份的文件，目标路径，一定要是一个路径，放到一个文件夹里面，就是名字+&#x2F;代表(加不加&#x2F;都行） 是这个文件夹里面</code></pre>
 
 <p>路径上可以使用 .&#x2F;*代表所有东西，然后 ..&#x2F;代表上一层文件夹.</p>
 <h2 id="mv"><a href="#mv" class="headerlink" title="mv"></a>mv</h2><p>相当于剪切</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">mv</span><br><span class="line">用法：mv [选项] 源文件 目标路径</span><br><span class="line">作用：将源文件（也可以是目录）移动为目标路径对应的文件（如果目标路径是文件）或移动到目标路径（如果目标路径是目录）。</span><br><span class="line">选项（常用）：</span><br><span class="line">-r              递归移动目录及其子目录内的所有内容。</span><br><span class="line"></span><br><span class="line">mv 命令的另外一个作用就是重命名文件。原理上很好理解，也就是把一个文件以不同的名字移动到当前目录下，这和重命名是等价的。举个例子，我们在 dir 下使用 mv test.txt test2.txt 就可以把 test.txt 重命名为 test2.txt 了。</span><br><span class="line">**可以多个源操作数！！**</span><br></pre></td></tr></table></figure>
-<h2 id="diff"><a href="#diff" class="headerlink" title="diff"></a>diff</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">diff</span><br><span class="line">用法：diff [选项] 文件1 文件2</span><br><span class="line">选项（常用）：</span><br><span class="line">-b              不检查空白字符的不同。</span><br><span class="line">-B              不检查空行。</span><br><span class="line">-q              仅显示有无差异，不显示详细信息。</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">mv
+用法：mv [选项] 源文件 目标路径
+作用：将源文件（也可以是目录）移动为目标路径对应的文件（如果目标路径是文件）或移动到目标路径（如果目标路径是目录）。
+选项（常用）：
+-r              递归移动目录及其子目录内的所有内容。
+
+mv 命令的另外一个作用就是重命名文件。原理上很好理解，也就是把一个文件以不同的名字移动到当前目录下，这和重命名是等价的。举个例子，我们在 dir 下使用 mv test.txt test2.txt 就可以把 test.txt 重命名为 test2.txt 了。
+**可以多个源操作数！！**</code></pre>
+<h2 id="diff"><a href="#diff" class="headerlink" title="diff"></a>diff</h2><pre class="language-none"><code class="language-none">diff
+用法：diff [选项] 文件1 文件2
+选项（常用）：
+-b              不检查空白字符的不同。
+-B              不检查空行。
+-q              仅显示有无差异，不显示详细信息。</code></pre>
 <h2 id="find"><a href="#find" class="headerlink" title="find"></a>find</h2><p>find<br>用法：find [路径] &lt;选项&gt;<br>作用：在给定路径下递归地查找文件，输出符合要求的文件的路径。如果没有给定路径，则在当前目录下查找。<br>选项（常用）：<br>-name &lt;文件名&gt;             指定需要查找的文件名。</p>
 <p>使用 find 命令并加上 -name 选项可以在当前目录下递归地查找符合参数所示文件名的文件，并将文件的路径输出至屏幕上</p>
 <p>比如find &#x2F; -name **</p>
@@ -570,12 +601,27 @@ C. rm -rf ./*
 <p>find -name *就是在该目录下找，输出的是相对路径</p>
 <h2 id="强制退出"><a href="#强制退出" class="headerlink" title="强制退出"></a>强制退出</h2><p>Ctrl-D强制终止当前命令</p>
 <h2 id="grep"><a href="#grep" class="headerlink" title="grep"></a>grep</h2><p>grep 命令则有所不同。find 是根据文件的属性（文件名、修改日期等）查找文件，而 grep 则是匹配文件内的内容查找文件和文件中的匹配位置。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">grep</span><br><span class="line">用法：grep [选项] PATTERN FILE</span><br><span class="line">（PATTERN是匹配字符串，FILE是文件或目录的路径）</span><br><span class="line">作用：输出匹配PATTERN的文件和相关的行。</span><br><span class="line">选项（常用）：</span><br><span class="line">-a              不忽略二进制数据进行搜索。</span><br><span class="line">-i              忽略大小写差异。</span><br><span class="line">-r              从目录中递归查找。</span><br><span class="line">-n              显示行号。</span><br><span class="line"></span><br><span class="line">当你需要在整个项目目录中查找某个函数名、变量名等特定文本的时候，grep 将是你手头一个强有力的工具。</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">grep
+用法：grep [选项] PATTERN FILE
+（PATTERN是匹配字符串，FILE是文件或目录的路径）
+作用：输出匹配PATTERN的文件和相关的行。
+选项（常用）：
+-a              不忽略二进制数据进行搜索。
+-i              忽略大小写差异。
+-r              从目录中递归查找。
+-n              显示行号。
+
+当你需要在整个项目目录中查找某个函数名、变量名等特定文本的时候，grep 将是你手头一个强有力的工具。</code></pre>
 <h2 id="tree"><a href="#tree" class="headerlink" title="tree"></a>tree</h2><p>我们在前面学习到 ls 命令的功能是列出文件。在我们的 Linux 系统中有一个比 ls 更“高级”的命令，叫做 tree，它可以直接输出一个目录下的文件树。这个命令一般不是 Linux 发行版预装的，但我们已经为你安装好了，直接使用即可。</p>
 <p>所以我的Ubuntu里面没tree这个命令</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">tree</span><br><span class="line">用法: tree [选项] [目录名]</span><br><span class="line">选项(常用)：</span><br><span class="line">-a              列出全部文件（包含隐藏文件）。</span><br><span class="line">-d              只列出目录。</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">tree
+用法: tree [选项] [目录名]
+选项(常用)：
+-a              列出全部文件（包含隐藏文件）。
+-d              只列出目录。</code></pre>
 <h2 id="awk"><a href="#awk" class="headerlink" title="awk"></a>awk</h2><p>awk很好使，可以指定一个源，然后一行行读入，依据固定的格式分割单元</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ awk &#x27;&#123;print $1,$4&#125;&#x27; log.txt</span><br><span class="line"> $  awk -F, &#x27;&#123;print $1,$2&#125;&#x27;   log.txt</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">$ awk &#39;&#123;print $1,$4&#125;&#39; log.txt
+ $  awk -F, &#39;&#123;print $1,$2&#125;&#39;   log.txt</code></pre>
 <p>注意这里买进的$1都不是传进来的参数，二十在这个文件一行内部的东西。<br>print就是简单的输出，然后这个“-F”后面紧跟的就是以谁为分割源，来分割字段。</p>
 <p>然后注意格式，格式是’{}’在里面输出</p>
 <p>awk的重定向？直接在句子末尾加上就行了！！</p>
@@ -597,12 +643,31 @@ Ctrl+L 清屏。相当于命令 clear。
  
 
 <h2 id="chmod"><a href="#chmod" class="headerlink" title="chmod"></a>chmod</h2><p>chmod用法：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">mode : 权限设定字串，格式如下 : [ugoa...][[+-=][rwxX]...][,...]，其中</span><br><span class="line">u 表示该档案的拥有者，g 表示与该档案的拥有者属于同一个群体(group)者，o 表示其他以外的人，a 表示这三者皆是。</span><br><span class="line">+ 表示增加权限、- 表示取消权限、= 表示唯一设定权限。</span><br><span class="line">r 表示可读取，w 表示可写入，x 表示可执行，X 表示只有当该档案是个子目录或者该档案已经被设定过为可执行。</span><br><span class="line">-c : 若该档案权限确实已经更改，才显示其更改动作</span><br><span class="line">-f : 若该档案权限无法被更改也不要显示错误讯息</span><br><span class="line">-v : 显示权限变更的详细资料</span><br><span class="line">-R : 对目前目录下的所有档案与子目录进行相同的权限变更(即以递回的方式逐个变更)</span><br><span class="line">--help : 显示辅助说明</span><br><span class="line">--version : 显示版本</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">mode : 权限设定字串，格式如下 : [ugoa...][[+-&#x3D;][rwxX]...][,...]，其中
+u 表示该档案的拥有者，g 表示与该档案的拥有者属于同一个群体(group)者，o 表示其他以外的人，a 表示这三者皆是。
++ 表示增加权限、- 表示取消权限、&#x3D; 表示唯一设定权限。
+r 表示可读取，w 表示可写入，x 表示可执行，X 表示只有当该档案是个子目录或者该档案已经被设定过为可执行。
+-c : 若该档案权限确实已经更改，才显示其更改动作
+-f : 若该档案权限无法被更改也不要显示错误讯息
+-v : 显示权限变更的详细资料
+-R : 对目前目录下的所有档案与子目录进行相同的权限变更(即以递回的方式逐个变更)
+--help : 显示辅助说明
+--version : 显示版本
+</code></pre>
 <p>**经典：u+x **</p>
 <h2 id="sed"><a href="#sed" class="headerlink" title="sed"></a>sed</h2><p>用命令编辑和输出文本——sed 的使用</p>
 <p>我们已经初步了解到 Shell 脚本的强大功能。但我们目前对于文本的编辑功能仅仅学习了 Vim 等工具的使用。有人可能会想到，可以通过 Shell 脚本（即一条条的命令）对文本文件的内容进行编辑和输出吗？当然可以！sed 是通过命令编辑和输出文本的工具，通过掌握 sed 命令的使用，我们就可以实现文本内容编辑和选择输出的自动化。</p>
 <p>sed<br>sed [选项] ‘命令’ 输入文本</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">选项（常用）：</span><br><span class="line">-n：安静模式，只显示经过sed处理的内容。否则显示输入文本的所有内容。</span><br><span class="line">-i：直接修改读取的档案内容，而不是输出到屏幕。否则，只输出不编辑。</span><br><span class="line">命令（常用）：</span><br><span class="line">&lt;行号&gt;a&lt;内容&gt;： 新增，在行号后新增一行相应内容。行号可以是“数字”，在这一行之后新增，也可以是“起始行，终止行”，在其中的每一行后新增。当不写行号时，在每一行之后新增。使用$表示最后一行。后面的命令同理。</span><br><span class="line">&lt;行号&gt;c&lt;内容&gt;：取代。用内容取代相应行的文本。</span><br><span class="line">&lt;行号&gt;i&lt;内容&gt;：插入。在当前行的上面插入一行文本。</span><br><span class="line">&lt;行号&gt;d：删除当前行的内容。</span><br><span class="line">&lt;行号&gt;p：输出选择的内容。通常与选项-n一起使用。</span><br><span class="line">s/&lt;re&gt;/&lt;string&gt;：将&lt;re&gt;（正则表达式）匹配的内容替换为&lt;string&gt;。</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">选项（常用）：
+-n：安静模式，只显示经过sed处理的内容。否则显示输入文本的所有内容。
+-i：直接修改读取的档案内容，而不是输出到屏幕。否则，只输出不编辑。
+命令（常用）：
+&lt;行号&gt;a&lt;内容&gt;： 新增，在行号后新增一行相应内容。行号可以是“数字”，在这一行之后新增，也可以是“起始行，终止行”，在其中的每一行后新增。当不写行号时，在每一行之后新增。使用$表示最后一行。后面的命令同理。
+&lt;行号&gt;c&lt;内容&gt;：取代。用内容取代相应行的文本。
+&lt;行号&gt;i&lt;内容&gt;：插入。在当前行的上面插入一行文本。
+&lt;行号&gt;d：删除当前行的内容。
+&lt;行号&gt;p：输出选择的内容。通常与选项-n一起使用。
+s&#x2F;&lt;re&gt;&#x2F;&lt;string&gt;：将&lt;re&gt;（正则表达式）匹配的内容替换为&lt;string&gt;。</code></pre>
 <pre><code> a ：新增， a 的后面可以接字串，而这些字串会在新的一行出现(目前的下一行)～
 
 c ：取代， c 的后面可以接字串，这些字串可以取代 n1,n2 之间的行！
@@ -619,8 +684,24 @@ s ：取代，可以直接进行取代的工作哩！通常这个 s 的动作可
 <p>但是假如要是传命令行参数进来呢？应该怎么匹配？\吗？事实上<br><strong>写的时候直接在’的里面写这些参数’是不被转化的，想要传参数必须用“”双引号</strong><br>提示</p>
 <p>sed 中正则表达式的相关语法可以查阅 sed 文档。sed 等工具中的正则表达式语法和 Java 等语言中<strong>不完全相同</strong>，请注意区分。</p>
 <p>请注意，当不加 -i 选项时，只在控制台显示编辑后的文件内容，而不修改文件本身。下面举几个使用例子，以便更好地理解 sed 命令的使用方法。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">sed -n &#x27;3p&#x27; my.txt</span><br><span class="line"># 输出 my.txt 的第三行</span><br><span class="line">sed &#x27;2d&#x27; my.txt</span><br><span class="line"># 删除 my.txt 文件的第二行</span><br><span class="line">sed &#x27;2,$d&#x27; my.txt</span><br><span class="line"># 删除 my.txt 文件的第二行到最后一行</span><br><span class="line">sed &#x27;s/str1/str2/g&#x27; my.txt</span><br><span class="line"># 在整行范围内把 str1 替换为 str2。</span><br><span class="line"># 如果没有 g 标记，则只有每行第一个匹配的 str1 被替换成 str2</span><br><span class="line">sed -e &#x27;4astr &#x27; -e &#x27;s/str/aaa/&#x27; my.txt</span><br><span class="line">#-e 选项允许在同一行里执行多条命令。例子的第一条是第四行后添加一个 str，</span><br><span class="line"># 第二个命令是将 str 替换为 aaa。命令的执行顺序对结果有影响。</span><br></pre></td></tr></table></figure>
-<h2 id="cat"><a href="#cat" class="headerlink" title="cat"></a>cat</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">1.输出文件的内容</span><br><span class="line">$ cat filename</span><br><span class="line">$cat &gt;filename</span><br><span class="line"> 只能创建新文件,不能编辑已有文件.</span><br><span class="line"></span><br><span class="line">.将几个文件合并为一个文件： $cat file1 file2 &gt; file</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">sed -n &#39;3p&#39; my.txt
+# 输出 my.txt 的第三行
+sed &#39;2d&#39; my.txt
+# 删除 my.txt 文件的第二行
+sed &#39;2,$d&#39; my.txt
+# 删除 my.txt 文件的第二行到最后一行
+sed &#39;s&#x2F;str1&#x2F;str2&#x2F;g&#39; my.txt
+# 在整行范围内把 str1 替换为 str2。
+# 如果没有 g 标记，则只有每行第一个匹配的 str1 被替换成 str2
+sed -e &#39;4astr &#39; -e &#39;s&#x2F;str&#x2F;aaa&#x2F;&#39; my.txt
+#-e 选项允许在同一行里执行多条命令。例子的第一条是第四行后添加一个 str，
+# 第二个命令是将 str 替换为 aaa。命令的执行顺序对结果有影响。</code></pre>
+<h2 id="cat"><a href="#cat" class="headerlink" title="cat"></a>cat</h2><pre class="language-none"><code class="language-none">1.输出文件的内容
+$ cat filename
+$cat &gt;filename
+ 只能创建新文件,不能编辑已有文件.
+
+.将几个文件合并为一个文件： $cat file1 file2 &gt; file</code></pre>
 <p><strong>cat指令的实现是个很cd的东西</strong></p>
 <p>1.# cat &gt; rumenz2 可以创造文件</p>
 <p>2.# cat rumenz rumenz1 rumenz2 &gt; rumenz3 将多个文件都重新定向到&gt;后的文件里(好像最多放三个有效)</p>

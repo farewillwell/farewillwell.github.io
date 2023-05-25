@@ -29,7 +29,7 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 
@@ -507,6 +507,9 @@
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
 
         
 
@@ -553,12 +556,23 @@
 <p>sleep更像一个模拟，就是模拟一件事情需要做的时间，比如卷王睡觉。在这个期间，别人是没有使用权的。</p>
 <p>发生主体：wait是任何对象都可以发生，但是sleep的主体是thread类。</p>
 <p>你可能写了一个错误，但是idea并没有提示红，但是跑起来直接一个报错：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Exception in thread <span class="string">&quot;Thread-0&quot;</span> java.lang.IllegalMonitorStateException</span><br><span class="line">	at java.lang.Object.notifyAll(Native Method)</span><br><span class="line">	at Producter.run(Productor.java:<span class="number">24</span>)</span><br><span class="line">	at java.lang.Thread.run(Thread.java:<span class="number">750</span>)</span><br></pre></td></tr></table></figure>
+<pre class="language-java" data-language="java"><code class="language-java"><span class="token class-name">Exception</span> in thread <span class="token string">"Thread-0"</span> <span class="token class-name"><span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span></span>IllegalMonitorStateException</span>
+	at <span class="token class-name"><span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span></span>Object</span><span class="token punctuation">.</span><span class="token function">notifyAll</span><span class="token punctuation">(</span><span class="token class-name">Native</span> <span class="token class-name">Method</span><span class="token punctuation">)</span>
+	at <span class="token class-name">Producter</span><span class="token punctuation">.</span><span class="token function">run</span><span class="token punctuation">(</span><span class="token class-name">Productor</span><span class="token punctuation">.</span>java<span class="token operator">:</span><span class="token number">24</span><span class="token punctuation">)</span>
+	at <span class="token class-name"><span class="token namespace">java<span class="token punctuation">.</span>lang<span class="token punctuation">.</span></span>Thread</span><span class="token punctuation">.</span><span class="token function">run</span><span class="token punctuation">(</span><span class="token class-name">Thread</span><span class="token punctuation">.</span>java<span class="token operator">:</span><span class="token number">750</span><span class="token punctuation">)</span></code></pre>
 
 <p>是因为在非synchronized块里面调用notify了。</p>
 <p>简单的来说，当你在调用notify(), notifyAll(),wait(), wait(long), wait(long, int)等线程控制操作方法时，必须要有两个前提。第一：必须要在被synchronized关键字控制的同步代码块中，才能调用这些方法。第二，调用者必须为你当前的锁对象</p>
 <p>比如：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title function_">waitForPerson</span><span class="params">()</span> <span class="keyword">throws</span> RuntimeException &#123;</span><br><span class="line">        <span class="keyword">synchronized</span> (requestTable) &#123;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                requestTable.wait();</span><br><span class="line">            &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">RuntimeException</span>(e);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">private</span> <span class="token keyword">void</span> <span class="token function">waitForPerson</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">throws</span> <span class="token class-name">RuntimeException</span> <span class="token punctuation">&#123;</span>
+        <span class="token keyword">synchronized</span> <span class="token punctuation">(</span>requestTable<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+            <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+                requestTable<span class="token punctuation">.</span><span class="token function">wait</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+                <span class="token keyword">throw</span> <span class="token keyword">new</span> <span class="token class-name">RuntimeException</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span></code></pre>
 
 <p>这个是电梯线程（<code>Thread</code>）的进入等待模式的方法，在这个块里面调用<code>requestTable</code>的wait，代表调用的电梯线程在这里等request的notify，只有requestTable notify了才会被唤起。</p>
 <p>作为调用obj自带的wait函数的，一般都是公共资源，然后在线程里使用obj.wait()（记得用synchronized块包装）</p>
@@ -694,11 +708,18 @@
 <p>一个有锁的对象，同时只能被一个进程访问同步部分。</p>
 <p>调用的时候，加锁，就像给教室交锁一样，其他线程都不能够使用这个教室的同步方法（比如说是擦黑板，就是同步方法，因为几个学生只能有一个擦黑板）但是看黑板，这种其实是不同步的方法，因为你看的时候别人也能看，其他进程还是能访问，有且仅有被synchronized修饰的块不能被访问</p>
 <p>（话虽这么说，但是还是所有方法建议全加上锁）</p>
-<h4 id="给方法加锁"><a href="#给方法加锁" class="headerlink" title="给方法加锁"></a>给方法加锁</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">synchronized</span> <span class="keyword">void</span> <span class="title function_">method</span><span class="params">()</span></span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="给方法加锁"><a href="#给方法加锁" class="headerlink" title="给方法加锁"></a>给方法加锁</h4><pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">synchronized</span> <span class="token keyword">void</span> <span class="token function">method</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">&#123;</span>
+
+<span class="token punctuation">&#125;</span></code></pre>
 
 <p>一旦调用这个方法，就代表**这个对象(this)**而不是类被上锁了，调用这个对象该方法的进程是这个锁的拥有者。在执行完这个方法之前，一直有这个锁存在。</p>
 <p>理论上，这个操作比给对象加锁要好。不用在调用的时候给对象专门加锁了，</p>
-<h4 id="给对象加锁"><a href="#给对象加锁" class="headerlink" title="给对象加锁"></a>给对象加锁</h4><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">synchronized</span>(obj)</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">balaba.....</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="给对象加锁"><a href="#给对象加锁" class="headerlink" title="给对象加锁"></a>给对象加锁</h4><pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">synchronized</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span>
+
+<span class="token punctuation">&#123;</span>
+balaba<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">&#125;</span></code></pre>
 
 <p>这样的话，在执行这个代码块的时候，obj是被锁住的。在执行结束这个代码块之前，其他线程都不能访问这个对象的synchronized</p>
 <p>在锁住的情况下，相对于其他线程，究竟能调用这个被锁住的对象的哪些功能？那又锁住了这个对象的什么？</p>
@@ -707,12 +728,35 @@
 <p>不妨去掉这个类中一些synchronized修饰的方法，经检验，效果是：</p>
 <p>线程是交替执行的，说明如果某个线程得到了对象锁，但是另一个线程还是可以访问没有进行同步的方法或者代码。进行了同步的方法（加锁方法）和没有进行同步的方法（普通方法）是互不影响的，一个线程进入了同步方法，得到了对象锁，其他线程还是可以访问那些没有同步的方法（普通方法）。当获取到与对象关联的内置锁时，并不能阻止其他线程访问该对象，当某个线程获得对象的锁之后，只能阻止其他线程获得同一个锁。</p>
 <p><strong>简而言之：其他线程对非同步方法的调用不会被锁定 – 任何人都可以同时调用它们。</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public synchronized void demo1() &#123;</span><br><span class="line">     while (true) &#123;  //死循环目的是为了让线程一直持有该锁</span><br><span class="line">         System.out.println(Thread.currentThread());</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br><span class="line"> public void demo1() &#123;</span><br><span class="line">     synchronized (this) &#123;</span><br><span class="line">         while (true) &#123;  //死循环目的是为了让线程一直持有该锁</span><br><span class="line">             System.out.println(Thread.currentThread());</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">public synchronized void demo1() &#123;
+     while (true) &#123;  &#x2F;&#x2F;死循环目的是为了让线程一直持有该锁
+         System.out.println(Thread.currentThread());
+     &#125;
+ &#125;
+ public void demo1() &#123;
+     synchronized (this) &#123;
+         while (true) &#123;  &#x2F;&#x2F;死循环目的是为了让线程一直持有该锁
+             System.out.println(Thread.currentThread());
+         &#125;
+     &#125;
+ &#125;</code></pre>
 
 
 
 <p>上面说的这两个方法等价。都是在调用这个代码块（方法的本质也是代码块）的时候给对象加上锁，然后其他进程在这个代码块的执行期间均不能访问这个对象的同步方法。</p>
-<h3 id="syn锁和wait-开锁之间的关系"><a href="#syn锁和wait-开锁之间的关系" class="headerlink" title="syn锁和wait()开锁之间的关系"></a>syn锁和wait()开锁之间的关系</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">synchronized</span> (synchedList) &#123;</span><br><span class="line"></span><br><span class="line">           <span class="comment">// 列表为空就等待</span></span><br><span class="line">           <span class="keyword">while</span> (synchedList.isEmpty()) &#123;</span><br><span class="line">               System.out.println(<span class="string">&quot;List is empty...&quot;</span>);</span><br><span class="line">               synchedList.wait();</span><br><span class="line">               System.out.println(<span class="string">&quot;Waiting...&quot;</span>);</span><br><span class="line">           &#125;</span><br><span class="line">           <span class="type">String</span> <span class="variable">element</span> <span class="operator">=</span> (String) synchedList.remove(<span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">           <span class="keyword">return</span> element;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="syn锁和wait-开锁之间的关系"><a href="#syn锁和wait-开锁之间的关系" class="headerlink" title="syn锁和wait()开锁之间的关系"></a>syn锁和wait()开锁之间的关系</h3><pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">synchronized</span> <span class="token punctuation">(</span>synchedList<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+
+           <span class="token comment">// 列表为空就等待</span>
+           <span class="token keyword">while</span> <span class="token punctuation">(</span>synchedList<span class="token punctuation">.</span><span class="token function">isEmpty</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+               <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"List is empty..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+               synchedList<span class="token punctuation">.</span><span class="token function">wait</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+               <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"Waiting..."</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+           <span class="token punctuation">&#125;</span>
+           <span class="token class-name">String</span> element <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token class-name">String</span><span class="token punctuation">)</span> synchedList<span class="token punctuation">.</span><span class="token function">remove</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+           <span class="token keyword">return</span> element<span class="token punctuation">;</span>
+       <span class="token punctuation">&#125;</span>
+   <span class="token punctuation">&#125;</span></code></pre>
 
 
 
@@ -737,21 +781,119 @@
 <h2 id="包装"><a href="#包装" class="headerlink" title="包装"></a>包装</h2><p>在wait和sleep的时候，就是暂停一段时间的时候，可能会出现InterruptedException异常，所以需要用catch包装。</p>
 <p>wait常常是设计到依赖的时候，可能需要操作对象，因此关于这个的判断，也需要用synchronized包装，例如</p>
 <p>sleep通常直接一个catch就完了。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">synchronized</span> (tary) &#123;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="keyword">if</span>(tary.hasCake())</span><br><span class="line">                    &#123;</span><br><span class="line">                        tary.wait();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;<span class="keyword">catch</span> (InterruptedException e)</span><br><span class="line">                &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">synchronized</span> <span class="token punctuation">(</span>tary<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+
+                <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+                    <span class="token keyword">if</span><span class="token punctuation">(</span>tary<span class="token punctuation">.</span><span class="token function">hasCake</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+                    <span class="token punctuation">&#123;</span>
+                        tary<span class="token punctuation">.</span><span class="token function">wait</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token punctuation">&#125;</span>
+                <span class="token punctuation">&#125;</span><span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span>
+                <span class="token punctuation">&#123;</span>
+                    e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">&#125;</span>
+            <span class="token punctuation">&#125;</span></code></pre>
 
 <p>然后synchronized包装<strong>记得再退出去前记得输出一个notify</strong>来唤醒其他线程。</p>
-<h2 id="检查"><a href="#检查" class="headerlink" title="检查"></a>检查</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">System.out.println(Thread.currentThread());</span><br></pre></td></tr></table></figure>
+<h2 id="检查"><a href="#检查" class="headerlink" title="检查"></a>检查</h2><pre class="language-none"><code class="language-none">System.out.println(Thread.currentThread());</code></pre>
 
 <p>但是有可能输出会打断bug，造成之前的bug出不来，所以慎用，<del>建议肉眼debug</del></p>
 <p>比如在wait（）前print一次，在开门前print一次啥的。</p>
 <h1 id="生产消费者模型"><a href="#生产消费者模型" class="headerlink" title="生产消费者模型"></a>生产消费者模型</h1><p>一个蛋糕生产者的run代码</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">while</span> (<span class="literal">true</span>)</span><br><span class="line">        &#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;pro&quot;</span>+Thread.currentThread());</span><br><span class="line">            <span class="keyword">synchronized</span> (tary)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>(hasProducted==<span class="number">10</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    System.out.println(<span class="string">&quot;finish!&quot;</span>);</span><br><span class="line">                    tary.moveTary();</span><br><span class="line">                    <span class="keyword">return</span>;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">if</span>(!tary.hasCake())</span><br><span class="line">                &#123;</span><br><span class="line">                    tary.createCake(makeCake());</span><br><span class="line">                    System.out.println(<span class="string">&quot;put&quot;</span>+tary.getCake());</span><br><span class="line">                &#125;</span><br><span class="line">                tary.notifyAll();</span><br><span class="line"></span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">try</span> &#123;</span><br><span class="line">                Thread.sleep((<span class="type">int</span>)(Math.random() * <span class="number">100</span>));</span><br><span class="line">            &#125;<span class="keyword">catch</span> (InterruptedException e)</span><br><span class="line">            &#123;</span><br><span class="line">                e.printStackTrace();</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">synchronized</span> (tary) &#123;</span><br><span class="line"></span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="keyword">if</span>(tary.hasCake())</span><br><span class="line">                    &#123;</span><br><span class="line">                        tary.wait();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;<span class="keyword">catch</span> (InterruptedException e)</span><br><span class="line">                &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">&#123;</span>
+        <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span>
+        <span class="token punctuation">&#123;</span>
+            <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"pro"</span><span class="token operator">+</span><span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">currentThread</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token keyword">synchronized</span> <span class="token punctuation">(</span>tary<span class="token punctuation">)</span>
+            <span class="token punctuation">&#123;</span>
+                <span class="token keyword">if</span><span class="token punctuation">(</span>hasProducted<span class="token operator">==</span><span class="token number">10</span><span class="token punctuation">)</span>
+                <span class="token punctuation">&#123;</span>
+                    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"finish!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    tary<span class="token punctuation">.</span><span class="token function">moveTary</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token keyword">return</span><span class="token punctuation">;</span>
+                <span class="token punctuation">&#125;</span>
+                <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span>tary<span class="token punctuation">.</span><span class="token function">hasCake</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+                <span class="token punctuation">&#123;</span>
+                    tary<span class="token punctuation">.</span><span class="token function">createCake</span><span class="token punctuation">(</span><span class="token function">makeCake</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"put"</span><span class="token operator">+</span>tary<span class="token punctuation">.</span><span class="token function">getCake</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">&#125;</span>
+                tary<span class="token punctuation">.</span><span class="token function">notifyAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+            <span class="token punctuation">&#125;</span>
+            <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+                <span class="token class-name">Thread</span><span class="token punctuation">.</span><span class="token function">sleep</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token class-name">Math</span><span class="token punctuation">.</span><span class="token function">random</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span><span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span>
+            <span class="token punctuation">&#123;</span>
+                e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">&#125;</span>
+            <span class="token keyword">synchronized</span> <span class="token punctuation">(</span>tary<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+
+                <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+                    <span class="token keyword">if</span><span class="token punctuation">(</span>tary<span class="token punctuation">.</span><span class="token function">hasCake</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+                    <span class="token punctuation">&#123;</span>
+                        tary<span class="token punctuation">.</span><span class="token function">wait</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token punctuation">&#125;</span>
+                <span class="token punctuation">&#125;</span><span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span>
+                <span class="token punctuation">&#123;</span>
+                    e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">&#125;</span>
+            <span class="token punctuation">&#125;</span>
+
+
+        <span class="token punctuation">&#125;</span>
+    <span class="token punctuation">&#125;</span></code></pre>
 
 <p>一个蛋糕的消费者模型代码</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title function_">run</span><span class="params">()</span></span><br><span class="line">   &#123;</span><br><span class="line">       <span class="keyword">while</span> (<span class="literal">true</span>)</span><br><span class="line">       &#123;</span><br><span class="line">           <span class="keyword">synchronized</span> (tary)</span><br><span class="line">           &#123;</span><br><span class="line"></span><br><span class="line">               <span class="keyword">if</span>(!tary.getWillProduct())</span><br><span class="line">               &#123;</span><br><span class="line">                   System.out.println(<span class="string">&quot;never eat!&quot;</span>);</span><br><span class="line">                   <span class="keyword">return</span>;</span><br><span class="line">               &#125;</span><br><span class="line">               <span class="keyword">try</span> &#123;</span><br><span class="line">                   <span class="keyword">if</span>(!tary.hasCake())</span><br><span class="line">                   &#123;</span><br><span class="line">                       tary.wait();</span><br><span class="line">                   &#125;</span><br><span class="line">               &#125;<span class="keyword">catch</span> (InterruptedException e)</span><br><span class="line">               &#123;</span><br><span class="line">                   e.printStackTrace();</span><br><span class="line">               &#125;</span><br><span class="line">               <span class="keyword">if</span>(tary.hasCake())</span><br><span class="line">               &#123;</span><br><span class="line">                   System.out.println(<span class="string">&quot;eat&quot;</span>+tary.getCake());</span><br><span class="line">                   tary.lostCake();</span><br><span class="line">               &#125;</span><br><span class="line">               tary.notifyAll();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">           &#125;</span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+   <span class="token punctuation">&#123;</span>
+       <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span>
+       <span class="token punctuation">&#123;</span>
+           <span class="token keyword">synchronized</span> <span class="token punctuation">(</span>tary<span class="token punctuation">)</span>
+           <span class="token punctuation">&#123;</span>
+
+               <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span>tary<span class="token punctuation">.</span><span class="token function">getWillProduct</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+               <span class="token punctuation">&#123;</span>
+                   <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"never eat!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                   <span class="token keyword">return</span><span class="token punctuation">;</span>
+               <span class="token punctuation">&#125;</span>
+               <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+                   <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span>tary<span class="token punctuation">.</span><span class="token function">hasCake</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+                   <span class="token punctuation">&#123;</span>
+                       tary<span class="token punctuation">.</span><span class="token function">wait</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                   <span class="token punctuation">&#125;</span>
+               <span class="token punctuation">&#125;</span><span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span>
+               <span class="token punctuation">&#123;</span>
+                   e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+               <span class="token punctuation">&#125;</span>
+               <span class="token keyword">if</span><span class="token punctuation">(</span>tary<span class="token punctuation">.</span><span class="token function">hasCake</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+               <span class="token punctuation">&#123;</span>
+                   <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"eat"</span><span class="token operator">+</span>tary<span class="token punctuation">.</span><span class="token function">getCake</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                   tary<span class="token punctuation">.</span><span class="token function">lostCake</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+               <span class="token punctuation">&#125;</span>
+               tary<span class="token punctuation">.</span><span class="token function">notifyAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+
+           <span class="token punctuation">&#125;</span>
+       <span class="token punctuation">&#125;</span>
+   <span class="token punctuation">&#125;</span></code></pre>
 
 <p>但是其实这个代码是不能正常结束的。在消费者这一块：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(tary.hasCake())</span><br><span class="line">                &#123;</span><br><span class="line">                    System.out.println(<span class="string">&quot;eat&quot;</span>+tary.getCake());</span><br><span class="line">                    tary.lostCake();</span><br><span class="line">                &#125;</span><br><span class="line">                tary.notifyAll();</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="keyword">if</span>(!tary.hasCake())</span><br><span class="line">                    &#123;</span><br><span class="line">                        tary.wait();</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;<span class="keyword">catch</span> (InterruptedException e)</span><br><span class="line">                &#123;</span><br><span class="line">                    e.printStackTrace();</span><br><span class="line">                &#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">if</span><span class="token punctuation">(</span>tary<span class="token punctuation">.</span><span class="token function">hasCake</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+                <span class="token punctuation">&#123;</span>
+                    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"eat"</span><span class="token operator">+</span>tary<span class="token punctuation">.</span><span class="token function">getCake</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    tary<span class="token punctuation">.</span><span class="token function">lostCake</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">&#125;</span>
+                tary<span class="token punctuation">.</span><span class="token function">notifyAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token keyword">try</span> <span class="token punctuation">&#123;</span>
+                    <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">!</span>tary<span class="token punctuation">.</span><span class="token function">hasCake</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+                    <span class="token punctuation">&#123;</span>
+                        tary<span class="token punctuation">.</span><span class="token function">wait</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token punctuation">&#125;</span>
+                <span class="token punctuation">&#125;</span><span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">InterruptedException</span> e<span class="token punctuation">)</span>
+                <span class="token punctuation">&#123;</span>
+                    e<span class="token punctuation">.</span><span class="token function">printStackTrace</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                <span class="token punctuation">&#125;</span></code></pre>
 
 <p>假如第10个蛋糕生产出来的话，先吃了，然后wait了，wait就是不进入循环了。但是那个生产者已经不生产了，这个时候就无限等待，很呆滞。为了防止，可以多唤醒几次，或者换一下wait的顺讯。</p>
 <p>所以关于这种多线程是真的容易bug。</p>
@@ -760,7 +902,15 @@
 <p>比如这种：你不知道while是怎么走的，所以比如说先生产第十个，然后吃了，吃了之后这个循环不走了，去走下一个？</p>
 <p>经过 检查，bug是因为：消费者run多run了很长时间，然后从吃完第十个生产的蛋糕后，再次走了一遍循环，这个时候既没有蛋糕生产标志又是TRUE，所以会等，但是下一次跑生产者就直接不生产了，所以就干等着</p>
 <p>解决：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">synchronized</span> (tary)</span><br><span class="line">            &#123;</span><br><span class="line">                <span class="keyword">if</span>(hasProducted==<span class="number">10</span>)</span><br><span class="line">                &#123;</span><br><span class="line">                    System.out.println(<span class="string">&quot;finish!&quot;</span>);</span><br><span class="line">                    tary.moveTary();</span><br><span class="line">                    tary.notifyAll();</span><br><span class="line">                    <span class="keyword">return</span>;</span><br><span class="line">                &#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-java" data-language="java"><code class="language-java"><span class="token keyword">synchronized</span> <span class="token punctuation">(</span>tary<span class="token punctuation">)</span>
+            <span class="token punctuation">&#123;</span>
+                <span class="token keyword">if</span><span class="token punctuation">(</span>hasProducted<span class="token operator">==</span><span class="token number">10</span><span class="token punctuation">)</span>
+                <span class="token punctuation">&#123;</span>
+                    <span class="token class-name">System</span><span class="token punctuation">.</span>out<span class="token punctuation">.</span><span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"finish!"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    tary<span class="token punctuation">.</span><span class="token function">moveTary</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    tary<span class="token punctuation">.</span><span class="token function">notifyAll</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+                    <span class="token keyword">return</span><span class="token punctuation">;</span>
+                <span class="token punctuation">&#125;</span></code></pre>
 
 <p>注意，是在synchronized块里面调用。</p>
 <p>\1. 获得当前对象锁的线程，再调用加锁的方法，不会阻塞<br>\2. 调用该对象普通方法（即没有同步的方法），不会阻塞<br>\3. 既没有获得锁，调用的又是同步方法或代码块，会被阻塞</p>
@@ -776,26 +926,32 @@
 <p><code>getFromFloor</code>,<code>getToFloor</code>字面意思。</p>
 <p>注意这里并未写判断乘客是上行还是下行，如果是look的话需要单独判断一下。</p>
 <h2 id="TimableOutput"><a href="#TimableOutput" class="headerlink" title="TimableOutput"></a><code>TimableOutput</code></h2><p>时间戳输出单元。而且是个abstract类。没有类属性，全是静态方法和静态元素</p>
-<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">initStartTimestamp</span><br></pre></td></tr></table></figure>
+<h3 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h3><pre class="language-none"><code class="language-none">initStartTimestamp</code></pre>
 
 <p><strong>初始化时间戳</strong>  一定要在程序开始的时候用这个方法！！！</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TimableOutput.initStartTimestamp();</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">TimableOutput.initStartTimestamp();</code></pre>
 
 <p>main开始的时候来一下就行了。</p>
 <p>剩下只需要知道，向外暴露了一个print就行了。</p>
 <p>在输出的时候，不再使用System，而是用<code>TimableOutput.println()</code></p>
 <p>比如</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public void open() &#123;</span><br><span class="line">        TimableOutput.println(&quot;OPEN-&quot; + floor + &quot;-&quot; + id);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-jade" data-language="jade"><code class="language-jade">public void open() &#123;
+        TimableOutput.println(&quot;OPEN-&quot; + floor + &quot;-&quot; + id);
+    &#125;</code></pre>
 
 
 
 <h2 id="elevatorInput"><a href="#elevatorInput" class="headerlink" title="elevatorInput"></a><code>elevatorInput</code></h2><p>基本元素：scanner和已经存在的id</p>
 <p>基本方法：关scanner和拿取下一个request。</p>
 <p>用法：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PersonRequest request = elevatorInput.nextPersonRequest();</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">PersonRequest request &#x3D; elevatorInput.nextPersonRequest();</code></pre>
 
 <p>就拿到了一个request，当然可能出现拿到null的情况，直接相当于拿东西的进程结束了。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">if (request == null) &#123;</span><br><span class="line">    balabala</span><br><span class="line">    requestTable.notifyAll();//记得这个，不然容易死等。</span><br><span class="line">    break;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">if (request &#x3D;&#x3D; null) &#123;
+    balabala
+    requestTable.notifyAll();&#x2F;&#x2F;记得这个，不然容易死等。
+    break;
+&#125;</code></pre>
 
 <p>所以说，这个包根本没给<code>inputHandler</code>。所以要自己建：</p>
 <h1 id="类的构成"><a href="#类的构成" class="headerlink" title="类的构成"></a>类的构成</h1><p>采用生产者-消费者模型。</p>

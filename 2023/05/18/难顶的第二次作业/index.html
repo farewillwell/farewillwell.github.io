@@ -29,7 +29,7 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 
@@ -507,28 +507,62 @@
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
 
         
 
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h1 id="脏位是bug之源！！！"><a href="#脏位是bug之源！！！" class="headerlink" title="脏位是bug之源！！！"></a>脏位是bug之源！！！</h1><p>bug1</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">public void addValue(int id, int val) &#123;</span><br><span class="line">        int newValue = value.get(id) + val;</span><br><span class="line">        value.put(id, newValue);</span><br><span class="line">        if (id == bestId) &#123;</span><br><span class="line">            clean = false;</span><br><span class="line">        &#125;</span><br><span class="line">        if (newValue &gt; bestValue) &#123;</span><br><span class="line">            bestValue = newValue;</span><br><span class="line">            bestId = id;</span><br><span class="line">        &#125; else if (newValue == bestValue &amp;&amp; id &lt; bestId) &#123;</span><br><span class="line">            bestId = id;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">public void addValue(int id, int val) &#123;
+        int newValue &#x3D; value.get(id) + val;
+        value.put(id, newValue);
+        if (id &#x3D;&#x3D; bestId) &#123;
+            clean &#x3D; false;
+        &#125;
+        if (newValue &gt; bestValue) &#123;
+            bestValue &#x3D; newValue;
+            bestId &#x3D; id;
+        &#125; else if (newValue &#x3D;&#x3D; bestValue &amp;&amp; id &lt; bestId) &#123;
+            bestId &#x3D; id;
+        &#125;
+    &#125;</code></pre>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">if (id == bestId) &#123;</span><br><span class="line">            clean = false;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">if (id &#x3D;&#x3D; bestId) &#123;
+            clean &#x3D; false;
+        &#125;</code></pre>
 
 <p>一开始没有加这个，因为value可能是负的。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public void removeAcquaintance(int id) &#123;</span><br><span class="line">        value.remove(id);</span><br><span class="line">        acquaintance.remove(id);</span><br><span class="line">        if (id == bestId) &#123;</span><br><span class="line">            clean = false;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">public void removeAcquaintance(int id) &#123;
+        value.remove(id);
+        acquaintance.remove(id);
+        if (id &#x3D;&#x3D; bestId) &#123;
+            clean &#x3D; false;
+        &#125;
+    &#125;</code></pre>
 
 <p>考虑到这个删边删的是当前边的时候可能出错了。</p>
 <p>但是没有考虑到value是负的，减去之后导致它不是最大的了，就可能出错。</p>
 <p>所以还要判断一下，只要修改的是当前的bestId，就置脏位就好了。</p>
 <p>还有就是脏位情况下的重新取值</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">bestValue = -1;</span><br><span class="line">            bestId = -1;</span><br><span class="line">            for (Integer id : acquaintance.keySet()) &#123;</span><br><span class="line">                if (value.get(id) &gt; bestValue) &#123;</span><br><span class="line">                    bestValue = value.get(id);</span><br><span class="line">                    bestId = id;</span><br><span class="line">                &#125; else if (value.get(id) == bestValue &amp;&amp; id &lt; bestId) &#123;</span><br><span class="line">                    bestId = id;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            clean = true;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">bestValue &#x3D; -1;
+            bestId &#x3D; -1;
+            for (Integer id : acquaintance.keySet()) &#123;
+                if (value.get(id) &gt; bestValue) &#123;
+                    bestValue &#x3D; value.get(id);
+                    bestId &#x3D; id;
+                &#125; else if (value.get(id) &#x3D;&#x3D; bestValue &amp;&amp; id &lt; bestId) &#123;
+                    bestId &#x3D; id;
+                &#125;
+            &#125;
+            clean &#x3D; true;</code></pre>
 
 <p>重新取值的时候，假设删除的边是当前的best边，那么必然要重新取值。</p>
 <p>但是假设不：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">bestValue = -1;</span><br><span class="line">            bestId = -1;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">bestValue &#x3D; -1;
+            bestId &#x3D; -1;</code></pre>
 
 <p>那么所有的东西还是被暂存着的，也就是说你删除这个之前和之后，bestValue值不变。</p>
 <p>那么你要是去从这个为基准去比较大小，那显然是寄了的。</p>

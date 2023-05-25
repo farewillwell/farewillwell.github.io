@@ -29,7 +29,7 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 
@@ -507,6 +507,9 @@
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
 
         
 
@@ -522,17 +525,39 @@
 <p>事实上，在ISE中我们可以直接用ISE内置的功能去快速实现乘除法（虽然64位除法好像有bug），但是在实际工程中，乘除法是一个非常耗费时间的东西，所以需要专门开一特殊的指令系列来做这个东西。并且，为了尽量真实的模拟，必须要阻塞，（和P5中的一样），仍旧是阻塞到D级。</p>
 <p>MDU和原有的并不是一个体系，写里面的寄存器也没法对外界造成影响，所以对于MDU控制信号，可以采取一种很偷懒的办法：全交给MDU解决，CTRL直接输出一个MDU类指令的编号就行了，与MDU无关的指令是0，其他才是有数的。</p>
 <h2 id="删掉IM和DM"><a href="#删掉IM和DM" class="headerlink" title="删掉IM和DM"></a>删掉IM和DM</h2><p>IM是容易的，<br>直接把原本的IM接口改成<br>改成</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">//IM</span><br><span class="line">    wire [31:0]instr_F;</span><br><span class="line">    assign instr_F=i_inst_rdata;</span><br><span class="line">    assign i_inst_addr=WPC_F;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">&#x2F;&#x2F;IM
+    wire [31:0]instr_F;
+    assign instr_F&#x3D;i_inst_rdata;
+    assign i_inst_addr&#x3D;WPC_F;</code></pre>
 <p>即可</p>
 <p>DM是较为复杂的，因为在这里，多了新的指令lhlb，shsb，需要设计到对字节的控制，其中，21届指导书给出的标准接口是：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">module mips(</span><br><span class="line">    input clk,</span><br><span class="line">    input reset,</span><br><span class="line">    input [31:0] i_inst_rdata,//指令数据入口</span><br><span class="line">    input [31:0] m_data_rdata,//DM读入数据（一整个字）</span><br><span class="line">    output [31:0] i_inst_addr,//i级指令地址</span><br><span class="line">    output [31:0] m_data_addr,//m级DM地址</span><br><span class="line">    output [31:0] m_data_wdata,//m级DM写入数据</span><br><span class="line">    output [3 :0] m_data_byteen,//m级字节使能</span><br><span class="line">    output [31:0] m_inst_addr,//m级的指令地址</span><br><span class="line">    output w_grf_we,//寄存器写使能</span><br><span class="line">    output [4:0] w_grf_addr,//寄存器写地址</span><br><span class="line">    output [31:0] w_grf_wdata,//寄存器写入数据</span><br><span class="line">    output [31:0] w_inst_addr//w级指令地址</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">module mips(
+    input clk,
+    input reset,
+    input [31:0] i_inst_rdata,&#x2F;&#x2F;指令数据入口
+    input [31:0] m_data_rdata,&#x2F;&#x2F;DM读入数据（一整个字）
+    output [31:0] i_inst_addr,&#x2F;&#x2F;i级指令地址
+    output [31:0] m_data_addr,&#x2F;&#x2F;m级DM地址
+    output [31:0] m_data_wdata,&#x2F;&#x2F;m级DM写入数据
+    output [3 :0] m_data_byteen,&#x2F;&#x2F;m级字节使能
+    output [31:0] m_inst_addr,&#x2F;&#x2F;m级的指令地址
+    output w_grf_we,&#x2F;&#x2F;寄存器写使能
+    output [4:0] w_grf_addr,&#x2F;&#x2F;寄存器写地址
+    output [31:0] w_grf_wdata,&#x2F;&#x2F;寄存器写入数据
+    output [31:0] w_inst_addr&#x2F;&#x2F;w级指令地址
+);</code></pre>
 <p>其中，在这里，我们需要解决这个几个</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">input [31:0] m_data_rdata,//DM读入数据（一整个字）</span><br><span class="line">output [31:0] m_data_addr,//m级DM地址</span><br><span class="line">output [31:0] m_data_wdata,//m级DM写入数据</span><br><span class="line">output [3 :0] m_data_byteen,//m级字节使能</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">input [31:0] m_data_rdata,&#x2F;&#x2F;DM读入数据（一整个字）
+output [31:0] m_data_addr,&#x2F;&#x2F;m级DM地址
+output [31:0] m_data_wdata,&#x2F;&#x2F;m级DM写入数据
+output [3 :0] m_data_byteen,&#x2F;&#x2F;m级字节使能</code></pre>
 <p>地址非常好解决，直接（AO是AluOut，就是Alu计算的结果）</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">assign m_inst_addr=WPC_M;</span><br><span class="line">assign m_data_addr=AO_M;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">assign m_inst_addr&#x3D;WPC_M;
+assign m_data_addr&#x3D;AO_M;</code></pre>
 <p>就行了，也没啥课操作空间</p>
 <p>同时，为了DM的变化，笔者设置了俩CTRL伸出来的控制信号（自己瞎命的名）其中bytecho进入BE，是用来判断选字&#x2F;半字&#x2F;字节的模式，loadop进入DBS对数据进行转化</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">output [1:0] byte_cho,</span><br><span class="line">output [2:0]load_op,</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">output [1:0] byte_cho,
+output [2:0]load_op,</code></pre>
 <p>现在来看byteen，对于BE有：（笔者自己设定的，具体信号填啥随缘）</p>
 <table>
 <thead>
@@ -586,7 +611,24 @@
 <td>写入第四个字节</td>
 </tr>
 </tbody></table>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">module BE (</span><br><span class="line">    input [1:0]byte_cho,</span><br><span class="line">    input [1:0]order,</span><br><span class="line">    output [3:0]byte_en</span><br><span class="line">);</span><br><span class="line">assign byte_en=(byte_cho==2&#x27;b11)?4&#x27;b1111:</span><br><span class="line">               (byte_cho==2&#x27;b01)?(</span><br><span class="line">                    (order==2&#x27;b00)?4&#x27;b0011:</span><br><span class="line">                    (order==2&#x27;b10)?4&#x27;b1100:4&#x27;bxxxx</span><br><span class="line">               ):</span><br><span class="line">               (byte_cho==2&#x27;b10)?(</span><br><span class="line">                    (order==2&#x27;b00)?4&#x27;b0001:</span><br><span class="line">                    (order==2&#x27;b01)?4&#x27;b0010:</span><br><span class="line">                    (order==2&#x27;b10)?4&#x27;b0100:</span><br><span class="line">                    (order==2&#x27;b11)?4&#x27;b1000:4&#x27;bxxxx</span><br><span class="line">               ):4&#x27;b0000;</span><br><span class="line"></span><br><span class="line">endmodule //BE</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">module BE (
+    input [1:0]byte_cho,
+    input [1:0]order,
+    output [3:0]byte_en
+);
+assign byte_en&#x3D;(byte_cho&#x3D;&#x3D;2&#39;b11)?4&#39;b1111:
+               (byte_cho&#x3D;&#x3D;2&#39;b01)?(
+                    (order&#x3D;&#x3D;2&#39;b00)?4&#39;b0011:
+                    (order&#x3D;&#x3D;2&#39;b10)?4&#39;b1100:4&#39;bxxxx
+               ):
+               (byte_cho&#x3D;&#x3D;2&#39;b10)?(
+                    (order&#x3D;&#x3D;2&#39;b00)?4&#39;b0001:
+                    (order&#x3D;&#x3D;2&#39;b01)?4&#39;b0010:
+                    (order&#x3D;&#x3D;2&#39;b10)?4&#39;b0100:
+                    (order&#x3D;&#x3D;2&#39;b11)?4&#39;b1000:4&#39;bxxxx
+               ):4&#39;b0000;
+
+endmodule &#x2F;&#x2F;BE</code></pre>
 <p>其中xxxx是用来方便出错的时候debug的<br>字节控制的情况有这样的 BE</p>
 <p>关于load的字节控制单元DBS</p>
 <table>
@@ -621,7 +663,13 @@
 <td></td>
 </tr>
 </tbody></table>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">module DBS (</span><br><span class="line">    input [1:0]order,</span><br><span class="line">    input [31:0]Din,</span><br><span class="line">    input [2:0]load_op,</span><br><span class="line">    output[31:0]Dout</span><br><span class="line">);</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">module DBS (
+    input [1:0]order,
+    input [31:0]Din,
+    input [2:0]load_op,
+    output[31:0]Dout
+);
+</code></pre>
 <p>可以就像这个一样组合，根据识别出来的指令的load模式来从输进来的数据中选择有用的值进行读入<br>关于load的字节控制单元DBS</p>
 <table>
 <thead>
@@ -651,13 +699,35 @@
 <td>符号半字数据扩展</td>
 </tr>
 </tbody></table>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(load_op==signByte)?(</span><br><span class="line">    (order==2&#x27;b00)?&#123;&#123;24&#123;Din[7]&#125;&#125;,Din[7:0]&#125;:</span><br><span class="line">    (order==2&#x27;b01)?&#123;&#123;24&#123;Din[15]&#125;&#125;,Din[15:8]&#125;:</span><br><span class="line">    (order==2&#x27;b10)?&#123;&#123;24&#123;Din[23]&#125;&#125;,Din[23:16]&#125;:</span><br><span class="line">    (order==2&#x27;b11)?&#123;&#123;24&#123;Din[31]&#125;&#125;,Din[31:24]&#125;:32&#x27;bx</span><br><span class="line">):</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">(load_op&#x3D;&#x3D;signByte)?(
+    (order&#x3D;&#x3D;2&#39;b00)?&#123;&#123;24&#123;Din[7]&#125;&#125;,Din[7:0]&#125;:
+    (order&#x3D;&#x3D;2&#39;b01)?&#123;&#123;24&#123;Din[15]&#125;&#125;,Din[15:8]&#125;:
+    (order&#x3D;&#x3D;2&#39;b10)?&#123;&#123;24&#123;Din[23]&#125;&#125;,Din[23:16]&#125;:
+    (order&#x3D;&#x3D;2&#39;b11)?&#123;&#123;24&#123;Din[31]&#125;&#125;,Din[31:24]&#125;:32&#39;bx
+):</code></pre>
 <p>然后关于要写入DM的值，是这样的</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">assign m_inst_addr=WPC_M;</span><br><span class="line">assign m_data_addr=AO_M;</span><br><span class="line">assign MemRead=m_data_rdata;</span><br><span class="line">assign m_data_wdata=(byte_en==4&#x27;b1111)?WMD:</span><br><span class="line">                    (byte_en==4&#x27;b0011)?&#123;MemRead[31:16],WMD[15:0]&#125;:</span><br><span class="line">                    (byte_en==4&#x27;b1100)?&#123;WMD[15:0],MemRead[15:0]&#125;:</span><br><span class="line">                    (byte_en==4&#x27;b0001)?&#123;MemRead[31:8],WMD[7:0]&#125;:</span><br><span class="line">                    (byte_en==4&#x27;b0010)?&#123;MemRead[31:16],WMD[7:0],MemRead[7:0]&#125;:</span><br><span class="line">                    (byte_en==4&#x27;b0100)?&#123;MemRead[31:24],WMD[7:0],MemRead[15:0]&#125;:</span><br><span class="line">                    (byte_en==4&#x27;b1000)?&#123;WMD[7:0],MemRead[23:0]&#125;:MemRead;</span><br><span class="line">assign m_data_byteen=byte_en;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">assign m_inst_addr&#x3D;WPC_M;
+assign m_data_addr&#x3D;AO_M;
+assign MemRead&#x3D;m_data_rdata;
+assign m_data_wdata&#x3D;(byte_en&#x3D;&#x3D;4&#39;b1111)?WMD:
+                    (byte_en&#x3D;&#x3D;4&#39;b0011)?&#123;MemRead[31:16],WMD[15:0]&#125;:
+                    (byte_en&#x3D;&#x3D;4&#39;b1100)?&#123;WMD[15:0],MemRead[15:0]&#125;:
+                    (byte_en&#x3D;&#x3D;4&#39;b0001)?&#123;MemRead[31:8],WMD[7:0]&#125;:
+                    (byte_en&#x3D;&#x3D;4&#39;b0010)?&#123;MemRead[31:16],WMD[7:0],MemRead[7:0]&#125;:
+                    (byte_en&#x3D;&#x3D;4&#39;b0100)?&#123;MemRead[31:24],WMD[7:0],MemRead[15:0]&#125;:
+                    (byte_en&#x3D;&#x3D;4&#39;b1000)?&#123;WMD[7:0],MemRead[23:0]&#125;:MemRead;
+assign m_data_byteen&#x3D;byte_en;</code></pre>
 <h2 id="mdu单元实现"><a href="#mdu单元实现" class="headerlink" title="mdu单元实现"></a>mdu单元实现</h2><h3 id="指令控制"><a href="#指令控制" class="headerlink" title="指令控制"></a>指令控制</h3><p>mdu是和ALU并行的，所以两个原件一起接受数据，然后根据接受的数据两人各自判断自己是否要执行，然后最后在E级做一个大的多路选择器看这个E级是谁的结果走到下一级</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">output select,（作为选择信号E级选择谁的数据输出，ALU/MDU？）</span><br><span class="line">output start,//乘除模块计算开始</span><br><span class="line">output [3:0]mdu_ctrl//mdu的指令类型</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">output select,（作为选择信号E级选择谁的数据输出，ALU&#x2F;MDU？）
+output start,&#x2F;&#x2F;乘除模块计算开始
+output [3:0]mdu_ctrl&#x2F;&#x2F;mdu的指令类型</code></pre>
 <p>mdu_ctrl&#x3D;0其他指令，mdu_ctrl!&#x3D;0就是代表用mdu的指令，然后具体数字填多少自己设定就好了</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">if(mdu_ctrl==mthi)HI&lt;=inA;</span><br><span class="line">        else if(mdu_ctrl==mtlo)LO&lt;=inA;</span><br><span class="line">        else if(mdu_ctrl==multu).....</span><br><span class="line">        else if(mdu_ctrl==divu) begin</span><br><span class="line">    ........</span><br><span class="line">        end </span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">if(mdu_ctrl&#x3D;&#x3D;mthi)HI&lt;&#x3D;inA;
+        else if(mdu_ctrl&#x3D;&#x3D;mtlo)LO&lt;&#x3D;inA;
+        else if(mdu_ctrl&#x3D;&#x3D;multu).....
+        else if(mdu_ctrl&#x3D;&#x3D;divu) begin
+    ........
+        end </code></pre>
 <table>
 <thead>
 <tr>
@@ -733,25 +803,95 @@
 </tr>
 </tbody></table>
 <h3 id="计算"><a href="#计算" class="headerlink" title="计算"></a>计算</h3><p>计算要进行64位扩展再去算乘法，这样出来的结果才是64位的乘法</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">assign zero_inA=&#123;32&#x27;b0,inA&#125;;</span><br><span class="line">assign zero_inB=&#123;32&#x27;b0,inB&#125;;</span><br><span class="line">assign sign_inA=&#123;&#123;32&#123;inA[31]&#125;&#125;,inA&#125;;</span><br><span class="line">assign sign_inB=&#123;&#123;32&#123;inB[31]&#125;&#125;,inB&#125;;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">assign zero_inA&#x3D;&#123;32&#39;b0,inA&#125;;
+assign zero_inB&#x3D;&#123;32&#39;b0,inB&#125;;
+assign sign_inA&#x3D;&#123;&#123;32&#123;inA[31]&#125;&#125;,inA&#125;;
+assign sign_inB&#x3D;&#123;&#123;32&#123;inB[31]&#125;&#125;,inB&#125;;</code></pre>
 <p>这个inA和inB指的是ALU的inA和B<br>然后在计算的时候就根据输入进来的指令进行相应操作就完了</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">else if(mdu_ctrl==mult) begin</span><br><span class="line">    &#123;HI,LO&#125;&lt;=$signed($signed(sign_inA)*$signed(sign_inB));</span><br><span class="line">end</span><br><span class="line">else if(mdu_ctrl==div) begin</span><br><span class="line">    HI&lt;=$signed($signed(inA)%$signed(inB));</span><br><span class="line">    LO&lt;=$signed($signed(inA)/$signed(inB));</span><br><span class="line">end</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">else if(mdu_ctrl&#x3D;&#x3D;mult) begin
+    &#123;HI,LO&#125;&lt;&#x3D;$signed($signed(sign_inA)*$signed(sign_inB));
+end
+else if(mdu_ctrl&#x3D;&#x3D;div) begin
+    HI&lt;&#x3D;$signed($signed(inA)%$signed(inB));
+    LO&lt;&#x3D;$signed($signed(inA)&#x2F;$signed(inB));
+end</code></pre>
 
 <h3 id="存储和状态机"><a href="#存储和状态机" class="headerlink" title="存储和状态机"></a>存储和状态机</h3><p>需要三个寄存器，HI，LO和status（进行时间计数器）<br>每个时钟周期来的时候</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">if(status&gt;0)status&lt;=status-1;</span><br><span class="line">       if(start==1&#x27;b1)</span><br><span class="line">       begin</span><br><span class="line">           if(mdu_ctrl==div||mdu_ctrl==divu)status&lt;=10;</span><br><span class="line">           else if(mdu_ctrl==mult||mdu_ctrl==multu)status&lt;=5;</span><br><span class="line">       end</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">if(status&gt;0)status&lt;&#x3D;status-1;
+       if(start&#x3D;&#x3D;1&#39;b1)
+       begin
+           if(mdu_ctrl&#x3D;&#x3D;div||mdu_ctrl&#x3D;&#x3D;divu)status&lt;&#x3D;10;
+           else if(mdu_ctrl&#x3D;&#x3D;mult||mdu_ctrl&#x3D;&#x3D;multu)status&lt;&#x3D;5;
+       end</code></pre>
 <h3 id="阻塞和转发"><a href="#阻塞和转发" class="headerlink" title="阻塞和转发"></a>阻塞和转发</h3><p>关于mdu有关的指令的阻塞，是在于mdu正在进行乘除指令的计算，然后和mdu所有有关的指令都阻塞到D级就好了</p>
 <p>注：这个阻塞谁需要看教程的具体要求，21级教程说明了不会因为不区分的mdu阻塞卡周期，但是新的教程新的要求的话自然要按照新的来</p>
 <p>在指令刚进来的时候，status还没有写成10&#x2F;5，但是假如这个指令是E，然后冲突指令是D，等写进来就晚了，所以我们还需要一个start指令代表现在就是开始计算的指令</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">assign busy=(status==0)?1&#x27;b0:1&#x27;b1;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">assign busy&#x3D;(status&#x3D;&#x3D;0)?1&#39;b0:1&#39;b1;</code></pre>
 <p>busy的信号和start信号一起给到UNIT里面，当然这个是E级的，还有当前D级的的mdu_ctrl来看是否构成公用mdu冲突</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">    input busy_start_E,</span><br><span class="line">    input [3:0]mdu_ctrl_D</span><br><span class="line">    </span><br><span class="line">assign STALL_MDU=(busy_start_E==1&amp;&amp;mdu_ctrl_D!=0)?1&#x27;b1:1&#x27;b0;</span><br><span class="line">assign STALL=STALL_RS|STALL_RT|STALL_MDU;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">    input busy_start_E,
+    input [3:0]mdu_ctrl_D
+    
+assign STALL_MDU&#x3D;(busy_start_E&#x3D;&#x3D;1&amp;&amp;mdu_ctrl_D!&#x3D;0)?1&#39;b1:1&#39;b0;
+assign STALL&#x3D;STALL_RS|STALL_RT|STALL_MDU;</code></pre>
 
 <p>转发的话，和ALU共用一个输入端口，转发出的话就mf这个指令，然后由于在M级寄存器会和从ALU出来的合并成一个信号，所以可以和add这样的指令共用一个信号，转发并不需要特别考虑，就按照普通的性质就行了</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line">assign Tnew_D=(opcode==lw||opcode==lh||opcode==lb)?3&#x27;b010:</span><br><span class="line">((RIop==opcode&amp;&amp;</span><br><span class="line">(func==add</span><br><span class="line">||func==sub</span><br><span class="line">||func==mfhi</span><br><span class="line">||func==mflo</span><br><span class="line">||func==andR</span><br><span class="line">||func==orR</span><br><span class="line">||func==slt</span><br><span class="line">||func==sltu))</span><br><span class="line">            ||opcode==lui</span><br><span class="line">            ||opcode==addi</span><br><span class="line">            ||opcode==andi</span><br><span class="line">            ||opcode==ori)?3&#x27;b01:3&#x27;b0;</span><br><span class="line"></span><br><span class="line">assign Tuse_RS=((RIop==opcode&amp;&amp;(func==add</span><br><span class="line">||func==sub</span><br><span class="line">||func==mthi</span><br><span class="line">||func==mtlo</span><br><span class="line">||func==mult</span><br><span class="line">||func==multu</span><br><span class="line">||func==div</span><br><span class="line">||func==divu</span><br><span class="line">||func==andR</span><br><span class="line">||func==orR</span><br><span class="line">||func==slt</span><br><span class="line">||func==sltu))</span><br><span class="line">                ||opcode==ori</span><br><span class="line">                ||opcode==lb</span><br><span class="line">                ||opcode==lh</span><br><span class="line">                ||opcode==andi</span><br><span class="line">                ||opcode==addi</span><br><span class="line">                ||opcode==lw</span><br><span class="line">                ||opcode==sw</span><br><span class="line">                ||opcode==sb</span><br><span class="line">                ||opcode==sh)?3&#x27;b001:</span><br><span class="line">               ((RIop==opcode&amp;&amp;func==jr)</span><br><span class="line">               ||opcode==beq</span><br><span class="line">               ||opcode==bne)?3&#x27;b000:3&#x27;b011;</span><br><span class="line">assign Tuse_RT=(RIop==opcode&amp;&amp;</span><br><span class="line">(func==add</span><br><span class="line">||func==sub</span><br><span class="line">||func==andR</span><br><span class="line">||func==orR</span><br><span class="line">||func==slt</span><br><span class="line">||func==sltu</span><br><span class="line">||func==mult</span><br><span class="line">||func==multu</span><br><span class="line">||func==div</span><br><span class="line">||func==divu))?3&#x27;b001:</span><br><span class="line">               (opcode==sw||opcode==sb||opcode==sh)?3&#x27;b010:</span><br><span class="line">			   (opcode==beq||opcode==bne)?3&#x27;b000:3&#x27;b011;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">assign Tnew_D&#x3D;(opcode&#x3D;&#x3D;lw||opcode&#x3D;&#x3D;lh||opcode&#x3D;&#x3D;lb)?3&#39;b010:
+((RIop&#x3D;&#x3D;opcode&amp;&amp;
+(func&#x3D;&#x3D;add
+||func&#x3D;&#x3D;sub
+||func&#x3D;&#x3D;mfhi
+||func&#x3D;&#x3D;mflo
+||func&#x3D;&#x3D;andR
+||func&#x3D;&#x3D;orR
+||func&#x3D;&#x3D;slt
+||func&#x3D;&#x3D;sltu))
+            ||opcode&#x3D;&#x3D;lui
+            ||opcode&#x3D;&#x3D;addi
+            ||opcode&#x3D;&#x3D;andi
+            ||opcode&#x3D;&#x3D;ori)?3&#39;b01:3&#39;b0;
+
+assign Tuse_RS&#x3D;((RIop&#x3D;&#x3D;opcode&amp;&amp;(func&#x3D;&#x3D;add
+||func&#x3D;&#x3D;sub
+||func&#x3D;&#x3D;mthi
+||func&#x3D;&#x3D;mtlo
+||func&#x3D;&#x3D;mult
+||func&#x3D;&#x3D;multu
+||func&#x3D;&#x3D;div
+||func&#x3D;&#x3D;divu
+||func&#x3D;&#x3D;andR
+||func&#x3D;&#x3D;orR
+||func&#x3D;&#x3D;slt
+||func&#x3D;&#x3D;sltu))
+                ||opcode&#x3D;&#x3D;ori
+                ||opcode&#x3D;&#x3D;lb
+                ||opcode&#x3D;&#x3D;lh
+                ||opcode&#x3D;&#x3D;andi
+                ||opcode&#x3D;&#x3D;addi
+                ||opcode&#x3D;&#x3D;lw
+                ||opcode&#x3D;&#x3D;sw
+                ||opcode&#x3D;&#x3D;sb
+                ||opcode&#x3D;&#x3D;sh)?3&#39;b001:
+               ((RIop&#x3D;&#x3D;opcode&amp;&amp;func&#x3D;&#x3D;jr)
+               ||opcode&#x3D;&#x3D;beq
+               ||opcode&#x3D;&#x3D;bne)?3&#39;b000:3&#39;b011;
+assign Tuse_RT&#x3D;(RIop&#x3D;&#x3D;opcode&amp;&amp;
+(func&#x3D;&#x3D;add
+||func&#x3D;&#x3D;sub
+||func&#x3D;&#x3D;andR
+||func&#x3D;&#x3D;orR
+||func&#x3D;&#x3D;slt
+||func&#x3D;&#x3D;sltu
+||func&#x3D;&#x3D;mult
+||func&#x3D;&#x3D;multu
+||func&#x3D;&#x3D;div
+||func&#x3D;&#x3D;divu))?3&#39;b001:
+               (opcode&#x3D;&#x3D;sw||opcode&#x3D;&#x3D;sb||opcode&#x3D;&#x3D;sh)?3&#39;b010:
+			   (opcode&#x3D;&#x3D;beq||opcode&#x3D;&#x3D;bne)?3&#39;b000:3&#39;b011;</code></pre>
 <h3 id="值得一提的shl"><a href="#值得一提的shl" class="headerlink" title="值得一提的shl"></a>值得一提的shl</h3><p>当时，令笔者印象尤其深刻的是p6第三次课上的shl（问就是笔者P0P4寄了），当时显示output too few（这个一种是跳转挑飞了，另一个是时间太长了，然后在规定时间内没输出完）</p>
 <p>但是shl，就是简单的交换一下hi和lo啊，怎么能错，当时没看出来是T了，所以一直瞎改，结果心态爆炸。出来后才知道是T了。</p>
 <p>事实上这个题虽然最后就最普通的写法也算对了，但是其实是为了考一个类似于特殊处理的题目，我可以在mdu中设计一个flag信号，</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">reg flag;</span><br><span class="line">if(shl==mdu_ctrl)flag&lt;=(flag==0)?1:0;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">reg flag;
+if(shl&#x3D;&#x3D;mdu_ctrl)flag&lt;&#x3D;(flag&#x3D;&#x3D;0)?1:0;</code></pre>
 <p>当flag是0的时候正常，flag是1的时候hi寄存器当lo寄存器，lo寄存器当hi寄存器，很有意思的一个策略。</p>
 
                 

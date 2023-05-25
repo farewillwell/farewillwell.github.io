@@ -29,7 +29,7 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 
@@ -507,6 +507,9 @@
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
 
         
 
@@ -594,9 +597,10 @@
 <p>在前两个week里面,无论怎么做,指数都是0-8的,但是到了week3,由于出现了d,在d的时候就去先计算表达式了,结果出来输出的字符串 可能为两位数,然后仅仅读取一位就会出现bug,好在及时修复.</p>
 <h3 id="性能-2"><a href="#性能-2" class="headerlink" title="性能"></a>性能</h3><p>性能较差，在上一次基础上没有做什么优化。<del>被同学干爆</del>，</p>
 <h4 id="小插曲：关于神奇的一刀-amp-sympy包计算原理"><a href="#小插曲：关于神奇的一刀-amp-sympy包计算原理" class="headerlink" title="小插曲：关于神奇的一刀&amp;sympy包计算原理"></a>小插曲：关于神奇的一刀&amp;sympy包计算原理</h4><p>在week3的互测中，笔者给出了一刀</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">0</span><br><span class="line">(sin(x)+cos(x))**3</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">0
+(sin(x)+cos(x))**3</code></pre>
 <p>但是一位xd输出了看起来是错误的结果</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-2*cos(y)**3+3*sin(y)+3*cos(y)-2*sin(y)**3</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">-2*cos(y)**3+3*sin(y)+3*cos(y)-2*sin(y)**3</code></pre>
 <p>实际上这个 结果是正确的，不信的可以自己三角化简一下，拆一下系数。</p>
 <p>但是笔者<del>由于急于hack人</del>没有意识到是对的.但是离谱的事情是测评机也没有意识到这个是对的，于是hack成功。</p>
 <p>后来证实了确实是对的，也由课程组进行了合理的hack无效判定。（没hack成同学但是hack成了测评机doge）</p>
@@ -606,13 +610,188 @@
 <p>然后判断是否相等的原理就是看经过这个化简之后是否是同一个式子，在绝大多数情况下，被认为是等价的两个式子按照固定的算法去做到结果都是一样的。</p>
 <p>但是假设虽然等价，但是出发点差别大到了一个层次，比如千变万化的三角函数化简，可能会导致启发的方向不同，然后最终 的所谓 最简结果也不同，这就导致判错了。</p>
 <h2 id="一些关键代码的具体展示"><a href="#一些关键代码的具体展示" class="headerlink" title="一些关键代码的具体展示"></a>一些关键代码的具体展示</h2><p>lexer的几个token生成函数</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line">private String getNumber() &#123;  //注意-数字</span><br><span class="line">        StringBuilder sb = new StringBuilder();</span><br><span class="line">        if (input.charAt(pos) == &#x27;$&#x27;) &#123;</span><br><span class="line">            sb.append(&quot;+&quot;);</span><br><span class="line">            pos++;</span><br><span class="line"></span><br><span class="line">        &#125; else if (input.charAt(pos) == &#x27;%&#x27;) &#123;</span><br><span class="line">            sb.append(&quot;-&quot;);</span><br><span class="line">            pos++;</span><br><span class="line">        &#125;</span><br><span class="line">        while (pos &lt; input.length() &amp;&amp; Character.isDigit(input.charAt(pos))) &#123;</span><br><span class="line">            sb.append(input.charAt(pos));</span><br><span class="line">            ++pos;</span><br><span class="line">        &#125;</span><br><span class="line">        return sb.toString();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    private String getUnknown() &#123;</span><br><span class="line">        StringBuilder sb = new StringBuilder();</span><br><span class="line">        sb.append(input.charAt(pos));</span><br><span class="line">        if (this.isPower()) &#123;</span><br><span class="line">            sb.append(input.charAt(pos + 2));</span><br><span class="line">            pos = pos + 2;</span><br><span class="line">        &#125;</span><br><span class="line">        pos++;</span><br><span class="line">        return sb.toString();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getDerivative() &#123;</span><br><span class="line">        int countLeft = 1;</span><br><span class="line">        int countRight = 0;</span><br><span class="line">        int i;</span><br><span class="line">        for (i = 3; countLeft &gt; countRight; i++) &#123; //这里有一个bug，在扫描完)之后，i是会+1的，自动到下一个了，所以不用i+1</span><br><span class="line">            if (input.charAt(pos + i) == &#x27;(&#x27;) &#123;</span><br><span class="line">                countLeft++;</span><br><span class="line">            &#125; else if (input.charAt(pos + i) == &#x27;)&#x27;) &#123;</span><br><span class="line">                countRight++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        String string = input.substring(pos, pos + i); //末尾是开区间，所以理论上存不了)，所以+1</span><br><span class="line">        pos = pos + i;</span><br><span class="line">        return string;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    public String getTriangle() &#123; //cos(),0=c,1=o,2=s,3=(</span><br><span class="line">        int countLeft = 1;</span><br><span class="line">        int countRight = 0;</span><br><span class="line">        int i;</span><br><span class="line">        for (i = 4; countLeft &gt; countRight; i++) &#123; //这里有一个bug，在扫描完)之后，i是会+1的，自动到下一个了，所以不用i+1</span><br><span class="line">            if (input.charAt(pos + i) == &#x27;(&#x27;) &#123;</span><br><span class="line">                countLeft++;</span><br><span class="line">            &#125; else if (input.charAt(pos + i) == &#x27;)&#x27;) &#123;</span><br><span class="line">                countRight++;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        String string = input.substring(pos, pos + i); //末尾是开区间，所以理论上存不了)，所以+1</span><br><span class="line">        pos = pos + i;</span><br><span class="line">        return string;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">private String getNumber() &#123;  &#x2F;&#x2F;注意-数字
+        StringBuilder sb &#x3D; new StringBuilder();
+        if (input.charAt(pos) &#x3D;&#x3D; &#39;$&#39;) &#123;
+            sb.append(&quot;+&quot;);
+            pos++;
+
+        &#125; else if (input.charAt(pos) &#x3D;&#x3D; &#39;%&#39;) &#123;
+            sb.append(&quot;-&quot;);
+            pos++;
+        &#125;
+        while (pos &lt; input.length() &amp;&amp; Character.isDigit(input.charAt(pos))) &#123;
+            sb.append(input.charAt(pos));
+            ++pos;
+        &#125;
+        return sb.toString();
+    &#125;
+
+    private String getUnknown() &#123;
+        StringBuilder sb &#x3D; new StringBuilder();
+        sb.append(input.charAt(pos));
+        if (this.isPower()) &#123;
+            sb.append(input.charAt(pos + 2));
+            pos &#x3D; pos + 2;
+        &#125;
+        pos++;
+        return sb.toString();
+    &#125;
+
+    public String getDerivative() &#123;
+        int countLeft &#x3D; 1;
+        int countRight &#x3D; 0;
+        int i;
+        for (i &#x3D; 3; countLeft &gt; countRight; i++) &#123; &#x2F;&#x2F;这里有一个bug，在扫描完)之后，i是会+1的，自动到下一个了，所以不用i+1
+            if (input.charAt(pos + i) &#x3D;&#x3D; &#39;(&#39;) &#123;
+                countLeft++;
+            &#125; else if (input.charAt(pos + i) &#x3D;&#x3D; &#39;)&#39;) &#123;
+                countRight++;
+            &#125;
+        &#125;
+        String string &#x3D; input.substring(pos, pos + i); &#x2F;&#x2F;末尾是开区间，所以理论上存不了)，所以+1
+        pos &#x3D; pos + i;
+        return string;
+    &#125;
+
+    public String getTriangle() &#123; &#x2F;&#x2F;cos(),0&#x3D;c,1&#x3D;o,2&#x3D;s,3&#x3D;(
+        int countLeft &#x3D; 1;
+        int countRight &#x3D; 0;
+        int i;
+        for (i &#x3D; 4; countLeft &gt; countRight; i++) &#123; &#x2F;&#x2F;这里有一个bug，在扫描完)之后，i是会+1的，自动到下一个了，所以不用i+1
+            if (input.charAt(pos + i) &#x3D;&#x3D; &#39;(&#39;) &#123;
+                countLeft++;
+            &#125; else if (input.charAt(pos + i) &#x3D;&#x3D; &#39;)&#39;) &#123;
+                countRight++;
+            &#125;
+        &#125;
+        String string &#x3D; input.substring(pos, pos + i); &#x2F;&#x2F;末尾是开区间，所以理论上存不了)，所以+1
+        pos &#x3D; pos + i;
+        return string;
+    &#125;
+</code></pre>
 <p>poly的乘法和加法，用静态方法就在于一个新建的考虑</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">public static Poly mul(Poly poly1, Poly poly2) &#123; //这个的意思是造俩乘法形成多项式</span><br><span class="line">        //迭代器&lt;&gt;里面是ArrayList里的对象类</span><br><span class="line">        Poly poly = new Poly();</span><br><span class="line">        for (Mono mono1 : poly1.monos) &#123;</span><br><span class="line">            for (Mono mono2 : poly2.monos) &#123;</span><br><span class="line">                poly.addMono(Mono.mul(mono1, mono2));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        poly.simplify();</span><br><span class="line">        return poly;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    public static Poly add(Poly poly1, Poly poly2) &#123;</span><br><span class="line">        Poly poly = new Poly();</span><br><span class="line">        for (Mono mono : poly1.monos) &#123;</span><br><span class="line">            poly.addMono(mono);</span><br><span class="line">        &#125;</span><br><span class="line">        for (Mono mono : poly2.monos) &#123;</span><br><span class="line">            poly.addMono(mono);</span><br><span class="line">        &#125;</span><br><span class="line">        poly.simplify();</span><br><span class="line">        return poly;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">public static Poly mul(Poly poly1, Poly poly2) &#123; &#x2F;&#x2F;这个的意思是造俩乘法形成多项式
+        &#x2F;&#x2F;迭代器&lt;&gt;里面是ArrayList里的对象类
+        Poly poly &#x3D; new Poly();
+        for (Mono mono1 : poly1.monos) &#123;
+            for (Mono mono2 : poly2.monos) &#123;
+                poly.addMono(Mono.mul(mono1, mono2));
+            &#125;
+        &#125;
+        poly.simplify();
+        return poly;
+
+    &#125;
+    public static Poly add(Poly poly1, Poly poly2) &#123;
+        Poly poly &#x3D; new Poly();
+        for (Mono mono : poly1.monos) &#123;
+            poly.addMono(mono);
+        &#125;
+        for (Mono mono : poly2.monos) &#123;
+            poly.addMono(mono);
+        &#125;
+        poly.simplify();
+        return poly;
+    &#125;</code></pre>
 <p>三角函数的求导方法</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">public Poly toDerivative(char parameter) &#123; //注意三角函数是带power的</span><br><span class="line">        if (this.power == 0) &#123;</span><br><span class="line">            Poly poly1 = new Poly(); //一定要用poly1，不然会在本地poly上搞</span><br><span class="line">            Mono mono = new Mono(0, 0, 0, new BigInteger(&quot;0&quot;), new ArrayList&lt;&gt;());</span><br><span class="line">            poly.addMono(mono);</span><br><span class="line">            return poly1;</span><br><span class="line">        &#125; //bug：会随机去掉三角函数里面乘出来的或者外面带的</span><br><span class="line">        // 0</span><br><span class="line">        //dx(x*sin(x**3))</span><br><span class="line">        if (isSin) &#123;</span><br><span class="line">            Triangle triangle = new Triangle(false, 1, this.poly);</span><br><span class="line">            ArrayList&lt;Triangle&gt; triangles = new ArrayList&lt;&gt;();</span><br><span class="line">            triangles.add(triangle);</span><br><span class="line">            if (this.power &gt;= 2) &#123;</span><br><span class="line">                Triangle triangle1 = new Triangle(true, this.power - 1, this.poly);</span><br><span class="line">                //注意，这里选择poly都是一个poly，相当于是把一个poly拆开了，所以要考虑修改poly的事情。</span><br><span class="line">                // 但是其实修改poly都是add,mul，都是新建的，要考虑add,mono的方法不是新建的。</span><br><span class="line">                triangles.add(triangle1);</span><br><span class="line">            &#125;</span><br><span class="line">            Mono mono1 = new Mono(0, 0, 0,</span><br><span class="line">                    new BigInteger(String.valueOf(this.power)), triangles);</span><br><span class="line">            Poly poly1 = new Poly();</span><br><span class="line">            poly1.addMono(mono1);</span><br><span class="line">            return Poly.mul(poly1, this.poly.toDerivative(parameter));</span><br><span class="line"></span><br><span class="line">        &#125; else &#123;</span><br><span class="line">            Triangle triangle = new Triangle(true, 1, this.poly);</span><br><span class="line">            ArrayList&lt;Triangle&gt; triangles = new ArrayList&lt;&gt;();</span><br><span class="line">            triangles.add(triangle);</span><br><span class="line">            if (this.power &gt;= 2) &#123;</span><br><span class="line">                Triangle triangle1 = new Triangle(false, this.power - 1, this.poly);</span><br><span class="line">                //注意，这里选择poly都是一个poly，相当于是把一个poly拆开了，所以要考虑修改poly的事情。</span><br><span class="line">                // 但是其实修改poly都是add,mul，都是新建的，要考虑add,mono的方法不是新建的。</span><br><span class="line">                triangles.add(triangle1);</span><br><span class="line">            &#125;</span><br><span class="line">            Mono mono1 = new Mono(0, 0, 0,</span><br><span class="line">                    new BigInteger(String.valueOf(this.power * -1)), triangles);</span><br><span class="line">            Poly poly1 = new Poly();</span><br><span class="line">            poly1.addMono(mono1);</span><br><span class="line">            return Poly.mul(poly1, this.poly.toDerivative(parameter));</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">public Poly toDerivative(char parameter) &#123; &#x2F;&#x2F;注意三角函数是带power的
+        if (this.power &#x3D;&#x3D; 0) &#123;
+            Poly poly1 &#x3D; new Poly(); &#x2F;&#x2F;一定要用poly1，不然会在本地poly上搞
+            Mono mono &#x3D; new Mono(0, 0, 0, new BigInteger(&quot;0&quot;), new ArrayList&lt;&gt;());
+            poly.addMono(mono);
+            return poly1;
+        &#125; &#x2F;&#x2F;bug：会随机去掉三角函数里面乘出来的或者外面带的
+        &#x2F;&#x2F; 0
+        &#x2F;&#x2F;dx(x*sin(x**3))
+        if (isSin) &#123;
+            Triangle triangle &#x3D; new Triangle(false, 1, this.poly);
+            ArrayList&lt;Triangle&gt; triangles &#x3D; new ArrayList&lt;&gt;();
+            triangles.add(triangle);
+            if (this.power &gt;&#x3D; 2) &#123;
+                Triangle triangle1 &#x3D; new Triangle(true, this.power - 1, this.poly);
+                &#x2F;&#x2F;注意，这里选择poly都是一个poly，相当于是把一个poly拆开了，所以要考虑修改poly的事情。
+                &#x2F;&#x2F; 但是其实修改poly都是add,mul，都是新建的，要考虑add,mono的方法不是新建的。
+                triangles.add(triangle1);
+            &#125;
+            Mono mono1 &#x3D; new Mono(0, 0, 0,
+                    new BigInteger(String.valueOf(this.power)), triangles);
+            Poly poly1 &#x3D; new Poly();
+            poly1.addMono(mono1);
+            return Poly.mul(poly1, this.poly.toDerivative(parameter));
+
+        &#125; else &#123;
+            Triangle triangle &#x3D; new Triangle(true, 1, this.poly);
+            ArrayList&lt;Triangle&gt; triangles &#x3D; new ArrayList&lt;&gt;();
+            triangles.add(triangle);
+            if (this.power &gt;&#x3D; 2) &#123;
+                Triangle triangle1 &#x3D; new Triangle(false, this.power - 1, this.poly);
+                &#x2F;&#x2F;注意，这里选择poly都是一个poly，相当于是把一个poly拆开了，所以要考虑修改poly的事情。
+                &#x2F;&#x2F; 但是其实修改poly都是add,mul，都是新建的，要考虑add,mono的方法不是新建的。
+                triangles.add(triangle1);
+            &#125;
+            Mono mono1 &#x3D; new Mono(0, 0, 0,
+                    new BigInteger(String.valueOf(this.power * -1)), triangles);
+            Poly poly1 &#x3D; new Poly();
+            poly1.addMono(mono1);
+            return Poly.mul(poly1, this.poly.toDerivative(parameter));
+        &#125;
+
+    &#125;</code></pre>
 <p>预处理时类似宏替换的操作,这两个像极了lexer和parser</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line">public String explode(String s) &#123; //扩展函数</span><br><span class="line">        StringBuilder stringBuilder = new StringBuilder();</span><br><span class="line">        int pos = 0;</span><br><span class="line"></span><br><span class="line">        while (pos &lt; s.length()) &#123;</span><br><span class="line">            if (&quot;fgh&quot;.indexOf(s.charAt(pos)) == -1) &#123;</span><br><span class="line">                stringBuilder.append(s.charAt(pos));</span><br><span class="line">                pos++;</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                int countLeft = 1;</span><br><span class="line">                int countRight = 0;</span><br><span class="line">                int i;</span><br><span class="line">                for (i = 2; countLeft &gt; countRight &amp;&amp; i &lt; s.length(); i++) &#123;</span><br><span class="line">                    //这里有一个bug，在扫描完)之后，i是会+1的，自动到下一个了，所以不用i+1</span><br><span class="line">                    if (s.charAt(pos + i) == &#x27;(&#x27;) &#123;</span><br><span class="line">                        countLeft++;</span><br><span class="line">                    &#125; else if (s.charAt(pos + i) == &#x27;)&#x27;) &#123;</span><br><span class="line">                        countRight++;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">                stringBuilder.append(&quot;(&quot;).append(</span><br><span class="line"></span><br><span class="line">                        substitute(s.charAt(pos), s.substring(pos + 2, pos + i - 1))).append(&quot;)&quot;);</span><br><span class="line">                pos = pos + i;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return stringBuilder.toString();</span><br><span class="line">public String substitute(char key, String pool) &#123; //替换函数</span><br><span class="line">        Define func = functionDefine.get(String.valueOf(key));</span><br><span class="line">        String ans = func.getDefine();</span><br><span class="line">        int brackersEqual = 0;//左括号加，有括号减</span><br><span class="line">        int pos = 0;</span><br><span class="line">        int signal = 0;</span><br><span class="line">        for (int i = 1; i &lt;= func.getParameterNumber(); i++) &#123; //需要break，不然进不了第二个i</span><br><span class="line">            for (; pos &lt; pool.length(); pos++) &#123; //第二轮这个pos还从头开始吗？</span><br><span class="line">                if (pool.charAt(pos) == &#x27;(&#x27;) &#123;</span><br><span class="line">                    brackersEqual++;</span><br><span class="line">                &#125; else if (pool.charAt(pos) == &#x27;)&#x27; &amp;&amp; i &lt; func.getParameterNumber()) &#123; //这个条件需要细细把握</span><br><span class="line">                    brackersEqual--;</span><br><span class="line"></span><br><span class="line">                &#125; else if ((pool.charAt(pos) == &#x27;,&#x27; &amp;&amp; brackersEqual == 0)) &#123;</span><br><span class="line">                    ans = func.modeReplace(i, ans, explode(pool.substring(signal, pos)));</span><br><span class="line">                    signal = pos + 1;</span><br><span class="line">                    pos++;</span><br><span class="line">                    break;</span><br><span class="line">                &#125; else if (pos == pool.length() - 1) &#123;</span><br><span class="line">                    ans = func.modeReplace(i, ans, explode(pool.substring(signal, pos + 1)));</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return ans;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">public String explode(String s) &#123; &#x2F;&#x2F;扩展函数
+        StringBuilder stringBuilder &#x3D; new StringBuilder();
+        int pos &#x3D; 0;
+
+        while (pos &lt; s.length()) &#123;
+            if (&quot;fgh&quot;.indexOf(s.charAt(pos)) &#x3D;&#x3D; -1) &#123;
+                stringBuilder.append(s.charAt(pos));
+                pos++;
+            &#125; else &#123;
+                int countLeft &#x3D; 1;
+                int countRight &#x3D; 0;
+                int i;
+                for (i &#x3D; 2; countLeft &gt; countRight &amp;&amp; i &lt; s.length(); i++) &#123;
+                    &#x2F;&#x2F;这里有一个bug，在扫描完)之后，i是会+1的，自动到下一个了，所以不用i+1
+                    if (s.charAt(pos + i) &#x3D;&#x3D; &#39;(&#39;) &#123;
+                        countLeft++;
+                    &#125; else if (s.charAt(pos + i) &#x3D;&#x3D; &#39;)&#39;) &#123;
+                        countRight++;
+                    &#125;
+                &#125;
+                stringBuilder.append(&quot;(&quot;).append(
+
+                        substitute(s.charAt(pos), s.substring(pos + 2, pos + i - 1))).append(&quot;)&quot;);
+                pos &#x3D; pos + i;
+            &#125;
+        &#125;
+        return stringBuilder.toString();
+public String substitute(char key, String pool) &#123; &#x2F;&#x2F;替换函数
+        Define func &#x3D; functionDefine.get(String.valueOf(key));
+        String ans &#x3D; func.getDefine();
+        int brackersEqual &#x3D; 0;&#x2F;&#x2F;左括号加，有括号减
+        int pos &#x3D; 0;
+        int signal &#x3D; 0;
+        for (int i &#x3D; 1; i &lt;&#x3D; func.getParameterNumber(); i++) &#123; &#x2F;&#x2F;需要break，不然进不了第二个i
+            for (; pos &lt; pool.length(); pos++) &#123; &#x2F;&#x2F;第二轮这个pos还从头开始吗？
+                if (pool.charAt(pos) &#x3D;&#x3D; &#39;(&#39;) &#123;
+                    brackersEqual++;
+                &#125; else if (pool.charAt(pos) &#x3D;&#x3D; &#39;)&#39; &amp;&amp; i &lt; func.getParameterNumber()) &#123; &#x2F;&#x2F;这个条件需要细细把握
+                    brackersEqual--;
+
+                &#125; else if ((pool.charAt(pos) &#x3D;&#x3D; &#39;,&#39; &amp;&amp; brackersEqual &#x3D;&#x3D; 0)) &#123;
+                    ans &#x3D; func.modeReplace(i, ans, explode(pool.substring(signal, pos)));
+                    signal &#x3D; pos + 1;
+                    pos++;
+                    break;
+                &#125; else if (pos &#x3D;&#x3D; pool.length() - 1) &#123;
+                    ans &#x3D; func.modeReplace(i, ans, explode(pool.substring(signal, pos + 1)));
+                &#125;
+            &#125;
+        &#125;
+        return ans;
+    &#125;
+</code></pre>
 <h2 id="感想体会"><a href="#感想体会" class="headerlink" title="感想体会"></a>感想体会</h2><p>oo第一单元我写的还是比较轻松的，究其原因我觉得还是因为使用了一个好的架构。</p>
 <p>对于一个工程而言，思想和方法这种经验上的东西，能起到神奇的作用，好的架构，能让工作者忽略一些不需要考虑的问题。所以在以后写代码前，一定要先想好框架，或者至少明确自己在做什么。</p>
 <p>然后就是关于一个复杂的工程，如何能让它简化？</p>

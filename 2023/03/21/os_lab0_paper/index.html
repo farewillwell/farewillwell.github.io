@@ -29,7 +29,7 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 
@@ -507,15 +507,52 @@
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
 
         
 
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h1 id="思考题"><a href="#思考题" class="headerlink" title="思考题"></a>思考题</h1><h2 id="Thinking-0-1-思考下列有关-Git-的问题："><a href="#Thinking-0-1-思考下列有关-Git-的问题：" class="headerlink" title="Thinking 0.1 思考下列有关 Git 的问题："></a>Thinking 0.1 思考下列有关 Git 的问题：</h2><p>cat后的结果：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">位于分支 master</span><br><span class="line"></span><br><span class="line">尚无提交</span><br><span class="line"></span><br><span class="line">未跟踪的文件:</span><br><span class="line">  （使用 &quot;git add &lt;文件&gt;...&quot; 以包含要提交的内容）</span><br><span class="line">        README.txt</span><br><span class="line">        Untracked.txt</span><br><span class="line"></span><br><span class="line">提交为空，但是存在尚未跟踪的文件（使用 &quot;git add&quot; 建立跟踪）</span><br><span class="line">位于分支 master</span><br><span class="line"></span><br><span class="line">尚无提交</span><br><span class="line"></span><br><span class="line">要提交的变更：</span><br><span class="line">  （使用 &quot;git rm --cached &lt;文件&gt;...&quot; 以取消暂存）</span><br><span class="line">        新文件：   README.txt</span><br><span class="line"></span><br><span class="line">未跟踪的文件:</span><br><span class="line">  （使用 &quot;git add &lt;文件&gt;...&quot; 以包含要提交的内容）</span><br><span class="line">        Stage.txt</span><br><span class="line">        Untracked.txt</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">位于分支 master
+
+尚无提交
+
+未跟踪的文件:
+  （使用 &quot;git add &lt;文件&gt;...&quot; 以包含要提交的内容）
+        README.txt
+        Untracked.txt
+
+提交为空，但是存在尚未跟踪的文件（使用 &quot;git add&quot; 建立跟踪）
+位于分支 master
+
+尚无提交
+
+要提交的变更：
+  （使用 &quot;git rm --cached &lt;文件&gt;...&quot; 以取消暂存）
+        新文件：   README.txt
+
+未跟踪的文件:
+  （使用 &quot;git add &lt;文件&gt;...&quot; 以包含要提交的内容）
+        Stage.txt
+        Untracked.txt
+</code></pre>
 <p>再次modify中的结果是不一样的：因为多了新建的文件，而且中间进行了一次提交，地位不同了.</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">位于分支 master</span><br><span class="line">尚未暂存以备提交的变更：</span><br><span class="line">  （使用 &quot;git add &lt;文件&gt;...&quot; 更新要提交的内容）</span><br><span class="line">  （使用 &quot;git restore &lt;文件&gt;...&quot; 丢弃工作区的改动）</span><br><span class="line">        修改：     README.txt</span><br><span class="line"></span><br><span class="line">未跟踪的文件:</span><br><span class="line">  （使用 &quot;git add &lt;文件&gt;...&quot; 以包含要提交的内容）</span><br><span class="line">        Modified.txt</span><br><span class="line">        Stage.txt</span><br><span class="line">        Untracked.txt</span><br><span class="line"></span><br><span class="line">修改尚未加入提交（使用 &quot;git add&quot; 和/或 &quot;git commit -a&quot;）</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">位于分支 master
+尚未暂存以备提交的变更：
+  （使用 &quot;git add &lt;文件&gt;...&quot; 更新要提交的内容）
+  （使用 &quot;git restore &lt;文件&gt;...&quot; 丢弃工作区的改动）
+        修改：     README.txt
+
+未跟踪的文件:
+  （使用 &quot;git add &lt;文件&gt;...&quot; 以包含要提交的内容）
+        Modified.txt
+        Stage.txt
+        Untracked.txt
+
+修改尚未加入提交（使用 &quot;git add&quot; 和&#x2F;或 &quot;git commit -a&quot;）</code></pre>
 <p>两次</p>
 <h2 id="Thinking-0-2"><a href="#Thinking-0-2" class="headerlink" title="Thinking 0.2"></a>Thinking 0.2</h2><p>仔细看看0.10，思考一下箭头中的 add the file 、stage the file 和<br>commit 分别对应的是 Git 里的哪些命令呢？</p>
 <p>add the file: git add filename</p>
@@ -546,9 +583,18 @@
 <p>• echo forth &gt;&gt; output.txt</p>
 <p>1.在屏幕上输出first<br>2.在output里出处second<br>3.覆写output输入third<br>4.在third的后面补充forth</p>
 <h2 id="Thinking-0-6"><a href="#Thinking-0-6" class="headerlink" title="Thinking 0.6"></a>Thinking 0.6</h2><p>test的内容</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">3                                                                 </span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">2</span><br><span class="line">1</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">3                                                                 
+2
+3
+2
+1</code></pre>
 
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">解释说明:a=1等命令分别设置变量a=1 b=2 c=a+b的值</span><br><span class="line"></span><br><span class="line">echo $c&gt;file1指 将$的值打印，&gt;file1代表重定向到file1里面</span><br><span class="line"></span><br><span class="line">cat file1&gt;file4代表将file1内容覆写输入到4中</span><br><span class="line">cat file2&gt;&gt;file4代表将file2内容追加到4中</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">解释说明:a&#x3D;1等命令分别设置变量a&#x3D;1 b&#x3D;2 c&#x3D;a+b的值
+
+echo $c&gt;file1指 将$的值打印，&gt;file1代表重定向到file1里面
+
+cat file1&gt;file4代表将file1内容覆写输入到4中
+cat file2&gt;&gt;file4代表将file2内容追加到4中</code></pre>
 <p>具体实现的过程中思考下列问<br>题: echo echo Shell Start 与 echo`echo Shell Start`效果是否有区别; echo echo<br>$c&gt;file1 与 echo `echo $c&gt;file1`效果是否有区别</p>
 <p>有区别，不加`代表后面的输出所有后面的字符，加上后输出后面命令执行的输出值.</p>
 <h1 id="难点分析"><a href="#难点分析" class="headerlink" title="难点分析"></a>难点分析</h1><p>整个实验的困难之处主要在于细节的控制</p>

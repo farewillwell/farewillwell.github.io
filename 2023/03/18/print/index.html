@@ -29,7 +29,7 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 
@@ -507,6 +507,9 @@
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
 
         
 
@@ -528,328 +531,406 @@
 <p>typedef本义和define：define在预处理的时候被替换，然后 typefef是在编译的时候被解析</p>
 <p>按照类似define的用法，不是 typedef void(*)() func这样好吗？</p>
 <p>但是事实上void(*)()不是一个类型的，typedef void(*func)(void)定义函数的时候就是直接相当于定义了函数的类型。</p>
-<h2 id="代码分析"><a href="#代码分析" class="headerlink" title="代码分析"></a>代码分析</h2><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;drivers/dev_cons.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;mmu.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">printcharc</span><span class="params">(<span class="type">char</span> ch)</span> &#123;</span><br><span class="line">	*((<span class="keyword">volatile</span> <span class="type">char</span> *)(KSEG1 + DEV_CONS_ADDRESS + DEV_CONS_PUTGETCHAR)) = ch;</span><br><span class="line">&#125;</span><br><span class="line">在定义的地址赋值为ch</span><br><span class="line"><span class="type">char</span> <span class="title function_">scancharc</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">	<span class="keyword">return</span> *((<span class="keyword">volatile</span> <span class="type">char</span> *)(KSEG1 + DEV_CONS_ADDRESS + DEV_CONS_PUTGETCHAR));</span><br><span class="line">&#125;</span><br><span class="line">把该地址的值拿出来</span><br><span class="line"><span class="type">void</span> <span class="title function_">halt</span><span class="params">(<span class="type">void</span>)</span> &#123;</span><br><span class="line">	*((<span class="keyword">volatile</span> <span class="type">char</span> *)(KSEG1 + DEV_CONS_ADDRESS + DEV_CONS_HALT)) = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line">把这个地址变成<span class="number">0</span></span><br></pre></td></tr></table></figure>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;drivers/dev_cons.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;print.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;printk.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;trap.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="type">void</span> <span class="title function_">outputk</span><span class="params">(<span class="type">void</span> *data, <span class="type">const</span> <span class="type">char</span> *buf, <span class="type">size_t</span> len)</span> &#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; len; i++) &#123;</span><br><span class="line">		printcharc(buf[i]);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="代码分析"><a href="#代码分析" class="headerlink" title="代码分析"></a>代码分析</h2><pre class="language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;drivers/dev_cons.h></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;mmu.h></span></span>
+
+<span class="token keyword">void</span> <span class="token function">printcharc</span><span class="token punctuation">(</span><span class="token keyword">char</span> ch<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	<span class="token operator">*</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token keyword">volatile</span> <span class="token keyword">char</span> <span class="token operator">*</span><span class="token punctuation">)</span><span class="token punctuation">(</span>KSEG1 <span class="token operator">+</span> DEV_CONS_ADDRESS <span class="token operator">+</span> DEV_CONS_PUTGETCHAR<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">=</span> ch<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+在定义的地址赋值为ch
+<span class="token keyword">char</span> <span class="token function">scancharc</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	<span class="token keyword">return</span> <span class="token operator">*</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token keyword">volatile</span> <span class="token keyword">char</span> <span class="token operator">*</span><span class="token punctuation">)</span><span class="token punctuation">(</span>KSEG1 <span class="token operator">+</span> DEV_CONS_ADDRESS <span class="token operator">+</span> DEV_CONS_PUTGETCHAR<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+把该地址的值拿出来
+<span class="token keyword">void</span> <span class="token function">halt</span><span class="token punctuation">(</span><span class="token keyword">void</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	<span class="token operator">*</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token keyword">volatile</span> <span class="token keyword">char</span> <span class="token operator">*</span><span class="token punctuation">)</span><span class="token punctuation">(</span>KSEG1 <span class="token operator">+</span> DEV_CONS_ADDRESS <span class="token operator">+</span> DEV_CONS_HALT<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+把这个地址变成<span class="token number">0</span></code></pre>
+<pre class="language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;drivers/dev_cons.h></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;print.h></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;printk.h></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;trap.h></span></span>
+
+<span class="token keyword">void</span> <span class="token function">outputk</span><span class="token punctuation">(</span><span class="token keyword">void</span> <span class="token operator">*</span>data<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>buf<span class="token punctuation">,</span> <span class="token class-name">size_t</span> len<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> len<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token function">printcharc</span><span class="token punctuation">(</span>buf<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+<span class="token punctuation">&#125;</span></code></pre>
 <p>这一段，一开始的void指针没啥用，然后buf是输入端，len是长度</p>
 <p>然后定义出来这个void —+char +len-&gt;为经典三元组</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">printk</span><span class="params">(<span class="type">const</span> <span class="type">char</span> *fmt, ...)</span> &#123;</span><br><span class="line">	va_list ap;</span><br><span class="line">	va_start(ap, fmt);</span><br><span class="line">	vprintfmt(outputk, <span class="literal">NULL</span>, fmt, ap);</span><br><span class="line">	va_end(ap);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-c" data-language="c"><code class="language-c"><span class="token keyword">void</span> <span class="token function">printk</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>fmt<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	va_list ap<span class="token punctuation">;</span>
+	<span class="token function">va_start</span><span class="token punctuation">(</span>ap<span class="token punctuation">,</span> fmt<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token function">vprintfmt</span><span class="token punctuation">(</span>outputk<span class="token punctuation">,</span> <span class="token constant">NULL</span><span class="token punctuation">,</span> fmt<span class="token punctuation">,</span> ap<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token function">va_end</span><span class="token punctuation">(</span>ap<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
 <p>并不是说还有好多参数啥的，事实上就pringf()里面的所有作为参数。只不过要至少有一个参数<br>这个是可变参数的函数，然后这几个东西都是定义好的宏，先定义va_last 表ap，然后用start就是另一个宏建表</p>
 <p>然后直接把建好的表穿进去，注意outprink是传进来一个函数指针，就是相当于传进来一个函数。然后传入表ap和变量参数表fmt</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">void</span> <span class="title function_">print_tf</span><span class="params">(<span class="keyword">struct</span> Trapframe *tf)</span> &#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="keyword">sizeof</span>(tf-&gt;regs) / <span class="keyword">sizeof</span>(tf-&gt;regs[<span class="number">0</span>]); i++) &#123;</span><br><span class="line">		printk(<span class="string">&quot;$%2d = %08x\n&quot;</span>, i, tf-&gt;regs[i]);</span><br><span class="line">	&#125;</span><br><span class="line">	printk(<span class="string">&quot;HI  = %08x\n&quot;</span>, tf-&gt;hi);</span><br><span class="line">	printk(<span class="string">&quot;LO  = %08x\n\n&quot;</span>, tf-&gt;lo);</span><br><span class="line">	printk(<span class="string">&quot;CP0.SR    = %08x\n&quot;</span>, tf-&gt;cp0_status);</span><br><span class="line">	printk(<span class="string">&quot;CP0.BadV  = %08x\n&quot;</span>, tf-&gt;cp0_badvaddr);</span><br><span class="line">	printk(<span class="string">&quot;CP0.Cause = %08x\n&quot;</span>, tf-&gt;cp0_cause);</span><br><span class="line">	printk(<span class="string">&quot;CP0.EPC   = %08x\n&quot;</span>, tf-&gt;cp0_epc);</span><br><span class="line">&#125;</span><br><span class="line">解读，</span><br></pre></td></tr></table></figure>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">ifndef</span> _print_h_</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> _print_h_</span></span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;stdarg.h&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span> <span class="string">&lt;types.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">typedef</span> <span class="title function_">void</span> <span class="params">(*<span class="type">fmt_callback_t</span>)</span><span class="params">(<span class="type">void</span> *data, <span class="type">const</span> <span class="type">char</span> *buf, <span class="type">size_t</span> len)</span>;</span><br><span class="line">这个操作就是定义函数指针类型，它不是一个简单的define函数，而是专门为函数设置的操作。</span><br><span class="line"></span><br><span class="line">fmt_callback是一个函数指针类型（*在它前面而不在<span class="type">void</span>紧后面），它的返回值是<span class="type">void</span>，它的参数是后面那三个</span><br><span class="line"></span><br><span class="line"> * <span class="string">&#x27;vprintfmt&#x27;</span> is a formatting function that allows different <span class="title function_">backends</span> <span class="params">(i.e., output sinks)</span></span><br><span class="line"> * to be used <span class="keyword">for</span> printing. It takes four arguments:</span><br><span class="line"> 解读这一段:vmprintfmt 是一个格式函数，允许不同的后端被用来输出。它有四个声明，</span><br><span class="line"> *</span><br><span class="line"> * - &#x27;<span class="type">fmt_callback_t</span> out&#x27;: a function pointer to the output sink that receives the</span><br><span class="line"> *   formatted output generated by &#x27;vprintfmt&#x27;.</span><br><span class="line"> 一个函数指针，类型是fmt，接受并输出被vprintfmt格式化好的字符串，所以其实在实现vprint的时候直接在想要输出的时候调用out就好了</span><br><span class="line"> <span class="type">fmt_callback_t</span></span><br><span class="line"> * - &#x27;<span class="type">void</span> *data&#x27;: a context pointer passed to the &#x27;out&#x27; callback function. It can be used</span><br><span class="line"> *   to store additional output sink-specific data.</span><br><span class="line"> data是一个内容指针，可以被用来存附加的特殊数据。</span><br><span class="line"> * - &#x27;<span class="type">const</span> <span class="type">char</span> *fmt&#x27;: the format <span class="built_in">string</span>, similar to the format <span class="built_in">string</span> in &#x27;<span class="built_in">printf</span>&#x27;.</span><br><span class="line">		格式化字符串</span><br><span class="line"> * - &#x27;va_list ap&#x27;: a variadic argument <span class="built_in">list</span> that provides the arguments to be formatted.</span><br><span class="line"> *			一个可变常数表，提供格式化参数声明</span><br><span class="line"> * The format callback function &#x27;out&#x27; receives the following arguments:</span><br><span class="line"> * out这个函数应当存这样的声明</span><br><span class="line"> * - &#x27;<span class="type">void</span> *data&#x27;: the same &#x27;data&#x27; pointer passed to &#x27;vprintfmt&#x27;.</span><br><span class="line"> * - &#x27;<span class="type">const</span> <span class="type">char</span> *buf&#x27;: a pointer to a buffer containing the formatted output.</span><br><span class="line"> 一个指针，要格式化输出的字符</span><br><span class="line"> * - &#x27;<span class="type">size_t</span> len&#x27;: the number of bytes in the buffer.字节长度，一个<span class="type">char</span>一个字节</span><br><span class="line"> *</span><br><span class="line"> * Note that the buffer may not be null-terminated and may contain embedded null bytes,</span><br><span class="line"> * so the output sink should treat &#x27;len&#x27; as the actual length of the buffer to print.</span><br><span class="line"> */</span><br><span class="line"><span class="type">void</span> <span class="title function_">vprintfmt</span><span class="params">(<span class="type">fmt_callback_t</span> out, <span class="type">void</span> *data, <span class="type">const</span> <span class="type">char</span> *fmt, va_list ap)</span>;</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="keyword">endif</span></span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre class="language-c" data-language="c"><code class="language-c"><span class="token keyword">void</span> <span class="token function">print_tf</span><span class="token punctuation">(</span><span class="token keyword">struct</span> <span class="token class-name">Trapframe</span> <span class="token operator">*</span>tf<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token keyword">sizeof</span><span class="token punctuation">(</span>tf<span class="token operator">-></span>regs<span class="token punctuation">)</span> <span class="token operator">/</span> <span class="token keyword">sizeof</span><span class="token punctuation">(</span>tf<span class="token operator">-></span>regs<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token function">printk</span><span class="token punctuation">(</span><span class="token string">"$%2d = %08x\n"</span><span class="token punctuation">,</span> i<span class="token punctuation">,</span> tf<span class="token operator">-></span>regs<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token function">printk</span><span class="token punctuation">(</span><span class="token string">"HI  = %08x\n"</span><span class="token punctuation">,</span> tf<span class="token operator">-></span>hi<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token function">printk</span><span class="token punctuation">(</span><span class="token string">"LO  = %08x\n\n"</span><span class="token punctuation">,</span> tf<span class="token operator">-></span>lo<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token function">printk</span><span class="token punctuation">(</span><span class="token string">"CP0.SR    = %08x\n"</span><span class="token punctuation">,</span> tf<span class="token operator">-></span>cp0_status<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token function">printk</span><span class="token punctuation">(</span><span class="token string">"CP0.BadV  = %08x\n"</span><span class="token punctuation">,</span> tf<span class="token operator">-></span>cp0_badvaddr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token function">printk</span><span class="token punctuation">(</span><span class="token string">"CP0.Cause = %08x\n"</span><span class="token punctuation">,</span> tf<span class="token operator">-></span>cp0_cause<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token function">printk</span><span class="token punctuation">(</span><span class="token string">"CP0.EPC   = %08x\n"</span><span class="token punctuation">,</span> tf<span class="token operator">-></span>cp0_epc<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span>
+解读，</code></pre>
+<pre class="language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">ifndef</span> <span class="token expression">_print_h_</span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span> <span class="token macro-name">_print_h_</span></span>
 
-<pre class=" language-c"><code class="language-c"><span class="token macro property">#<span class="token directive keyword">include</span> <span class="token string">&lt;print.h></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;stdarg.h></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">include</span> <span class="token string">&lt;types.h></span></span>
 
-<span class="token comment" spellcheck="true">/* forward declaration */</span>
-<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">print_char</span><span class="token punctuation">(</span>fmt_callback_t<span class="token punctuation">,</span> <span class="token keyword">void</span> <span class="token operator">*</span><span class="token punctuation">,</span> <span class="token keyword">char</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">print_str</span><span class="token punctuation">(</span>fmt_callback_t<span class="token punctuation">,</span> <span class="token keyword">void</span> <span class="token operator">*</span><span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">print_num</span><span class="token punctuation">(</span>fmt_callback_t<span class="token punctuation">,</span> <span class="token keyword">void</span> <span class="token operator">*</span><span class="token punctuation">,</span> <span class="token keyword">unsigned</span> <span class="token keyword">long</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">,</span> <span class="token keyword">char</span><span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">typedef</span> <span class="token keyword">void</span> <span class="token punctuation">(</span><span class="token operator">*</span><span class="token class-name">fmt_callback_t</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token keyword">void</span> <span class="token operator">*</span>data<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>buf<span class="token punctuation">,</span> <span class="token class-name">size_t</span> len<span class="token punctuation">)</span><span class="token punctuation">;</span>
+这个操作就是定义函数指针类型，它不是一个简单的define函数，而是专门为函数设置的操作。
+
+fmt_callback是一个函数指针类型（<span class="token operator">*</span>在它前面而不在<span class="token keyword">void</span>紧后面），它的返回值是<span class="token keyword">void</span>，它的参数是后面那三个
+
+ <span class="token operator">*</span> <span class="token char">'vprintfmt'</span> is a formatting function that allows different <span class="token function">backends</span> <span class="token punctuation">(</span>i<span class="token punctuation">.</span>e<span class="token punctuation">.</span><span class="token punctuation">,</span> output sinks<span class="token punctuation">)</span>
+ <span class="token operator">*</span> to be used <span class="token keyword">for</span> printing<span class="token punctuation">.</span> It takes four arguments<span class="token operator">:</span>
+ 解读这一段<span class="token operator">:</span>vmprintfmt 是一个格式函数，允许不同的后端被用来输出。它有四个声明，
+ <span class="token operator">*</span>
+ <span class="token operator">*</span> <span class="token operator">-</span> <span class="token char">'fmt_callback_t out'</span><span class="token operator">:</span> a function pointer to the output sink that receives the
+ <span class="token operator">*</span>   formatted output generated by <span class="token char">'vprintfmt'</span><span class="token punctuation">.</span>
+ 一个函数指针，类型是fmt，接受并输出被vprintfmt格式化好的字符串，所以其实在实现vprint的时候直接在想要输出的时候调用out就好了
+ <span class="token class-name">fmt_callback_t</span>
+ <span class="token operator">*</span> <span class="token operator">-</span> <span class="token char">'void *data'</span><span class="token operator">:</span> a context pointer passed to the <span class="token char">'out'</span> callback function<span class="token punctuation">.</span> It can be used
+ <span class="token operator">*</span>   to store additional output sink<span class="token operator">-</span>specific data<span class="token punctuation">.</span>
+ data是一个内容指针，可以被用来存附加的特殊数据。
+ <span class="token operator">*</span> <span class="token operator">-</span> <span class="token char">'const char *fmt'</span><span class="token operator">:</span> the format string<span class="token punctuation">,</span> similar to the format string in <span class="token char">'printf'</span><span class="token punctuation">.</span>
+		格式化字符串
+ <span class="token operator">*</span> <span class="token operator">-</span> <span class="token char">'va_list ap'</span><span class="token operator">:</span> a variadic argument list that provides the arguments to be formatted<span class="token punctuation">.</span>
+ <span class="token operator">*</span>			一个可变常数表，提供格式化参数声明
+ <span class="token operator">*</span> The format callback function <span class="token char">'out'</span> receives the following arguments<span class="token operator">:</span>
+ <span class="token operator">*</span> out这个函数应当存这样的声明
+ <span class="token operator">*</span> <span class="token operator">-</span> <span class="token char">'void *data'</span><span class="token operator">:</span> the same <span class="token char">'data'</span> pointer passed to <span class="token char">'vprintfmt'</span><span class="token punctuation">.</span>
+ <span class="token operator">*</span> <span class="token operator">-</span> <span class="token char">'const char *buf'</span><span class="token operator">:</span> a pointer to a buffer containing the formatted output<span class="token punctuation">.</span>
+ 一个指针，要格式化输出的字符
+ <span class="token operator">*</span> <span class="token operator">-</span> <span class="token char">'size_t len'</span><span class="token operator">:</span> the number of bytes in the buffer<span class="token punctuation">.</span>字节长度，一个<span class="token keyword">char</span>一个字节
+ <span class="token operator">*</span>
+ <span class="token operator">*</span> Note that the buffer may not be null<span class="token operator">-</span>terminated and may contain embedded null bytes<span class="token punctuation">,</span>
+ <span class="token operator">*</span> so the output sink should treat <span class="token char">'len'</span> as the actual length of the buffer to print<span class="token punctuation">.</span>
+ <span class="token operator">*</span><span class="token operator">/</span>
+<span class="token keyword">void</span> <span class="token function">vprintfmt</span><span class="token punctuation">(</span><span class="token class-name">fmt_callback_t</span> out<span class="token punctuation">,</span> <span class="token keyword">void</span> <span class="token operator">*</span>data<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>fmt<span class="token punctuation">,</span> va_list ap<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">endif</span></span>
+</code></pre>
+
+<pre><code class="c">#include &lt;print.h&gt;
+
+/* forward declaration */
+static void print_char(fmt_callback_t, void *, char, int, int);
+static void print_str(fmt_callback_t, void *, const char *, int, int);
+static void print_num(fmt_callback_t, void *, unsigned long, int, int, int, int, char, int);
 
 在声明的时候可以发现，其实这个的第一个参数是一个类型，这个类型是指向特定类型的函数的函数指针。
-<span class="token keyword">void</span> <span class="token function">vprintfmt</span><span class="token punctuation">(</span>fmt_callback_t out<span class="token punctuation">,</span> <span class="token keyword">void</span> <span class="token operator">*</span>data<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>fmt<span class="token punctuation">,</span> va_list ap<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+void vprintfmt(fmt_callback_t out, void *data, const char *fmt, va_list ap) &#123;
     这里传进来的out是输出函数。
-    <span class="token keyword">char</span> c<span class="token punctuation">;</span>
+    char c;
     c是用来取字符作为参数的
-    <span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>s<span class="token punctuation">;</span>
+    const char *s;
     输出的buf表，用来传到out这个函数指针里面。
-    <span class="token keyword">long</span> num<span class="token punctuation">;</span>
+    long num;
     用来输出的存数字的东西
 
-    <span class="token keyword">int</span> width<span class="token punctuation">;</span>
+    int width;
     宽度参数
-    <span class="token keyword">int</span> long_flag<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// output is long (rather than int)</span>
-    <span class="token keyword">long</span>标志
-    <span class="token keyword">int</span> neg_flag<span class="token punctuation">;</span>  <span class="token comment" spellcheck="true">// output is negative</span>
+    int long_flag; // output is long (rather than int)
+    long标志
+    int neg_flag;  // output is negative
     负号标志
-    <span class="token keyword">int</span> ladjust<span class="token punctuation">;</span>   <span class="token comment" spellcheck="true">// output is left-aligned</span>
+    int ladjust;   // output is left-aligned
     左对齐标志
-    <span class="token keyword">char</span> padc<span class="token punctuation">;</span>     <span class="token comment" spellcheck="true">// padding char</span>
+    char padc;     // padding char
     pad，填充，填充字符
 
-    <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token punctuation">;</span><span class="token punctuation">;</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">/* scan for the next '%' */</span>
-        <span class="token comment" spellcheck="true">/* Exercise 1.4: Your code here. (1/8) */</span>
-        <span class="token keyword">char</span><span class="token operator">*</span> cur<span class="token operator">=</span>fmt<span class="token punctuation">;</span>
-        <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token operator">*</span>cur<span class="token operator">!=</span><span class="token string">'%'</span><span class="token operator">&amp;&amp;</span> <span class="token operator">*</span>cur<span class="token operator">!=</span><span class="token string">'\0'</span><span class="token punctuation">)</span>
-        <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-            <span class="token comment" spellcheck="true">/* code */</span>cur<span class="token operator">++</span><span class="token punctuation">;</span>
-        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+    for (;;) &#123;
+        /* scan for the next &#39;%&#39; */
+        /* Exercise 1.4: Your code here. (1/8) */
+        char* cur=fmt;
+        while (*cur!=&#39;%&#39;&amp;&amp; *cur!=&#39;\0&#39;)
+        &#123;
+            /* code */cur++;
+        &#125;
         
-        <span class="token comment" spellcheck="true">/* flush the string found so far ,the flush means to show the string without 
-        % out directly on the stdout because no this*/</span> 
-        <span class="token comment" spellcheck="true">/* Exercise 1.4: Your code here. (2/8) */</span>
-        <span class="token function">out</span><span class="token punctuation">(</span>data<span class="token punctuation">,</span>fmt<span class="token punctuation">,</span>cur<span class="token operator">-</span>fmt<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">/* check "are we hitting the end?" */</span>
-        <span class="token comment" spellcheck="true">/* Exercise 1.4: Your code here. (3/8) */</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">*</span>cur<span class="token operator">==</span><span class="token string">'\0'</span><span class="token punctuation">)</span><span class="token keyword">break</span><span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">/* we found a '%' */</span>
-        <span class="token comment" spellcheck="true">/* Exercise 1.4: Your code here. (4/8) */</span>
-        cur<span class="token operator">++</span><span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">/* check format flag */</span>
-        <span class="token comment" spellcheck="true">/* Exercise 1.4: Your code here. (5/8) */</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">*</span>cur<span class="token operator">==</span><span class="token string">'-'</span><span class="token punctuation">)</span>
-        <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-            ladjust<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span>
-            cur<span class="token operator">++</span><span class="token punctuation">;</span>
-        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-        <span class="token keyword">else</span>
-        <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-            ladjust<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
-        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-        <span class="token keyword">if</span><span class="token punctuation">(</span><span class="token operator">*</span>cur<span class="token operator">==</span><span class="token string">'0'</span><span class="token punctuation">)</span>
-        <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-            padc<span class="token operator">=</span><span class="token string">'0'</span><span class="token punctuation">;</span>
-            cur<span class="token operator">++</span><span class="token punctuation">;</span>
-        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-        <span class="token keyword">else</span>
-        <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-            padc<span class="token operator">=</span><span class="token string">' '</span><span class="token punctuation">;</span>
-        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+        /* flush the string found so far ,the flush means to show the string without 
+        % out directly on the stdout because no this*/ 
+        /* Exercise 1.4: Your code here. (2/8) */
+        out(data,fmt,cur-fmt);
+        /* check &quot;are we hitting the end?&quot; */
+        /* Exercise 1.4: Your code here. (3/8) */
+        if(*cur==&#39;\0&#39;)break;
+        /* we found a &#39;%&#39; */
+        /* Exercise 1.4: Your code here. (4/8) */
+        cur++;
+        /* check format flag */
+        /* Exercise 1.4: Your code here. (5/8) */
+        if(*cur==&#39;-&#39;)
+        &#123;
+            ladjust=1;
+            cur++;
+        &#125;
+        else
+        &#123;
+            ladjust=0;
+        &#125;
+        if(*cur==&#39;0&#39;)
+        &#123;
+            padc=&#39;0&#39;;
+            cur++;
+        &#125;
+        else
+        &#123;
+            padc=&#39; &#39;;
+        &#125;
 
-        <span class="token comment" spellcheck="true">/* get width */</span>
-        <span class="token comment" spellcheck="true">/* Exercise 1.4: Your code here. (6/8) */</span>
-        width<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
-        <span class="token keyword">while</span><span class="token punctuation">(</span><span class="token operator">*</span>cur<span class="token operator">>=</span><span class="token string">'0'</span><span class="token operator">&amp;&amp;</span><span class="token operator">*</span>cur<span class="token operator">&lt;=</span><span class="token string">'9'</span><span class="token punctuation">)</span>
-        <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-            width<span class="token operator">=</span>width<span class="token operator">*</span><span class="token number">10</span><span class="token operator">+</span><span class="token operator">*</span>cur<span class="token operator">-</span><span class="token string">'0'</span><span class="token punctuation">;</span>
-            cur<span class="token operator">++</span><span class="token punctuation">;</span>
-        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-        <span class="token comment" spellcheck="true">/* check for long */</span>
-        <span class="token comment" spellcheck="true">/* Exercise 1.4: Your code here. (7/8) */</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">*</span>cur<span class="token operator">==</span><span class="token string">'l'</span><span class="token punctuation">)</span>
-        <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-            long_flag<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span>
-            cur<span class="token operator">++</span><span class="token punctuation">;</span>
-        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-        <span class="token keyword">else</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-            long_flag<span class="token operator">=</span><span class="token number">0</span><span class="token punctuation">;</span>
-        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+        /* get width */
+        /* Exercise 1.4: Your code here. (6/8) */
+        width=0;
+        while(*cur&gt;=&#39;0&#39;&amp;&amp;*cur&lt;=&#39;9&#39;)
+        &#123;
+            width=width*10+*cur-&#39;0&#39;;
+            cur++;
+        &#125;
+        /* check for long */
+        /* Exercise 1.4: Your code here. (7/8) */
+        if (*cur==&#39;l&#39;)
+        &#123;
+            long_flag=1;
+            cur++;
+        &#125;
+        else &#123;
+            long_flag=0;
+        &#125;
         
-        neg_flag <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
-        <span class="token keyword">switch</span> <span class="token punctuation">(</span><span class="token operator">*</span>fmt<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        <span class="token keyword">case</span> <span class="token string">'b'</span><span class="token punctuation">:</span>
-            <span class="token keyword">if</span> <span class="token punctuation">(</span>long_flag<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-                num <span class="token operator">=</span> <span class="token function">va_arg</span><span class="token punctuation">(</span>ap<span class="token punctuation">,</span> <span class="token keyword">long</span> <span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token keyword">else</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-                num <span class="token operator">=</span> <span class="token function">va_arg</span><span class="token punctuation">(</span>ap<span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-            <span class="token function">print_num</span><span class="token punctuation">(</span>out<span class="token punctuation">,</span> data<span class="token punctuation">,</span> num<span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> width<span class="token punctuation">,</span> ladjust<span class="token punctuation">,</span> padc<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">break</span><span class="token punctuation">;</span>
+        neg_flag = 0;
+        switch (*fmt) &#123;
+        case &#39;b&#39;:
+            if (long_flag) &#123;
+                num = va_arg(ap, long int);
+            &#125; else &#123;
+                num = va_arg(ap, int);
+            &#125;
+            print_num(out, data, num, 2, 0, width, ladjust, padc, 0);
+            break;
 
-        <span class="token keyword">case</span> <span class="token string">'d'</span><span class="token punctuation">:</span>
-        <span class="token keyword">case</span> <span class="token string">'D'</span><span class="token punctuation">:</span>
-            <span class="token keyword">if</span> <span class="token punctuation">(</span>long_flag<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-                num <span class="token operator">=</span> <span class="token function">va_arg</span><span class="token punctuation">(</span>ap<span class="token punctuation">,</span> <span class="token keyword">long</span> <span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token keyword">else</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-                num <span class="token operator">=</span> <span class="token function">va_arg</span><span class="token punctuation">(</span>ap<span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-            <span class="token keyword">if</span><span class="token punctuation">(</span>num<span class="token operator">&lt;</span><span class="token number">0</span><span class="token punctuation">)</span>
-            <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-                neg_flag<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span>
-                num<span class="token operator">=</span><span class="token operator">-</span>num<span class="token punctuation">;</span>
-            <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-            <span class="token function">print_num</span><span class="token punctuation">(</span>out<span class="token punctuation">,</span>data<span class="token punctuation">,</span>num<span class="token punctuation">,</span><span class="token number">10</span><span class="token punctuation">,</span>neg_flag<span class="token punctuation">,</span>width<span class="token punctuation">,</span>ladjust<span class="token punctuation">,</span>padc<span class="token punctuation">,</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token comment" spellcheck="true">/*
-             * Refer to other parts (case 'b', case 'o', etc.) and func 'print_num' to
-             * complete this part. Think the differences between case 'd' and the
-             * others. (hint: 'neg_flag').
-             */</span>
-            <span class="token comment" spellcheck="true">/* Exercise 1.4: Your code here. (8/8) */</span>
+        case &#39;d&#39;:
+        case &#39;D&#39;:
+            if (long_flag) &#123;
+                num = va_arg(ap, long int);
+            &#125; else &#123;
+                num = va_arg(ap, int);
+            &#125;
+            if(num&lt;0)
+            &#123;
+                neg_flag=1;
+                num=-num;
+            &#125;
+            print_num(out,data,num,10,neg_flag,width,ladjust,padc,0);
+            /*
+             * Refer to other parts (case &#39;b&#39;, case &#39;o&#39;, etc.) and func &#39;print_num&#39; to
+             * complete this part. Think the differences between case &#39;d&#39; and the
+             * others. (hint: &#39;neg_flag&#39;).
+             */
+            /* Exercise 1.4: Your code here. (8/8) */
             
-            <span class="token keyword">break</span><span class="token punctuation">;</span>
+            break;
 
-        <span class="token keyword">case</span> <span class="token string">'o'</span><span class="token punctuation">:</span>
-        <span class="token keyword">case</span> <span class="token string">'O'</span><span class="token punctuation">:</span>
-            <span class="token keyword">if</span> <span class="token punctuation">(</span>long_flag<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-                num <span class="token operator">=</span> <span class="token function">va_arg</span><span class="token punctuation">(</span>ap<span class="token punctuation">,</span> <span class="token keyword">long</span> <span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token keyword">else</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-                num <span class="token operator">=</span> <span class="token function">va_arg</span><span class="token punctuation">(</span>ap<span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-            <span class="token function">print_num</span><span class="token punctuation">(</span>out<span class="token punctuation">,</span> data<span class="token punctuation">,</span> num<span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> width<span class="token punctuation">,</span> ladjust<span class="token punctuation">,</span> padc<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">break</span><span class="token punctuation">;</span>
+        case &#39;o&#39;:
+        case &#39;O&#39;:
+            if (long_flag) &#123;
+                num = va_arg(ap, long int);
+            &#125; else &#123;
+                num = va_arg(ap, int);
+            &#125;
+            print_num(out, data, num, 8, 0, width, ladjust, padc, 0);
+            break;
 
-        <span class="token keyword">case</span> <span class="token string">'u'</span><span class="token punctuation">:</span>
-        <span class="token keyword">case</span> <span class="token string">'U'</span><span class="token punctuation">:</span>
-            <span class="token keyword">if</span> <span class="token punctuation">(</span>long_flag<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-                num <span class="token operator">=</span> <span class="token function">va_arg</span><span class="token punctuation">(</span>ap<span class="token punctuation">,</span> <span class="token keyword">long</span> <span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token keyword">else</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-                num <span class="token operator">=</span> <span class="token function">va_arg</span><span class="token punctuation">(</span>ap<span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-            <span class="token function">print_num</span><span class="token punctuation">(</span>out<span class="token punctuation">,</span> data<span class="token punctuation">,</span> num<span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> width<span class="token punctuation">,</span> ladjust<span class="token punctuation">,</span> padc<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">break</span><span class="token punctuation">;</span>
+        case &#39;u&#39;:
+        case &#39;U&#39;:
+            if (long_flag) &#123;
+                num = va_arg(ap, long int);
+            &#125; else &#123;
+                num = va_arg(ap, int);
+            &#125;
+            print_num(out, data, num, 10, 0, width, ladjust, padc, 0);
+            break;
 
-        <span class="token keyword">case</span> <span class="token string">'x'</span><span class="token punctuation">:</span>
-            <span class="token keyword">if</span> <span class="token punctuation">(</span>long_flag<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-                num <span class="token operator">=</span> <span class="token function">va_arg</span><span class="token punctuation">(</span>ap<span class="token punctuation">,</span> <span class="token keyword">long</span> <span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token keyword">else</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-                num <span class="token operator">=</span> <span class="token function">va_arg</span><span class="token punctuation">(</span>ap<span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-            <span class="token function">print_num</span><span class="token punctuation">(</span>out<span class="token punctuation">,</span> data<span class="token punctuation">,</span> num<span class="token punctuation">,</span> <span class="token number">16</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> width<span class="token punctuation">,</span> ladjust<span class="token punctuation">,</span> padc<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">break</span><span class="token punctuation">;</span>
+        case &#39;x&#39;:
+            if (long_flag) &#123;
+                num = va_arg(ap, long int);
+            &#125; else &#123;
+                num = va_arg(ap, int);
+            &#125;
+            print_num(out, data, num, 16, 0, width, ladjust, padc, 0);
+            break;
 
-        <span class="token keyword">case</span> <span class="token string">'X'</span><span class="token punctuation">:</span>
-            <span class="token keyword">if</span> <span class="token punctuation">(</span>long_flag<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-                num <span class="token operator">=</span> <span class="token function">va_arg</span><span class="token punctuation">(</span>ap<span class="token punctuation">,</span> <span class="token keyword">long</span> <span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token keyword">else</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-                num <span class="token operator">=</span> <span class="token function">va_arg</span><span class="token punctuation">(</span>ap<span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-            <span class="token function">print_num</span><span class="token punctuation">(</span>out<span class="token punctuation">,</span> data<span class="token punctuation">,</span> num<span class="token punctuation">,</span> <span class="token number">16</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> width<span class="token punctuation">,</span> ladjust<span class="token punctuation">,</span> padc<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">break</span><span class="token punctuation">;</span>
+        case &#39;X&#39;:
+            if (long_flag) &#123;
+                num = va_arg(ap, long int);
+            &#125; else &#123;
+                num = va_arg(ap, int);
+            &#125;
+            print_num(out, data, num, 16, 0, width, ladjust, padc, 1);
+            break;
 
-        <span class="token keyword">case</span> <span class="token string">'c'</span><span class="token punctuation">:</span>
-            c <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">char</span><span class="token punctuation">)</span><span class="token function">va_arg</span><span class="token punctuation">(</span>ap<span class="token punctuation">,</span> <span class="token keyword">int</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token function">print_char</span><span class="token punctuation">(</span>out<span class="token punctuation">,</span> data<span class="token punctuation">,</span> c<span class="token punctuation">,</span> width<span class="token punctuation">,</span> ladjust<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">break</span><span class="token punctuation">;</span>
+        case &#39;c&#39;:
+            c = (char)va_arg(ap, int);
+            print_char(out, data, c, width, ladjust);
+            break;
 
-        <span class="token keyword">case</span> <span class="token string">'s'</span><span class="token punctuation">:</span>
-            s <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">char</span> <span class="token operator">*</span><span class="token punctuation">)</span><span class="token function">va_arg</span><span class="token punctuation">(</span>ap<span class="token punctuation">,</span> <span class="token keyword">char</span> <span class="token operator">*</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token function">print_str</span><span class="token punctuation">(</span>out<span class="token punctuation">,</span> data<span class="token punctuation">,</span> s<span class="token punctuation">,</span> width<span class="token punctuation">,</span> ladjust<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token keyword">break</span><span class="token punctuation">;</span>
+        case &#39;s&#39;:
+            s = (char *)va_arg(ap, char *);
+            print_str(out, data, s, width, ladjust);
+            break;
 
-        <span class="token keyword">case</span> <span class="token string">'\0'</span><span class="token punctuation">:</span>
-            fmt<span class="token operator">--</span><span class="token punctuation">;</span>
-            <span class="token keyword">break</span><span class="token punctuation">;</span>
+        case &#39;\0&#39;:
+            fmt--;
+            break;
 
-        <span class="token keyword">default</span><span class="token punctuation">:</span>
-            <span class="token comment" spellcheck="true">/* output this char as it is */</span>
-            <span class="token function">out</span><span class="token punctuation">(</span>data<span class="token punctuation">,</span> fmt<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-        fmt<span class="token operator">++</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+        default:
+            /* output this char as it is */
+            out(data, fmt, 1);
+        &#125;
+        fmt++;
+    &#125;
+&#125;
 
-<span class="token comment" spellcheck="true">/* --------------- local help functions --------------------- */</span>
-<span class="token keyword">void</span> <span class="token function">print_char</span><span class="token punctuation">(</span>fmt_callback_t out<span class="token punctuation">,</span> <span class="token keyword">void</span> <span class="token operator">*</span>data<span class="token punctuation">,</span> <span class="token keyword">char</span> c<span class="token punctuation">,</span> <span class="token keyword">int</span> length<span class="token punctuation">,</span> <span class="token keyword">int</span> ladjust<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-    <span class="token keyword">int</span> i<span class="token punctuation">;</span>
+/* --------------- local help functions --------------------- */
+void print_char(fmt_callback_t out, void *data, char c, int length, int ladjust) &#123;
+    int i;
     输出一个字符。
 
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>length <span class="token operator">&lt;</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        length <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-    如果设定的长度小于<span class="token number">1</span>的话强制置<span class="token number">1</span>
-    <span class="token keyword">const</span> <span class="token keyword">char</span> space <span class="token operator">=</span> <span class="token string">' '</span><span class="token punctuation">;</span>（一个新奇的用法，这个<span class="token keyword">char</span>的地址就相当于传进来一个字符串指针
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>ladjust<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        <span class="token function">out</span><span class="token punctuation">(</span>data<span class="token punctuation">,</span> <span class="token operator">&amp;</span>c<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span> 注意要传指针
-        <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-            <span class="token function">out</span><span class="token punctuation">(</span>data<span class="token punctuation">,</span> <span class="token operator">&amp;</span>space<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token keyword">else</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> length <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-            <span class="token function">out</span><span class="token punctuation">(</span>data<span class="token punctuation">,</span> <span class="token operator">&amp;</span>space<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-        <span class="token function">out</span><span class="token punctuation">(</span>data<span class="token punctuation">,</span> <span class="token operator">&amp;</span>c<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+    if (length &lt; 1) &#123;
+        length = 1;
+    &#125;
+    如果设定的长度小于1的话强制置1
+    const char space = &#39; &#39;;（一个新奇的用法，这个char的地址就相当于传进来一个字符串指针
+    if (ladjust) &#123;
+        out(data, &amp;c, 1); 注意要传指针
+        for (i = 1; i &lt; length; i++) &#123;
+            out(data, &amp;space, 1);
+        &#125;
+    &#125; else &#123;
+        for (i = 0; i &lt; length - 1; i++) &#123;
+            out(data, &amp;space, 1);
+        &#125;
+        out(data, &amp;c, 1);
+    &#125;
+&#125;
 
-<span class="token keyword">void</span> <span class="token function">print_str</span><span class="token punctuation">(</span>fmt_callback_t out<span class="token punctuation">,</span> <span class="token keyword">void</span> <span class="token operator">*</span>data<span class="token punctuation">,</span> <span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>s<span class="token punctuation">,</span> <span class="token keyword">int</span> length<span class="token punctuation">,</span> <span class="token keyword">int</span> ladjust<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+void print_str(fmt_callback_t out, void *data, const char *s, int length, int ladjust) &#123;
     一个输出字符串的函数。
-    <span class="token keyword">int</span> i<span class="token punctuation">;</span>
-    <span class="token keyword">int</span> len <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
-    <span class="token keyword">const</span> <span class="token keyword">char</span> <span class="token operator">*</span>s1 <span class="token operator">=</span> s<span class="token punctuation">;</span>一个可变的，不改变形参的
-    <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token operator">*</span>s1<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>不是<span class="token string">'\0'</span>就<span class="token operator">++</span>，这个len指的是这个字符串真实的长度。
-        len<span class="token operator">++</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>length <span class="token operator">&lt;</span> len<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        length <span class="token operator">=</span> len<span class="token punctuation">;</span>length指的是设定的需要输出的对齐长度
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+    int i;
+    int len = 0;
+    const char *s1 = s;一个可变的，不改变形参的
+    while (*s1++) &#123;不是&#39;\0&#39;就++，这个len指的是这个字符串真实的长度。
+        len++;
+    &#125;
+    if (length &lt; len) &#123;
+        length = len;length指的是设定的需要输出的对齐长度
+    &#125;
 
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>ladjust<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span> 如果是左对齐，那么输出data，字符s，长度
-        <span class="token function">out</span><span class="token punctuation">(</span>data<span class="token punctuation">,</span> s<span class="token punctuation">,</span> len<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token operator">=</span> len<span class="token punctuation">;</span> i <span class="token operator">&lt;</span> length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-            <span class="token function">out</span><span class="token punctuation">(</span>data<span class="token punctuation">,</span> <span class="token string">" "</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>左对齐补充空白
-        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token keyword">else</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> length <span class="token operator">-</span> len<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-            <span class="token function">out</span><span class="token punctuation">(</span>data<span class="token punctuation">,</span> <span class="token string">" "</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>这个的意思是输出一个空格，然后相当于用来右对齐补充空白。
-        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-        <span class="token function">out</span><span class="token punctuation">(</span>data<span class="token punctuation">,</span> s<span class="token punctuation">,</span> len<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+    if (ladjust) &#123; 如果是左对齐，那么输出data，字符s，长度
+        out(data, s, len);
+        for (i = len; i &lt; length; i++) &#123;
+            out(data, &quot; &quot;, 1);左对齐补充空白
+        &#125;
+    &#125; else &#123;
+        for (i = 0; i &lt; length - len; i++) &#123;
+            out(data, &quot; &quot;, 1);这个的意思是输出一个空格，然后相当于用来右对齐补充空白。
+        &#125;
+        out(data, s, len);
+    &#125;
+&#125;
 
-<span class="token keyword">void</span> <span class="token function">print_num</span><span class="token punctuation">(</span>fmt_callback_t out<span class="token punctuation">,</span> <span class="token keyword">void</span> <span class="token operator">*</span>data<span class="token punctuation">,</span> <span class="token keyword">unsigned</span> <span class="token keyword">long</span> u<span class="token punctuation">,</span> <span class="token keyword">int</span> base<span class="token punctuation">,</span> <span class="token keyword">int</span> neg_flag<span class="token punctuation">,</span> <span class="token keyword">int</span> length<span class="token punctuation">,</span>
-           <span class="token keyword">int</span> ladjust<span class="token punctuation">,</span> <span class="token keyword">char</span> padc<span class="token punctuation">,</span> <span class="token keyword">int</span> upcase<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
+void print_num(fmt_callback_t out, void *data, unsigned long u, int base, int neg_flag, int length,
+           int ladjust, char padc, int upcase) &#123;
             negflag代表存进来的是负数。
             base是进制基数
             length是要求的长度
             ladjust左对齐参数
             padc代表填充的字符。
             upcase指的是大小写状态
-    <span class="token operator">*</span> algorithm <span class="token punctuation">:</span>
-     <span class="token operator">*</span>  <span class="token number">1</span><span class="token punctuation">.</span> prints the number from left to right in reverse form<span class="token punctuation">.</span>
+    * algorithm :
+     *  1. prints the number from left to right in reverse form.
      算法：逆向从左到右输出数字
-     <span class="token operator">*</span>  <span class="token number">2</span><span class="token punctuation">.</span> fill the remaining spaces with padc <span class="token keyword">if</span> length is longer than
-     <span class="token operator">*</span>     the actual length
+     *  2. fill the remaining spaces with padc if length is longer than
+     *     the actual length
      如果要求大于实际长度的话补充实际空格
-     <span class="token operator">*</span>     TRICKY <span class="token punctuation">:</span> <span class="token keyword">if</span> left adjusted<span class="token punctuation">,</span> no <span class="token string">"0"</span> padding<span class="token punctuation">.</span>
-     如果左对齐，不要补充<span class="token number">0</span>
-     <span class="token operator">*</span>		    <span class="token keyword">if</span> negtive<span class="token punctuation">,</span> insert  <span class="token string">"0"</span> padding between <span class="token string">"0"</span> and number<span class="token punctuation">.</span>
-    如果是负数的话在<span class="token number">0</span>和数字之间补充<span class="token number">0</span>
-     <span class="token operator">*</span>  <span class="token number">3</span><span class="token punctuation">.</span> <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>ladjust<span class="token punctuation">)</span> we reverse the whole string including paddings
-     <span class="token operator">*</span>  <span class="token number">4</span><span class="token punctuation">.</span> otherwise we only reverse the actual string representing the num<span class="token punctuation">.</span>
-     <span class="token operator">*</span><span class="token operator">/</span>
+     *     TRICKY : if left adjusted, no &quot;0&quot; padding.
+     如果左对齐，不要补充0
+     *		    if negtive, insert  &quot;0&quot; padding between &quot;0&quot; and number.
+    如果是负数的话在0和数字之间补充0
+     *  3. if (!ladjust) we reverse the whole string including paddings
+     *  4. otherwise we only reverse the actual string representing the num.
+     */
         输出数字
-    <span class="token keyword">int</span> actualLength <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>实际的长度
-    <span class="token keyword">char</span> buf<span class="token punctuation">[</span>length <span class="token operator">+</span> <span class="token number">70</span><span class="token punctuation">]</span><span class="token punctuation">;</span>将要输出的格式化字符串
-    <span class="token keyword">char</span> <span class="token operator">*</span>p <span class="token operator">=</span> buf<span class="token punctuation">;</span>可移动的字符指针
-    <span class="token keyword">int</span> i<span class="token punctuation">;</span>
+    int actualLength = 0;实际的长度
+    char buf[length + 70];将要输出的格式化字符串
+    char *p = buf;可移动的字符指针
+    int i;
     u是实际传进来的数字，
-    <span class="token keyword">do</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        <span class="token keyword">int</span> tmp <span class="token operator">=</span> u <span class="token operator">%</span> base<span class="token punctuation">;</span>
-        <span class="token keyword">if</span> <span class="token punctuation">(</span>tmp <span class="token operator">&lt;=</span> <span class="token number">9</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-            <span class="token operator">*</span>p<span class="token operator">++</span> <span class="token operator">=</span> <span class="token string">'0'</span> <span class="token operator">+</span> tmp<span class="token punctuation">;</span>
-        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token punctuation">(</span>upcase<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-            <span class="token operator">*</span>p<span class="token operator">++</span> <span class="token operator">=</span> <span class="token string">'A'</span> <span class="token operator">+</span> tmp <span class="token operator">-</span> <span class="token number">10</span><span class="token punctuation">;</span>
-        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token keyword">else</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-            <span class="token operator">*</span>p<span class="token operator">++</span> <span class="token operator">=</span> <span class="token string">'a'</span> <span class="token operator">+</span> tmp <span class="token operator">-</span> <span class="token number">10</span><span class="token punctuation">;</span>
-        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-        u <span class="token operator">/</span><span class="token operator">=</span> base<span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token keyword">while</span> <span class="token punctuation">(</span>u <span class="token operator">!=</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    do &#123;
+        int tmp = u % base;
+        if (tmp &lt;= 9) &#123;
+            *p++ = &#39;0&#39; + tmp;
+        &#125; else if (upcase) &#123;
+            *p++ = &#39;A&#39; + tmp - 10;
+        &#125; else &#123;
+            *p++ = &#39;a&#39; + tmp - 10;
+        &#125;
+        u /= base;
+    &#125; while (u != 0);
 
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>neg_flag<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        <span class="token operator">*</span>p<span class="token operator">++</span> <span class="token operator">=</span> <span class="token string">'-'</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+    if (neg_flag) &#123;
+        *p++ = &#39;-&#39;;
+    &#125;
 
-    <span class="token comment" spellcheck="true">/* figure out actual length and adjust the maximum length */</span>
-    actualLength <span class="token operator">=</span> p <span class="token operator">-</span> buf<span class="token punctuation">;</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>length <span class="token operator">&lt;</span> actualLength<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        length <span class="token operator">=</span> actualLength<span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+    /* figure out actual length and adjust the maximum length */
+    actualLength = p - buf;
+    if (length &lt; actualLength) &#123;
+        length = actualLength;
+    &#125;
 
-    <span class="token comment" spellcheck="true">/* add padding */</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>ladjust<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        padc <span class="token operator">=</span> <span class="token string">' '</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>neg_flag <span class="token operator">&amp;&amp;</span> <span class="token operator">!</span>ladjust <span class="token operator">&amp;&amp;</span> <span class="token punctuation">(</span>padc <span class="token operator">==</span> <span class="token string">'0'</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token operator">=</span> actualLength <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> length <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-            buf<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> padc<span class="token punctuation">;</span>
-        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-        buf<span class="token punctuation">[</span>length <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">'-'</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token keyword">else</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        <span class="token keyword">for</span> <span class="token punctuation">(</span>i <span class="token operator">=</span> actualLength<span class="token punctuation">;</span> i <span class="token operator">&lt;</span> length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-            buf<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> padc<span class="token punctuation">;</span>
-        <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+    /* add padding */
+    if (ladjust) &#123;
+        padc = &#39; &#39;;
+    &#125;
+    if (neg_flag &amp;&amp; !ladjust &amp;&amp; (padc == &#39;0&#39;)) &#123;
+        for (i = actualLength - 1; i &lt; length - 1; i++) &#123;
+            buf[i] = padc;
+        &#125;
+        buf[length - 1] = &#39;-&#39;;
+    &#125; else &#123;
+        for (i = actualLength; i &lt; length; i++) &#123;
+            buf[i] = padc;
+        &#125;
+    &#125;
 
-    <span class="token comment" spellcheck="true">/* prepare to reverse the string */</span>
-    <span class="token keyword">int</span> begin <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
-    <span class="token keyword">int</span> end<span class="token punctuation">;</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>ladjust<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        end <span class="token operator">=</span> actualLength <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span> <span class="token keyword">else</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        end <span class="token operator">=</span> length <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+    /* prepare to reverse the string */
+    int begin = 0;
+    int end;
+    if (ladjust) &#123;
+        end = actualLength - 1;
+    &#125; else &#123;
+        end = length - 1;
+    &#125;
 
-    <span class="token comment" spellcheck="true">/* adjust the string pointer */</span>
-    <span class="token keyword">while</span> <span class="token punctuation">(</span>end <span class="token operator">></span> begin<span class="token punctuation">)</span> <span class="token operator">&amp;</span>#<span class="token number">123</span><span class="token punctuation">;</span>
-        <span class="token keyword">char</span> tmp <span class="token operator">=</span> buf<span class="token punctuation">[</span>begin<span class="token punctuation">]</span><span class="token punctuation">;</span>
-        buf<span class="token punctuation">[</span>begin<span class="token punctuation">]</span> <span class="token operator">=</span> buf<span class="token punctuation">[</span>end<span class="token punctuation">]</span><span class="token punctuation">;</span>
-        buf<span class="token punctuation">[</span>end<span class="token punctuation">]</span> <span class="token operator">=</span> tmp<span class="token punctuation">;</span>
-        begin<span class="token operator">++</span><span class="token punctuation">;</span>
-        end<span class="token operator">--</span><span class="token punctuation">;</span>
-    <span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+    /* adjust the string pointer */
+    while (end &gt; begin) &#123;
+        char tmp = buf[begin];
+        buf[begin] = buf[end];
+        buf[end] = tmp;
+        begin++;
+        end--;
+    &#125;
 
-    <span class="token function">out</span><span class="token punctuation">(</span>data<span class="token punctuation">,</span> buf<span class="token punctuation">,</span> length<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token operator">&amp;</span>#<span class="token number">125</span><span class="token punctuation">;</span>
+    out(data, buf, length);
+&#125;
 </code></pre>
 
                 

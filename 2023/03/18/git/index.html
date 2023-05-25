@@ -29,7 +29,7 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 
@@ -507,6 +507,9 @@
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
 
         
 
@@ -533,7 +536,7 @@
 <h2 id="git-commit"><a href="#git-commit" class="headerlink" title="git commit"></a>git commit</h2><p>使用 git commit -m <message> 这个命令将暂存区的修改提交到储存库中。<strong>当 message 参数有空格时需要把 message 用引号括起来</strong>。在提交时，要求给出一段说明性文字。这段文字可以任意填写，但建议按照提交内容填写，以保证多人协作时的可读性。本实验不会涉及多人协作，所以方便自己开发即可。</message></p>
 <h2 id="git-push"><a href="#git-push" class="headerlink" title="git push"></a>git push</h2><p>这个命令将本地的 commit 推送到一个远程仓库。在课程实验中，这个命令可以将你的 commit 推送到 GitLab。</p>
 <h2 id="git-pull"><a href="#git-pull" class="headerlink" title="git pull"></a>git pull</h2><p>这个命令将远程新建的分支下载到本地，并且将远端的更改合并到当前的分支。在利用评测机进行实验分支的初始化之后，可以在开发机中使用这个命令来将新的分支下载到本地。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git pull origin（远端）  master（本地分支）</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">git pull origin（远端）  master（本地分支）</code></pre>
 
 <p><strong>.git默认不可见，需要点击查看来看这个</strong></p>
 <h2 id="git-clean"><a href="#git-clean" class="headerlink" title="git clean"></a>git clean</h2><h2 id="git拉取和版本分支"><a href="#git拉取和版本分支" class="headerlink" title="git拉取和版本分支"></a>git拉取和版本分支</h2><p>在一个仓库里面，想要git clone的那个连接，都是针对仓库的，而没有针对分支，所以想要git clone下来一个新的分支，需要</p>
@@ -545,7 +548,7 @@
 <p>注意git的分支都是从一个已经存在的东西开始创建的，所以需要考虑</p>
 <p>删除一切会把git文件删除，然后会导致不再是git仓库。</p>
 <p>一定要在新建的时候用这个命令</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">在编译器的控制台里输入 git clone -b + 分支名 + 仓库地址，其中-b=-branch（分支）</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">在编译器的控制台里输入 git clone -b + 分支名 + 仓库地址，其中-b&#x3D;-branch（分支）</code></pre>
 <p>.</p>
 <p>注意！！</p>
 <h1 id="关键技巧"><a href="#关键技巧" class="headerlink" title="关键技巧"></a>关键技巧</h1><p>在远程仓库新建分支之后，直接pull即可，所有的分支都会被拉下来合并（注意初始是clone，后来是合并），然后你在本地直接check 分支就行了.</p>

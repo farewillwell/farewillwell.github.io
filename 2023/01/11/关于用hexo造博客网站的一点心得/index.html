@@ -29,7 +29,7 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 
@@ -507,6 +507,9 @@
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
 
         
 
@@ -518,24 +521,29 @@
 <p><a target="_blank" rel="noopener" href="https://nodejs.org/en/">从官网下载</a></p>
 <p>打开是这样的，这里建议选左边的，因为新的版本可能不稳定什么的，会出现奇怪的bug，左边的是已经被证明稳定可靠的版本，功能的话也好用<br><img src="/../images/nodejs_down.png" alt="down"></p>
 <p>一定要保证这个东西的文件放在d盘，然后配环境变量的时候要写好，放到d盘<br>只有在输入命令</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">node -v</span><br><span class="line">npm -v</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre class="language-c" data-language="c"><code class="language-c">node <span class="token operator">-</span>v
+npm <span class="token operator">-</span>v
+</code></pre>
 <p>都有效的时候才能认为配好了(有效指的是前两个输出是版本号)<br><img src="/../images/down_ok.png" alt="ok"></p>
 <p>然后，众所周知什么东西都自动喜欢往C盘安装，但是C盘又小又会用来下载一些环境级别的东西(比如笔者配Java的时候一开始安装到D就寄，只能c盘)，我们希望能不放在C的东西往D盘塞</p>
 <p>所以想要换一个默认的下载路径和缓存路径，先在nodejs的文件里建两个文件（前两个）<br><img src="/../images/cache.png" alt="cache"><br>为了防止后面出现奇怪的bug，命令行因为权限不够运行不了什么的（具体看电脑而异）我们需要更改一下权限：<br><img src="/../images/cache_shuxing.png" alt="shuxing"><br>组或用户名有4个，点编辑每个都要编辑成完全控制那里点上对号，然后点确定，global也一样</p>
 <p>然后在cmd里分别输入</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm config set prefix &quot;D:\nodejs\node_global&quot;</span><br><span class="line">npm config set cache &quot;D:\nodejs\node_cache&quot;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">npm config set prefix &quot;D:\nodejs\node_global&quot;
+npm config set cache &quot;D:\nodejs\node_cache&quot;</code></pre>
 <p>（这里假如没上面的改权限可能出bug）输出的结果是一个空白行，没有任何反应（有输出一般是报错）<br>然后更改环境变量（学过了吗？）：<br>在系统变量中新建一个变量名为“NODE_PATH”，值为“D:\nodejs\node_global\node_modules</p>
 <p>然后编辑用户变量里的Path，将相应npm的路径改为：D:\nodejs\node_global（找那个带npm的路径，改成这个）</p>
 <p>然后再在命令行里输入这个</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install webpack -g</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">npm install webpack -g</code></pre>
 <p>笔者电脑的效果是<br><img src="/../images/_g_output.png" alt="output"></p>
 <h3 id="关于hexo命令"><a href="#关于hexo命令" class="headerlink" title="关于hexo命令"></a>关于hexo命令</h3><p>先新建一个文件夹，随便叫啥，作为你博客的文件夹，然后再这个文件夹里git bash（或者在cmd里输入</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g hexo-cli </span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">npm install -g hexo-cli </code></pre>
 <p>这个东西把hexo下到这个文件夹里<br>然后就使用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo init</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">hexo init</code></pre>
 <p> ：在本地空文件造一个blog，之后需要下载东西</p>
 <p>hexo g 静态部署<br>hexo d 开depoly<br>为了严谨（）</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">hexo clean   #清除缓存文件 db.json 和已生成的静态文件 public</span><br><span class="line">hexo g       #生成网站静态文件到默认设置的 public 文件夹(hexo generate 的缩写)</span><br><span class="line">hexo d       #自动生成网站静态文件，并部署到设定的仓库(hexo deploy 的缩写)</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">hexo clean   #清除缓存文件 db.json 和已生成的静态文件 public
+hexo g       #生成网站静态文件到默认设置的 public 文件夹(hexo generate 的缩写)
+hexo d       #自动生成网站静态文件，并部署到设定的仓库(hexo deploy 的缩写)</code></pre>
 
 
 <p>之后博客文件已经搭建成功了。我们可以在本地看到底是什么情况</p>
@@ -556,7 +564,7 @@
 <p>有了账号，我们要进行库和秘钥的配置。</p>
 <p>首先要new一个github库，这个库我们叫做[你的github名字].github.io，它就是我们将来建一个别人能访问的网页所需要依靠的基础单元</p>
 <p>比如我的是</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">farewell.github.io</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">farewell.github.io</code></pre>
 <p>这样就建好了一个库，下面我们需要给这个库分配一个网站，一般的都是用GitHub直接分配的，就是说网站出来就是</p>
 <p>https&#x2F;&#x2F;farewell.github.io</p>
 <p>但是据说这个似乎有点慢，而且不是那么稳定？</p>
@@ -564,9 +572,14 @@
 <p><img src="/../images/ne_signin.png" alt="netlify"></p>
 <p>然后点击Get start for free，选择GitHub登录。</p>
 <p>然后就是对这个库进行绑定<br>具体操作是<br>打开_config.yml<br>下滑到文件底部，填上如下内容：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">  type: git</span><br><span class="line">  repository: []  #不要括号，括号里写你的仓库地址</span><br><span class="line">  branch: master</span><br></pre></td></tr></table></figure>
+<pre class="language-c" data-language="c"><code class="language-c">deploy<span class="token operator">:</span>
+  type<span class="token operator">:</span> git
+  repository<span class="token operator">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>  #不要括号，括号里写你的仓库地址
+  branch<span class="token operator">:</span> master</code></pre>
 <p>（branch填什么存疑，默认是branch，要是你换了就填那个新分支即可）</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">然后回到 Blog 文件夹中，打开 Git Bash，安装Git部署插件，输入命令：</span><br><span class="line"></span><br><span class="line">npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">然后回到 Blog 文件夹中，打开 Git Bash，安装Git部署插件，输入命令：
+
+npm install hexo-deployer-git --save</code></pre>
 <p>这样就绑定好了。</p>
 <p>注意，之前被Git提交搞麻了，这里说明几点</p>
 <p>1.一旦绑好了之后就不需要再用Git提交了，只要在本地改了之后输入</p>
@@ -580,16 +593,28 @@
 <h2 id="关于一些bug"><a href="#关于一些bug" class="headerlink" title="关于一些bug"></a>关于一些bug</h2><p>点开这个连接看看？<br><a target="_blank" rel="noopener" href="http://t.zoukankan.com/yzhihao-p-6964208.html">点击前往</a></p>
 <h3 id="奇奇怪怪的bug"><a href="#奇奇怪怪的bug" class="headerlink" title="奇奇怪怪的bug"></a>奇奇怪怪的bug</h3><p>笔者在为自己的相册换了一些图片之后，发现了一个很烦人的bug，就是显示出现了document separator没有检测到，这个东西翻译过来应该是一个分割符，然后根据给出的行和列，去找。<br>原因是笔者对于data的资源没有足够的空格。导致出了bug。</p>
 <p>解决：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">（1）出现这种情况，一般都是缺少空格，在:冒号之后要有空格！检查x行y列附近的冒号，其之后是否跟了空格。</span><br><span class="line"></span><br><span class="line">（2）仔细检查_config.yml文件中所有冒号后面的空格，格式很严格，必须是只有一个，半角。不管是多了还是少了都会报错，这是yml解释器所定义的语法。如果不确定的话，将输入法调整到英文模式，删除所有冒号后面的空格重新输入，不要使用Tab。</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">（1）出现这种情况，一般都是缺少空格，在:冒号之后要有空格！检查x行y列附近的冒号，其之后是否跟了空格。
+
+（2）仔细检查_config.yml文件中所有冒号后面的空格，格式很严格，必须是只有一个，半角。不管是多了还是少了都会报错，这是yml解释器所定义的语法。如果不确定的话，将输入法调整到英文模式，删除所有冒号后面的空格重新输入，不要使用Tab。</code></pre>
 <p>(引用自上述链接)</p>
 <p>对比原来的代码，发现确实少了几个空格，加上后就好了。</p>
-<h3 id="关于不能执行脚本"><a href="#关于不能执行脚本" class="headerlink" title="关于不能执行脚本"></a>关于不能执行脚本</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">hexo : 无法加载文件 C:\Users\Lenovo\AppData\Roaming\npm\hexo.ps1，因为在此系统上禁止运行脚本。有关详细信息，请参阅 http</span><br><span class="line">s:/go.microsoft.com/fwlink/?LinkID=135170 中的 about_Execution_Policies。</span><br><span class="line">所在位置 行:1 字符: 1</span><br><span class="line">+ hexo clean</span><br><span class="line">+ ~~~~</span><br><span class="line">    + CategoryInfo          : SecurityError: (:) []，PSSecurityException</span><br><span class="line">    + FullyQualifiedErrorId : UnauthorizedAccess</span><br></pre></td></tr></table></figure>
+<h3 id="关于不能执行脚本"><a href="#关于不能执行脚本" class="headerlink" title="关于不能执行脚本"></a>关于不能执行脚本</h3><pre class="language-none"><code class="language-none">hexo : 无法加载文件 C:\Users\Lenovo\AppData\Roaming\npm\hexo.ps1，因为在此系统上禁止运行脚本。有关详细信息，请参阅 http
+s:&#x2F;go.microsoft.com&#x2F;fwlink&#x2F;?LinkID&#x3D;135170 中的 about_Execution_Policies。
+所在位置 行:1 字符: 1
++ hexo clean
++ ~~~~
+    + CategoryInfo          : SecurityError: (:) []，PSSecurityException
+    + FullyQualifiedErrorId : UnauthorizedAccess</code></pre>
 <p>在原本可以的文件夹下输入这个之后，出现了如下报错</p>
 <p>但是使用cmd就可以，如何解决？</p>
 <p>原因是： 首次在计算机上启动 Windows PowerShell 时，现用执行策略很可能是 Restricted（默认设置）。Restricted 策略不允许任何脚本运行。<br>那么就需要收到开启运行脚本：</p>
 <p>win+x 打开PowerShell（管理员）<br>set-ExecutionPolicy RemoteSigned &#x2F;&#x2F;设置为打开</p>
 <p>键入Y或者A,同意（我没出现这一步）<br>执行get-executionpolicy查看是否更改成功，为RemoteSigned表示成功</p>
-<h2 id="部署错误"><a href="#部署错误" class="headerlink" title="部署错误"></a>部署错误</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Error: Spawn failed</span><br><span class="line">    at ChildProcess.&lt;anonymous&gt; (D:\bolg\node_modules\hexo-util\lib\spawn.js:51:21)</span><br><span class="line">    at ChildProcess.emit (node:events:513:28)</span><br><span class="line">    at cp.emit (D:\bolg\node_modules\cross-spawn\lib\enoent.js:34:29)</span><br><span class="line">    at ChildProcess._handle.onexit (node:internal/child_process:291:12)</span><br></pre></td></tr></table></figure>
+<h2 id="部署错误"><a href="#部署错误" class="headerlink" title="部署错误"></a>部署错误</h2><pre class="language-none"><code class="language-none">Error: Spawn failed
+    at ChildProcess.&lt;anonymous&gt; (D:\bolg\node_modules\hexo-util\lib\spawn.js:51:21)
+    at ChildProcess.emit (node:events:513:28)
+    at cp.emit (D:\bolg\node_modules\cross-spawn\lib\enoent.js:34:29)
+    at ChildProcess._handle.onexit (node:internal&#x2F;child_process:291:12)</code></pre>
 <p>Please make sure you have the correct access rights<br>and the repository exists.<br>FATAL Something’s wrong. Maybe you can find the solution here: <a target="_blank" rel="noopener" href="https://hexo.io/docs/troubleshooting.html">https://hexo.io/docs/troubleshooting.html</a></p>
 <p>解决：</p>
 <h3 id="1"><a href="#1" class="headerlink" title="1"></a>1</h3><p>解决方法：一<br>1.删除 .deploy_git 文件夹;<br>2.输入 git config –global core.autocrlf false<br>3.然后，依次执行：</p>

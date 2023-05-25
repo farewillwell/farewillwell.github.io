@@ -29,7 +29,7 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 
@@ -507,6 +507,9 @@
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
 
         
 
@@ -524,14 +527,24 @@
 <h1 id="task1："><a href="#task1：" class="headerlink" title="task1："></a>task1：</h1><h2 id="分析三次作业中同步块的设置和锁的选择，并分析锁与同步块中处理语句之间的关系"><a href="#分析三次作业中同步块的设置和锁的选择，并分析锁与同步块中处理语句之间的关系" class="headerlink" title="分析三次作业中同步块的设置和锁的选择，并分析锁与同步块中处理语句之间的关系"></a>分析三次作业中同步块的设置和锁的选择，并分析锁与同步块中处理语句之间的关系</h2><p>三次作业中，考虑到我对synchronized块的学习最为深入，我为了稳妥都使用synchronized来控制同步块。</p>
 <p>在锁与同步块处理语句中，最重要的是：原子性</p>
 <p>我们会写同步方法：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public synchronized int a();</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">public synchronized int a();</code></pre>
 
 <p>同时也会写同步块</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">sychronized (A)</span><br><span class="line">&#123;</span><br><span class="line">A.a();</span><br><span class="line">A.b();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">sychronized (A)
+&#123;
+A.a();
+A.b();
+&#125;</code></pre>
 
 <p>其中方法加锁是容易理解的，在执行完synchronized修饰的方法前，该对象所有被synchronized修饰的方法均不能被其他线程调用（当然，当前线程拿到了<strong>这个对象</strong>的锁，所以可以调用其他的同步方法。</p>
 <p>但是显然，</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sychronized (A)</span><br><span class="line">&#123;</span><br><span class="line">A.a();</span><br><span class="line">A.b();</span><br><span class="line">&#125;</span><br><span class="line">A.a();</span><br><span class="line">A.b();</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">sychronized (A)
+&#123;
+A.a();
+A.b();
+&#125;
+A.a();
+A.b();</code></pre>
 
 <p>，上下两个方法是有区别的，区别在于原子性。</p>
 <p>在上面，A被锁住，保证这个时候在{}内的语句是可以不被其他线程打扰执行完的，在退出{}之前，其他线程不能调用A’的同步方法。</p>
@@ -544,7 +557,38 @@
 <h2 id="调度器交互-amp-调度策略"><a href="#调度器交互-amp-调度策略" class="headerlink" title="调度器交互&amp;调度策略"></a>调度器交互&amp;调度策略</h2><h3 id="requestTable：等候表信息与交互"><a href="#requestTable：等候表信息与交互" class="headerlink" title="requestTable：等候表信息与交互"></a>requestTable：等候表信息与交互</h3><h4 id="与电梯线程"><a href="#与电梯线程" class="headerlink" title="与电梯线程"></a>与电梯线程</h4><p>在每一个电梯线程中，均配有一个共享对象：<code>requestTable</code>，这个对象是共享资源，向这几个线程暴露了当前总体等待队列的信息，每一个电梯便可以依据这个信息和自己当前的状态来决定接下来要做什么。</p>
 <p>实现这个的关键方法如下，顾名思义，getTODO，得到接下来要做的事情。<strong>由于电梯的状态是每一时刻都在变化，选择每次决定行动前先进行动态的查询</strong></p>
 <p>hw的情况下，采取这样的查询方式：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">private int getToDo() //这个的时机应该在每次进行一个循环时候判断，或者开门，或者反向，或者等，或者移动，每走一步看看状态。每次取这个类似状态转换了</span><br><span class="line">    &#123;</span><br><span class="line">        synchronized (requestTable) &#123;</span><br><span class="line">            int floor = elevator.getFloor();</span><br><span class="line">            boolean isUp = elevator.getDir();</span><br><span class="line">            //第一个条件，这一层里面的人要出来，或者外面的人要进去且不满或者要下人。</span><br><span class="line">            if (elevator.needToOutBecauseOfIn() ||</span><br><span class="line">                    (requestTable.needIn(floor, isUp) &amp;&amp;</span><br><span class="line">                            (!elevator.isFull()) || elevator.needToOutBecauseOfIn())) &#123;</span><br><span class="line">                return OPEN;</span><br><span class="line">            &#125;</span><br><span class="line">           if (elevator.needToContinue()) &#123;  //如果有人，需要继续往下走</span><br><span class="line">                return MOVE;</span><br><span class="line">            &#125; else &#123;    //如果没人，就是自由状态</span><br><span class="line">                if (requestTable.isEmpty()) &#123; //只要是空的，那么就不去争抢，去卡着就好了。</span><br><span class="line">                    &#123;</span><br><span class="line">                        if (requestTable.getOver()) &#123;</span><br><span class="line">                            return OVER;</span><br><span class="line">                        &#125; else &#123;</span><br><span class="line">                            return WAIT;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    if (requestTable.withAheadToGet(floor, isUp)) &#123;</span><br><span class="line">                        return MOVE;</span><br><span class="line">                    &#125; else &#123;</span><br><span class="line">                        return REVERSE;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">private int getToDo() &#x2F;&#x2F;这个的时机应该在每次进行一个循环时候判断，或者开门，或者反向，或者等，或者移动，每走一步看看状态。每次取这个类似状态转换了
+    &#123;
+        synchronized (requestTable) &#123;
+            int floor &#x3D; elevator.getFloor();
+            boolean isUp &#x3D; elevator.getDir();
+            &#x2F;&#x2F;第一个条件，这一层里面的人要出来，或者外面的人要进去且不满或者要下人。
+            if (elevator.needToOutBecauseOfIn() ||
+                    (requestTable.needIn(floor, isUp) &amp;&amp;
+                            (!elevator.isFull()) || elevator.needToOutBecauseOfIn())) &#123;
+                return OPEN;
+            &#125;
+           if (elevator.needToContinue()) &#123;  &#x2F;&#x2F;如果有人，需要继续往下走
+                return MOVE;
+            &#125; else &#123;    &#x2F;&#x2F;如果没人，就是自由状态
+                if (requestTable.isEmpty()) &#123; &#x2F;&#x2F;只要是空的，那么就不去争抢，去卡着就好了。
+                    &#123;
+                        if (requestTable.getOver()) &#123;
+                            return OVER;
+                        &#125; else &#123;
+                            return WAIT;
+                        &#125;
+                    &#125;
+                &#125; else &#123;
+                    if (requestTable.withAheadToGet(floor, isUp)) &#123;
+                        return MOVE;
+                    &#125; else &#123;
+                        return REVERSE;
+                    &#125;
+                &#125;
+            &#125;
+        &#125;
+    &#125;</code></pre>
 
 <p><strong>首先大的策略是，只上同向的，能按照原方向走绝对不转向，有目的可走绝对不wait但是这个可能引起耗电量爆炸，这就是调度的事情了）</strong></p>
 <p>第一种情况：结束进程：只有电梯里没人，然后请求队里没东西，然后input线程结束了才能-over</p>
@@ -556,13 +600,54 @@
 <p>第四种情况：反向，电梯里没有人了，原方向也没人（原方向优先），反方向有人，反转（这一步只做一个反转，毕竟反正是while）</p>
 <p>第五种情况：里面没人外面没请求，wait，（注意是在<code>requestTable.wait()</code>)</p>
 <p>而在第三次作业中，考虑到残疾电梯的出现，电梯需要对自己能到达楼层的本领和现在的请求做出估计，因此选择更新getTODO的实现逻辑。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">private int getToDo() //这个的时机应该在每次进行一个循环时候判断，或者开门，或者反向，或者等，或者移动，每走一步看看状态。每次取这个类似状态转换了</span><br><span class="line">    &#123;</span><br><span class="line">        synchronized (requestTable) &#123;</span><br><span class="line">            int floor = elevator.getFloor();</span><br><span class="line">            boolean isUp = elevator.getDir();</span><br><span class="line">            //第一个条件，这一层里面的人要出来，或者外面的人要进去且不满或者要下人。</span><br><span class="line">            if (requestTable.hasMaintain(elevator.getId())) &#123;</span><br><span class="line">                return MAINTAIN;</span><br><span class="line">            &#125;</span><br><span class="line">            if (achievable.get(floor) == 1 &amp;&amp; (elevator.needToOut() ||</span><br><span class="line">                    (requestTable.needIn(floor, isUp, achievable) &amp;&amp;</span><br><span class="line">                            (elevator.notFull()) || elevator.needToOut()))) &#123;</span><br><span class="line">                return OPEN;</span><br><span class="line">            &#125;</span><br><span class="line">            if (elevator.notEmpty()) &#123;  //如果有人，需要继续往下走</span><br><span class="line">                return MOVE;</span><br><span class="line">            &#125; else &#123;    //如果没人，就是自由状态</span><br><span class="line">                if (requestTable.isEmpty()) &#123; //只要是空的，那么就不去争抢，去卡着就好了。</span><br><span class="line">                    &#123;</span><br><span class="line">                        if (requestTable.getOver() &amp;&amp; requestTable.getAllClean()) &#123;</span><br><span class="line">                            return OVER;</span><br><span class="line">                        &#125; else &#123;</span><br><span class="line">                            return WAIT;</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; else &#123;</span><br><span class="line">                    if (requestTable.withAheadToGet(floor, isUp, achievable)) &#123;</span><br><span class="line">                        return MOVE;</span><br><span class="line">                    &#125; else if (requestTable.withAheadToGet(floor, !isUp, achievable)) &#123;</span><br><span class="line">                        return REVERSE;</span><br><span class="line">                    &#125;</span><br><span class="line">                    else if (requestTable.needIn(floor, !isUp, achievable)) &#123;</span><br><span class="line">                        return REVERSE;</span><br><span class="line">                    &#125;</span><br><span class="line">                    else &#123;</span><br><span class="line">                        return WAIT;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">private int getToDo() &#x2F;&#x2F;这个的时机应该在每次进行一个循环时候判断，或者开门，或者反向，或者等，或者移动，每走一步看看状态。每次取这个类似状态转换了
+    &#123;
+        synchronized (requestTable) &#123;
+            int floor &#x3D; elevator.getFloor();
+            boolean isUp &#x3D; elevator.getDir();
+            &#x2F;&#x2F;第一个条件，这一层里面的人要出来，或者外面的人要进去且不满或者要下人。
+            if (requestTable.hasMaintain(elevator.getId())) &#123;
+                return MAINTAIN;
+            &#125;
+            if (achievable.get(floor) &#x3D;&#x3D; 1 &amp;&amp; (elevator.needToOut() ||
+                    (requestTable.needIn(floor, isUp, achievable) &amp;&amp;
+                            (elevator.notFull()) || elevator.needToOut()))) &#123;
+                return OPEN;
+            &#125;
+            if (elevator.notEmpty()) &#123;  &#x2F;&#x2F;如果有人，需要继续往下走
+                return MOVE;
+            &#125; else &#123;    &#x2F;&#x2F;如果没人，就是自由状态
+                if (requestTable.isEmpty()) &#123; &#x2F;&#x2F;只要是空的，那么就不去争抢，去卡着就好了。
+                    &#123;
+                        if (requestTable.getOver() &amp;&amp; requestTable.getAllClean()) &#123;
+                            return OVER;
+                        &#125; else &#123;
+                            return WAIT;
+                        &#125;
+                    &#125;
+                &#125; else &#123;
+                    if (requestTable.withAheadToGet(floor, isUp, achievable)) &#123;
+                        return MOVE;
+                    &#125; else if (requestTable.withAheadToGet(floor, !isUp, achievable)) &#123;
+                        return REVERSE;
+                    &#125;
+                    else if (requestTable.needIn(floor, !isUp, achievable)) &#123;
+                        return REVERSE;
+                    &#125;
+                    else &#123;
+                        return WAIT;
+                    &#125;
+                &#125;
+            &#125;
+        &#125;
+    &#125;
+</code></pre>
 
 
 
 <h3 id="Center：路径信息中心与交互"><a href="#Center：路径信息中心与交互" class="headerlink" title="Center：路径信息中心与交互"></a>Center：路径信息中心与交互</h3><p>在hw7里面，涉及到了换乘的功能，所以要找一个信息中心，存储当前所有电梯的可达性。</p>
 <p>从逻辑上讲，应该是乘客掌握这些信息，然后自己选择自己的道路，但是考虑到乘客的流动性，还是采取让所有电梯线程都拥有这个信息资源。Center里面记录了不同楼层间的可达图</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private final int[][] puzzle;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">private final int[][] puzzle;</code></pre>
 
 <p>当两层楼之间可以仅仅通过一个电梯达到，那么就将这个图puzzle的[i][j]置成非0（数值的大小为有几个电梯能够完成直达）；否则就置成0.</p>
 <p>它应当被所有线程共有。当新来一个人的时候（inputHandler），应当根据自己的目的地和这个路线图规划当前的路线。当新增加一个电梯的时候或者维修一个电梯的时候，就要在图上及时的修改可达性，从而给人提供可行的路线。+</p>
@@ -596,7 +681,12 @@
 <p>在解决这个bug的时候，在本地的测试中笔者发现这个数据并不能招致bug，所以笔者经过肉眼观察法，观看给出的输出，判断了是在线程结束的时候wait住了，然后观察新线程的结束部分，发现没有加上syn块，导致执行的时候会在某些情况下出现先读的把set的卡没了的情况。</p>
 <p>在第三次作业的时候，中测出现了bug，是几个非常惨的t，完全不知道数据究竟是什么。</p>
 <p>后来发现，是因为在修改搜索path的时候，</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">if (puzzle[from][to] == 1) &#123;</span><br><span class="line">//          path.add(from);</span><br><span class="line">            path.add(to);</span><br><span class="line">            return path;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">if (puzzle[from][to] &#x3D;&#x3D; 1) &#123;
+&#x2F;&#x2F;          path.add(from);
+            path.add(to);
+            return path;
+        &#125;
+</code></pre>
 
 <p>我原本定义的是path存的数据是from to，。。。。finalfloor，但是后面发现更新路径判别有效性的时候不好用。</p>
 <p>所以改成了存to 。。。 finalFloor（去掉了from），但是在开始假如是可以直达的时候忘记了修改。所以导致出了bug。</p>
@@ -650,11 +740,37 @@
 <p>于是我想要表达式计算，我也不止一次表达式计算了，你给我个表达式我就去算，但是我怎样去算的？处理这些东西的时候我的大脑已经习惯了，但是作为一个“造轮子”的程序员，我必须要拆解开，我必须要知道我自己会怎么处理这个东西。</p>
 <p>诚然，计算机有计算机的方式，必然存在比现实情况优秀无数备的更优解。但是从现实生活中取材，确实是一种能以清晰且经过验证的思考方式来写代码的方式。</p>
 <p>比如在我这次针对第三单元的换乘中，采用了一种类似地铁换乘的方法，不仅仅是为了解释，让读者更好的理解我的思路，更是我思路完善的一个来源：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">群友发现buaa新主楼电梯这个玩意更像地铁，于是我想起了自己到北京时在北京地铁中穿梭的经历。下面拿一名乘客进入地铁需要做的事情为例子来说明如何存储乘客，不妨叫这个乘客李田所吧。</span><br><span class="line"></span><br><span class="line">地铁正常的开，不去调度。当然大部分地铁并不能满足一个乘客从A到B的直达需求。所以乘客会有百度地图，站台上会有站表，李田所想从A到B的时候，一定是先研究了这些东西，然后在心里记住究竟该从几号线做到哪里换乘几号线。比如从A站做1号线到C，然后从C坐3号线到B站。</span><br><span class="line"></span><br><span class="line">事实上，在每一次的乘坐中，他并不需要知道具体要坐第几号线，譬如第一次，1号也好2号也罢，只要这趟地铁能满足从A站到C站就行了。同样第二次，3号也好4号也罢，只要这趟线地铁能满足C站到B站即可。</span><br><span class="line"></span><br><span class="line">李田所进入地铁站，认真观摩了墙上贴的地铁图之后，迅速的规划了自己要到BUAA的路线。他于是记住了这条路线，先到A，转B，然后到C。。。。</span><br><span class="line"></span><br><span class="line">我们可以把这个要走的路线按照一个数组存起来，叫做path。这个就是李田所要经过的站点。</span><br><span class="line"></span><br><span class="line">试想现在的李田所，他严格按照自己规划的（或者说百度地图这个数据中心而不是自己规划的）路线要乘车，但是在要坐第一趟车的时候，地铁并不知道他真正要去哪里，他暴露给这趟地铁的，只有from和to，这就是这一次乘车的personRequest。</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">群友发现buaa新主楼电梯这个玩意更像地铁，于是我想起了自己到北京时在北京地铁中穿梭的经历。下面拿一名乘客进入地铁需要做的事情为例子来说明如何存储乘客，不妨叫这个乘客李田所吧。
+
+地铁正常的开，不去调度。当然大部分地铁并不能满足一个乘客从A到B的直达需求。所以乘客会有百度地图，站台上会有站表，李田所想从A到B的时候，一定是先研究了这些东西，然后在心里记住究竟该从几号线做到哪里换乘几号线。比如从A站做1号线到C，然后从C坐3号线到B站。
+
+事实上，在每一次的乘坐中，他并不需要知道具体要坐第几号线，譬如第一次，1号也好2号也罢，只要这趟地铁能满足从A站到C站就行了。同样第二次，3号也好4号也罢，只要这趟线地铁能满足C站到B站即可。
+
+李田所进入地铁站，认真观摩了墙上贴的地铁图之后，迅速的规划了自己要到BUAA的路线。他于是记住了这条路线，先到A，转B，然后到C。。。。
+
+我们可以把这个要走的路线按照一个数组存起来，叫做path。这个就是李田所要经过的站点。
+
+试想现在的李田所，他严格按照自己规划的（或者说百度地图这个数据中心而不是自己规划的）路线要乘车，但是在要坐第一趟车的时候，地铁并不知道他真正要去哪里，他暴露给这趟地铁的，只有from和to，这就是这一次乘车的personRequest。</code></pre>
 
 <p>很像笔者在地铁中穿梭的经历。很多情况下，我写代码采取的架构（当然，实现方式肯定严格依据计算机和语言的特性），会取材于现实中的操作。</p>
 <p>再比如，对于look算法，如何让电梯自己判断自己怎么走的方法，我也是观察了日常生活中电梯所表现出来的样貌：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">我们不妨思考一下平时电梯的运行逻辑，我们想上楼，当我们在进入电梯前，电梯在向上走，于是按下上升键（这个上升键可以由目的层数-当前层数判断，事实上方向也是look的核心之一），发现方向一致，所以电梯来的时候开门了。从电梯上的乘客而言，他们向上走，然后发现到了 一层，然后一个方向和他们相同的人上来了，然后继续往上走。</span><br><span class="line"></span><br><span class="line">或者电梯里的人有的要在这里下，所以电梯直接打开，这时候有人在这层的话也直接上（但是一般来说，方向相反的人是不会上电梯的）。</span><br><span class="line"></span><br><span class="line">但是假如电梯满员了，</span><br><span class="line">笔者天天在上课的时候碰见</span><br><span class="line">，就连开门都不开。</span><br><span class="line"></span><br><span class="line">假如电梯送走了电梯里的所有人？比如在12楼就没人了。假如上面（16？）有人按电梯，电梯还会继续向上走。否则假如下面有人按电梯，就向下走。但是像都上课的时候，就几乎是一个专门为一个人开的专列。送到了就不动了，所以每次我回宿舍人少的时候就看见电梯停在某些楼，一按按钮才下来。</span><br><span class="line"></span><br><span class="line">虽然上面的都是废话，但是很好的解释了look是啥，也解释了look方法的构成方式：假如。。。就。。。</span><br><span class="line"></span><br><span class="line">问题是，在什么时候去“假如”？</span><br><span class="line"></span><br><span class="line">为了清晰的划分责任，在电梯线程上，需要针对上面的所有操作，每个实现一个具体的方法。move，openAndClose（其实这个中间分开开关还是合到一起见仁见智，可能合到一起出bug的机会少点？），reverse，wait，over。然后在上面那些“假如”发生后，根据假如来判定进行的方法就好了。</span><br><span class="line"></span><br><span class="line">我们可以根据对应的操作，把假如抽象成几种情况。</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">我们不妨思考一下平时电梯的运行逻辑，我们想上楼，当我们在进入电梯前，电梯在向上走，于是按下上升键（这个上升键可以由目的层数-当前层数判断，事实上方向也是look的核心之一），发现方向一致，所以电梯来的时候开门了。从电梯上的乘客而言，他们向上走，然后发现到了 一层，然后一个方向和他们相同的人上来了，然后继续往上走。
+
+或者电梯里的人有的要在这里下，所以电梯直接打开，这时候有人在这层的话也直接上（但是一般来说，方向相反的人是不会上电梯的）。
+
+但是假如电梯满员了，
+笔者天天在上课的时候碰见
+，就连开门都不开。
+
+假如电梯送走了电梯里的所有人？比如在12楼就没人了。假如上面（16？）有人按电梯，电梯还会继续向上走。否则假如下面有人按电梯，就向下走。但是像都上课的时候，就几乎是一个专门为一个人开的专列。送到了就不动了，所以每次我回宿舍人少的时候就看见电梯停在某些楼，一按按钮才下来。
+
+虽然上面的都是废话，但是很好的解释了look是啥，也解释了look方法的构成方式：假如。。。就。。。
+
+问题是，在什么时候去“假如”？
+
+为了清晰的划分责任，在电梯线程上，需要针对上面的所有操作，每个实现一个具体的方法。move，openAndClose（其实这个中间分开开关还是合到一起见仁见智，可能合到一起出bug的机会少点？），reverse，wait，over。然后在上面那些“假如”发生后，根据假如来判定进行的方法就好了。
+
+我们可以根据对应的操作，把假如抽象成几种情况。</code></pre>
 
 <p><strong>面向对象，更是面向生活</strong>，我们抽象出来事物可以被我们观测到的实质，作为属性，抽象出来物质作为主体和客体能被做到的事情，作为方法。抽象出来现实生活中事物的思考、组织、运行逻辑，构成了自己的架构。取材于生活，发轫于实践。</p>
 

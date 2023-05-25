@@ -29,7 +29,7 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 
@@ -507,6 +507,9 @@
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
 
         
 
@@ -552,7 +555,7 @@
 <p>在每次要放到requestTable前更新（不用放就不用更新，直接到了）。第一个是本次的to，剩下的是往后的移动路线，保证最后一个是目的地。</p>
 <p>是不存储本次的from的，指示的仅仅有往下的乘电梯表。</p>
 <h1 id="绕不开的话题：生成图"><a href="#绕不开的话题：生成图" class="headerlink" title="绕不开的话题：生成图"></a>绕不开的话题：生成图</h1><p>然后最难的部分其实就是跟这些东西没啥关系的路径分配，根据现有的电梯分配。</p>
-<h2 id="卡T问题：都去最短拥堵了怎么办？"><a href="#卡T问题：都去最短拥堵了怎么办？" class="headerlink" title="卡T问题：都去最短拥堵了怎么办？"></a>卡T问题：都去最短拥堵了怎么办？</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">标程在规划时会选择乘坐电梯数最少的方案</span><br></pre></td></tr></table></figure>
+<h2 id="卡T问题：都去最短拥堵了怎么办？"><a href="#卡T问题：都去最短拥堵了怎么办？" class="headerlink" title="卡T问题：都去最短拥堵了怎么办？"></a>卡T问题：都去最短拥堵了怎么办？</h2><pre class="language-none"><code class="language-none">标程在规划时会选择乘坐电梯数最少的方案</code></pre>
 
 <p>指导书如是说。</p>
 <p>lzn助教在群里说到：标程首先通过静态分析找到一条可以到达的路线拆分请求，。。。。，在拆分时使用换乘次数最少的方案。</p>
@@ -569,30 +572,47 @@
 <p>center是<strong>静态</strong>信息中心，而不是一个线程。（笔者上次欠了吧唧专门开了个线程结果没处理好t了） 它是一个资源，而不是一个一个工作单元。</p>
 <p>center要做的事情：存起来当前的电梯可达图，根据新增加的电梯和维护指令来修改可达图的数值。</p>
 <p>实现方法：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">public synchronized void addPath(ArrayList&lt;Integer&gt; achievable) &#123;</span><br><span class="line"> public synchronized void subPath(ArrayList&lt;Integer&gt; achievable) &#123;</span><br><span class="line"> public synchronized ArrayList&lt;Integer&gt; findPath(int from, int to) &#123;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">public synchronized void addPath(ArrayList&lt;Integer&gt; achievable) &#123;
+ public synchronized void subPath(ArrayList&lt;Integer&gt; achievable) &#123;
+ public synchronized ArrayList&lt;Integer&gt; findPath(int from, int to) &#123;</code></pre>
 
 <h2 id="什么是我们要的可达图"><a href="#什么是我们要的可达图" class="headerlink" title="什么是我们要的可达图"></a>什么是我们要的可达图</h2><p>可达图本身是用来制定moveMap里面的path数组的，类似于地铁站的地铁运行路线表。考虑到自由竞争，对我们的操作造成影响的仅仅有换乘（时间上不止，但是语句上是）。所以当两层楼之间可以仅仅通过一个电梯达到，那么就将这个图puzzle的[i][j]置成非0（数值的大小为有几个电梯能够完成直达）；否则就置成0</p>
 <h2 id="维护可达图"><a href="#维护可达图" class="headerlink" title="维护可达图"></a>维护可达图</h2><p>可达图是信息中心的一个资源，它应当被所有线程共有。当新来一个人的时候（inputHandler），应当根据自己的目的地和这个路线图规划当前的路线。当新增加一个电梯的时候或者维修一个电梯的时候，就要在图上及时的修改可达性，从而给人提供可行的路线。	</p>
 <h3 id="修改属性"><a href="#修改属性" class="headerlink" title="修改属性"></a>修改属性</h3><p>这是自然要做的事情，在电梯里面新增加一个可达数组，对应 楼层的值是1的话就代表可达，读进来掩码之后，就不再用掩码了，根据掩码读出来电梯的可达范围。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">private final ArrayList&lt;Integer&gt; achievable;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">private final ArrayList&lt;Integer&gt; achievable;</code></pre>
 
 <p>在新建电梯初始化的时候：(为了方便，不换算了，直接多开一位，索引也是1-11)</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">achievable = new ArrayList&lt;&gt;();</span><br><span class="line">        achievable.add(1);</span><br><span class="line">        for (int i = 1; i &lt;= 11; i++) &#123;</span><br><span class="line">            int ans = achieveCode &amp; (1 &lt;&lt; (i - 1));</span><br><span class="line">            if (ans == 0) &#123;</span><br><span class="line">                achievable.add(0);</span><br><span class="line">            &#125; else &#123;</span><br><span class="line">                achievable.add(1);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">achievable &#x3D; new ArrayList&lt;&gt;();
+        achievable.add(1);
+        for (int i &#x3D; 1; i &lt;&#x3D; 11; i++) &#123;
+            int ans &#x3D; achieveCode &amp; (1 &lt;&lt; (i - 1));
+            if (ans &#x3D;&#x3D; 0) &#123;
+                achievable.add(0);
+            &#125; else &#123;
+                achievable.add(1);
+            &#125;
+        &#125;</code></pre>
 
 <h3 id="实现修改图"><a href="#实现修改图" class="headerlink" title="实现修改图"></a>实现修改图</h3><p>什么时候会对这张静态表产生变化呢？新增加电梯的时候和维护的时候，这种情况都是仅仅变化一个电梯。所以不建议重新开始算，而是选择依据这个电梯做出的改变来修改这张表。</p>
 <p>比如新进来一个电梯，知道它的可达性了，将这个可达ArrayList传进来：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">for(i=1;i&lt;=11;i++)</span><br><span class="line">for(j=1;j&lt;=11;j++)&#123;</span><br><span class="line">		if(a[i]==1&amp;&amp;a[j]==1)puzzle\[i][j]+=1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">for(i&#x3D;1;i&lt;&#x3D;11;i++)
+for(j&#x3D;1;j&lt;&#x3D;11;j++)&#123;
+		if(a[i]&#x3D;&#x3D;1&amp;&amp;a[j]&#x3D;&#x3D;1)puzzle\[i][j]+&#x3D;1;
+&#125;</code></pre>
 
 <p>同样，维修一个电梯的时候，应当反向减去它被加上的时候带来的数值变化，+换乘-即可。</p>
 <p>注意，当维修一个 电梯的时候，应当先维护图，然后再去维修，不然维修的时候会把人拿出来，这个人再规划路径的时候会按照维修这个电梯前的数据来搜索路径。</p>
 <h2 id="根据可达图生成moveMap"><a href="#根据可达图生成moveMap" class="headerlink" title="根据可达图生成moveMap"></a>根据可达图生成moveMap</h2><p>笔者在想的时候思考：</p>
 <p>是在每一次修改可达图之后，先算好从任意floor到to的路径，存起来，来一个人直接输入from和to查一下，还是每次来一个人都现找一下from到to的路径？最后选择每个人看一下。</p>
 <p>需要实现这样一个方法：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">public ArrayList&lt;Integer&gt; findPath(int from, int to) &#123;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">public ArrayList&lt;Integer&gt; findPath(int from, int to) &#123;</code></pre>
 
 <p>根据from和to生成一个ArrayList。</p>
 <p>其中，为了方便，先是直接能到就返回这两点，不修改。然后不能到就算一遍</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">if (puzzle[from][to] == 1) &#123;</span><br><span class="line">            path.add(to);</span><br><span class="line">            return path;</span><br><span class="line">        &#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">if (puzzle[from][to] &#x3D;&#x3D; 1) &#123;
+            path.add(to);
+            return path;
+        &#125;</code></pre>
 
 <p>权重上，一个点直接连的都是1.</p>
 <p>但凡一趟电梯可达距离都设置成1（我知道其实不是的，但是这样简单，其实也可以直接按照真实时间写）。</p>
@@ -632,26 +652,51 @@
 <p>注意拿人的时候一定要注意别把不该在这里上的人拿走。所以组织队列的时候就不能说是只从第一个拿了，要是只从第一个拿的话假如第一个等的是特定电梯剩下的都拿不了了。<strong>修改电梯的拿取方法，让它可以拿取to是一定楼层的请求</strong>。或者修改requestTable的被拿取方法，能提供特定toFloor的moveMap。</p>
 <p>但是为了保证准确性，在一个synchronized块里写一个循环，每次还是选择都拿一个，然后下一次拿再从头开始找（防止删找出问题）。</p>
 <h1 id="更新的look"><a href="#更新的look" class="headerlink" title="更新的look"></a>更新的look</h1><p>在hw5中，笔者采用了这样的look：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">**首先大的策略是，只上同向的，能按照原方向走绝对不转向，有目的可走绝对不wait但是这个可能引起耗电量爆炸，这就是调度的事情了）**</span><br><span class="line"></span><br><span class="line">第一种情况：结束进程：只有电梯里没人，然后请求队里没东西，然后input线程结束了才能-over</span><br><span class="line"></span><br><span class="line">第二种情况：开门：上面说过了，里面有人在这楼下||（外面这楼有人在这楼上&amp;&amp;（电梯没满||电梯要下人））</span><br><span class="line"></span><br><span class="line">特别的，先下再上，直到装满再走，为了减少开门次数，如果能装的有限，尽量装同一个楼层的。</span><br><span class="line"></span><br><span class="line">每一次开门都会完全解决这里这个电梯能解决的问题。</span><br><span class="line"></span><br><span class="line">第三种情况：移动：这里不需要解决了但是里面还有人，继续往上走（同一个方向的好处来了）或者电梯里没有人了，但是在原方向上还有人，继续走。</span><br><span class="line"></span><br><span class="line">第四种情况：反向，电梯里没有人了，原方向也没人（原方向优先），反方向有人，反转（这一步只做一个反转，毕竟反正是while）</span><br><span class="line"></span><br><span class="line">第五种情况：里面没人外面没请求，wait，（注意是在`requestTable.wait()`)</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">**首先大的策略是，只上同向的，能按照原方向走绝对不转向，有目的可走绝对不wait但是这个可能引起耗电量爆炸，这就是调度的事情了）**
+
+第一种情况：结束进程：只有电梯里没人，然后请求队里没东西，然后input线程结束了才能-over
+
+第二种情况：开门：上面说过了，里面有人在这楼下||（外面这楼有人在这楼上&amp;&amp;（电梯没满||电梯要下人））
+
+特别的，先下再上，直到装满再走，为了减少开门次数，如果能装的有限，尽量装同一个楼层的。
+
+每一次开门都会完全解决这里这个电梯能解决的问题。
+
+第三种情况：移动：这里不需要解决了但是里面还有人，继续往上走（同一个方向的好处来了）或者电梯里没有人了，但是在原方向上还有人，继续走。
+
+第四种情况：反向，电梯里没有人了，原方向也没人（原方向优先），反方向有人，反转（这一步只做一个反转，毕竟反正是while）
+
+第五种情况：里面没人外面没请求，wait，（注意是在&#96;requestTable.wait()&#96;)</code></pre>
 
 <p>在hw6新增了一个maintain的。</p>
 <h2 id="维修"><a href="#维修" class="headerlink" title="维修"></a>维修</h2><p>maintain</p>
 <p>这个玩意能无视停靠范围，所以把这个判断放最前头，一旦要停，立马停。</p>
 <p>然后上次的操作已经能达到把人放回requestTable了。这个特点是可以当做原来的路线直接无效了。就是弱化版的开门下人。</p>
-<h2 id="（主动）线程关闭"><a href="#（主动）线程关闭" class="headerlink" title="（主动）线程关闭"></a>（主动）线程关闭</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">第一种情况：结束进程：只有电梯里没人，然后请求队里没东西，然后input线程结束了才能-over（这个电梯里当时指的是当前电梯）</span><br></pre></td></tr></table></figure>
+<h2 id="（主动）线程关闭"><a href="#（主动）线程关闭" class="headerlink" title="（主动）线程关闭"></a>（主动）线程关闭</h2><pre class="language-none"><code class="language-none">第一种情况：结束进程：只有电梯里没人，然后请求队里没东西，然后input线程结束了才能-over（这个电梯里当时指的是当前电梯）</code></pre>
 
 <p>这次的线程关闭，要求必须所有人moveMap都被清除之后才能关闭，不然就是单纯的等待，不然无法控制换乘。</p>
 <p>给requestTable开一个服务过的人员数目，刚开始的时候是0，每由personRequest加进来一个就是+1（由moveMap加进来不算）</p>
 <p>每离开一个就是-1.</p>
 <p>为了防止中途出岔子，一定要在彻底离开之后再-1.（就是说这个人已经被彻底解决了）</p>
 <p>也就是说上面动的都是id之流的东西。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">public synchronized void finishAPerson() &#123;</span><br><span class="line">    peopleNum--;</span><br><span class="line">&#125;</span><br><span class="line">public synchronized void startAPerson()</span><br><span class="line">&#123;</span><br><span class="line">    peopleNum++;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">public synchronized void finishAPerson() &#123;
+    peopleNum--;
+&#125;
+public synchronized void startAPerson()
+&#123;
+    peopleNum++;
+&#125;</code></pre>
 
 <p>然后在inputHandler里面，是一personRequest形式来新人的唯一途径</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">if (request instanceof PersonRequest) &#123;</span><br><span class="line">                synchronized (requestTable) &#123;</span><br><span class="line">                    requestTable.putPerson(new MoveMap((PersonRequest) request, center));</span><br><span class="line">                    requestTable.startAPerson();</span><br><span class="line">                    requestTable.notifyAll();</span><br><span class="line">                &#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">if (request instanceof PersonRequest) &#123;
+                synchronized (requestTable) &#123;
+                    requestTable.putPerson(new MoveMap((PersonRequest) request, center));
+                    requestTable.startAPerson();
+                    requestTable.notifyAll();
+                &#125;</code></pre>
 
 <p>所以，现在的电梯进程关闭条件是：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">结束进程：所有进来等的人都到站了，（然后请求队里没东西，这个前一个条件已经满足了），然后input线程结束了才能-over</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">结束进程：所有进来等的人都到站了，（然后请求队里没东西，这个前一个条件已经满足了），然后input线程结束了才能-over</code></pre>
 
 <p>（与之相应的，所有人都被清空后叫一声，让等待的电梯都醒过来关闭）</p>
 <h2 id="开关门策略-核心"><a href="#开关门策略-核心" class="headerlink" title="开关门策略**核心"></a>开关门策略**核心</h2><p>前面说到开关门接人的依据要变化了，不满足能被这台电梯接的人，干脆就不当成一个目标。</p>
@@ -662,28 +707,32 @@
 <p>path是否有效？有效&gt;&gt;？无效&gt;&gt;？</p>
 <p>上面已经提到过，将这个逻辑包装成两个函数。</p>
 <p>第一个，更新，然后<strong>返回</strong>新的moveMap，第二个，把这个返回的东西放到requestTable里面 ，该<strong>notify的notify</strong>这个很重要。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">第二种情况：开门：上面说过了，里面有人在这楼下||（外面这楼有人在这楼上&amp;&amp;（电梯没满||电梯要下人））</span><br><span class="line"></span><br><span class="line">特别的，先下再上，直到装满再走，为了减少开门次数，如果能装的有限，尽量装同一个楼层的。</span><br><span class="line"></span><br><span class="line">每一次开门都会完全解决这里这个电梯能解决的问题。</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">第二种情况：开门：上面说过了，里面有人在这楼下||（外面这楼有人在这楼上&amp;&amp;（电梯没满||电梯要下人））
+
+特别的，先下再上，直到装满再走，为了减少开门次数，如果能装的有限，尽量装同一个楼层的。
+
+每一次开门都会完全解决这里这个电梯能解决的问题。</code></pre>
 
 <h3 id="上人"><a href="#上人" class="headerlink" title="上人"></a>上人</h3><p>当电梯到了一层之后，有人在这楼下，这个不变，电梯没满且电梯要下人，这也不变，外面有人要在这楼上 ，这就注意了。</p>
 <p>判断上，外面有人要上，这个人应当是本电梯能服务的人。</p>
 <p>执行上，外面上的人，除了第一次的<strong>只上同向的</strong>，还需要增加一个条件，只上to在停靠范围内的。</p>
 <p>此外，考虑到残疾电梯的出现，最外面还需要判断一下：电梯能不能在这楼开关门。</p>
-<h2 id="移动"><a href="#移动" class="headerlink" title="移动"></a>移动</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">第三种情况：移动：这里不需要解决了但是里面还有人，继续往上走（同一个方向的好处来了）或者电梯里没有人了，但是在原方向上还有人，继续走。</span><br></pre></td></tr></table></figure>
+<h2 id="移动"><a href="#移动" class="headerlink" title="移动"></a>移动</h2><pre class="language-none"><code class="language-none">第三种情况：移动：这里不需要解决了但是里面还有人，继续往上走（同一个方向的好处来了）或者电梯里没有人了，但是在原方向上还有人，继续走。</code></pre>
 
 <p>里面还有人自然不需要改变，同向进入、同向移动优先的基本原则仍然不变化。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">电梯里没有人了，但是在原方向上还有人</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">电梯里没有人了，但是在原方向上还有人</code></pre>
 
 <p>这个原方向还有人，指的是原方向还有<strong>本电梯能够处理的人</strong></p>
 <p>在这里，自由竞争不再是抢所有人，而是抢所有<strong>自己能处理的人</strong></p>
 <p>这个能处理，和开关门的捎带同方向不一样，而是他的搭乘请求的from和to，都出现在这个电梯的achievable里面。（或者扫每一组相邻path的值，只要里面的东西出现在里面，那就认为是潜在可以解决的，就动，不同情况效果不一样）</p>
 <p>否则，既然处理不了，也没必要去动了。</p>
 <p>因此在进行这个选项的判断时，扫描到前方的人的时候，额外加上一条是否可解决。</p>
-<h2 id="反向"><a href="#反向" class="headerlink" title="反向"></a>反向</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">反向，电梯里没有人了，原方向也没人（原方向优先），反方向有人，反转（这一步只做一个反转，毕竟反正是while）</span><br></pre></td></tr></table></figure>
+<h2 id="反向"><a href="#反向" class="headerlink" title="反向"></a>反向</h2><pre class="language-none"><code class="language-none">反向，电梯里没有人了，原方向也没人（原方向优先），反方向有人，反转（这一步只做一个反转，毕竟反正是while）</code></pre>
 
 <p>这个“人”依旧沿用上面的定义，如果能处理，才算作要移动。</p>
 <p>在上面所有选择均被否决的情况下（move，open，。。。）有两种情况需要反向：反方向的非本层楼层有人可以被接（没考虑人的方向）</p>
 <p>另一个是本层反方向有人可以open，那么也反向去接这个人，</p>
-<h2 id="等待"><a href="#等待" class="headerlink" title="等待"></a>等待</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">第五种情况：里面没人外面没请求，wait，（注意是在`requestTable.wait()`)</span><br></pre></td></tr></table></figure>
+<h2 id="等待"><a href="#等待" class="headerlink" title="等待"></a>等待</h2><pre class="language-none"><code class="language-none">第五种情况：里面没人外面没请求，wait，（注意是在&#96;requestTable.wait()&#96;)</code></pre>
 
 <p>这次的wait是个十分需要考虑的东西，这个玩意笔者在课下自己测试的时候，经常因为这个而死锁，比如进入wait然后再也起不来。</p>
 <p>或者明明电梯已经到有人的那一层了却干脆直接开始wait死锁。</p>

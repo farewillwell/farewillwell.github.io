@@ -29,7 +29,7 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 
@@ -507,6 +507,9 @@
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
 
         
 
@@ -518,11 +521,11 @@
 <p>会发现，默认的浏览器下载好了，是火狐，<del>所以syqyyds</del></p>
 <h2 id="设置密码"><a href="#设置密码" class="headerlink" title="设置密码"></a>设置密码</h2><p>众所周知linux是个便于多账户运行的操作系统，所以有很多账号，但是为了防止一些傻傻的账号毁了机子，所以专门有一个叫做root的账号。<br>所有操作权限都是要在root才打开，不进root很多都动不了。</p>
 <p>先进入终端，然后输入命令</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo passwd</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">sudo passwd</code></pre>
 <p>注意，这玩意是passwd，而不是password</p>
 <p>，然后设置密码，之后要进入root权限就用这个密码了</p>
 <p>为了进入root，我们输入命令</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">su root</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">su root</code></pre>
 <p>(这个玩意和centos差不多，都是su，不像sudo)，然后按提示输入密码即可进入，下面我们解决屏幕的问题也是要在这个权限下进行。</p>
 <h2 id="关于Ubuntu屏幕显示很小的问题"><a href="#关于Ubuntu屏幕显示很小的问题" class="headerlink" title="关于Ubuntu屏幕显示很小的问题"></a>关于Ubuntu屏幕显示很小的问题</h2><p>笔者在安装Ubuntu的时候，发现这个玩意在虚拟机里显示的窗口只有很小一点的东西，很大一部分全是黑框。</p>
 <p>这就出现了错误，VMWare的tools没下载（虽然其他操作系统好像没事？）<br><img src="/../images/little_ubuntu_problem.png" alt="全是黑边"><br>就很烦，而且会导致在安装的时候点不到继续按钮，没法正常安装。</p>
@@ -533,14 +536,16 @@
 <p>然后会在里面下载一个东西，一个叫做这个的压缩包。怎么找这个压缩包？</p>
 <p>建议复制到桌面，然后提取，然后在里面进入终端。</p>
 <p>这里就需要我们的</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">su root</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">su root</code></pre>
 <p>了，输入密码，进入root权限 <strong>假如不是root权限的话会安装遇到困难</strong></p>
 <p>输入命令</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo ./vmware-install.pl</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">sudo .&#x2F;vmware-install.pl</code></pre>
 <p>然后疯狂按回车就好了，一直按到显示结束了，然后这时候你的窗口就会自己变大了。</p>
 <h2 id="关于Windows和虚拟机的复制粘贴"><a href="#关于Windows和虚拟机的复制粘贴" class="headerlink" title="关于Windows和虚拟机的复制粘贴"></a>关于Windows和虚拟机的复制粘贴</h2><p>一般来讲，在Windows里面复制的东西，是没法直接粘贴到虚拟机里的。</p>
 <p>所以需要下载东西</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sudo apt upgrade</span><br><span class="line">sudo apt install open-vm-tools-desktop -y</span><br><span class="line">sudo reboot</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">sudo apt upgrade
+sudo apt install open-vm-tools-desktop -y
+sudo reboot</code></pre>
 <p>连续输入三个命令（注意，输入第二个命令的时候，记得填选项，不然进度条会一直卡着，直接打回车就好了）。<br>第三个命令重启，重启之后发现就好了。</p>
 <h2 id="输入法"><a href="#输入法" class="headerlink" title="输入法"></a>输入法</h2><p>默认Ubuntu是不支持中文的，我使用酷狗来实现中文输入法</p>
 

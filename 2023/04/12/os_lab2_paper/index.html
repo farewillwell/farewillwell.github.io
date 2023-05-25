@@ -29,7 +29,7 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 
@@ -507,6 +507,9 @@
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
 
         
 
@@ -515,29 +518,104 @@
                 <h1 id="lab2实验报告"><a href="#lab2实验报告" class="headerlink" title="lab2实验报告"></a>lab2实验报告</h1><h2 id="思考题"><a href="#思考题" class="headerlink" title="思考题"></a>思考题</h2><h3 id="thinking1"><a href="#thinking1" class="headerlink" title="thinking1"></a>thinking1</h3><p>请根据上述说明，回答问题：在编写的 C 程序中，指针变量中存储的地址<br>是虚拟地址，还是物理地址？MIPS 汇编程序中 lw 和 sw 使用的是虚拟地址，还是物理地<br>址？</p>
 <p>指针中存储的地址都是虚拟地址，在汇编语言中使用的也是虚拟地址。事实上硬件给程序暴露的都是虚拟地址。</p>
 <h3 id="thinking2"><a href="#thinking2" class="headerlink" title="thinking2"></a>thinking2</h3><p>Thinking 2.2 请思考下述两个问题：<br>• 从可重用性的角度，阐述用宏来实现链表的好处。<br>• 查看实验环境中的 &#x2F;usr&#x2F;include&#x2F;sys&#x2F;queue.h，了解其中单向链表与循环链表的实<br>现，比较它们与本实验中使用的双向链表，分析三者在插入与删除操作上的性能差<br>异<br>查阅发现：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">define</span>	SLIST_ENTRY(type)						\</span></span><br><span class="line"><span class="meta">struct &#123;								\</span></span><br><span class="line"><span class="meta">	struct type *sle_next;	<span class="comment">/* next element */</span>			\</span></span><br><span class="line"><span class="meta">&#125;</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span>	SLIST_INSERT_AFTER(slistelm, elm, field) do &#123;			\</span></span><br><span class="line"><span class="meta">	(elm)-&gt;field.sle_next = (slistelm)-&gt;field.sle_next;		\</span></span><br><span class="line"><span class="meta">	(slistelm)-&gt;field.sle_next = (elm);				\</span></span><br><span class="line"><span class="meta">&#125; while (<span class="comment">/*CONSTCOND*/</span>0)</span></span><br></pre></td></tr></table></figure>
+<pre class="language-c" data-language="c"><code class="language-c"><span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span>	<span class="token macro-name function">SLIST_ENTRY</span><span class="token expression"><span class="token punctuation">(</span>type<span class="token punctuation">)</span>						</span><span class="token punctuation">\</span>
+<span class="token expression"><span class="token keyword">struct</span> <span class="token punctuation">&#123;</span>								</span><span class="token punctuation">\</span>
+	<span class="token expression"><span class="token keyword">struct</span> <span class="token class-name">type</span> <span class="token operator">*</span>sle_next<span class="token punctuation">;</span>	</span><span class="token comment">/* next element */</span>			<span class="token punctuation">\</span>
+<span class="token expression"><span class="token punctuation">&#125;</span></span></span>
+<span class="token macro property"><span class="token directive-hash">#</span><span class="token directive keyword">define</span>	<span class="token macro-name function">SLIST_INSERT_AFTER</span><span class="token expression"><span class="token punctuation">(</span>slistelm<span class="token punctuation">,</span> elm<span class="token punctuation">,</span> field<span class="token punctuation">)</span> <span class="token keyword">do</span> <span class="token punctuation">&#123;</span>			</span><span class="token punctuation">\</span>
+	<span class="token expression"><span class="token punctuation">(</span>elm<span class="token punctuation">)</span><span class="token operator">-></span>field<span class="token punctuation">.</span>sle_next <span class="token operator">=</span> <span class="token punctuation">(</span>slistelm<span class="token punctuation">)</span><span class="token operator">-></span>field<span class="token punctuation">.</span>sle_next<span class="token punctuation">;</span>		</span><span class="token punctuation">\</span>
+	<span class="token expression"><span class="token punctuation">(</span>slistelm<span class="token punctuation">)</span><span class="token operator">-></span>field<span class="token punctuation">.</span>sle_next <span class="token operator">=</span> <span class="token punctuation">(</span>elm<span class="token punctuation">)</span><span class="token punctuation">;</span>				</span><span class="token punctuation">\</span>
+<span class="token expression"><span class="token punctuation">&#125;</span> <span class="token keyword">while</span> <span class="token punctuation">(</span></span><span class="token comment">/*CONSTCOND*/</span><span class="token expression"><span class="token number">0</span><span class="token punctuation">)</span></span></span></code></pre>
 <p>存储上空间较小，单纯的插入步骤较少。<br>但是没有insert before，那样的话每次都要做一个遍历，性能较差。。</p>
 <p>循环链表</p>
 <p>理论上插入性能和单向链表相同，但是由于本身存储于实现了一个指向尾部的指针，所以可以直接在尾部插入</p>
 <p>双向链表，维护了两个方向的指针，所以插入效率最高，同时由于存储了双向的内容，所以所用空间和每一次修改操作开销较大。但是没有指向尾部的指针，还需要遍历。</p>
-<h2 id="thinking3"><a href="#thinking3" class="headerlink" title="thinking3"></a>thinking3</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">Thinking 2.3 请阅读 include/queue.h 以及 include/pmap.h, 将 Page_list 的结构梳</span><br><span class="line">理清楚，选择正确的展开结构。</span><br><span class="line">1 A:</span><br><span class="line">2 struct Page_list&#123;</span><br><span class="line">3 struct &#123;</span><br><span class="line">4 struct &#123;</span><br><span class="line">5 struct Page *le_next;</span><br><span class="line">6 struct Page **le_prev;</span><br><span class="line">7 &#125;* pp_link;</span><br><span class="line">8 u_short pp_ref;</span><br><span class="line">9 &#125;* lh_first;</span><br><span class="line">10 &#125;</span><br><span class="line">1 B:</span><br><span class="line">2 struct Page_list&#123;</span><br><span class="line">3 struct &#123;</span><br><span class="line">4 struct &#123;</span><br><span class="line">5 struct Page *le_next;</span><br><span class="line">6 struct Page **le_prev;</span><br><span class="line">7 &#125; pp_link;</span><br><span class="line">8 u_short pp_ref;</span><br><span class="line">9 &#125; lh_first;</span><br><span class="line">10 &#125;</span><br><span class="line">1 C:</span><br><span class="line">2 struct Page_list&#123;</span><br><span class="line">3 struct &#123;</span><br><span class="line">4 struct &#123;</span><br><span class="line">5 struct Page *le_next;</span><br><span class="line">6 struct Page **le_prev;</span><br><span class="line">7 &#125; pp_link;</span><br><span class="line">8 u_short pp_ref;</span><br><span class="line">9 &#125;* lh_first;</span><br><span class="line">10 &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="thinking3"><a href="#thinking3" class="headerlink" title="thinking3"></a>thinking3</h2><pre class="language-none"><code class="language-none">Thinking 2.3 请阅读 include&#x2F;queue.h 以及 include&#x2F;pmap.h, 将 Page_list 的结构梳
+理清楚，选择正确的展开结构。
+1 A:
+2 struct Page_list&#123;
+3 struct &#123;
+4 struct &#123;
+5 struct Page *le_next;
+6 struct Page **le_prev;
+7 &#125;* pp_link;
+8 u_short pp_ref;
+9 &#125;* lh_first;
+10 &#125;
+1 B:
+2 struct Page_list&#123;
+3 struct &#123;
+4 struct &#123;
+5 struct Page *le_next;
+6 struct Page **le_prev;
+7 &#125; pp_link;
+8 u_short pp_ref;
+9 &#125; lh_first;
+10 &#125;
+1 C:
+2 struct Page_list&#123;
+3 struct &#123;
+4 struct &#123;
+5 struct Page *le_next;
+6 struct Page **le_prev;
+7 &#125; pp_link;
+8 u_short pp_ref;
+9 &#125;* lh_first;
+10 &#125;</code></pre>
 
 <p>选A。</p>
 <p>事实上，不同结构的差别仅仅在于使用的是指针还是纯粹的结构，显然这几个用的都是指针。</p>
-<h3 id="thinking4"><a href="#thinking4" class="headerlink" title="thinking4"></a>thinking4</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Thinking 2.4 请思考下面两个问题：</span><br><span class="line">• 请阅读上面有关 R3000-TLB 的描述，从虚拟内存的实现角度，阐述 ASID 的必要性。</span><br><span class="line">• 请阅读《IDT R30xx Family Software Reference Manual》的 Chapter 6，结合 ASID</span><br><span class="line">段的位数，说明 R3000 中可容纳不同的地址空间的最大数量。</span><br></pre></td></tr></table></figure>
+<h3 id="thinking4"><a href="#thinking4" class="headerlink" title="thinking4"></a>thinking4</h3><pre class="language-none"><code class="language-none">Thinking 2.4 请思考下面两个问题：
+• 请阅读上面有关 R3000-TLB 的描述，从虚拟内存的实现角度，阐述 ASID 的必要性。
+• 请阅读《IDT R30xx Family Software Reference Manual》的 Chapter 6，结合 ASID
+段的位数，说明 R3000 中可容纳不同的地址空间的最大数量。</code></pre>
 
 <ol>
 <li>虚拟内存是对于每一个进程暴露一个各自的虚拟空间，通常不同的进程所用的地址空间都不同，不同的进程会将相同的虚拟地址映射到不同的物理地址，所以需要专门加上对于地址空间的标识来确定映射的是哪一个进程。</li>
 <li>ASID共6位，所以能标识2^6&#x3D;64个地址空间。</li>
 <li></li>
 </ol>
-<h3 id="Thinking5"><a href="#Thinking5" class="headerlink" title="Thinking5"></a>Thinking5</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Thinking 2.5 请回答下述三个问题：</span><br><span class="line">• tlb_invalidate 和 tlb_out 的调用关系？</span><br><span class="line">• 请用一句话概括 tlb_invalidate 的作用。</span><br><span class="line">• 逐行解释 tlb_out 中的汇编代码。</span><br></pre></td></tr></table></figure>
+<h3 id="Thinking5"><a href="#Thinking5" class="headerlink" title="Thinking5"></a>Thinking5</h3><pre class="language-none"><code class="language-none">Thinking 2.5 请回答下述三个问题：
+• tlb_invalidate 和 tlb_out 的调用关系？
+• 请用一句话概括 tlb_invalidate 的作用。
+• 逐行解释 tlb_out 中的汇编代码。</code></pre>
 
 <p><code>tlb_invalidata</code>函数中调用了<code>tlb_out</code>函数</p>
 <p>让给定的地址空间中的虚拟地址对应的页表项失效</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">LEAF(tlb_out)//这个是一个没有子函数的函数</span><br><span class="line">.set noreorder</span><br><span class="line">	mfc0    t0, CP0_ENTRYHI//CP0这个HI位的写入t0保存</span><br><span class="line">	mtc0    a0, CP0_ENTRYHI//将a0的值存进去HI位</span><br><span class="line">	nop</span><br><span class="line">	/* Step 1: Use &#x27;tlbp&#x27; to probe TLB entry */</span><br><span class="line">	/* Exercise 2.8: Your code here. (1/2) */</span><br><span class="line">	tlbp //根据 EntryHi 中的 Key（包含 VPN 与 ASID），查找 TLB 中与之对应的表项，并将</span><br><span class="line">//表项的索引存入 Index 寄存器（若未找到匹配项，则 Index 最高位被置 1</span><br><span class="line">	nop</span><br><span class="line">	/* Step 2: Fetch the probe result from CP0.Index */</span><br><span class="line">	mfc0    t1, CP0_INDEX//将index寄存器的值存到t1里面。上面的tlbp就是去寻找这个index，然后将找到的存到t1里面</span><br><span class="line">.set reorder</span><br><span class="line">	bltz    t1, NO_SUCH_ENTRY//根据t1的大小（index的值）</span><br><span class="line">.set noreorder</span><br><span class="line">	mtc0    zero, CP0_ENTRYHI//把0写到HI和LO里面，这样的话相当让他无效话。</span><br><span class="line">	mtc0    zero, CP0_ENTRYLO0</span><br><span class="line">	nop</span><br><span class="line">	/* Step 3: Use &#x27;tlbwi&#x27; to write CP0.EntryHi/Lo into TLB at CP0.Index  */</span><br><span class="line">	/* Exercise 2.8: Your code here. (2/2) */</span><br><span class="line">	tlbwi//tlbwi：以 Index 寄存器中的值为索引，将此时 EntryHi 与 EntryLo 的值写到索引指定</span><br><span class="line">//的 TLB 表项中。</span><br><span class="line">.set reorder</span><br><span class="line"></span><br><span class="line">NO_SUCH_ENTRY:</span><br><span class="line">	mtc0    t0, CP0_ENTRYHI//恢复现场，事实上只改变了lo的值。</span><br><span class="line">	j       ra//函数返回</span><br><span class="line">END(tlb_out)</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">LEAF(tlb_out)&#x2F;&#x2F;这个是一个没有子函数的函数
+.set noreorder
+	mfc0    t0, CP0_ENTRYHI&#x2F;&#x2F;CP0这个HI位的写入t0保存
+	mtc0    a0, CP0_ENTRYHI&#x2F;&#x2F;将a0的值存进去HI位
+	nop
+	&#x2F;* Step 1: Use &#39;tlbp&#39; to probe TLB entry *&#x2F;
+	&#x2F;* Exercise 2.8: Your code here. (1&#x2F;2) *&#x2F;
+	tlbp &#x2F;&#x2F;根据 EntryHi 中的 Key（包含 VPN 与 ASID），查找 TLB 中与之对应的表项，并将
+&#x2F;&#x2F;表项的索引存入 Index 寄存器（若未找到匹配项，则 Index 最高位被置 1
+	nop
+	&#x2F;* Step 2: Fetch the probe result from CP0.Index *&#x2F;
+	mfc0    t1, CP0_INDEX&#x2F;&#x2F;将index寄存器的值存到t1里面。上面的tlbp就是去寻找这个index，然后将找到的存到t1里面
+.set reorder
+	bltz    t1, NO_SUCH_ENTRY&#x2F;&#x2F;根据t1的大小（index的值）
+.set noreorder
+	mtc0    zero, CP0_ENTRYHI&#x2F;&#x2F;把0写到HI和LO里面，这样的话相当让他无效话。
+	mtc0    zero, CP0_ENTRYLO0
+	nop
+	&#x2F;* Step 3: Use &#39;tlbwi&#39; to write CP0.EntryHi&#x2F;Lo into TLB at CP0.Index  *&#x2F;
+	&#x2F;* Exercise 2.8: Your code here. (2&#x2F;2) *&#x2F;
+	tlbwi&#x2F;&#x2F;tlbwi：以 Index 寄存器中的值为索引，将此时 EntryHi 与 EntryLo 的值写到索引指定
+&#x2F;&#x2F;的 TLB 表项中。
+.set reorder
 
-<h3 id="thinking6"><a href="#thinking6" class="headerlink" title="thinking6"></a>thinking6</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Thinking 2.6 任选下述二者之一回答：</span><br><span class="line">• 简单了解并叙述 X86 体系结构中的内存管理机制，比较 X86 和 MIPS 在内存管理上</span><br><span class="line">的区别。</span><br><span class="line">• 简单了解并叙述 RISC-V 中的内存管理机制，比较 RISC-V 与 MIPS 在内存管理上</span><br><span class="line">的区别。</span><br></pre></td></tr></table></figure>
+NO_SUCH_ENTRY:
+	mtc0    t0, CP0_ENTRYHI&#x2F;&#x2F;恢复现场，事实上只改变了lo的值。
+	j       ra&#x2F;&#x2F;函数返回
+END(tlb_out)</code></pre>
+
+<h3 id="thinking6"><a href="#thinking6" class="headerlink" title="thinking6"></a>thinking6</h3><pre class="language-none"><code class="language-none">Thinking 2.6 任选下述二者之一回答：
+• 简单了解并叙述 X86 体系结构中的内存管理机制，比较 X86 和 MIPS 在内存管理上
+的区别。
+• 简单了解并叙述 RISC-V 中的内存管理机制，比较 RISC-V 与 MIPS 在内存管理上
+的区别。</code></pre>
 
 <p>选择回答：x86内存管理机制和mips在内存管理上的区别。</p>
 <p>x86架构中内存被分为三种形式，分别是<strong>逻辑地址</strong>（Logical Address），<strong>线性地址</strong>（Linear Address）和<strong>物理地址</strong>（Physical Address）</p>
@@ -553,7 +631,15 @@
 <p>1） 访问地址TLB不存在时候，陷入内核产生TLB miss异常。</p>
 <p>2） TLB miss 处理函数查询三级页表获得地址并填入TLB</p>
 <p>3） MIPS架构中访问TLB指令时：tlbwi，tlbri等。</p>
-<h3 id="thinkingA1"><a href="#thinkingA1" class="headerlink" title="thinkingA1"></a>thinkingA1</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Thinking A.1 在现代的 64 位系统中，提供了 64 位的字长，但实际上不是 64 位页式存</span><br><span class="line">储系统。假设在 64 位系统中采用三级页表机制，页面大小 4KB。由于 64 位系统中字长为</span><br><span class="line">8B，且页目录也占用一页，因此页目录中有 512 个页目录项，因此每级页表都需要 9 位。</span><br><span class="line">因此在 64 位系统下，总共需要 3 × 9 + 12 = 39 位就可以实现三级页表机制，并不需要 64</span><br><span class="line">位。</span><br><span class="line">现考虑上述 39 位的三级页式存储系统，虚拟地址空间为 512 GB，若三级页表的基地</span><br><span class="line">址为 PTbase，请计算：</span><br><span class="line">• 三级页表页目录的基地址。</span><br><span class="line">• 映射到页目录自身的页目录项（自映射）。</span><br></pre></td></tr></table></figure>
+<h3 id="thinkingA1"><a href="#thinkingA1" class="headerlink" title="thinkingA1"></a>thinkingA1</h3><pre class="language-none"><code class="language-none">Thinking A.1 在现代的 64 位系统中，提供了 64 位的字长，但实际上不是 64 位页式存
+储系统。假设在 64 位系统中采用三级页表机制，页面大小 4KB。由于 64 位系统中字长为
+8B，且页目录也占用一页，因此页目录中有 512 个页目录项，因此每级页表都需要 9 位。
+因此在 64 位系统下，总共需要 3 × 9 + 12 &#x3D; 39 位就可以实现三级页表机制，并不需要 64
+位。
+现考虑上述 39 位的三级页式存储系统，虚拟地址空间为 512 GB，若三级页表的基地
+址为 PTbase，请计算：
+• 三级页表页目录的基地址。
+• 映射到页目录自身的页目录项（自映射）。</code></pre>
 
 <p>采用自映射的方式，则按照比例换算知，一个页面的大小是4KB，一共2^27个物理页，所以页表共2^27项，来针对所有的页面，然后一页共2^9项，所以三级页表数目为2^18页，为了表示这么多页表，二级页表项2^18个，所以需要2^9二级页表页，所以需要1个一级页表。</p>
 <p>其中，已知页表开始的范围是PTbase，所以作为它的目录，开始的点应该是相比于整个空间的比值,PTbase&#x2F;2^27*2^18&#x3D;PTbase&gt;&gt;9</p>
@@ -570,7 +656,28 @@
 <p>二者只是一一对应，在虚拟地址中开劈与物理页地址数目相应的页控制块的空间（这个的首地址页和物理地址没任何关系）</p>
 <p>然后数组中[i]对应第几个物理页，仅仅是这样的映射，剩下的都没了。</p>
 <p>顺便经由此可以理解那几个页的转换宏函数</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">static inline u_long page2ppn(struct Page *pp) &#123;</span><br><span class="line">	return pp - pages;</span><br><span class="line">&#125;</span><br><span class="line">返回的是当前存的页结构体和pages初始地址的差。由于一一对应，所以其实就是物理的页号</span><br><span class="line">static inline u_long page2pa(struct Page *pp) &#123;</span><br><span class="line">	return page2ppn(pp) &lt;&lt; PGSHIFT;</span><br><span class="line">&#125;</span><br><span class="line">注意物理页号是从0开始的，物理页是严格对从0开始的物理地址一片片分成的，所以物理页号&lt;&lt;大小，就是物理地址。</span><br><span class="line">PPN是物理页号的意思。</span><br><span class="line"></span><br><span class="line">static inline struct Page *pa2page(u_long pa) &#123;</span><br><span class="line">	if (PPN(pa) &gt;= npage) &#123;</span><br><span class="line">		panic(&quot;pa2page called with invalid pa: %x&quot;, pa);</span><br><span class="line">	&#125;</span><br><span class="line">	return &amp;pages[PPN(pa)];</span><br><span class="line">&#125;</span><br><span class="line">返回物理地址所在的页，对应的，页管理模块，的地址。</span><br><span class="line"></span><br><span class="line">static inline u_long page2kva(struct Page *pp) &#123;</span><br><span class="line">	return KADDR(page2pa(pp));</span><br><span class="line">&#125;</span><br><span class="line">根据页面管理模块的地址来计算页面的物理地址，然后转化成虚拟地址。</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">static inline u_long page2ppn(struct Page *pp) &#123;
+	return pp - pages;
+&#125;
+返回的是当前存的页结构体和pages初始地址的差。由于一一对应，所以其实就是物理的页号
+static inline u_long page2pa(struct Page *pp) &#123;
+	return page2ppn(pp) &lt;&lt; PGSHIFT;
+&#125;
+注意物理页号是从0开始的，物理页是严格对从0开始的物理地址一片片分成的，所以物理页号&lt;&lt;大小，就是物理地址。
+PPN是物理页号的意思。
+
+static inline struct Page *pa2page(u_long pa) &#123;
+	if (PPN(pa) &gt;&#x3D; npage) &#123;
+		panic(&quot;pa2page called with invalid pa: %x&quot;, pa);
+	&#125;
+	return &amp;pages[PPN(pa)];
+&#125;
+返回物理地址所在的页，对应的，页管理模块，的地址。
+
+static inline u_long page2kva(struct Page *pp) &#123;
+	return KADDR(page2pa(pp));
+&#125;
+根据页面管理模块的地址来计算页面的物理地址，然后转化成虚拟地址。</code></pre>
 
 
 
@@ -581,7 +688,7 @@
 <p>页控制块的地址也是虚拟地址，内核放的那些0x8000000也是虚拟地址，实际上只有在刚开始探测的时候拿到的才是物理地址（的大小)</p>
 <p>其他情况下，虚拟页在调用的时候都被物理地址宏包装起来了。所以几乎仅仅使用了虚拟地址。</p>
 <h3 id="对双向链表中pre机制的理解"><a href="#对双向链表中pre机制的理解" class="headerlink" title="对双向链表中pre机制的理解"></a>对双向链表中pre机制的理解</h3><p>和之前很不一样的就是在这个的双向链表实现中，指向前一个链表的指针是一个二重指针。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">struct type **le_prev; /* address of previous next element */  </span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">struct type **le_prev; &#x2F;* address of previous next element *&#x2F;  </code></pre>
 
 <p>它的定义也很神奇，指向前一个节点的next指针（而不是前一个节点）</p>
 <p>在一开始出了很多问题，后来搞清楚就好了。</p>
@@ -589,11 +696,64 @@
 <p>没有梳理明白这个函数究竟是要干什么的，实现什么功能，然后页和项之间的对应关系。</p>
 <p>首先：walk并不具备填写表项的功能，就是返回了表项的地址。</p>
 <p>我们要做的是：首先给定了一级页表基地址，就是代表从这里开始找偏移了，然后从va这个虚拟地址里面找二级页表项（注意是页表项，不是一个真的页，它的虚拟地址，这个地址必然指了一个页，然后这个页是在二级页表的表项里面存储的，只需要把ppte的值存成这个新建的二级页表就行了</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pgdir_walk(Pde *pgdir, u_long va, int create, Pte **ppte)</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">pgdir_walk(Pde *pgdir, u_long va, int create, Pte **ppte)</code></pre>
 
 <p>pgdir是页目录地址，va是虚拟地址，create是控制创造的参量，ppte指向pte的位置。</p>
 <p>为啥要用双指针？因为有可能那个pte<em>压根不存在（就是原本以为的二级页表的地址）然后直接把新建的页的页表项的地址（pte*</em>)存在里面就好了。</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">int</span> <span class="title function_">pgdir_walk</span><span class="params">(Pde *pgdir, u_long va, <span class="type">int</span> create, Pte **ppte)</span> &#123;</span><br><span class="line">	Pde *pgdir_entryp;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">Page</span> *<span class="title">pp</span>;</span></span><br><span class="line">	Pte *pg_phy_entryp;<span class="comment">//这个是二级表项的地址。</span></span><br><span class="line">	<span class="comment">/* Step 1: Get the corresponding page directory entry. */</span></span><br><span class="line">	<span class="comment">/* Exercise 2.6: Your code here. (1/3) */</span></span><br><span class="line">    pgdir_entryp=(Pde*)(pgdir+PDX(va));<span class="comment">//</span></span><br><span class="line"></span><br><span class="line">    这个是什么意思？原本一级页表的表头地址pgdir，加上经过PDX(va)（就是地址偏移过后）就是真正这个一级表项的地址。它本身也是个虚拟笛之爱。</span><br><span class="line"></span><br><span class="line">	pg_phy_entryp=(Pte*)(KADDR(PTE_ADDR(*pgdir_entryp)));</span><br><span class="line">    然后这个一级表项的地址取值就是表项内容，拿出来取前<span class="number">20</span>位，PTE_ADDr一下就是物理地址，KaDD一下就是虚拟地址，记住这些东西计算的时候都是虚拟地址。这个虚拟地址就是二级页表那一页的表头。</span><br><span class="line"></span><br><span class="line">    注意，这个仅在给出的地址有效的情况下能用，无效新开的话还要覆写。</span><br><span class="line">	<span class="comment">/* Step 2: If the corresponding page table is not existent (valid) and parameter `create`</span></span><br><span class="line"><span class="comment">	 * is set, create one. Set the permission bits &#x27;PTE_D | PTE_V&#x27; for this new page in the</span></span><br><span class="line"><span class="comment">	 * page directory.</span></span><br><span class="line"><span class="comment">	 * If failed to allocate a new page (out of memory), return the error. */</span></span><br><span class="line">	<span class="comment">/* Exercise 2.6: Your code here. (2/3) */</span></span><br><span class="line">	<span class="keyword">if</span>((*pgdir_entryp&amp;PTE_V==<span class="number">0</span>))<span class="comment">//如果一级表项存的信息是无效的。</span></span><br><span class="line">	&#123;</span><br><span class="line">		<span class="keyword">if</span>(create!=<span class="number">0</span>)&#123;<span class="comment">//假如创造 </span></span><br><span class="line">			<span class="keyword">if</span>(page_alloc(&amp;pp)==-E_NO_MEM)</span><br><span class="line">			&#123;</span><br><span class="line">				*ppte=<span class="literal">NULL</span>;</span><br><span class="line">				<span class="keyword">return</span> -E_NO_MEM;</span><br><span class="line">			&#125;没造成直接报错</span><br><span class="line">			<span class="keyword">else</span></span><br><span class="line">			&#123;</span><br><span class="line">            pp-&gt;pp_ref=<span class="number">1</span>;<span class="comment">//注意这个并不代表一个具体的页面地址，它只是一个页管理模块的地址，除了alloc剩下都没法接触真的页物理地址。</span></span><br><span class="line">			维护新开的页的使用次数</span><br><span class="line">            pg_phy_entryp=KADDR(page2pa(pp))</span><br><span class="line">            然后新开的话，就覆写，让这个成为这个新开的页首地址(pp返回的是这个新物理页的管理模块的地址，虚拟地址，page2pa返回pp这个页管理模块对应物理页的地址)</span><br><span class="line">            (*pgdir_entryp)=(Pde)page2pa(pp);</span><br><span class="line">            然后一级表项内容改成物理地址。</span><br><span class="line">			(*pgdir_entryp)|=PTE_D | PTE_V;</span><br><span class="line">            然后修正特权位。</span><br><span class="line">            造成的话，就相当于申请了一个新的物理页，注意，只是二级页表的物理页，我要的是表项的地址。(而且是虚拟地址)</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span>  <span class="comment">//不创造的话肯定不够，返回异常就是了。</span></span><br><span class="line">		&#123;</span><br><span class="line">			*ppte=<span class="literal">NULL</span>;</span><br><span class="line">			<span class="keyword">return</span> -E_NO_MEM ;不创造的话直接报错。</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">/* Step 3: Assign the kernel virtual address of the page table entry to &#x27;*ppte&#x27;. */</span></span><br><span class="line">	<span class="comment">/* Exercise 2.6: Your code here. (3/3) */</span></span><br><span class="line">	*ppte=pg_phy_entryp+PTX(va);假如一开始有的话虚拟地址偏移之后拿出来二级页表的页内偏移，就恰好是二级表项的地址。</span><br><span class="line">    注意是虚拟地址。</span><br><span class="line"></span><br><span class="line">    然后假如新建的话，pg那个已经变成pp了，就是新申请的表的首地址，然后再偏移到这个表项就行了。</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-c" data-language="c"><code class="language-c"><span class="token keyword">static</span> <span class="token keyword">int</span> <span class="token function">pgdir_walk</span><span class="token punctuation">(</span>Pde <span class="token operator">*</span>pgdir<span class="token punctuation">,</span> u_long va<span class="token punctuation">,</span> <span class="token keyword">int</span> create<span class="token punctuation">,</span> Pte <span class="token operator">*</span><span class="token operator">*</span>ppte<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	Pde <span class="token operator">*</span>pgdir_entryp<span class="token punctuation">;</span>
+	<span class="token keyword">struct</span> <span class="token class-name">Page</span> <span class="token operator">*</span>pp<span class="token punctuation">;</span>
+	Pte <span class="token operator">*</span>pg_phy_entryp<span class="token punctuation">;</span><span class="token comment">//这个是二级表项的地址。</span>
+	<span class="token comment">/* Step 1: Get the corresponding page directory entry. */</span>
+	<span class="token comment">/* Exercise 2.6: Your code here. (1/3) */</span>
+    pgdir_entryp<span class="token operator">=</span><span class="token punctuation">(</span>Pde<span class="token operator">*</span><span class="token punctuation">)</span><span class="token punctuation">(</span>pgdir<span class="token operator">+</span><span class="token function">PDX</span><span class="token punctuation">(</span>va<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//</span>
+
+    这个是什么意思？原本一级页表的表头地址pgdir，加上经过<span class="token function">PDX</span><span class="token punctuation">(</span>va<span class="token punctuation">)</span>（就是地址偏移过后）就是真正这个一级表项的地址。它本身也是个虚拟笛之爱。
+
+	pg_phy_entryp<span class="token operator">=</span><span class="token punctuation">(</span>Pte<span class="token operator">*</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token function">KADDR</span><span class="token punctuation">(</span><span class="token function">PTE_ADDR</span><span class="token punctuation">(</span><span class="token operator">*</span>pgdir_entryp<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    然后这个一级表项的地址取值就是表项内容，拿出来取前<span class="token number">20</span>位，PTE_ADDr一下就是物理地址，KaDD一下就是虚拟地址，记住这些东西计算的时候都是虚拟地址。这个虚拟地址就是二级页表那一页的表头。
+
+    注意，这个仅在给出的地址有效的情况下能用，无效新开的话还要覆写。
+	<span class="token comment">/* Step 2: If the corresponding page table is not existent (valid) and parameter `create`
+	 * is set, create one. Set the permission bits 'PTE_D | PTE_V' for this new page in the
+	 * page directory.
+	 * If failed to allocate a new page (out of memory), return the error. */</span>
+	<span class="token comment">/* Exercise 2.6: Your code here. (2/3) */</span>
+	<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token operator">*</span>pgdir_entryp<span class="token operator">&amp;</span>PTE_V<span class="token operator">==</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token comment">//如果一级表项存的信息是无效的。</span>
+	<span class="token punctuation">&#123;</span>
+		<span class="token keyword">if</span><span class="token punctuation">(</span>create<span class="token operator">!=</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">&#123;</span><span class="token comment">//假如创造 </span>
+			<span class="token keyword">if</span><span class="token punctuation">(</span><span class="token function">page_alloc</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>pp<span class="token punctuation">)</span><span class="token operator">==</span><span class="token operator">-</span>E_NO_MEM<span class="token punctuation">)</span>
+			<span class="token punctuation">&#123;</span>
+				<span class="token operator">*</span>ppte<span class="token operator">=</span><span class="token constant">NULL</span><span class="token punctuation">;</span>
+				<span class="token keyword">return</span> <span class="token operator">-</span>E_NO_MEM<span class="token punctuation">;</span>
+			<span class="token punctuation">&#125;</span>没造成直接报错
+			<span class="token keyword">else</span>
+			<span class="token punctuation">&#123;</span>
+            pp<span class="token operator">-></span>pp_ref<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span><span class="token comment">//注意这个并不代表一个具体的页面地址，它只是一个页管理模块的地址，除了alloc剩下都没法接触真的页物理地址。</span>
+			维护新开的页的使用次数
+            pg_phy_entryp<span class="token operator">=</span><span class="token function">KADDR</span><span class="token punctuation">(</span><span class="token function">page2pa</span><span class="token punctuation">(</span>pp<span class="token punctuation">)</span><span class="token punctuation">)</span>
+            然后新开的话，就覆写，让这个成为这个新开的页首地址<span class="token punctuation">(</span>pp返回的是这个新物理页的管理模块的地址，虚拟地址，page2pa返回pp这个页管理模块对应物理页的地址<span class="token punctuation">)</span>
+            <span class="token punctuation">(</span><span class="token operator">*</span>pgdir_entryp<span class="token punctuation">)</span><span class="token operator">=</span><span class="token punctuation">(</span>Pde<span class="token punctuation">)</span><span class="token function">page2pa</span><span class="token punctuation">(</span>pp<span class="token punctuation">)</span><span class="token punctuation">;</span>
+            然后一级表项内容改成物理地址。
+			<span class="token punctuation">(</span><span class="token operator">*</span>pgdir_entryp<span class="token punctuation">)</span><span class="token operator">|=</span>PTE_D <span class="token operator">|</span> PTE_V<span class="token punctuation">;</span>
+            然后修正特权位。
+            造成的话，就相当于申请了一个新的物理页，注意，只是二级页表的物理页，我要的是表项的地址。<span class="token punctuation">(</span>而且是虚拟地址<span class="token punctuation">)</span>
+			<span class="token punctuation">&#125;</span>
+		<span class="token punctuation">&#125;</span>
+		<span class="token keyword">else</span>  <span class="token comment">//不创造的话肯定不够，返回异常就是了。</span>
+		<span class="token punctuation">&#123;</span>
+			<span class="token operator">*</span>ppte<span class="token operator">=</span><span class="token constant">NULL</span><span class="token punctuation">;</span>
+			<span class="token keyword">return</span> <span class="token operator">-</span>E_NO_MEM <span class="token punctuation">;</span>不创造的话直接报错。
+		<span class="token punctuation">&#125;</span>
+	<span class="token punctuation">&#125;</span>
+	<span class="token comment">/* Step 3: Assign the kernel virtual address of the page table entry to '*ppte'. */</span>
+	<span class="token comment">/* Exercise 2.6: Your code here. (3/3) */</span>
+	<span class="token operator">*</span>ppte<span class="token operator">=</span>pg_phy_entryp<span class="token operator">+</span><span class="token function">PTX</span><span class="token punctuation">(</span>va<span class="token punctuation">)</span><span class="token punctuation">;</span>假如一开始有的话虚拟地址偏移之后拿出来二级页表的页内偏移，就恰好是二级表项的地址。
+    注意是虚拟地址。
+
+    然后假如新建的话，pg那个已经变成pp了，就是新申请的表的首地址，然后再偏移到这个表项就行了。
+	<span class="token keyword">return</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
 
 <h2 id="实验体会"><a href="#实验体会" class="headerlink" title="实验体会"></a>实验体会</h2><p><del>刚开始看代码看的很崩溃</del></p>
 <p>还是容易对于大量的代码不是很理解，没有完全理解去搜寻文件应该在哪里搜寻（比如h和.c的关系，mmu.h都放了啥之类的）</p>

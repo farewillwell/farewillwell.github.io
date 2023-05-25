@@ -29,7 +29,7 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 
@@ -654,7 +654,8 @@ OK测试，到底是在做什么呢？
                         <div class="summary block-with-text">
                             
                                 最小环算法在oo的第三次作业里面，笔者遇到了这样的一个方法需要实现：
-123456789101112131415161718192021222324252627282930313233/*@ public normal_behavior  
+&#x2F;*@ public normal_behavior
+      @ requires contains(id) &amp;&amp; (\exists Per
                             
                         </div>
                         <div class="publish-info">
@@ -742,7 +743,9 @@ OK测试，到底是在做什么呢？
                         <div class="summary block-with-text">
                             
                                 脏位是bug之源！！！bug1
-12345678910111213public void addValue(int id, int val) &#123;        int newValue = value.get(id) + val;
+public void addValue(int id, int val) &#123;
+        int newValue &#x3D; value.get(id) + val;
+        va
                             
                         </div>
                         <div class="publish-info">

@@ -29,7 +29,7 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 
@@ -507,6 +507,9 @@
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
 
         
 
@@ -531,7 +534,13 @@
 <p>– D：Dirty。事实上是可写位。当该位为 1 时，该地址可写；否则任何写操作都将引发<br>TLB 异常。</p>
 <p>– V：Valid。如果该位为 0，则任何访问该地址的操作都将引发 TLB 异常。</p>
 <p>– G：Global。如果该位为 1，则 CPU 发出的虚拟地址只需要与该表项的 VPN 匹配，即<br>可与此 TLB 项匹配成功（不需要检查 ASID 是否匹配）。<br>由于TLB在CPU中，所以有着十分重要的功能，所以专门开了几个指令来管理。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">• tlbr：以 Index 寄存器中的值为索引，读出 TLB 中对应的表项到 EntryHi 与 EntryLo。</span><br><span class="line">• tlbwi：以 Index 寄存器中的值为索引，将此时 EntryHi 与 EntryLo 的值写到索引指定</span><br><span class="line">的 TLB 表项中。</span><br><span class="line">• tlbwr：将 EntryHi 与 EntryLo 的数据随机写到一个 TLB 表项中（此处使用 Random 寄</span><br><span class="line">存器来“随机”指定表项，Random 寄存器本质上是一个不停运行的循环计数器）。</span><br><span class="line">• tlbp：根据 EntryHi 中的 Key（包含 VPN 与 ASID），查找 TLB 中与之对应的表项，并将</span><br><span class="line">表项的索引存入 Index 寄存器（若未找到匹配项，则 Index 最高位被置 1）。</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">• tlbr：以 Index 寄存器中的值为索引，读出 TLB 中对应的表项到 EntryHi 与 EntryLo。
+• tlbwi：以 Index 寄存器中的值为索引，将此时 EntryHi 与 EntryLo 的值写到索引指定
+的 TLB 表项中。
+• tlbwr：将 EntryHi 与 EntryLo 的数据随机写到一个 TLB 表项中（此处使用 Random 寄
+存器来“随机”指定表项，Random 寄存器本质上是一个不停运行的循环计数器）。
+• tlbp：根据 EntryHi 中的 Key（包含 VPN 与 ASID），查找 TLB 中与之对应的表项，并将
+表项的索引存入 Index 寄存器（若未找到匹配项，则 Index 最高位被置 1）。</code></pre>
 <p>注意，这几个指令都是无操作数指令，都是直接用就相当于一个操作的。</p>
 <p>比如直接<br>tlbp，就可以根据 EntryHi 中的 Key（包含 VPN 与 ASID），查找 TLB 中与之对应的表项，并将<br>表项的索引存入 Index 寄存器（若未找到匹配项，则 Index 最高位被置 1）。</p>
 <h2 id="TLB维护"><a href="#TLB维护" class="headerlink" title="TLB维护"></a>TLB维护</h2><p>操作系统可以修改页表中虚拟地址映射的物理页号或映射的权限位。如果 TLB 中已暂存了<br>页表中某一虚拟地址对应的页表项内容，之后操作系统更新了该页表项但没有更新 TLB，则访<br>问该虚拟地址可能会得到错误的物理页面。所以我们需要维护 TLB 的表项，使得当 TLB 能够<br>查询到虚拟地址相应的页号时，取得的物理地址和实际在页表中对应的物理地址一致。<br>具体来说，维护 TLB 的流程如下：</p>
@@ -547,18 +556,103 @@
 <h2 id="TLB重填"><a href="#TLB重填" class="headerlink" title="TLB重填"></a>TLB重填</h2><p>重填的目的是什么？</p>
 <p>TLB存着一个哈希表，key就是一个虚拟页号，data就是它对应的物理页号。</p>
 <p>我们刚刚清除了，所以我们 现在需要完成一个</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">我们将操作页表的逻辑使用 C 语言封装在 kern/tlbex.c 中的 _do_tlb_refill() 函数中：</span><br><span class="line"><span class="number">1</span> Pte _do_tlb_refill(u_long va, u_int asid) &#123;</span><br><span class="line"><span class="number">2</span> Pte *pte;</span><br><span class="line"><span class="number">3</span></span><br><span class="line"><span class="number">4</span> <span class="comment">/* 提示:</span></span><br><span class="line"><span class="comment">5 尝试在循环中调用&#x27;page_lookup&#x27;以查找虚拟地址 va</span></span><br><span class="line"><span class="comment">6 在当前进程页表中对应的页表项&#x27;pte&#x27;</span></span><br><span class="line"><span class="comment">7 如果&#x27;page_lookup&#x27;返回&#x27;NULL&#x27;，表明&#x27;pte&#x27;找不到，使用&#x27;passive_alloc&#x27;</span></span><br><span class="line"><span class="comment">8 为 va 所在的虚拟页面分配物理页面，</span></span><br><span class="line"><span class="comment">9 直至&#x27;page_lookup&#x27;返回不为&#x27;NULL&#x27;则退出循环。</span></span><br><span class="line"><span class="comment">10</span></span><br><span class="line"><span class="comment">11 你可以在调用函数时，使用全局变量 cur_pgdir 作为其中一个实参。</span></span><br><span class="line"><span class="comment">12 */</span></span><br><span class="line"><span class="number">13</span></span><br><span class="line"><span class="number">14</span> <span class="keyword">return</span> *pte;</span><br><span class="line"><span class="number">15</span> &#125;</span><br><span class="line">这个函数返回的值是二级页表项，拿出来的是物理页号和权限。</span><br><span class="line">cur_pgdir 是一个在 kern/pmap.c 定义的全局变量，其中存储了当前进程一级页表基地址</span><br><span class="line">位于 kseg0 的虚拟地址。</span><br></pre></td></tr></table></figure>
+<pre class="language-c" data-language="c"><code class="language-c">我们将操作页表的逻辑使用 C 语言封装在 kern<span class="token operator">/</span>tlbex<span class="token punctuation">.</span>c 中的 <span class="token function">_do_tlb_refill</span><span class="token punctuation">(</span><span class="token punctuation">)</span> 函数中：
+<span class="token number">1</span> Pte <span class="token function">_do_tlb_refill</span><span class="token punctuation">(</span>u_long va<span class="token punctuation">,</span> u_int asid<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+<span class="token number">2</span> Pte <span class="token operator">*</span>pte<span class="token punctuation">;</span>
+<span class="token number">3</span>
+<span class="token number">4</span> <span class="token comment">/* 提示:
+5 尝试在循环中调用'page_lookup'以查找虚拟地址 va
+6 在当前进程页表中对应的页表项'pte'
+7 如果'page_lookup'返回'NULL'，表明'pte'找不到，使用'passive_alloc'
+8 为 va 所在的虚拟页面分配物理页面，
+9 直至'page_lookup'返回不为'NULL'则退出循环。
+10
+11 你可以在调用函数时，使用全局变量 cur_pgdir 作为其中一个实参。
+12 */</span>
+<span class="token number">13</span>
+<span class="token number">14</span> <span class="token keyword">return</span> <span class="token operator">*</span>pte<span class="token punctuation">;</span>
+<span class="token number">15</span> <span class="token punctuation">&#125;</span>
+这个函数返回的值是二级页表项，拿出来的是物理页号和权限。
+cur_pgdir 是一个在 kern<span class="token operator">/</span>pmap<span class="token punctuation">.</span>c 定义的全局变量，其中存储了当前进程一级页表基地址
+位于 kseg0 的虚拟地址。</code></pre>
 <p>这个指令和page_look有啥关系？</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">	这个函数的本质，是找到这个va对应的页的指针，作用是返回一级页表基地址 pgdir 对应的两级页表结构中虚拟地址 va 映射的物理页面的页控制块，同时将ppte 指向的空间设为对应的二级页表项地址</span><br><span class="line"></span><br><span class="line">	就是说，给你一个进程的pgdir，然后根据这个进程的va，搜索到这个va所在的物理界面的页控制块。</span><br><span class="line"><span class="keyword">struct</span> Page *<span class="title function_">page_lookup</span><span class="params">(Pde *pgdir, u_long va, Pte **ppte)</span> &#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">Page</span> *<span class="title">pp</span>;</span></span><br><span class="line">	Pte *pte;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Step 1: Get the page table entry. */</span></span><br><span class="line">	pgdir_walk(pgdir, va, <span class="number">0</span>, &amp;pte);</span><br><span class="line">	不创造纯查找。</span><br><span class="line">	<span class="comment">/* Hint: Check if the page table entry doesn&#x27;t exist or is not valid. */</span></span><br><span class="line">	<span class="keyword">if</span> (pte == <span class="literal">NULL</span> || (*pte &amp; PTE_V) == <span class="number">0</span>) &#123;</span><br><span class="line">		<span class="keyword">return</span> <span class="literal">NULL</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	如果没查到或者查到的无效，就是没有这个映射，返回</span><br><span class="line">	<span class="comment">/* Step 2: Get the corresponding Page struct. */</span></span><br><span class="line">	<span class="comment">/* Hint: Use function `pa2page`, defined in include/pmap.h . */</span></span><br><span class="line">	pp = pa2page(*pte);</span><br><span class="line">	<span class="keyword">if</span> (ppte) &#123;</span><br><span class="line">		*ppte = pte;</span><br><span class="line">	&#125;</span><br><span class="line">	查到了，那就让ppte的值变成查到的地址，让这个查到的映射页返回回去就行了。</span><br><span class="line">	<span class="keyword">return</span> pp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-c" data-language="c"><code class="language-c">	这个函数的本质，是找到这个va对应的页的指针，作用是返回一级页表基地址 pgdir 对应的两级页表结构中虚拟地址 va 映射的物理页面的页控制块，同时将ppte 指向的空间设为对应的二级页表项地址
+
+	就是说，给你一个进程的pgdir，然后根据这个进程的va，搜索到这个va所在的物理界面的页控制块。
+<span class="token keyword">struct</span> <span class="token class-name">Page</span> <span class="token operator">*</span><span class="token function">page_lookup</span><span class="token punctuation">(</span>Pde <span class="token operator">*</span>pgdir<span class="token punctuation">,</span> u_long va<span class="token punctuation">,</span> Pte <span class="token operator">*</span><span class="token operator">*</span>ppte<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	<span class="token keyword">struct</span> <span class="token class-name">Page</span> <span class="token operator">*</span>pp<span class="token punctuation">;</span>
+	Pte <span class="token operator">*</span>pte<span class="token punctuation">;</span>
+
+	<span class="token comment">/* Step 1: Get the page table entry. */</span>
+	<span class="token function">pgdir_walk</span><span class="token punctuation">(</span>pgdir<span class="token punctuation">,</span> va<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token operator">&amp;</span>pte<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	不创造纯查找。
+	<span class="token comment">/* Hint: Check if the page table entry doesn't exist or is not valid. */</span>
+	<span class="token keyword">if</span> <span class="token punctuation">(</span>pte <span class="token operator">==</span> <span class="token constant">NULL</span> <span class="token operator">||</span> <span class="token punctuation">(</span><span class="token operator">*</span>pte <span class="token operator">&amp;</span> PTE_V<span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token keyword">return</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	如果没查到或者查到的无效，就是没有这个映射，返回
+	<span class="token comment">/* Step 2: Get the corresponding Page struct. */</span>
+	<span class="token comment">/* Hint: Use function `pa2page`, defined in include/pmap.h . */</span>
+	pp <span class="token operator">=</span> <span class="token function">pa2page</span><span class="token punctuation">(</span><span class="token operator">*</span>pte<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token keyword">if</span> <span class="token punctuation">(</span>ppte<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token operator">*</span>ppte <span class="token operator">=</span> pte<span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	查到了，那就让ppte的值变成查到的地址，让这个查到的映射页返回回去就行了。
+	<span class="token keyword">return</span> pp<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
 <p>pagelook是干啥？是给定虚拟的一级页表的地址，然后给出虚拟地址，返回va这个虚拟地址所对应的物理页的业管理模块的地址（虚拟地址）。ppte存的是二级表项的虚拟地址。</p>
 <p>如果这个没找到，代表啥？代表没有<strong>管理的物理页满足这个va所在</strong>的页管理模块，也就是说这个虚拟地址没有对应一个物理页，此时就要来个分配一下地址了。然后就新开了一个页。新开这个页拿到这个页管理模块地址。然后再次进入循环，由于开了管理模块了，也就是说已经找到管理模块之后换算成物理地址就行了。</p>
-<h3 id="分配地址用的是这个"><a href="#分配地址用的是这个" class="headerlink" title="分配地址用的是这个"></a>分配地址用的是这个</h3><figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">static</span> <span class="type">void</span> <span class="title function_">passive_alloc</span><span class="params">(u_int va, Pde *pgdir, u_int asid)</span> &#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">Page</span> *<span class="title">p</span> =</span> <span class="literal">NULL</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (va &lt; UTEMP) &#123;</span><br><span class="line">		panic(<span class="string">&quot;address too low&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (va &gt;= USTACKTOP &amp;&amp; va &lt; USTACKTOP + BY2PG) &#123;</span><br><span class="line">		panic(<span class="string">&quot;invalid memory&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (va &gt;= UENVS &amp;&amp; va &lt; UPAGES) &#123;</span><br><span class="line">		panic(<span class="string">&quot;envs zone&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (va &gt;= UPAGES &amp;&amp; va &lt; UVPT) &#123;</span><br><span class="line">		panic(<span class="string">&quot;pages zone&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (va &gt;= ULIM) &#123;</span><br><span class="line">		panic(<span class="string">&quot;kernel address&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	前面几个都是不合法的情况。</span><br><span class="line">	后面都是真正在操作了，加上panic防止出事。</span><br><span class="line">	panic_on(page_alloc(&amp;p));</span><br><span class="line">	首先对一个页调用内存分配，新开一个物理页，让这个p指针的指向新开的页的页控制模块。</span><br><span class="line">	panic_on(page_insert(pgdir, asid, p, PTE_ADDR(va), PTE_D));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="分配地址用的是这个"><a href="#分配地址用的是这个" class="headerlink" title="分配地址用的是这个"></a>分配地址用的是这个</h3><pre class="language-c" data-language="c"><code class="language-c"><span class="token keyword">static</span> <span class="token keyword">void</span> <span class="token function">passive_alloc</span><span class="token punctuation">(</span>u_int va<span class="token punctuation">,</span> Pde <span class="token operator">*</span>pgdir<span class="token punctuation">,</span> u_int asid<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	<span class="token keyword">struct</span> <span class="token class-name">Page</span> <span class="token operator">*</span>p <span class="token operator">=</span> <span class="token constant">NULL</span><span class="token punctuation">;</span>
+
+	<span class="token keyword">if</span> <span class="token punctuation">(</span>va <span class="token operator">&lt;</span> UTEMP<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token function">panic</span><span class="token punctuation">(</span><span class="token string">"address too low"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+
+	<span class="token keyword">if</span> <span class="token punctuation">(</span>va <span class="token operator">>=</span> USTACKTOP <span class="token operator">&amp;&amp;</span> va <span class="token operator">&lt;</span> USTACKTOP <span class="token operator">+</span> BY2PG<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token function">panic</span><span class="token punctuation">(</span><span class="token string">"invalid memory"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+
+	<span class="token keyword">if</span> <span class="token punctuation">(</span>va <span class="token operator">>=</span> UENVS <span class="token operator">&amp;&amp;</span> va <span class="token operator">&lt;</span> UPAGES<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token function">panic</span><span class="token punctuation">(</span><span class="token string">"envs zone"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+
+	<span class="token keyword">if</span> <span class="token punctuation">(</span>va <span class="token operator">>=</span> UPAGES <span class="token operator">&amp;&amp;</span> va <span class="token operator">&lt;</span> UVPT<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token function">panic</span><span class="token punctuation">(</span><span class="token string">"pages zone"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+
+	<span class="token keyword">if</span> <span class="token punctuation">(</span>va <span class="token operator">>=</span> ULIM<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+		<span class="token function">panic</span><span class="token punctuation">(</span><span class="token string">"kernel address"</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	前面几个都是不合法的情况。
+	后面都是真正在操作了，加上panic防止出事。
+	<span class="token function">panic_on</span><span class="token punctuation">(</span><span class="token function">page_alloc</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>p<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+	首先对一个页调用内存分配，新开一个物理页，让这个p指针的指向新开的页的页控制模块。
+	<span class="token function">panic_on</span><span class="token punctuation">(</span><span class="token function">page_insert</span><span class="token punctuation">(</span>pgdir<span class="token punctuation">,</span> asid<span class="token punctuation">,</span> p<span class="token punctuation">,</span> <span class="token function">PTE_ADDR</span><span class="token punctuation">(</span>va<span class="token punctuation">)</span><span class="token punctuation">,</span> PTE_D<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
 <p>当 page_lookup() 函数在页表中找不到对应表项时，我们调用 passive_alloc() 函数进行<br>处理。若该虚拟地址合法，我们可以为此虚拟地址申请一个物理页面（page_alloc），并将虚拟<br>地址映射到该物理页面（page_insert），即进行被动页面分配。</p>
 <p>不妨想想虚拟地址是怎么回事。</p>
 <p>虚拟地址，本身是由三个偏移构成的，第一级页表的偏移，第二级页表的偏移，物理页内偏移。</p>
 <p>然后物理页号是不确定的，是在页表里面随机分配的。开了这个物理页，然后把物理页号填写到pde和pte里面。</p>
 <p>直接按照题目要求填写即可</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">Pte _do_tlb_refill(u_long va, u_int asid) &#123;</span><br><span class="line">	Pte *pte;</span><br><span class="line">	<span class="comment">/* Hints:</span></span><br><span class="line"><span class="comment">	 *  Invoke &#x27;page_lookup&#x27; repeatedly in a loop to find the page table entry &#x27;pte&#x27; associated</span></span><br><span class="line"><span class="comment">	 *  with the virtual address &#x27;va&#x27; in the current address space &#x27;cur_pgdir&#x27;.</span></span><br><span class="line"><span class="comment">	 *</span></span><br><span class="line"><span class="comment">	 *  **While** &#x27;page_lookup&#x27; returns &#x27;NULL&#x27;, indicating that the &#x27;pte&#x27; could not be found,</span></span><br><span class="line"><span class="comment">	 *  allocate a new page using &#x27;passive_alloc&#x27; until &#x27;page_lookup&#x27; succeeds.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Exercise 2.9: Your code here. */</span></span><br><span class="line">	<span class="keyword">while</span> (page_lookup(cur_pgdir,va,&amp;pte)==<span class="literal">NULL</span>)</span><br><span class="line">	&#123;   </span><br><span class="line">		passive_alloc(va,cur_pgdir,asid);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">return</span> *pte;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-c" data-language="c"><code class="language-c">Pte <span class="token function">_do_tlb_refill</span><span class="token punctuation">(</span>u_long va<span class="token punctuation">,</span> u_int asid<span class="token punctuation">)</span> <span class="token punctuation">&#123;</span>
+	Pte <span class="token operator">*</span>pte<span class="token punctuation">;</span>
+	<span class="token comment">/* Hints:
+	 *  Invoke 'page_lookup' repeatedly in a loop to find the page table entry 'pte' associated
+	 *  with the virtual address 'va' in the current address space 'cur_pgdir'.
+	 *
+	 *  **While** 'page_lookup' returns 'NULL', indicating that the 'pte' could not be found,
+	 *  allocate a new page using 'passive_alloc' until 'page_lookup' succeeds.
+	 */</span>
+
+	<span class="token comment">/* Exercise 2.9: Your code here. */</span>
+	<span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token function">page_lookup</span><span class="token punctuation">(</span>cur_pgdir<span class="token punctuation">,</span>va<span class="token punctuation">,</span><span class="token operator">&amp;</span>pte<span class="token punctuation">)</span><span class="token operator">==</span><span class="token constant">NULL</span><span class="token punctuation">)</span>
+	<span class="token punctuation">&#123;</span>   
+		<span class="token function">passive_alloc</span><span class="token punctuation">(</span>va<span class="token punctuation">,</span>cur_pgdir<span class="token punctuation">,</span>asid<span class="token punctuation">)</span><span class="token punctuation">;</span>
+	<span class="token punctuation">&#125;</span>
+	
+	<span class="token keyword">return</span> <span class="token operator">*</span>pte<span class="token punctuation">;</span>
+<span class="token punctuation">&#125;</span></code></pre>
 
 
 

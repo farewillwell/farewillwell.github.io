@@ -29,7 +29,7 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 
@@ -507,6 +507,9 @@
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
 
         
 
@@ -515,43 +518,187 @@
                 <h1 id="os-lab1-实验报告"><a href="#os-lab1-实验报告" class="headerlink" title="os lab1 实验报告"></a>os lab1 实验报告</h1><h2 id="思考题"><a href="#思考题" class="headerlink" title="思考题"></a>思考题</h2><h3 id="thinking1"><a href="#thinking1" class="headerlink" title="thinking1"></a>thinking1</h3><h4 id="题目："><a href="#题目：" class="headerlink" title="题目："></a>题目：</h4><p>Thinking 1.1 请阅读附录中的编译链接详解，尝试分别使用实验环境中的原生 x86 工具链（gcc、ld、readelf、objdump 等）和 MIPS 交叉编译工具链（带有 mips-linux-gnu-前缀），重复其中的编译和解析过程，观察相应的结果，并解释其中向 objdump 传入的参数的含义。</p>
 <p>利用test.c进行操作</p>
 <p>首先输入命令</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mips-linux-gnu-gcc -c test.c</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">mips-linux-gnu-gcc -c test.c</code></pre>
 <p>生成文件test.o，仅仅是目标文件，还未链接。<br>然后输入</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">objdump -DS test.o&gt;test.txt</span><br></pre></td></tr></table></figure>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br></pre></td><td class="code"><pre><span class="line">test.o：     文件格式 elf64-x86-64</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Disassembly of section .text:</span><br><span class="line"></span><br><span class="line">0000000000000000 &lt;main&gt;:</span><br><span class="line">   0:   f3 0f 1e fa             endbr64 </span><br><span class="line">   4:   55                      push   %rbp</span><br><span class="line">   5:   48 89 e5                mov    %rsp,%rbp</span><br><span class="line">   8:   48 8d 05 00 00 00 00    lea    0x0(%rip),%rax        # f &lt;main+0xf&gt;</span><br><span class="line">   f:   48 89 c7                mov    %rax,%rdi</span><br><span class="line">  12:   e8 00 00 00 00          call   17 &lt;main+0x17&gt;</span><br><span class="line">  17:   b8 00 00 00 00          mov    $0x0,%eax</span><br><span class="line">  1c:   5d                      pop    %rbp</span><br><span class="line">  1d:   c3                      ret    </span><br><span class="line"></span><br><span class="line">Disassembly of section .rodata:</span><br><span class="line"></span><br><span class="line">0000000000000000 &lt;.rodata&gt;:</span><br><span class="line">   0:   74 68                   je     6a &lt;main+0x6a&gt;</span><br><span class="line">   2:   69 73 20 69 73 20 74    imul   $0x74207369,0x20(%rbx),%esi</span><br><span class="line">   9:   65 73 74                gs jae 80 &lt;main+0x80&gt;</span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">Disassembly of section .comment:</span><br><span class="line"></span><br><span class="line">0000000000000000 &lt;.comment&gt;:</span><br><span class="line">   0:   00 47 43                add    %al,0x43(%rdi)</span><br><span class="line">   3:   43 3a 20                rex.XB cmp (%r8),%spl</span><br><span class="line">   6:   28 55 62                sub    %dl,0x62(%rbp)</span><br><span class="line">   9:   75 6e                   jne    79 &lt;main+0x79&gt;</span><br><span class="line">   b:   74 75                   je     82 &lt;main+0x82&gt;</span><br><span class="line">   d:   20 31                   and    %dh,(%rcx)</span><br><span class="line">   f:   31 2e                   xor    %ebp,(%rsi)</span><br><span class="line">  11:   33 2e                   xor    (%rsi),%ebp</span><br><span class="line">  13:   30 2d 31 75 62 75       xor    %ch,0x75627531(%rip)        # 7562754a &lt;main+0x7562754a&gt;</span><br><span class="line">  19:   6e                      outsb  %ds:(%rsi),(%dx)</span><br><span class="line">  1a:   74 75                   je     91 &lt;main+0x91&gt;</span><br><span class="line">  1c:   31 7e 32                xor    %edi,0x32(%rsi)</span><br><span class="line">  1f:   32 2e                   xor    (%rsi),%ch</span><br><span class="line">  21:   30 34 29                xor    %dh,(%rcx,%rbp,1)</span><br><span class="line">  24:   20 31                   and    %dh,(%rcx)</span><br><span class="line">  26:   31 2e                   xor    %ebp,(%rsi)</span><br><span class="line">  28:   33 2e                   xor    (%rsi),%ebp</span><br><span class="line">  2a:   30 00                   xor    %al,(%rax)</span><br><span class="line"></span><br><span class="line">Disassembly of section .note.gnu.property:</span><br><span class="line"></span><br><span class="line">0000000000000000 &lt;.note.gnu.property&gt;:</span><br><span class="line">   0:   04 00                   add    $0x0,%al</span><br><span class="line">   2:   00 00                   add    %al,(%rax)</span><br><span class="line">   4:   10 00                   adc    %al,(%rax)</span><br><span class="line">   6:   00 00                   add    %al,(%rax)</span><br><span class="line">   8:   05 00 00 00 47          add    $0x47000000,%eax</span><br><span class="line">   d:   4e 55                   rex.WRX push %rbp</span><br><span class="line">   f:   00 02                   add    %al,(%rdx)</span><br><span class="line">  11:   00 00                   add    %al,(%rax)</span><br><span class="line">  13:   c0 04 00 00             rolb   $0x0,(%rax,%rax,1)</span><br><span class="line">  17:   00 03                   add    %al,(%rbx)</span><br><span class="line">  19:   00 00                   add    %al,(%rax)</span><br><span class="line">  1b:   00 00                   add    %al,(%rax)</span><br><span class="line">  1d:   00 00                   add    %al,(%rax)</span><br><span class="line">        ...</span><br><span class="line"></span><br><span class="line">Disassembly of section .eh_frame:</span><br><span class="line"></span><br><span class="line">0000000000000000 &lt;.eh_frame&gt;:</span><br><span class="line">   0:   14 00                   adc    $0x0,%al</span><br><span class="line">   2:   00 00                   add    %al,(%rax)</span><br><span class="line">   4:   00 00                   add    %al,(%rax)</span><br><span class="line">   6:   00 00                   add    %al,(%rax)</span><br><span class="line">   8:   01 7a 52                add    %edi,0x52(%rdx)</span><br><span class="line">   b:   00 01                   add    %al,(%rcx)</span><br><span class="line">   d:   78 10                   js     1f &lt;.eh_frame+0x1f&gt;</span><br><span class="line">   f:   01 1b                   add    %ebx,(%rbx)</span><br><span class="line">  11:   0c 07                   or     $0x7,%al</span><br><span class="line">  13:   08 90 01 00 00 1c       or     %dl,0x1c000001(%rax)</span><br><span class="line">  19:   00 00                   add    %al,(%rax)</span><br><span class="line">  1b:   00 1c 00                add    %bl,(%rax,%rax,1)</span><br><span class="line">  1e:   00 00                   add    %al,(%rax)</span><br><span class="line">  20:   00 00                   add    %al,(%rax)</span><br><span class="line">  22:   00 00                   add    %al,(%rax)</span><br><span class="line">  24:   1e                      (bad)  </span><br><span class="line">  25:   00 00                   add    %al,(%rax)</span><br><span class="line">  27:   00 00                   add    %al,(%rax)</span><br><span class="line">  29:   45 0e                   rex.RB (bad) </span><br><span class="line">  2b:   10 86 02 43 0d 06       adc    %al,0x60d4302(%rsi)</span><br><span class="line">  31:   55                      push   %rbp</span><br><span class="line">  32:   0c 07                   or     $0x7,%al</span><br><span class="line">  34:   08 00                   or     %al,(%rax)</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">objdump -DS test.o&gt;test.txt</code></pre>
+<pre class="language-none"><code class="language-none">test.o：     文件格式 elf64-x86-64
+
+
+Disassembly of section .text:
+
+0000000000000000 &lt;main&gt;:
+   0:   f3 0f 1e fa             endbr64 
+   4:   55                      push   %rbp
+   5:   48 89 e5                mov    %rsp,%rbp
+   8:   48 8d 05 00 00 00 00    lea    0x0(%rip),%rax        # f &lt;main+0xf&gt;
+   f:   48 89 c7                mov    %rax,%rdi
+  12:   e8 00 00 00 00          call   17 &lt;main+0x17&gt;
+  17:   b8 00 00 00 00          mov    $0x0,%eax
+  1c:   5d                      pop    %rbp
+  1d:   c3                      ret    
+
+Disassembly of section .rodata:
+
+0000000000000000 &lt;.rodata&gt;:
+   0:   74 68                   je     6a &lt;main+0x6a&gt;
+   2:   69 73 20 69 73 20 74    imul   $0x74207369,0x20(%rbx),%esi
+   9:   65 73 74                gs jae 80 &lt;main+0x80&gt;
+        ...
+
+Disassembly of section .comment:
+
+0000000000000000 &lt;.comment&gt;:
+   0:   00 47 43                add    %al,0x43(%rdi)
+   3:   43 3a 20                rex.XB cmp (%r8),%spl
+   6:   28 55 62                sub    %dl,0x62(%rbp)
+   9:   75 6e                   jne    79 &lt;main+0x79&gt;
+   b:   74 75                   je     82 &lt;main+0x82&gt;
+   d:   20 31                   and    %dh,(%rcx)
+   f:   31 2e                   xor    %ebp,(%rsi)
+  11:   33 2e                   xor    (%rsi),%ebp
+  13:   30 2d 31 75 62 75       xor    %ch,0x75627531(%rip)        # 7562754a &lt;main+0x7562754a&gt;
+  19:   6e                      outsb  %ds:(%rsi),(%dx)
+  1a:   74 75                   je     91 &lt;main+0x91&gt;
+  1c:   31 7e 32                xor    %edi,0x32(%rsi)
+  1f:   32 2e                   xor    (%rsi),%ch
+  21:   30 34 29                xor    %dh,(%rcx,%rbp,1)
+  24:   20 31                   and    %dh,(%rcx)
+  26:   31 2e                   xor    %ebp,(%rsi)
+  28:   33 2e                   xor    (%rsi),%ebp
+  2a:   30 00                   xor    %al,(%rax)
+
+Disassembly of section .note.gnu.property:
+
+0000000000000000 &lt;.note.gnu.property&gt;:
+   0:   04 00                   add    $0x0,%al
+   2:   00 00                   add    %al,(%rax)
+   4:   10 00                   adc    %al,(%rax)
+   6:   00 00                   add    %al,(%rax)
+   8:   05 00 00 00 47          add    $0x47000000,%eax
+   d:   4e 55                   rex.WRX push %rbp
+   f:   00 02                   add    %al,(%rdx)
+  11:   00 00                   add    %al,(%rax)
+  13:   c0 04 00 00             rolb   $0x0,(%rax,%rax,1)
+  17:   00 03                   add    %al,(%rbx)
+  19:   00 00                   add    %al,(%rax)
+  1b:   00 00                   add    %al,(%rax)
+  1d:   00 00                   add    %al,(%rax)
+        ...
+
+Disassembly of section .eh_frame:
+
+0000000000000000 &lt;.eh_frame&gt;:
+   0:   14 00                   adc    $0x0,%al
+   2:   00 00                   add    %al,(%rax)
+   4:   00 00                   add    %al,(%rax)
+   6:   00 00                   add    %al,(%rax)
+   8:   01 7a 52                add    %edi,0x52(%rdx)
+   b:   00 01                   add    %al,(%rcx)
+   d:   78 10                   js     1f &lt;.eh_frame+0x1f&gt;
+   f:   01 1b                   add    %ebx,(%rbx)
+  11:   0c 07                   or     $0x7,%al
+  13:   08 90 01 00 00 1c       or     %dl,0x1c000001(%rax)
+  19:   00 00                   add    %al,(%rax)
+  1b:   00 1c 00                add    %bl,(%rax,%rax,1)
+  1e:   00 00                   add    %al,(%rax)
+  20:   00 00                   add    %al,(%rax)
+  22:   00 00                   add    %al,(%rax)
+  24:   1e                      (bad)  
+  25:   00 00                   add    %al,(%rax)
+  27:   00 00                   add    %al,(%rax)
+  29:   45 0e                   rex.RB (bad) 
+  2b:   10 86 02 43 0d 06       adc    %al,0x60d4302(%rsi)
+  31:   55                      push   %rbp
+  32:   0c 07                   or     $0x7,%al
+  34:   08 00                   or     %al,(%rax)</code></pre>
 <p>objdump中的参数：</p>
 <p>使用了两个参数</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">-d	将代码段反汇编 </span><br><span class="line">-D	与 -d 类似，但反汇编所有section</span><br><span class="line">-S	将代码段反汇编的同时，将反汇编代码和源代码交替显示，源码编译时需要加-g参数，即需要调试信息</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">-d	将代码段反汇编 
+-D	与 -d 类似，但反汇编所有section
+-S	将代码段反汇编的同时，将反汇编代码和源代码交替显示，源码编译时需要加-g参数，即需要调试信息</code></pre>
 <p>查阅资料后知道：<br>objdump -d &lt;file(s)&gt;: 将代码段反汇编；<br>objdump -S &lt;file(s)&gt;: 将代码段反汇编的同时，将反汇编代码与源代码交替显示，编译时需要使用-g参数，即需要调试信息；<br>objdump -C &lt;file(s)&gt;: 将C++符号名逆向解析<br>objdump -l &lt;file(s)&gt;: 反汇编代码中插入文件名和行号<br>objdump -j section &lt;file(s)&gt;: 仅反汇编指定的section</p>
 <h3 id="thinking2"><a href="#thinking2" class="headerlink" title="thinking2"></a>thinking2</h3><h4 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h4><p>Thinking 1.2 思考下述问题：<br>• 尝试使用我们编写的 readelf 程序，解析之前在 target 目录下生成的内核 ELF 文件。<br>• 也许你会发现我们编写的 readelf 程序是不能解析 readelf 文件本身的，而我们刚才介绍的系统工具 readelf 则可以解析，这是为什么呢？（提示：尝试使用 readelf-h，并阅读 tools&#x2F;readelf 目录下的 Makefile，观察 readelf 与 hello 的不同）</p>
 <p>查阅readelf –help知道，-h参数的作用是：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">-h --file-header       Display the ELF file header</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">-h --file-header       Display the ELF file header</code></pre>
 <p>也就是查询文件的elf 头，</p>
 <p>尝试解析自己的readelf：<br>.&#x2F;readelf readelf输入后没有任何输出。</p>
 <p>使用该命令解析自己写的readelf得到：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">ELF 头：</span><br><span class="line">  Magic：   7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00 </span><br><span class="line">  类别:                              ELF64</span><br><span class="line">  数据:                              2 补码，小端序 (little endian)</span><br><span class="line">  Version:                           1 (current)</span><br><span class="line">  OS/ABI:                            UNIX - System V</span><br><span class="line">  ABI 版本:                          0</span><br><span class="line">  类型:                              DYN (Position-Independent Executable file)</span><br><span class="line">  系统架构:                          Advanced Micro Devices X86-64</span><br><span class="line">  版本:                              0x1</span><br><span class="line">  入口点地址：               0x1180</span><br><span class="line">  程序头起点：          64 (bytes into file)</span><br><span class="line">  Start of section headers:          14488 (bytes into file)</span><br><span class="line">  标志：             0x0</span><br><span class="line">  Size of this header:               64 (bytes)</span><br><span class="line">  Size of program headers:           56 (bytes)</span><br><span class="line">  Number of program headers:         13</span><br><span class="line">  Size of section headers:           64 (bytes)</span><br><span class="line">  Number of section headers:         31</span><br><span class="line">  Section header string table index: 30</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">ELF 头：
+  Magic：   7f 45 4c 46 02 01 01 00 00 00 00 00 00 00 00 00 
+  类别:                              ELF64
+  数据:                              2 补码，小端序 (little endian)
+  Version:                           1 (current)
+  OS&#x2F;ABI:                            UNIX - System V
+  ABI 版本:                          0
+  类型:                              DYN (Position-Independent Executable file)
+  系统架构:                          Advanced Micro Devices X86-64
+  版本:                              0x1
+  入口点地址：               0x1180
+  程序头起点：          64 (bytes into file)
+  Start of section headers:          14488 (bytes into file)
+  标志：             0x0
+  Size of this header:               64 (bytes)
+  Size of program headers:           56 (bytes)
+  Number of program headers:         13
+  Size of section headers:           64 (bytes)
+  Number of section headers:         31
+  Section header string table index: 30</code></pre>
 <p>解析hello后：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">ELF 头：</span><br><span class="line">  Magic：   7f 45 4c 46 01 01 01 03 00 00 00 00 00 00 00 00 </span><br><span class="line">  类别:                              ELF32</span><br><span class="line">  数据:                              2 补码，小端序 (little endian)</span><br><span class="line">  Version:                           1 (current)</span><br><span class="line">  OS/ABI:                            UNIX - GNU</span><br><span class="line">  ABI 版本:                          0</span><br><span class="line">  类型:                              EXEC (可执行文件)</span><br><span class="line">  系统架构:                          Intel 80386</span><br><span class="line">  版本:                              0x1</span><br><span class="line">  入口点地址：               0x8049600</span><br><span class="line">  程序头起点：          52 (bytes into file)</span><br><span class="line">  Start of section headers:          746260 (bytes into file)</span><br><span class="line">  标志：             0x0</span><br><span class="line">  Size of this header:               52 (bytes)</span><br><span class="line">  Size of program headers:           32 (bytes)</span><br><span class="line">  Number of program headers:         8</span><br><span class="line">  Size of section headers:           40 (bytes)</span><br><span class="line">  Number of section headers:         35</span><br><span class="line">  Section header string table index: 34</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">ELF 头：
+  Magic：   7f 45 4c 46 01 01 01 03 00 00 00 00 00 00 00 00 
+  类别:                              ELF32
+  数据:                              2 补码，小端序 (little endian)
+  Version:                           1 (current)
+  OS&#x2F;ABI:                            UNIX - GNU
+  ABI 版本:                          0
+  类型:                              EXEC (可执行文件)
+  系统架构:                          Intel 80386
+  版本:                              0x1
+  入口点地址：               0x8049600
+  程序头起点：          52 (bytes into file)
+  Start of section headers:          746260 (bytes into file)
+  标志：             0x0
+  Size of this header:               52 (bytes)
+  Size of program headers:           32 (bytes)
+  Number of program headers:         8
+  Size of section headers:           40 (bytes)
+  Number of section headers:         35
+  Section header string table index: 34</code></pre>
 <p>注意：<br>类别:                              ELF64<br>类别:                              ELF32<br>位数不一样。<br>阅读Makefile后发现：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> 6 readelf: main.o readelf.o</span><br><span class="line"> 7         $(CC) $^ -o $@</span><br><span class="line"> 8 </span><br><span class="line"> 9 hello: hello.c</span><br><span class="line">10         $(CC) $^ -o $@ -m32 -static -g</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none"> 6 readelf: main.o readelf.o
+ 7         $(CC) $^ -o $@
+ 8 
+ 9 hello: hello.c
+10         $(CC) $^ -o $@ -m32 -static -g</code></pre>
 <p>在对于hello多了三个参数：<br>-m32,-static -g<br>生成的文件应当因为这三个参数而不同</p>
 <p>查阅资料发现：<br>    $@<br>　　目标的完整名称。<br>　　$^<br>　　所有的依赖文件，以空格分开，不包含重复的依赖文件。<br>$(cc)代表所用的编译器，$^代表上面俩依赖，目标就是readelf</p>
 <p>-g，产生符号调试工具（GNU的gdb）所必要的符号资讯，要想对源代码进行调试，我们就必须加入这个选项,在可执行文件中包含标准调试信息</p>
 <p>-static对库文件进行静态链接</p>
 <p>-m32:编译的是32位程序。</p>
 <p>尝试修改参数使其一致，实验后发现了bug</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cc main.o readelf.o -o readelf -g -static -m32</span><br><span class="line">/usr/bin/ld: i386:x86-64 architecture of input file `main.o&#x27; is incompatible with i386 output</span><br><span class="line">/usr/bin/ld: i386:x86-64 architecture of input file `readelf.o&#x27; is incompatible with i386 output</span><br><span class="line">collect2: error: ld returned 1 exit status</span><br><span class="line">make: *** [Makefile:7：readelf] 错误 1</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">cc main.o readelf.o -o readelf -g -static -m32
+&#x2F;usr&#x2F;bin&#x2F;ld: i386:x86-64 architecture of input file &#96;main.o&#39; is incompatible with i386 output
+&#x2F;usr&#x2F;bin&#x2F;ld: i386:x86-64 architecture of input file &#96;readelf.o&#39; is incompatible with i386 output
+collect2: error: ld returned 1 exit status
+make: *** [Makefile:7：readelf] 错误 1</code></pre>
 <p>大概的意思是，原本的依赖都是64位架构的，你非要-32位编译，不行。</p>
 <p>所以其实是架构的问题，本身写的readelf只能支持32位的，但是本身写的这个是用64位编译出来的，所以解析失败。</p>
 <h3 id="thinking3"><a href="#thinking3" class="headerlink" title="thinking3"></a>thinking3</h3><h4 id="题目-1"><a href="#题目-1" class="headerlink" title="题目"></a>题目</h4><p>在理论课上我们了解到，MIPS 体系结构上电时，启动入口地址为 0xBFC00000<br>（其实启动入口地址是根据具体型号而定的，由硬件逻辑确定，也有可能不是这个地址，但<br>一定是一个确定的地址），但实验操作系统的内核入口并没有放在上电启动地址，而是按照<br>内存布局图放置。思考为什么这样放置内核还能保证内核入口被正确跳转到？<br>（提示：思考实验中启动过程的两阶段分别由谁执行。）<br>kernel.lds里面已经写好了.text什么的位置了，然后start.S页写清楚程序的跳转位置了。</p>
 <h2 id="难点分析"><a href="#难点分析" class="headerlink" title="难点分析"></a>难点分析</h2><h3 id="能力难点"><a href="#能力难点" class="headerlink" title="能力难点"></a>能力难点</h3><p>1.对于大量陌生的代码进行阅读。非常多得文件，不容易梳理出来文件之间的关系等等。</p>
 <p>2.不懂的代码数目显著攀升，学习初期难以隔绝一些不需要填写但是无法理解的代码带来的影响。</p>
 <p>例如Makefile的内容，虽然经过了之前的练习，但是对于一些高级的Makefile使用比如</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$(mos_elf): $(modules) # 调用链接器 $(LD) 链接所有目标文件</span><br><span class="line"> $(LD) -o $(mos_elf) -N -T $(link_script) $(objects)</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">$(mos_elf): $(modules) # 调用链接器 $(LD) 链接所有目标文件
+ $(LD) -o $(mos_elf) -N -T $(link_script) $(objects)</code></pre>
 <p>虽然不需要去改写，但是在阅读的时候会产生一定障碍。<br>然后经过更深层次的阅读，逐渐明白了，$(LD)中，LD是变量，就是要用的连接器，本地已经设置好了。然后 $()本身就是调用的设定好的参数。</p>
 <p>3.在一个文件中读取有用的信息。</p>
 <p>例如在进行elf文件的阅读时。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">typedef struct &#123;</span><br><span class="line">8 unsigned char e_ident[EI_NIDENT]; /* Magic number and other info */</span><br><span class="line">9 // 存放魔数以及其他信息</span><br><span class="line">10 Elf32_Half e_type; /* Object file type */</span><br><span class="line">11 // 文件类型</span><br><span class="line">12 Elf32_Half e_machine; /* Architecture */</span><br><span class="line">......</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">typedef struct &#123;
+8 unsigned char e_ident[EI_NIDENT]; &#x2F;* Magic number and other info *&#x2F;
+9 &#x2F;&#x2F; 存放魔数以及其他信息
+10 Elf32_Half e_type; &#x2F;* Object file type *&#x2F;
+11 &#x2F;&#x2F; 文件类型
+12 Elf32_Half e_machine; &#x2F;* Architecture *&#x2F;
+......</code></pre>
 <p>会有很大量的信息，但是实际上有用的也就那么点。<br>4.阅读缩写名字<br>变量的命名很多都是用的缩写，导致乍一看难以区分，还是不习惯c语言工程代码的阅读模式。<br>5.阅读英文注释，英文不好，看英文注释会很难受</p>
 <h3 id="知识难点"><a href="#知识难点" class="headerlink" title="知识难点"></a>知识难点</h3><p>1.理解内存布局图，理解虚拟地址和物理地址的关系，根据内存图填写.test</p>
 <p>后来经过询问大佬，知道了内存会自动把.data和.bbs接到.test后面，所以不用怎么细改<br>2.理解ELF的文件，特别是区分segment 和section的区别和各自应用的地方。</p>

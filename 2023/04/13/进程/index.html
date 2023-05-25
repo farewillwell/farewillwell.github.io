@@ -29,7 +29,7 @@
 
     <script src="/libs/jquery/jquery.min.js"></script>
 
-<meta name="generator" content="Hexo 6.3.0"><link rel="stylesheet" href="/css/prism.css" type="text/css"></head>
+<meta name="generator" content="Hexo 6.3.0"></head>
 
 
 
@@ -507,26 +507,60 @@
         <hr class="clearfix">
 
         
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
 
         
 
         <div class="card-content article-card-content">
             <div id="articleContent">
                 <h1 id="进程"><a href="#进程" class="headerlink" title="进程"></a>进程</h1><p>首先还是那几个定义函数</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">#define LIST_HEAD(name, type)                                                                      \</span><br><span class="line">	struct name &#123;                                                                              \</span><br><span class="line">		struct type *lh_first; /* first element */                                         \</span><br><span class="line">	&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">
+#define LIST_HEAD(name, type)                                                                      \
+	struct name &#123;                                                                              \
+		struct type *lh_first; &#x2F;* first element *&#x2F;                                         \
+	&#125;
+</code></pre>
 
 <p>首先这个东西其实是一个定义式，就是把name定义成一种针对type的head</p>
 <p>，比如</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">LIST_HEAD(Env_list, Env);</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">LIST_HEAD(Env_list, Env);</code></pre>
 
 <p>实际上就是把Envlist这个名字定义成了Env类的头元素。</p>
 <p>关于创建的时候</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#define LIST_INIT(head)                                                                            \</span><br><span class="line">	do &#123;                                                                                       \</span><br><span class="line">		LIST_FIRST((head)) = NULL;                                                         \</span><br><span class="line">	&#125; while (0)</span><br><span class="line">#define LIST_FIRST(head) ((head)-&gt;lh_first)</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">#define LIST_INIT(head)                                                                            \
+	do &#123;                                                                                       \
+		LIST_FIRST((head)) &#x3D; NULL;                                                         \
+	&#125; while (0)
+#define LIST_FIRST(head) ((head)-&gt;lh_first)</code></pre>
 
 <p>就是让这个head锁指的lh_first变成0，所以传进来的head应该本身是个指针，所以才是lh_first。</p>
 <p>所以一般都是用一个结构体，然后按照结构体的&amp;传进来。</p>
 <p>类似 <code>宏名</code>(&amp;链表头，（e),链表连接元素名)这样的操作。</p>
-<h1 id="进程控制块"><a href="#进程控制块" class="headerlink" title="进程控制块"></a>进程控制块</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">struct Env &#123;</span><br><span class="line">	struct Trapframe env_tf;  // Saved registers</span><br><span class="line">	LIST_ENTRY(Env) env_link; // Free list</span><br><span class="line">	u_int env_id;		  // Unique environment identifier</span><br><span class="line">	u_int env_asid;		  // ASID</span><br><span class="line">	u_int env_parent_id;	  // env_id of this env&#x27;s parent</span><br><span class="line">	u_int env_status;	  // Status of the environment</span><br><span class="line">	Pde *env_pgdir;		  // Kernel virtual address of page dir</span><br><span class="line">	TAILQ_ENTRY(Env) env_sched_link;</span><br><span class="line">	u_int env_pri;</span><br><span class="line">	// Lab 4 IPC</span><br><span class="line">	u_int env_ipc_value;   // data value sent to us</span><br><span class="line">	u_int env_ipc_from;    // envid of the sender</span><br><span class="line">	u_int env_ipc_recving; // env is blocked receiving</span><br><span class="line">	u_int env_ipc_dstva;   // va at which to map received page</span><br><span class="line">	u_int env_ipc_perm;    // perm of page mapping received</span><br><span class="line"></span><br><span class="line">	// Lab 4 fault handling</span><br><span class="line">	u_int env_user_tlb_mod_entry; // user tlb mod handler</span><br><span class="line"></span><br><span class="line">	// Lab 6 scheduler counts</span><br><span class="line">	u_int env_runs; // number of times been env_run&#x27;ed</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h1 id="进程控制块"><a href="#进程控制块" class="headerlink" title="进程控制块"></a>进程控制块</h1><pre class="language-none"><code class="language-none">struct Env &#123;
+	struct Trapframe env_tf;  &#x2F;&#x2F; Saved registers
+	LIST_ENTRY(Env) env_link; &#x2F;&#x2F; Free list
+	u_int env_id;		  &#x2F;&#x2F; Unique environment identifier
+	u_int env_asid;		  &#x2F;&#x2F; ASID
+	u_int env_parent_id;	  &#x2F;&#x2F; env_id of this env&#39;s parent
+	u_int env_status;	  &#x2F;&#x2F; Status of the environment
+	Pde *env_pgdir;		  &#x2F;&#x2F; Kernel virtual address of page dir
+	TAILQ_ENTRY(Env) env_sched_link;
+	u_int env_pri;
+	&#x2F;&#x2F; Lab 4 IPC
+	u_int env_ipc_value;   &#x2F;&#x2F; data value sent to us
+	u_int env_ipc_from;    &#x2F;&#x2F; envid of the sender
+	u_int env_ipc_recving; &#x2F;&#x2F; env is blocked receiving
+	u_int env_ipc_dstva;   &#x2F;&#x2F; va at which to map received page
+	u_int env_ipc_perm;    &#x2F;&#x2F; perm of page mapping received
+
+	&#x2F;&#x2F; Lab 4 fault handling
+	u_int env_user_tlb_mod_entry; &#x2F;&#x2F; user tlb mod handler
+
+	&#x2F;&#x2F; Lab 6 scheduler counts
+	u_int env_runs; &#x2F;&#x2F; number of times been env_run&#39;ed
+&#125;;</code></pre>
 
 <p>env_tf是存储上下文框架的结构体。</p>
 <p>env_link是在free链表时候上下文连接的东西。</p>
@@ -534,7 +568,9 @@
 <p>env_asid:进程的地址空间号。</p>
 <p>env_parent_id:进程的父进程id，假如是从内核开始调，前面没有，那就是0。</p>
 <p>env_status:进程的状态，分为：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#define ENV_FREE 0</span><br><span class="line">#define ENV_RUNNABLE 1</span><br><span class="line">#define ENV_NOT_RUNNABLE 2</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">#define ENV_FREE 0
+#define ENV_RUNNABLE 1
+#define ENV_NOT_RUNNABLE 2</code></pre>
 
 <p>这三种。解释是：</p>
 <p>-ENV_FREE : 表明该进程控制块没有被任何进程使用，即该进程控制块处于进程空闲</p>
@@ -547,7 +583,7 @@
 <p>env_pgdir:存的是这个进程的页目录地址</p>
 <p>env_pri:存的是优先级</p>
 <p>事实上，存这个的数组envs，在初始化的时候就已经建立好了。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">struct Env envs[NENV] __attribute__((aligned(BY2PG))); // All environments</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">struct Env envs[NENV] __attribute__((aligned(BY2PG))); &#x2F;&#x2F; All environments</code></pre>
 
 <h2 id="补充-c中的attribute"><a href="#补充-c中的attribute" class="headerlink" title="补充-c中的attribute"></a>补充-c中的attribute</h2><p>GNU C 的一大特色就是__attribute__ 机制。<strong>attribute</strong> 可以设置函数属性（Function Attribute ）、变量属性（Variable Attribute ）和类型属性（Type Attribute )</p>
 <p><strong>attribute</strong> 书写特征是：<strong>attribute</strong> 前后都有两个下划线，并切后面会紧跟一对原括弧，括弧里面是相应的__attribute__ 参数。</p>
@@ -566,10 +602,14 @@
 <p><strong>3、at</strong></p>
 <p>绝对定位，可以把变量或函数绝对定位到Flash中，或者定位到RAM。</p>
 <p>1)、定位到flash中，一般用于固化的信息，如出厂设置的参数，上位机配置的参数，ID卡的ID号，flash标记等等</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> u16 gFlashDefValue[<span class="number">512</span>] __attribute__((at(<span class="number">0x0800F000</span>))) = &#123;<span class="number">0x1111</span>,<span class="number">0x1111</span>,<span class="number">0x1111</span>,<span class="number">0x0111</span>,<span class="number">0x0111</span>,<span class="number">0x0111</span>&#125;;<span class="comment">//定位在flash中,其他flash补充为00</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> u16 gflashdata__attribute__((at(<span class="number">0x0800F000</span>))) = <span class="number">0xFFFF</span>;</span><br></pre></td></tr></table></figure>
+<pre class="language-objectivec" data-language="objectivec"><code class="language-objectivec"><span class="token keyword">const</span> u16 gFlashDefValue<span class="token punctuation">[</span><span class="token number">512</span><span class="token punctuation">]</span> <span class="token function">__attribute__</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token function">at</span><span class="token punctuation">(</span><span class="token number">0x0800F000</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token punctuation">&#123;</span><span class="token number">0x1111</span><span class="token punctuation">,</span><span class="token number">0x1111</span><span class="token punctuation">,</span><span class="token number">0x1111</span><span class="token punctuation">,</span><span class="token number">0x0111</span><span class="token punctuation">,</span><span class="token number">0x0111</span><span class="token punctuation">,</span><span class="token number">0x0111</span><span class="token punctuation">&#125;</span><span class="token punctuation">;</span><span class="token comment">//定位在flash中,其他flash补充为00</span>
+
+
+
+<span class="token keyword">const</span> u16 <span class="token function">gflashdata__attribute__</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token function">at</span><span class="token punctuation">(</span><span class="token number">0x0800F000</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token number">0xFFFF</span><span class="token punctuation">;</span></code></pre>
 
 <p>2)、定位到RAM中，一般用于数据量比较大的缓存，如串口的接收缓存，再就是某个位置的特定变量</p>
-<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">u8 USART2_RX_BUF[USART2_REC_LEN] __attribute__ ((at(<span class="number">0X20001000</span>)));<span class="comment">//接收缓冲,最大USART_REC_LEN个字节,起始地址为0X20001000.</span></span><br></pre></td></tr></table></figure>
+<pre class="language-objectivec" data-language="objectivec"><code class="language-objectivec">u8 USART2_RX_BUF<span class="token punctuation">[</span>USART2_REC_LEN<span class="token punctuation">]</span> <span class="token function">__attribute__</span> <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token function">at</span><span class="token punctuation">(</span><span class="token number">0X20001000</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token comment">//接收缓冲,最大USART_REC_LEN个字节,起始地址为0X20001000.</span></code></pre>
 
 
 <p>注意：</p>
@@ -578,26 +618,81 @@
 <p><strong>4、section</strong></p>
 <p>​    提到section，就得说RO RI ZI了，在ARM编译器编译之后，代码被划分为不同的段，RO Section(ReadOnly)中存放代码段和常量，RW Section(ReadWrite)中存放可读写静态变量和全局变量，ZI Section(ZeroInit)是存放在RW段中初始化为0的变量。<br>​    attribute__((section(“section_name”)))，其作用是将作用的函数或数据放入指定名为”section_name”对应的段中。</p>
 <p>回到上文：为了有效快速的拿取可用的env块，类似页表一样组织了一个链表</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">static struct Env_list env_free_list; // Free list</span><br><span class="line"></span><br><span class="line">// Invariant: &#x27;env&#x27; in &#x27;env_sched_list&#x27; iff. &#x27;env-&gt;env_status&#x27; is &#x27;RUNNABLE&#x27;.</span><br><span class="line">struct Env_sched_list env_sched_list; // Runnable list</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">static struct Env_list env_free_list; &#x2F;&#x2F; Free list
+
+&#x2F;&#x2F; Invariant: &#39;env&#39; in &#39;env_sched_list&#39; iff. &#39;env-&gt;env_status&#39; is &#39;RUNNABLE&#39;.
+struct Env_sched_list env_sched_list; &#x2F;&#x2F; Runnable list</code></pre>
 
 <p>上面的是可用的，下面的是调度的sched表，之所以下面的sched表在最后用的是TAILQ，，是因为这个在进程中时间转轮片法给的时间用完后会放到链表尾部而不是头，这么做很方便（</p>
-<h2 id="完成env-init"><a href="#完成env-init" class="headerlink" title="完成env_init"></a>完成env_init</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Exercise 3.1 完成 env_init 函数。</span><br><span class="line">实现 Env 控制块的空闲队列和调度队列的初始化功能。请注意，你需要按倒序将所有控制块插入到空闲链表的头部，使得编号更小的进程控制块被优先分配。</span><br></pre></td></tr></table></figure>
+<h2 id="完成env-init"><a href="#完成env-init" class="headerlink" title="完成env_init"></a>完成env_init</h2><pre class="language-none"><code class="language-none">Exercise 3.1 完成 env_init 函数。
+实现 Env 控制块的空闲队列和调度队列的初始化功能。请注意，你需要按倒序将所有控制块插入到空闲链表的头部，使得编号更小的进程控制块被优先分配。</code></pre>
 
 <p>直接给出代码</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">void env_init(void) &#123;</span><br><span class="line">	int i;</span><br><span class="line">	/* Step 1: Initialize &#x27;env_free_list&#x27; with &#x27;LIST_INIT&#x27; and &#x27;env_sched_list&#x27; with</span><br><span class="line">	 * &#x27;TAILQ_INIT&#x27;. */</span><br><span class="line">	/* Exercise 3.1: Your code here. (1/2) */</span><br><span class="line">	LIST_INIT(&amp;env_free_list);</span><br><span class="line">	TAILQ_INIT(&amp;env_sched_list);</span><br><span class="line">	/* Step 2: Traverse the elements of &#x27;envs&#x27; array, set their status to &#x27;ENV_FREE&#x27; and insert</span><br><span class="line">	 * them into the &#x27;env_free_list&#x27;. Make sure, after the insertion, the order of envs in the</span><br><span class="line">	 * list should be the same as they are in the &#x27;envs&#x27; array. */</span><br><span class="line"></span><br><span class="line">	/* Exercise 3.1: Your code here. (2/2) */</span><br><span class="line">	for ( i = NENV; i &gt;=0; i--)</span><br><span class="line">	&#123;</span><br><span class="line">		envs[i].env_status=ENV_FREE;</span><br><span class="line">		LIST_INSERT_HEAD(&amp;env_free_list,&amp;envs[i],env_link);</span><br><span class="line">		/* code */</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	/*</span><br><span class="line">	 * We want to map &#x27;UPAGES&#x27; and &#x27;UENVS&#x27; to *every* user space with PTE_G permission (without</span><br><span class="line">	 * PTE_D), then user programs can read (but cannot write) kernel data structures &#x27;pages&#x27; and</span><br><span class="line">	 * &#x27;envs&#x27;.</span><br><span class="line">	 *</span><br><span class="line">	 * Here we first map them into the *template* page directory &#x27;base_pgdir&#x27;.</span><br><span class="line">	 * Later in &#x27;env_setup_vm&#x27;, we will copy them into each &#x27;env_pgdir&#x27;.</span><br><span class="line">	 */</span><br><span class="line">	struct Page *p;</span><br><span class="line">	panic_on(page_alloc(&amp;p));</span><br><span class="line">	p-&gt;pp_ref++;</span><br><span class="line"></span><br><span class="line">	base_pgdir = (Pde *)page2kva(p);</span><br><span class="line">	map_segment(base_pgdir, 0, PADDR(pages), UPAGES, ROUND(npage * sizeof(struct Page), BY2PG),</span><br><span class="line">		    PTE_G);</span><br><span class="line">	map_segment(base_pgdir, 0, PADDR(envs), UENVS, ROUND(NENV * sizeof(struct Env), BY2PG),</span><br><span class="line">		    PTE_G);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">void env_init(void) &#123;
+	int i;
+	&#x2F;* Step 1: Initialize &#39;env_free_list&#39; with &#39;LIST_INIT&#39; and &#39;env_sched_list&#39; with
+	 * &#39;TAILQ_INIT&#39;. *&#x2F;
+	&#x2F;* Exercise 3.1: Your code here. (1&#x2F;2) *&#x2F;
+	LIST_INIT(&amp;env_free_list);
+	TAILQ_INIT(&amp;env_sched_list);
+	&#x2F;* Step 2: Traverse the elements of &#39;envs&#39; array, set their status to &#39;ENV_FREE&#39; and insert
+	 * them into the &#39;env_free_list&#39;. Make sure, after the insertion, the order of envs in the
+	 * list should be the same as they are in the &#39;envs&#39; array. *&#x2F;
+
+	&#x2F;* Exercise 3.1: Your code here. (2&#x2F;2) *&#x2F;
+	for ( i &#x3D; NENV; i &gt;&#x3D;0; i--)
+	&#123;
+		envs[i].env_status&#x3D;ENV_FREE;
+		LIST_INSERT_HEAD(&amp;env_free_list,&amp;envs[i],env_link);
+		&#x2F;* code *&#x2F;
+	&#125;
+	
+	&#x2F;*
+	 * We want to map &#39;UPAGES&#39; and &#39;UENVS&#39; to *every* user space with PTE_G permission (without
+	 * PTE_D), then user programs can read (but cannot write) kernel data structures &#39;pages&#39; and
+	 * &#39;envs&#39;.
+	 *
+	 * Here we first map them into the *template* page directory &#39;base_pgdir&#39;.
+	 * Later in &#39;env_setup_vm&#39;, we will copy them into each &#39;env_pgdir&#39;.
+	 *&#x2F;
+	struct Page *p;
+	panic_on(page_alloc(&amp;p));
+	p-&gt;pp_ref++;
+
+	base_pgdir &#x3D; (Pde *)page2kva(p);
+	map_segment(base_pgdir, 0, PADDR(pages), UPAGES, ROUND(npage * sizeof(struct Page), BY2PG),
+		    PTE_G);
+	map_segment(base_pgdir, 0, PADDR(envs), UENVS, ROUND(NENV * sizeof(struct Env), BY2PG),
+		    PTE_G);
+&#125;</code></pre>
 
 <p>上面每一个you code here都是原本的空，现在来仔细解读这些代码：</p>
 <p>首先先根据链表的不同要求来分别初始化free和scheculd</p>
 <p>然后在env.h里面定义了这些参数</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">#define LOG2NENV 10</span><br><span class="line">#define NENV (1 &lt;&lt; LOG2NENV)</span><br><span class="line">#define ENVX(envid) ((envid) &amp; (NENV - 1))</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">#define LOG2NENV 10
+#define NENV (1 &lt;&lt; LOG2NENV)
+#define ENVX(envid) ((envid) &amp; (NENV - 1))</code></pre>
 
 <p>这些事ENV，NENV就是env的个数</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">for ( i = NENV; i &gt;=0; i--)</span><br><span class="line">	&#123;</span><br><span class="line">		envs[i].env_status=ENV_FREE;</span><br><span class="line">		LIST_INSERT_HEAD(&amp;env_free_list,&amp;envs[i],env_link);</span><br><span class="line">		/* code */</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">for ( i &#x3D; NENV; i &gt;&#x3D;0; i--)
+	&#123;
+		envs[i].env_status&#x3D;ENV_FREE;
+		LIST_INSERT_HEAD(&amp;env_free_list,&amp;envs[i],env_link);
+		&#x2F;* code *&#x2F;
+	&#125;</code></pre>
 
 <p>倒序插入，先设置这些控制块的状态为free，建好了但是没被使用的。</p>
 <p>然后用链表的插头宏插入，注意写法：</p>
 <p>前俩都是地址，env[i]，本身是一个元素，是id为i的进程控制块，加了&amp;才是这个控制块的地址（需要的都是地址）</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">struct Page *p;</span><br><span class="line">	panic_on(page_alloc(&amp;p));</span><br><span class="line">	p-&gt;pp_ref++;</span><br><span class="line"></span><br><span class="line">	base_pgdir = (Pde *)page2kva(p);</span><br><span class="line">	map_segment(base_pgdir, 0, PADDR(pages), UPAGES, ROUND(npage * sizeof(struct Page), BY2PG),</span><br><span class="line">		    PTE_G);</span><br><span class="line">	map_segment(base_pgdir, 0, PADDR(envs), UENVS, ROUND(NENV * sizeof(struct Env), BY2PG),</span><br><span class="line">		    PTE_G);</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">struct Page *p;
+	panic_on(page_alloc(&amp;p));
+	p-&gt;pp_ref++;
+
+	base_pgdir &#x3D; (Pde *)page2kva(p);
+	map_segment(base_pgdir, 0, PADDR(pages), UPAGES, ROUND(npage * sizeof(struct Page), BY2PG),
+		    PTE_G);
+	map_segment(base_pgdir, 0, PADDR(envs), UENVS, ROUND(NENV * sizeof(struct Env), BY2PG),
+		    PTE_G);</code></pre>
 
 <p>这一部分没让填空，但是仍然重要。</p>
 <p>首先分配页控制块，然后increase使用次数。然后把这个页控制块当做基页目录，然后使用map_segment进行格式管理，这个后面会细说。</p>
@@ -610,13 +705,47 @@
 <p>址段 [va,va+size) 映射到物理地址段 [pa,pa+size)，因为是按页映射，要求 size 必须是页</p>
 <p>面大小的整数倍。同时为相关页表项的权限为设置为 perm。它在这里的作用是将内核中的 Page</p>
 <p>和 Env 数据结构映射到用户地址，以供用户程序读取.</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">static void map_segment(Pde *pgdir, u_int asid, u_long pa, u_long va, u_int size, u_int perm) &#123;</span><br><span class="line"></span><br><span class="line">	assert(pa % BY2PG == 0);</span><br><span class="line">	assert(va % BY2PG == 0);</span><br><span class="line">	assert(size % BY2PG == 0);</span><br><span class="line"></span><br><span class="line">	/* Step 1: Map virtual address space to physical address space. */</span><br><span class="line">	for (int i = 0; i &lt; size; i += BY2PG) &#123;</span><br><span class="line">		/*</span><br><span class="line">		 * Hint:</span><br><span class="line">		 *  Map the virtual page &#x27;va + i&#x27; to the physical page &#x27;pa + i&#x27; using &#x27;page_insert&#x27;.</span><br><span class="line">		 *  Use &#x27;pa2page&#x27; to get the &#x27;struct Page *&#x27; of the physical address.</span><br><span class="line">		 */</span><br><span class="line">		/* Exercise 3.2: Your code here. */</span><br><span class="line">		 struct Page * page_cur=pa2page(pa+i);</span><br><span class="line">		 page_insert(pgdir,asid,page_cur,va+i,perm|PTE_V);</span><br><span class="line"></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">static void map_segment(Pde *pgdir, u_int asid, u_long pa, u_long va, u_int size, u_int perm) &#123;
+
+	assert(pa % BY2PG &#x3D;&#x3D; 0);
+	assert(va % BY2PG &#x3D;&#x3D; 0);
+	assert(size % BY2PG &#x3D;&#x3D; 0);
+
+	&#x2F;* Step 1: Map virtual address space to physical address space. *&#x2F;
+	for (int i &#x3D; 0; i &lt; size; i +&#x3D; BY2PG) &#123;
+		&#x2F;*
+		 * Hint:
+		 *  Map the virtual page &#39;va + i&#39; to the physical page &#39;pa + i&#39; using &#39;page_insert&#39;.
+		 *  Use &#39;pa2page&#39; to get the &#39;struct Page *&#39; of the physical address.
+		 *&#x2F;
+		&#x2F;* Exercise 3.2: Your code here. *&#x2F;
+		 struct Page * page_cur&#x3D;pa2page(pa+i);
+		 page_insert(pgdir,asid,page_cur,va+i,perm|PTE_V);
+
+	&#125;
+&#125;</code></pre>
 
 <p>Map the virtual page ‘va + i’ to the physical page ‘pa + i’ using ‘page_insert’，使用page_insert把va+i和pa+i建立联系，笔者一开始光顾着pa+i了，没有va+i，导致出了bug。</p>
 <h2 id="标识符"><a href="#标识符" class="headerlink" title="标识符"></a>标识符</h2><p>标识符分为id和asid</p>
 <p>有一个叫做 mkenvid 的函数，作用就是生成一个新的进程 env_id。</p>
 <p>然后还有一个专门的生成asid的函数</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">static int asid_alloc(u_int *asid) &#123;</span><br><span class="line">	for (u_int i = 0; i &lt; NASID; ++i) &#123;</span><br><span class="line">		int index = i &gt;&gt; 5;</span><br><span class="line">		int inner = i &amp; 31;</span><br><span class="line">		if ((asid_bitmap[index] &amp; (1 &lt;&lt; inner)) == 0) &#123;</span><br><span class="line">			asid_bitmap[index] |= 1 &lt;&lt; inner;</span><br><span class="line">			*asid = i;</span><br><span class="line">			return 0;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	return -E_NO_FREE_ENV;</span><br><span class="line">&#125;</span><br><span class="line">static void asid_free(u_int i) &#123;</span><br><span class="line">	int index = i &gt;&gt; 5;</span><br><span class="line">	int inner = i &amp; 31;</span><br><span class="line">	asid_bitmap[index] &amp;= ~(1 &lt;&lt; inner);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">static int asid_alloc(u_int *asid) &#123;
+	for (u_int i &#x3D; 0; i &lt; NASID; ++i) &#123;
+		int index &#x3D; i &gt;&gt; 5;
+		int inner &#x3D; i &amp; 31;
+		if ((asid_bitmap[index] &amp; (1 &lt;&lt; inner)) &#x3D;&#x3D; 0) &#123;
+			asid_bitmap[index] |&#x3D; 1 &lt;&lt; inner;
+			*asid &#x3D; i;
+			return 0;
+		&#125;
+	&#125;
+	return -E_NO_FREE_ENV;
+&#125;
+static void asid_free(u_int i) &#123;
+	int index &#x3D; i &gt;&gt; 5;
+	int inner &#x3D; i &amp; 31;
+	asid_bitmap[index] &amp;&#x3D; ~(1 &lt;&lt; inner);
+&#125;</code></pre>
 
 <p>两个分别是分配和释放的。具体实现是数学上的，不用管。</p>
 <h2 id="创建进程重点！"><a href="#创建进程重点！" class="headerlink" title="创建进程重点！"></a>创建进程<em>重点</em>！</h2><p>利用空闲进程链表 <strong>env_free_list</strong> 创建进程。</p>
@@ -629,17 +758,91 @@
 <p>新进程初始化页目录。</p>
 <p>第四步 此时 PCB 已经被填写了很多东西，不再是一张白纸，把它从空闲链表里摘出，就</p>
 <p>可以使用。<strong>用户栈是在使用时被动态分配的</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">int env_alloc(struct Env **new, u_int parent_id) &#123;</span><br><span class="line">	int r;</span><br><span class="line">	struct Env *e;</span><br><span class="line"></span><br><span class="line">	/* Step 1: Get a free Env from &#x27;env_free_list&#x27; */</span><br><span class="line">	/* Exercise 3.4: Your code here. (1/4) */</span><br><span class="line">	if(LIST_EMPTY(&amp;env_free_list))</span><br><span class="line">	&#123;</span><br><span class="line">		*new=NULL;</span><br><span class="line">		return -E_NO_FREE_ENV;</span><br><span class="line">	&#125;</span><br><span class="line">	e=LIST_FIRST(&amp;env_free_list);</span><br><span class="line">	/* Step 2: Call a &#x27;env_setup_vm&#x27; to initialize the user address space for this new Env. */</span><br><span class="line">	/* Exercise 3.4: Your code here. (2/4) */</span><br><span class="line">	try(env_setup_vm(e));</span><br><span class="line">	/* Step 3: Initialize these fields for the new Env with appropriate values:</span><br><span class="line">	 *   &#x27;env_user_tlb_mod_entry&#x27; (lab4), &#x27;env_runs&#x27; (lab6), &#x27;env_id&#x27; (lab3), &#x27;env_asid&#x27; (lab3),</span><br><span class="line">	 *   &#x27;env_parent_id&#x27; (lab3)</span><br><span class="line">	 *</span><br><span class="line">	 * Hint:</span><br><span class="line">	 *   Use &#x27;asid_alloc&#x27; to allocate a free asid.</span><br><span class="line">	 *   Use &#x27;mkenvid&#x27; to allocate a free envid.</span><br><span class="line">	 */</span><br><span class="line">	e-&gt;env_user_tlb_mod_entry = 0; // for lab4</span><br><span class="line">	e-&gt;env_runs = 0;	       // for lab6</span><br><span class="line">	/* Exercise 3.4: Your code here. (3/4) */</span><br><span class="line">	e-&gt;env_id=mkenvid(e);</span><br><span class="line">	r=asid_alloc(&amp;(e-&gt;env_asid));</span><br><span class="line">	if(r!=0)return r;</span><br><span class="line">	e-&gt;env_parent_id=parent_id;</span><br><span class="line">	/* Step 4: Initialize the sp and &#x27;cp0_status&#x27; in &#x27;e-&gt;env_tf&#x27;. */</span><br><span class="line">	// Timer interrupt (STATUS_IM4) will be enabled.</span><br><span class="line">	e-&gt;env_tf.cp0_status = STATUS_IM4 | STATUS_KUp | STATUS_IEp;</span><br><span class="line">	// Keep space for &#x27;argc&#x27; and &#x27;argv&#x27;.</span><br><span class="line">	e-&gt;env_tf.regs[29] = USTACKTOP - sizeof(int) - sizeof(char **);</span><br><span class="line"></span><br><span class="line">	/* Step 5: Remove the new Env from env_free_list. */</span><br><span class="line">	/* Exercise 3.4: Your code here. (4/4) */</span><br><span class="line">	LIST_REMOVE(e,env_link);</span><br><span class="line">	*new = e;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">int env_alloc(struct Env **new, u_int parent_id) &#123;
+	int r;
+	struct Env *e;
+
+	&#x2F;* Step 1: Get a free Env from &#39;env_free_list&#39; *&#x2F;
+	&#x2F;* Exercise 3.4: Your code here. (1&#x2F;4) *&#x2F;
+	if(LIST_EMPTY(&amp;env_free_list))
+	&#123;
+		*new&#x3D;NULL;
+		return -E_NO_FREE_ENV;
+	&#125;
+	e&#x3D;LIST_FIRST(&amp;env_free_list);
+	&#x2F;* Step 2: Call a &#39;env_setup_vm&#39; to initialize the user address space for this new Env. *&#x2F;
+	&#x2F;* Exercise 3.4: Your code here. (2&#x2F;4) *&#x2F;
+	try(env_setup_vm(e));
+	&#x2F;* Step 3: Initialize these fields for the new Env with appropriate values:
+	 *   &#39;env_user_tlb_mod_entry&#39; (lab4), &#39;env_runs&#39; (lab6), &#39;env_id&#39; (lab3), &#39;env_asid&#39; (lab3),
+	 *   &#39;env_parent_id&#39; (lab3)
+	 *
+	 * Hint:
+	 *   Use &#39;asid_alloc&#39; to allocate a free asid.
+	 *   Use &#39;mkenvid&#39; to allocate a free envid.
+	 *&#x2F;
+	e-&gt;env_user_tlb_mod_entry &#x3D; 0; &#x2F;&#x2F; for lab4
+	e-&gt;env_runs &#x3D; 0;	       &#x2F;&#x2F; for lab6
+	&#x2F;* Exercise 3.4: Your code here. (3&#x2F;4) *&#x2F;
+	e-&gt;env_id&#x3D;mkenvid(e);
+	r&#x3D;asid_alloc(&amp;(e-&gt;env_asid));
+	if(r!&#x3D;0)return r;
+	e-&gt;env_parent_id&#x3D;parent_id;
+	&#x2F;* Step 4: Initialize the sp and &#39;cp0_status&#39; in &#39;e-&gt;env_tf&#39;. *&#x2F;
+	&#x2F;&#x2F; Timer interrupt (STATUS_IM4) will be enabled.
+	e-&gt;env_tf.cp0_status &#x3D; STATUS_IM4 | STATUS_KUp | STATUS_IEp;
+	&#x2F;&#x2F; Keep space for &#39;argc&#39; and &#39;argv&#39;.
+	e-&gt;env_tf.regs[29] &#x3D; USTACKTOP - sizeof(int) - sizeof(char **);
+
+	&#x2F;* Step 5: Remove the new Env from env_free_list. *&#x2F;
+	&#x2F;* Exercise 3.4: Your code here. (4&#x2F;4) *&#x2F;
+	LIST_REMOVE(e,env_link);
+	*new &#x3D; e;
+	return 0;
+&#125;</code></pre>
 
 <p>很关键的东西。接下来分步解释。</p>
 <p><strong>env_free_list</strong>这个玩意是一个全局的东西，任何东西从里面拿env都是要从这个全局的变量拿。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">if(LIST_EMPTY(&amp;env_free_list))</span><br><span class="line">	&#123;</span><br><span class="line">		*new=NULL;</span><br><span class="line">		return -E_NO_FREE_ENV;</span><br><span class="line">	&#125;</span><br><span class="line">	e=LIST_FIRST(&amp;env_free_list);</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">if(LIST_EMPTY(&amp;env_free_list))
+	&#123;
+		*new&#x3D;NULL;
+		return -E_NO_FREE_ENV;
+	&#125;
+	e&#x3D;LIST_FIRST(&amp;env_free_list);</code></pre>
 
 <p>首先检验是否为空，一定要合理的检查所有这种情况。然后就是设置这个进程框的各种数据。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">try(env_setup_vm(e))</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">try(env_setup_vm(e))</code></pre>
 
 <p>这个玩意非常重要，可以初始化进程的地址空间。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">/* Overview:</span><br><span class="line"> *   Initialize the user address space for &#x27;e&#x27;.</span><br><span class="line"> */</span><br><span class="line">static int env_setup_vm(struct Env *e) &#123;</span><br><span class="line">	/* Step 1:</span><br><span class="line">	 *   Allocate a page for the page directory with &#x27;page_alloc&#x27;.</span><br><span class="line">	 *   Increase its &#x27;pp_ref&#x27; and assign its kernel address to &#x27;e-&gt;env_pgdir&#x27;.</span><br><span class="line">	 *</span><br><span class="line">	 * Hint:</span><br><span class="line">	 *   You can get the kernel address of a specified physical page using &#x27;page2kva&#x27;.</span><br><span class="line">	 */</span><br><span class="line">	struct Page *p;</span><br><span class="line">	try(page_alloc(&amp;p));</span><br><span class="line">	/* Exercise 3.3: Your code here. */</span><br><span class="line">	p-&gt;pp_ref++;</span><br><span class="line">	e-&gt;env_pgdir=(Pde*)page2kva(p);</span><br><span class="line">	/* Step 2: Copy the template page directory &#x27;base_pgdir&#x27; to &#x27;e-&gt;env_pgdir&#x27;. */</span><br><span class="line">	/* Hint:</span><br><span class="line">	 *   As a result, the address space of all envs is identical in [UTOP, UVPT).</span><br><span class="line">	 *   See include/mmu.h for layout.</span><br><span class="line">	 */</span><br><span class="line">	memcpy(e-&gt;env_pgdir + PDX(UTOP), base_pgdir + PDX(UTOP),</span><br><span class="line">	       sizeof(Pde) * (PDX(UVPT) - PDX(UTOP)));</span><br><span class="line"></span><br><span class="line">	/* Step 3: Map its own page table at &#x27;UVPT&#x27; with readonly permission.</span><br><span class="line">	 * As a result, user programs can read its page table through &#x27;UVPT&#x27; */</span><br><span class="line">	e-&gt;env_pgdir[PDX(UVPT)] = PADDR(e-&gt;env_pgdir) | PTE_V;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">&#x2F;* Overview:
+ *   Initialize the user address space for &#39;e&#39;.
+ *&#x2F;
+static int env_setup_vm(struct Env *e) &#123;
+	&#x2F;* Step 1:
+	 *   Allocate a page for the page directory with &#39;page_alloc&#39;.
+	 *   Increase its &#39;pp_ref&#39; and assign its kernel address to &#39;e-&gt;env_pgdir&#39;.
+	 *
+	 * Hint:
+	 *   You can get the kernel address of a specified physical page using &#39;page2kva&#39;.
+	 *&#x2F;
+	struct Page *p;
+	try(page_alloc(&amp;p));
+	&#x2F;* Exercise 3.3: Your code here. *&#x2F;
+	p-&gt;pp_ref++;
+	e-&gt;env_pgdir&#x3D;(Pde*)page2kva(p);
+	&#x2F;* Step 2: Copy the template page directory &#39;base_pgdir&#39; to &#39;e-&gt;env_pgdir&#39;. *&#x2F;
+	&#x2F;* Hint:
+	 *   As a result, the address space of all envs is identical in [UTOP, UVPT).
+	 *   See include&#x2F;mmu.h for layout.
+	 *&#x2F;
+	memcpy(e-&gt;env_pgdir + PDX(UTOP), base_pgdir + PDX(UTOP),
+	       sizeof(Pde) * (PDX(UVPT) - PDX(UTOP)));
+
+	&#x2F;* Step 3: Map its own page table at &#39;UVPT&#39; with readonly permission.
+	 * As a result, user programs can read its page table through &#39;UVPT&#39; *&#x2F;
+	e-&gt;env_pgdir[PDX(UVPT)] &#x3D; PADDR(e-&gt;env_pgdir) | PTE_V;
+	return 0;
+&#125;</code></pre>
 
 <p>以下是官方的解释：</p>
 <p>在实验中，虚拟地址 ULIM 是 kseg0 与 kuseg 的分界线，是系统给用户进程分配的最高地</p>
@@ -649,7 +852,11 @@
 <p>们要暴露是 UTOP 往上到 UVPT 之间所有进程共享的只读空间，也就是把这部分内存对应的内核</p>
 <p>页表 base_pgdir 拷贝到进程页表中。从 UVPT 往上到 ULIM 之间则是进程自己的页表。</p>
 <p>首先初始化页目录（只有一页），注意pagekva从来都是生成的虚拟内核地址，进程的用户地址需要到页表中去找。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">struct Page *p;</span><br><span class="line">	try(page_alloc(&amp;p));</span><br><span class="line">	/* Exercise 3.3: Your code here. */</span><br><span class="line">	p-&gt;pp_ref++;</span><br><span class="line">	e-&gt;env_pgdir=(Pde*)page2kva(p);</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">struct Page *p;
+	try(page_alloc(&amp;p));
+	&#x2F;* Exercise 3.3: Your code here. *&#x2F;
+	p-&gt;pp_ref++;
+	e-&gt;env_pgdir&#x3D;(Pde*)page2kva(p);</code></pre>
 
 <p>然后是本次操作的核心部分，将内核给进程地址暴露出来，然后将其内容复制给对应进程的页里面。</p>
 <h2 id="奇怪的赋值"><a href="#奇怪的赋值" class="headerlink" title="奇怪的赋值"></a>奇怪的赋值</h2><p>这个函数的重点在于我们已经给出的这个赋值 e-&gt;env_tf.cp0_status &#x3D; STATUS_IM4 | STATUS_KUp | STATUS_IEp。</p>
@@ -662,7 +869,10 @@
 <p>一组数值表示一种 CPU 的运行状态，其中 KU 位表示是否位于用户模式下，为 1 表示位于</p>
 <p>用户模式下；IE 位表示中断是否开启，为 1 表示开启，否则不开启，而 KUc 和 IEc 则为 CPU</p>
 <p>当前实际的运行状态。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">lw k0,TF_STATUS(k0) # 恢复 CP0_STATUS 寄存器</span><br><span class="line">mtc0 k0,CP0_STATUS</span><br><span class="line">jr k1</span><br><span class="line">rfe</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">lw k0,TF_STATUS(k0) # 恢复 CP0_STATUS 寄存器
+mtc0 k0,CP0_STATUS
+jr k1
+rfe</code></pre>
 
 
 
@@ -678,46 +888,190 @@
 <h1 id="加载二进制镜像"><a href="#加载二进制镜像" class="headerlink" title="加载二进制镜像"></a>加载二进制镜像</h1><p>首先 在 Lab3 阶段，我们还没有实现文件系统，因此无法直接操作磁盘中的 ELF</p>
 <p>文件。在这里我们已经将 ELF 文件内容转化成了 C 数组的形式（可以在 make 后查看</p>
 <p>user&#x2F;bare&#x2F;loop.b.c 文件），这样可以通过编译到内核中完成加载。</p>
-<h2 id="一些很复杂的函数"><a href="#一些很复杂的函数" class="headerlink" title="一些很复杂的函数"></a>一些很复杂的函数</h2><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line">static void load_icode(struct Env *e, const void *binary, size_t size) &#123;</span><br><span class="line">	/* Step 1: Use &#x27;elf_from&#x27; to parse an ELF header from &#x27;binary&#x27;. */</span><br><span class="line">	const Elf32_Ehdr *ehdr = elf_from(binary, size);</span><br><span class="line">	if (!ehdr) &#123;</span><br><span class="line">		panic(&quot;bad elf at %x&quot;, binary);</span><br><span class="line">	&#125;先看一下是不是解析成功</span><br><span class="line"></span><br><span class="line">	/* Step 2: Load the segments using &#x27;ELF_FOREACH_PHDR_OFF&#x27; and &#x27;elf_load_seg&#x27;.</span><br><span class="line">	 * As a loader, we just care about loadable segments, so parse only program headers here.</span><br><span class="line">	 */</span><br><span class="line">	size_t ph_off;</span><br><span class="line">	ELF_FOREACH_PHDR_OFF (ph_off, ehdr) &#123;</span><br><span class="line">		Elf32_Phdr *ph = (Elf32_Phdr *)(binary + ph_off);</span><br><span class="line">		if (ph-&gt;p_type == PT_LOAD) &#123;</span><br><span class="line">			// &#x27;elf_load_seg&#x27; is defined in lib/elfloader.c</span><br><span class="line">			// &#x27;load_icode_mapper&#x27; defines the way in which a page in this segment</span><br><span class="line">			// should be mapped.</span><br><span class="line">			panic_on(elf_load_seg(ph, binary + ph-&gt;p_offset, load_icode_mapper, e));</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;遍历这个ehdr表头的所有段，并将内容装入</span><br><span class="line"></span><br><span class="line">	/* Step 3: Set &#x27;e-&gt;env_tf.cp0_epc&#x27; to &#x27;ehdr-&gt;e_entry&#x27;. */</span><br><span class="line">	/* Exercise 3.6: Your code here. */</span><br><span class="line">	e-&gt;env_tf.cp0_epc=ehdr-&gt;e_entry;</span><br><span class="line">	这里的 env_tf.cp0_epc 字段指示了进程恢复运行时 PC 应恢复到的位置。我们要运行的进程的代码段预先被载入到了内存中，且程序入口为 e_entry，当我们运行进程时，CPU 将自动从 PC 所指的位置开始执行二进制码</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="一些很复杂的函数"><a href="#一些很复杂的函数" class="headerlink" title="一些很复杂的函数"></a>一些很复杂的函数</h2><pre class="language-none"><code class="language-none">static void load_icode(struct Env *e, const void *binary, size_t size) &#123;
+	&#x2F;* Step 1: Use &#39;elf_from&#39; to parse an ELF header from &#39;binary&#39;. *&#x2F;
+	const Elf32_Ehdr *ehdr &#x3D; elf_from(binary, size);
+	if (!ehdr) &#123;
+		panic(&quot;bad elf at %x&quot;, binary);
+	&#125;先看一下是不是解析成功
+
+	&#x2F;* Step 2: Load the segments using &#39;ELF_FOREACH_PHDR_OFF&#39; and &#39;elf_load_seg&#39;.
+	 * As a loader, we just care about loadable segments, so parse only program headers here.
+	 *&#x2F;
+	size_t ph_off;
+	ELF_FOREACH_PHDR_OFF (ph_off, ehdr) &#123;
+		Elf32_Phdr *ph &#x3D; (Elf32_Phdr *)(binary + ph_off);
+		if (ph-&gt;p_type &#x3D;&#x3D; PT_LOAD) &#123;
+			&#x2F;&#x2F; &#39;elf_load_seg&#39; is defined in lib&#x2F;elfloader.c
+			&#x2F;&#x2F; &#39;load_icode_mapper&#39; defines the way in which a page in this segment
+			&#x2F;&#x2F; should be mapped.
+			panic_on(elf_load_seg(ph, binary + ph-&gt;p_offset, load_icode_mapper, e));
+		&#125;
+	&#125;遍历这个ehdr表头的所有段，并将内容装入
+
+	&#x2F;* Step 3: Set &#39;e-&gt;env_tf.cp0_epc&#39; to &#39;ehdr-&gt;e_entry&#39;. *&#x2F;
+	&#x2F;* Exercise 3.6: Your code here. *&#x2F;
+	e-&gt;env_tf.cp0_epc&#x3D;ehdr-&gt;e_entry;
+	这里的 env_tf.cp0_epc 字段指示了进程恢复运行时 PC 应恢复到的位置。我们要运行的进程的代码段预先被载入到了内存中，且程序入口为 e_entry，当我们运行进程时，CPU 将自动从 PC 所指的位置开始执行二进制码
+&#125;</code></pre>
 
 <p>load_icode 函数负责加载可执行文件 binary 到进程 e 的内存中，这个是个很伟大的工作，真正的把文件和进程 连接起来了。</p>
 <p>相关的一些宏列举如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br></pre></td><td class="code"><pre><span class="line">#define ELF_FOREACH_PHDR_OFF(ph_off, ehdr)                                                         \</span><br><span class="line">	(ph_off) = (ehdr)-&gt;e_phoff;                                                                \</span><br><span class="line">	for (int _ph_idx = 0; _ph_idx &lt; (ehdr)-&gt;e_phnum; ++_ph_idx, (ph_off) += (ehdr)-&gt;e_phentsize)</span><br><span class="line">const Elf32_Ehdr *elf_from(const void *binary, size_t size) &#123;</span><br><span class="line">	const Elf32_Ehdr *ehdr = (const Elf32_Ehdr *)binary;</span><br><span class="line">	if (size &gt;= sizeof(Elf32_Ehdr) &amp;&amp; ehdr-&gt;e_ident[EI_MAG0] == ELFMAG0 &amp;&amp;</span><br><span class="line">	    ehdr-&gt;e_ident[EI_MAG1] == ELFMAG1 &amp;&amp; ehdr-&gt;e_ident[EI_MAG2] == ELFMAG2 &amp;&amp;</span><br><span class="line">	    ehdr-&gt;e_ident[EI_MAG3] == ELFMAG3 &amp;&amp; ehdr-&gt;e_type == 2) &#123;</span><br><span class="line">		return ehdr;</span><br><span class="line">	&#125;</span><br><span class="line">	return NULL;</span><br><span class="line">&#125;</span><br><span class="line">int elf_load_seg(Elf32_Phdr *ph, const void *bin, elf_mapper_t map_page, void *data) &#123;</span><br><span class="line">	u_long va = ph-&gt;p_vaddr;</span><br><span class="line">	size_t bin_size = ph-&gt;p_filesz;</span><br><span class="line">	size_t sgsize = ph-&gt;p_memsz;</span><br><span class="line">	u_int perm = PTE_V;</span><br><span class="line">	if (ph-&gt;p_flags &amp; PF_W) &#123;</span><br><span class="line">		perm |= PTE_D;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	int r;</span><br><span class="line">	size_t i;</span><br><span class="line">	u_long offset = va - ROUNDDOWN(va, BY2PG);</span><br><span class="line">	if (offset != 0) &#123;</span><br><span class="line">		if ((r = map_page(data, va, offset, perm, bin, MIN(bin_size, BY2PG - offset))) !=</span><br><span class="line">		    0) &#123;</span><br><span class="line">			return r;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	/* Step 1: load all content of bin into memory. */</span><br><span class="line">	for (i = offset ? MIN(bin_size, BY2PG - offset) : 0; i &lt; bin_size; i += BY2PG) &#123;</span><br><span class="line">		if ((r = map_page(data, va + i, 0, perm, bin + i, MIN(bin_size - i, BY2PG))) != 0) &#123;</span><br><span class="line">			return r;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	/* Step 2: alloc pages to reach `sgsize` when `bin_size` &lt; `sgsize`. */</span><br><span class="line">	while (i &lt; sgsize) &#123;</span><br><span class="line">		if ((r = map_page(data, va + i, 0, perm, NULL, MIN(bin_size - i, BY2PG))) != 0) &#123;</span><br><span class="line">			return r;</span><br><span class="line">		&#125;</span><br><span class="line">		i += BY2PG;</span><br><span class="line">	&#125;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">#define ELF_FOREACH_PHDR_OFF(ph_off, ehdr)                                                         \
+	(ph_off) &#x3D; (ehdr)-&gt;e_phoff;                                                                \
+	for (int _ph_idx &#x3D; 0; _ph_idx &lt; (ehdr)-&gt;e_phnum; ++_ph_idx, (ph_off) +&#x3D; (ehdr)-&gt;e_phentsize)
+const Elf32_Ehdr *elf_from(const void *binary, size_t size) &#123;
+	const Elf32_Ehdr *ehdr &#x3D; (const Elf32_Ehdr *)binary;
+	if (size &gt;&#x3D; sizeof(Elf32_Ehdr) &amp;&amp; ehdr-&gt;e_ident[EI_MAG0] &#x3D;&#x3D; ELFMAG0 &amp;&amp;
+	    ehdr-&gt;e_ident[EI_MAG1] &#x3D;&#x3D; ELFMAG1 &amp;&amp; ehdr-&gt;e_ident[EI_MAG2] &#x3D;&#x3D; ELFMAG2 &amp;&amp;
+	    ehdr-&gt;e_ident[EI_MAG3] &#x3D;&#x3D; ELFMAG3 &amp;&amp; ehdr-&gt;e_type &#x3D;&#x3D; 2) &#123;
+		return ehdr;
+	&#125;
+	return NULL;
+&#125;
+int elf_load_seg(Elf32_Phdr *ph, const void *bin, elf_mapper_t map_page, void *data) &#123;
+	u_long va &#x3D; ph-&gt;p_vaddr;
+	size_t bin_size &#x3D; ph-&gt;p_filesz;
+	size_t sgsize &#x3D; ph-&gt;p_memsz;
+	u_int perm &#x3D; PTE_V;
+	if (ph-&gt;p_flags &amp; PF_W) &#123;
+		perm |&#x3D; PTE_D;
+	&#125;
+
+	int r;
+	size_t i;
+	u_long offset &#x3D; va - ROUNDDOWN(va, BY2PG);
+	if (offset !&#x3D; 0) &#123;
+		if ((r &#x3D; map_page(data, va, offset, perm, bin, MIN(bin_size, BY2PG - offset))) !&#x3D;
+		    0) &#123;
+			return r;
+		&#125;
+	&#125;
+
+	&#x2F;* Step 1: load all content of bin into memory. *&#x2F;
+	for (i &#x3D; offset ? MIN(bin_size, BY2PG - offset) : 0; i &lt; bin_size; i +&#x3D; BY2PG) &#123;
+		if ((r &#x3D; map_page(data, va + i, 0, perm, bin + i, MIN(bin_size - i, BY2PG))) !&#x3D; 0) &#123;
+			return r;
+		&#125;
+	&#125;
+
+	&#x2F;* Step 2: alloc pages to reach &#96;sgsize&#96; when &#96;bin_size&#96; &lt; &#96;sgsize&#96;. *&#x2F;
+	while (i &lt; sgsize) &#123;
+		if ((r &#x3D; map_page(data, va + i, 0, perm, NULL, MIN(bin_size - i, BY2PG))) !&#x3D; 0) &#123;
+			return r;
+		&#125;
+		i +&#x3D; BY2PG;
+	&#125;
+	return 0;
+&#125;</code></pre>
 
 <p>具体的细节暂且按下不表。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const Elf32_Ehdr *ehdr = elf_from(binary, size)</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">const Elf32_Ehdr *ehdr &#x3D; elf_from(binary, size)</code></pre>
 
 <p>这个解析了binary为首地址的文件头。事实上，这个ehdr的值还是binary，只不过这个elf_from可以解析这区域的文件。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">elf_load_seg(ph, binary + ph-&gt;p_offset, load_icode_mapper, e);</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">elf_load_seg(ph, binary + ph-&gt;p_offset, load_icode_mapper, e);</code></pre>
 
 <p>elf_load_seg 负责将 ELF 文件的一个 segment 加载到内存。注意，仅仅加载了一个段，所以在函数里面需要用</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ELF_FOREACH_PHDR_OFF (ph_off, ehdr)</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">ELF_FOREACH_PHDR_OFF (ph_off, ehdr)</code></pre>
 
 <p>来遍历里面的所有段，然后将这些段放入内存中。</p>
 <p>事实上，在这个遍历红里面，</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">for (int _ph_idx = 0; _ph_idx &lt; (ehdr)-&gt;e_phnum; ++_ph_idx, (ph_off) += (ehdr)-&gt;e_phentsize</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">for (int _ph_idx &#x3D; 0; _ph_idx &lt; (ehdr)-&gt;e_phnum; ++_ph_idx, (ph_off) +&#x3D; (ehdr)-&gt;e_phentsize</code></pre>
 
 <p>会在红里面替换这个ph_off，从而改变ph_off的值，这样用：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Elf32_Phdr *ph = (Elf32_Phdr *)(binary + ph_off)</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">Elf32_Phdr *ph &#x3D; (Elf32_Phdr *)(binary + ph_off)</code></pre>
 
 <p>所计算的值是可以时刻变化的。</p>
 <p>我们发现，在调用elf_load_seg里面，传入了函数指针，然后调用了这样的函数：</p>
 <p>offset是偏移，len是大小</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">static int load_icode_mapper(void *data, u_long va, size_t offset, u_int perm, const void *src,</span><br><span class="line">			     size_t len) &#123;</span><br><span class="line">	struct Env *env = (struct Env *)data;</span><br><span class="line">	struct Page *p;</span><br><span class="line">	int r;</span><br><span class="line"></span><br><span class="line">	/* Step 1: Allocate a page with &#x27;page_alloc&#x27;. */</span><br><span class="line">	/* Exercise 3.5: Your code here. (1/2) */</span><br><span class="line">	r=page_alloc(&amp;p);</span><br><span class="line">	if(r==-E_NO_MEM) return -E_NO_MEM;</span><br><span class="line">	/* Step 2: If &#x27;src&#x27; is not NULL, copy the &#x27;len&#x27; bytes started at &#x27;src&#x27; into &#x27;offset&#x27; at this</span><br><span class="line">	 * page. */</span><br><span class="line">	// Hint: You may want to use &#x27;memcpy&#x27;.</span><br><span class="line">	if (src != NULL) &#123;</span><br><span class="line">		/* Exercise 3.5: Your code here. (2/2) */</span><br><span class="line">		memcpy((void*)(page2kva(p)+offset),src,len);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	/* Step 3: Insert &#x27;p&#x27; into &#x27;env-&gt;env_pgdir&#x27; at &#x27;va&#x27; with &#x27;perm&#x27;. */</span><br><span class="line">	return page_insert(env-&gt;env_pgdir, env-&gt;env_asid, p, va, perm);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">static int load_icode_mapper(void *data, u_long va, size_t offset, u_int perm, const void *src,
+			     size_t len) &#123;
+	struct Env *env &#x3D; (struct Env *)data;
+	struct Page *p;
+	int r;
+
+	&#x2F;* Step 1: Allocate a page with &#39;page_alloc&#39;. *&#x2F;
+	&#x2F;* Exercise 3.5: Your code here. (1&#x2F;2) *&#x2F;
+	r&#x3D;page_alloc(&amp;p);
+	if(r&#x3D;&#x3D;-E_NO_MEM) return -E_NO_MEM;
+	&#x2F;* Step 2: If &#39;src&#39; is not NULL, copy the &#39;len&#39; bytes started at &#39;src&#39; into &#39;offset&#39; at this
+	 * page. *&#x2F;
+	&#x2F;&#x2F; Hint: You may want to use &#39;memcpy&#39;.
+	if (src !&#x3D; NULL) &#123;
+		&#x2F;* Exercise 3.5: Your code here. (2&#x2F;2) *&#x2F;
+		memcpy((void*)(page2kva(p)+offset),src,len);
+	&#125;
+
+	&#x2F;* Step 3: Insert &#39;p&#39; into &#39;env-&gt;env_pgdir&#39; at &#39;va&#39; with &#39;perm&#39;. *&#x2F;
+	return page_insert(env-&gt;env_pgdir, env-&gt;env_asid, p, va, perm);
+&#125;</code></pre>
 
 <p>这个函数是干啥的？</p>
 <p>我们看到在刚才的那个elf_seg里面，需要接受一个自定义的回调函数 map_page，以及需要传递给回调函数的额外参数 data。每当 elf_load_seg 函数解析到一个需要加载到内存中的页面，会将有关的信息作为参数传递给回调函数，并由它完成单个页面的加载过程，而这里 load_icode_mapper 就是 map_page 的具体实现。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#define ELF_FOREACH_PHDR_OFF(ph_off, ehdr)                                                         \</span><br><span class="line">	(ph_off) = (ehdr)-&gt;e_phoff;                                                                \</span><br><span class="line">	for (int _ph_idx = 0; _ph_idx &lt; (ehdr)-&gt;e_phnum; ++_ph_idx, (ph_off) += (ehdr)-&gt;e_phentsize)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">#define ELF_FOREACH_PHDR_OFF(ph_off, ehdr)                                                         \
+	(ph_off) &#x3D; (ehdr)-&gt;e_phoff;                                                                \
+	for (int _ph_idx &#x3D; 0; _ph_idx &lt; (ehdr)-&gt;e_phnum; ++_ph_idx, (ph_off) +&#x3D; (ehdr)-&gt;e_phentsize)
+</code></pre>
 
 <p>先解释一下这个宏。它不是一个完整的宏，仅仅是提供了for的遍历过程。</p>
 <p>先给定一个ph_off作为数值参数传进来，然后给定一个节头表地址。</p>
 <p>首先把这个ph_off赋值成这个接头表对应的<code>Elf32_Off e_phoff; *//* 程序头表所在处与此文件头的偏移</code></p>
 <p>然后对于每一个段<code>Elf32_Half e_phnum; //* 程序头表入口数</code>，偏移<code>Elf32_Half e_phentsize; *//* 程序头表入口大小</code></p>
 <p>总之就是 对程序头表的一个遍历。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">const Elf32_Ehdr *elf_from(const void *binary, size_t size) &#123;</span><br><span class="line">	const Elf32_Ehdr *ehdr = (const Elf32_Ehdr *)binary;</span><br><span class="line">	if (size &gt;= sizeof(Elf32_Ehdr) &amp;&amp; ehdr-&gt;e_ident[EI_MAG0] == ELFMAG0 &amp;&amp;</span><br><span class="line">	    ehdr-&gt;e_ident[EI_MAG1] == ELFMAG1 &amp;&amp; ehdr-&gt;e_ident[EI_MAG2] == ELFMAG2 &amp;&amp;</span><br><span class="line">	    ehdr-&gt;e_ident[EI_MAG3] == ELFMAG3 &amp;&amp; ehdr-&gt;e_type == 2) &#123;</span><br><span class="line">		return ehdr;</span><br><span class="line">	&#125;</span><br><span class="line">	return NULL;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">const Elf32_Ehdr *elf_from(const void *binary, size_t size) &#123;
+	const Elf32_Ehdr *ehdr &#x3D; (const Elf32_Ehdr *)binary;
+	if (size &gt;&#x3D; sizeof(Elf32_Ehdr) &amp;&amp; ehdr-&gt;e_ident[EI_MAG0] &#x3D;&#x3D; ELFMAG0 &amp;&amp;
+	    ehdr-&gt;e_ident[EI_MAG1] &#x3D;&#x3D; ELFMAG1 &amp;&amp; ehdr-&gt;e_ident[EI_MAG2] &#x3D;&#x3D; ELFMAG2 &amp;&amp;
+	    ehdr-&gt;e_ident[EI_MAG3] &#x3D;&#x3D; ELFMAG3 &amp;&amp; ehdr-&gt;e_type &#x3D;&#x3D; 2) &#123;
+		return ehdr;
+	&#125;
+	return NULL;
+&#125;</code></pre>
 
 <p>之后的这个elf_from函数，发现就一个判断，强行把这个binary解析类型转换成ehdr，然后看魔数对不对，对的话返回ehdr，否则返回NULL。</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line">int elf_load_seg(Elf32_Phdr *ph, const void *bin, elf_mapper_t map_page, void *data) &#123;</span><br><span class="line">	u_long va = ph-&gt;p_vaddr;段的虚拟地址</span><br><span class="line">	size_t bin_size = ph-&gt;p_filesz;二进制文件大小</span><br><span class="line">	size_t sgsize = ph-&gt;p_memsz;文件内存大小</span><br><span class="line">	u_int perm = PTE_V;</span><br><span class="line">	if (ph-&gt;p_flags &amp; PF_W) &#123;</span><br><span class="line">		perm |= PTE_D;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	int r;</span><br><span class="line">	size_t i;</span><br><span class="line">	u_long offset = va - ROUNDDOWN(va, BY2PG);offset是虚拟地址mod页数之后向下冲齐，保证非整页的部分。</span><br><span class="line">	if (offset != 0) &#123;</span><br><span class="line">		if ((r = map_page(data, va, offset, perm, bin, MIN(bin_size, BY2PG - offset))) !=</span><br><span class="line">		    0) &#123;</span><br><span class="line">			return r;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">如果没冲齐，也就先冲齐，是这样的情况：</span><br><span class="line">|                 一页                |</span><br><span class="line">|                     |内容           |</span><br><span class="line">假如binsize足够小</span><br><span class="line">|                     |      真实  |  |</span><br><span class="line">否则就是偏移剩下的部分</span><br><span class="line">|                     |       真实    |</span><br><span class="line">	/* Step 1: load all content of bin into memory. */</span><br><span class="line">	for (i = offset ? MIN(bin_size, BY2PG - offset) : 0; i &lt; bin_size; i += BY2PG) &#123;</span><br><span class="line">		if ((r = map_page(data, va + i, 0, perm, bin + i, MIN(bin_size - i, BY2PG))) != 0) &#123;</span><br><span class="line">			return r;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	假如之前是没冲齐，也就是执行了MIN(bin_size, BY2PG - offset))的len，所以要从这个执行之后开始一页一页的存。</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">	/* Step 2: alloc pages to reach `sgsize` when `bin_size` &lt; `sgsize`. */</span><br><span class="line">	while (i &lt; sgsize) &#123;</span><br><span class="line">		if ((r = map_page(data, va + i, 0, perm, **NULL**, MIN(bin_size - i, BY2PG))) != 0) &#123;</span><br><span class="line">			return r;剩下的用0补齐。</span><br><span class="line">		&#125;</span><br><span class="line">		i += BY2PG;</span><br><span class="line">	&#125;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">int elf_load_seg(Elf32_Phdr *ph, const void *bin, elf_mapper_t map_page, void *data) &#123;
+	u_long va &#x3D; ph-&gt;p_vaddr;段的虚拟地址
+	size_t bin_size &#x3D; ph-&gt;p_filesz;二进制文件大小
+	size_t sgsize &#x3D; ph-&gt;p_memsz;文件内存大小
+	u_int perm &#x3D; PTE_V;
+	if (ph-&gt;p_flags &amp; PF_W) &#123;
+		perm |&#x3D; PTE_D;
+	&#125;
+
+	int r;
+	size_t i;
+	u_long offset &#x3D; va - ROUNDDOWN(va, BY2PG);offset是虚拟地址mod页数之后向下冲齐，保证非整页的部分。
+	if (offset !&#x3D; 0) &#123;
+		if ((r &#x3D; map_page(data, va, offset, perm, bin, MIN(bin_size, BY2PG - offset))) !&#x3D;
+		    0) &#123;
+			return r;
+		&#125;
+	&#125;
+如果没冲齐，也就先冲齐，是这样的情况：
+|                 一页                |
+|                     |内容           |
+假如binsize足够小
+|                     |      真实  |  |
+否则就是偏移剩下的部分
+|                     |       真实    |
+	&#x2F;* Step 1: load all content of bin into memory. *&#x2F;
+	for (i &#x3D; offset ? MIN(bin_size, BY2PG - offset) : 0; i &lt; bin_size; i +&#x3D; BY2PG) &#123;
+		if ((r &#x3D; map_page(data, va + i, 0, perm, bin + i, MIN(bin_size - i, BY2PG))) !&#x3D; 0) &#123;
+			return r;
+		&#125;
+	&#125;
+	假如之前是没冲齐，也就是执行了MIN(bin_size, BY2PG - offset))的len，所以要从这个执行之后开始一页一页的存。
+	
+
+	&#x2F;* Step 2: alloc pages to reach &#96;sgsize&#96; when &#96;bin_size&#96; &lt; &#96;sgsize&#96;. *&#x2F;
+	while (i &lt; sgsize) &#123;
+		if ((r &#x3D; map_page(data, va + i, 0, perm, **NULL**, MIN(bin_size - i, BY2PG))) !&#x3D; 0) &#123;
+			return r;剩下的用0补齐。
+		&#125;
+		i +&#x3D; BY2PG;
+	&#125;
+	return 0;
+&#125;</code></pre>
 
 <p>elf_load_seg 函数会从 ph 中获取 va（该段需要被加载到的虚地址）、sgsize（该段在内存中的大小）、bin_size（该段在文件中的大小）</p>
 <p>这个函数其实是 负责将 ELF 文件的一个 segment 加载到内存，每当 elf_load_seg 函数解析到一个需要加载到内</p>
@@ -734,13 +1088,57 @@
 <p>调用回调函数 map_page，由回调函数完成单页的加载。这样的设计允许 elf_load_seg 只关心ELF 段的结构，而不用处理与具体操作系统相关的页面加载过程。</p>
 <h2 id="创建进程"><a href="#创建进程" class="headerlink" title="创建进程"></a>创建进程</h2><p>终于到创建一个进程了。</p>
 <p>分配一个新的 <strong>Env</strong> 结构体，设置进程控制块，并将程序载入到该进程的地址空间即可完成。我们做到的仅仅是完成了<strong>地址意义上的创建进程</strong></p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">#define ENV_CREATE_PRIORITY(x, y)                                                                  \</span><br><span class="line">	(&#123;                                                                                         \</span><br><span class="line">		extern u_char binary_##x##_start[];                                                \</span><br><span class="line">		extern u_int binary_##x##_size;                                                    \</span><br><span class="line">		env_create(binary_##x##_start, (u_int)binary_##x##_size, y);                       \</span><br><span class="line">	&#125;)</span><br><span class="line"></span><br><span class="line">#define ENV_CREATE(x)                                                                              \</span><br><span class="line">	(&#123;                                                                                         \</span><br><span class="line">		extern u_char binary_##x##_start[];                                                \</span><br><span class="line">		extern u_int binary_##x##_size;                                                    \</span><br><span class="line">		env_create(binary_##x##_start, (u_int)binary_##x##_size, 1);                       \</span><br><span class="line">	&#125;)</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">#define ENV_CREATE_PRIORITY(x, y)                                                                  \
+	(&#123;                                                                                         \
+		extern u_char binary_##x##_start[];                                                \
+		extern u_int binary_##x##_size;                                                    \
+		env_create(binary_##x##_start, (u_int)binary_##x##_size, y);                       \
+	&#125;)
+
+#define ENV_CREATE(x)                                                                              \
+	(&#123;                                                                                         \
+		extern u_char binary_##x##_start[];                                                \
+		extern u_int binary_##x##_size;                                                    \
+		env_create(binary_##x##_start, (u_int)binary_##x##_size, 1);                       \
+	&#125;)</code></pre>
 
 <p>两个宏，使用了宏的##字符串连缀特性，例如x是123，那么连缀出来就是</p>
 <p>binary_123_start[]，非常的好用啊。拼接后，得到内核中的 binary_user_bare_loop_start 数组和 binary_user_bare_loop_size</p>
 <p>变量</p>
 <p>接下来，一个进程开始 <strong>真正的运行</strong>，毕竟把curenv换成传进来的e了，运行的时候自动运行curenv就是e</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">void env_run(struct Env *e) &#123;//调用进程控制块来运行进程</span><br><span class="line">	assert(e-&gt;env_status == ENV_RUNNABLE);</span><br><span class="line">	pre_env_run(e); // WARNING: DO NOT MODIFY THIS LINE!</span><br><span class="line"></span><br><span class="line">	/* Step 1:</span><br><span class="line">	 *   If &#x27;curenv&#x27; is NULL, this is the first time through.</span><br><span class="line">	 *   If not, we may be switching from a previous env, so save its context into</span><br><span class="line">	 *   &#x27;curenv-&gt;env_tf&#x27; first.</span><br><span class="line">	 */</span><br><span class="line">	if (curenv) &#123;</span><br><span class="line">		curenv-&gt;env_tf = *((struct Trapframe *)KSTACKTOP - 1);</span><br><span class="line">	&#125;</span><br><span class="line">	当前进程有效就保留当前栈帧</span><br><span class="line"> ----------------------------------------第一部分----------------------------------------------------</span><br><span class="line">	/* Step 2: Change &#x27;curenv&#x27; to &#x27;e&#x27;. */</span><br><span class="line">	curenv = e;</span><br><span class="line">	curenv-&gt;env_runs++; // lab6</span><br><span class="line"></span><br><span class="line">	/* Step 3: Change &#x27;cur_pgdir&#x27; to &#x27;curenv-&gt;env_pgdir&#x27;, switching to its address space. */</span><br><span class="line">	/* Exercise 3.8: Your code here. (1/2) */</span><br><span class="line">	cur_pgdir=curenv-&gt;env_pgdir;</span><br><span class="line">	/* Step 4: Use &#x27;env_pop_tf&#x27; to restore the curenv&#x27;s saved context (registers) and return/go</span><br><span class="line">	 * to user mode.</span><br><span class="line">	 *</span><br><span class="line">	 * Hint:</span><br><span class="line">	 *  - You should use &#x27;curenv-&gt;env_asid&#x27; here.</span><br><span class="line">	 *  - &#x27;env_pop_tf&#x27; is a &#x27;noreturn&#x27; function: it restores PC from &#x27;cp0_epc&#x27; thus not</span><br><span class="line">	 *    returning to the kernel caller, making &#x27;env_run&#x27; a &#x27;noreturn&#x27; function as well.</span><br><span class="line">	 */</span><br><span class="line">	/* Exercise 3.8: Your code here. (2/2) */</span><br><span class="line">	env_pop_tf(&amp;(curenv-&gt;env_tf),curenv-&gt;env_asid);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre class="language-none"><code class="language-none">void env_run(struct Env *e) &#123;&#x2F;&#x2F;调用进程控制块来运行进程
+	assert(e-&gt;env_status &#x3D;&#x3D; ENV_RUNNABLE);
+	pre_env_run(e); &#x2F;&#x2F; WARNING: DO NOT MODIFY THIS LINE!
+
+	&#x2F;* Step 1:
+	 *   If &#39;curenv&#39; is NULL, this is the first time through.
+	 *   If not, we may be switching from a previous env, so save its context into
+	 *   &#39;curenv-&gt;env_tf&#39; first.
+	 *&#x2F;
+	if (curenv) &#123;
+		curenv-&gt;env_tf &#x3D; *((struct Trapframe *)KSTACKTOP - 1);
+	&#125;
+	当前进程有效就保留当前栈帧
+ ----------------------------------------第一部分----------------------------------------------------
+	&#x2F;* Step 2: Change &#39;curenv&#39; to &#39;e&#39;. *&#x2F;
+	curenv &#x3D; e;
+	curenv-&gt;env_runs++; &#x2F;&#x2F; lab6
+
+	&#x2F;* Step 3: Change &#39;cur_pgdir&#39; to &#39;curenv-&gt;env_pgdir&#39;, switching to its address space. *&#x2F;
+	&#x2F;* Exercise 3.8: Your code here. (1&#x2F;2) *&#x2F;
+	cur_pgdir&#x3D;curenv-&gt;env_pgdir;
+	&#x2F;* Step 4: Use &#39;env_pop_tf&#39; to restore the curenv&#39;s saved context (registers) and return&#x2F;go
+	 * to user mode.
+	 *
+	 * Hint:
+	 *  - You should use &#39;curenv-&gt;env_asid&#39; here.
+	 *  - &#39;env_pop_tf&#39; is a &#39;noreturn&#39; function: it restores PC from &#39;cp0_epc&#39; thus not
+	 *    returning to the kernel caller, making &#39;env_run&#39; a &#39;noreturn&#39; function as well.
+	 *&#x2F;
+	&#x2F;* Exercise 3.8: Your code here. (2&#x2F;2) *&#x2F;
+	env_pop_tf(&amp;(curenv-&gt;env_tf),curenv-&gt;env_asid);
+
+&#125;</code></pre>
 
 <p>env_run 是进程运行使用的基本函数，它包括两部分：</p>
 <p>• 保存当前进程上下文 (如果当前没有运行的进程就跳过这一步)</p>
