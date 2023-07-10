@@ -351,355 +351,493 @@
 </header>
 
     
-    <div class="bg-cover pd-header about-cover">
-    <div class="container">
-    <div class="row">
-    <div class="col s10 offset-s1 m8 offset-m2 l8 offset-l2">
-        <div class="brand">
-            <div class="title center-align">
-                
-                这世间荒芜，但浪漫不死
-                
-            </div>
 
-            <div class="description center-align">
-                
-                <span id="subtitle"></span>
-                <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.11"></script>
-                <script>
-                    var typed = new Typed("#subtitle", {
-                        strings: ['世界上有两样东西最宝贵，那就是等待和希望','人类的时间不是一种圆形的循环，是飞速向前的一条直线，所以人不幸福，是的，幸福是对重复的渴求'],
-                        startDelay: 300,
-                        typeSpeed: 100,
-                        loop: true,
-                        backSpeed: 50,
-                        showCursor: true
-                    });
-                </script>
-                
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title"></h1>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        padding: 35px 0 15px 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        padding-bottom: 30px;
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                          <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                          </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2023-07-04
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+
+        
+        <!-- 是否加载使用自带的 prismjs. -->
+        <link rel="stylesheet" href="/libs/prism/prism.css">
+        
+
+        
+
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                
+                
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">farewell</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://farewillwell.github.io/2023/07/04/Junit%E4%B8%8E%E6%A1%86%E6%9E%B6/">https://farewillwell.github.io/2023/07/04/Junit%E4%B8%8E%E6%A1%86%E6%9E%B6/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">farewell</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            <span class="chip bg-color">无标签</span>
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2023/07/10/tqdm/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="tqdm包">
+                        
+                        <span class="card-title">tqdm包</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2023-07-10
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            farewell
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E7%9E%8E%E6%90%9E/">
+                        <span class="chip bg-color">瞎搞</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2023/05/30/%E6%B5%B7%E6%98%8E%E7%A0%81/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="海明码">
+                        
+                        <span class="card-title">海明码</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-30
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            farewell
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E7%A5%9E%E5%A5%87%E7%9A%84%E5%AD%A6%E4%B9%A0/">
+                        <span class="chip bg-color">神奇的学习</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget card" style="background-color: white;">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
 <script>
-    $('.bg-cover').css('background-image', 'url(/medias/banner/0.jpg)');
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
 </script>
 
-
-    </div>
-</div>
-
-
-<main class="content">
-
     
-
-    
-
-    <!-- 所有文章卡片 -->
-    <article id="articles" class="container articles">
-        <div class="row article-row">
-            
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/03/18/%E9%A1%B5%E8%A1%A8%E7%AE%A1%E7%90%86/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/14.jpg" class="responsive-img" alt="页式内存管理系统">
-                            
-                            <span class="card-title">页式内存管理系统</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                页表管理emm对于位于 kuseg 的虚拟地址，MOS 中采用两级页表结构对其进行地址转换
-这句话，页表管理这个的操作是虚拟地址的如何找真实物理地址的页。
-include&#x2F;mmu.h 中提供了两个宏以快速获取偏移量，PDX(va)
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-18
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-user fa-fw"></i>
-                                farewell
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/BUAA-OS/">
-                            <span class="chip bg-color">BUAA_OS</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/03/18/%E5%86%85%E6%A0%B8%20%E5%AD%98%E5%82%A8/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="内核储存">
-                            
-                            <span class="card-title">内核储存</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                内核存储理解，一直在座的事情都是装载内核。
-内核是直接映射到物理地址上，从0x80000开始直接映射到物理地址的0位置，然后装载那些段。
-然后用户态的地址都是依靠页表调整和取用。
-所以说注意这一张叫做内核存储，所有涉及到的函数都和内核有关，
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-18
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-user fa-fw"></i>
-                                farewell
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/BUAA-OS/">
-                            <span class="chip bg-color">BUAA_OS</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/03/18/vscode&wsl%E9%85%8D%E7%BD%AElinux%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="wsl配置linux开发环境">
-                            
-                            <span class="card-title">wsl配置linux开发环境</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-18
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-user fa-fw"></i>
-                                farewell
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/BUAA-OS/">
-                            <span class="chip bg-color">BUAA_OS</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/03/18/TLB%E7%AE%A1%E7%90%86/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/23.jpg" class="responsive-img" alt="TLB管理">
-                            
-                            <span class="card-title">TLB管理</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                TLB管理基础理解TLB的本质是一个表，但是不同于32位的页表项，TLB事实上是一个由64位的表项构成的表。
-本质上TLB和硬件紧密相连的，页表都是在内存里的，TLB则是在CPU里面的一个特殊的地址转换部件（这个部件叫MMU，本实验里面MM
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-18
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-user fa-fw"></i>
-                                farewell
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/BUAA-OS/">
-                            <span class="chip bg-color">BUAA_OS</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/03/18/print/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/2.jpg" class="responsive-img" alt="自己实现print的二三事">
-                            
-                            <span class="card-title">自己实现print的二三事</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                关于print的操作函数指针int (*f)(int)
-void(*f)()注意，*函数一定要带括号，不然就认为是一种声明返回值为void *的函数定义了。
-加上括号就是代表这个是一个函数指针，而不是函数声明。参数列表就跟在函数名字后面。
-
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-18
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-user fa-fw"></i>
-                                farewell
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/BUAA-OS/">
-                            <span class="chip bg-color">BUAA_OS</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-            <div class="article col s12 m6 l4" data-aos="zoom-in">
-                <div class="card">
-                    <a href="/2023/03/18/makefile/">
-                        <div class="card-image">
-                            
-                            
-                            <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="关于Makefile使用">
-                            
-                            <span class="card-title">关于Makefile使用</span>
-                        </div>
-                    </a>
-
-                    <div class="card-content article-content">
-                        <div class="summary block-with-text">
-                            
-                                Makefile是什么GNU 项目中有一个叫做“make”的工具，是最常用的 C 语言项目构建工具。我们都知道，“make”是制作的意思，而 make 构建工具的作用本质上就是“制作出一个文件”。当我们开发了一个较大的项目，make 工具就
-                            
-                        </div>
-                        <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-03-18
-                            </span>
-                            <span class="publish-author">
-                                
-                                <i class="fas fa-user fa-fw"></i>
-                                farewell
-                                
-                            </span>
-                        </div>
-                    </div>
-
-                    
-                    <div class="card-action article-tags">
-                        
-                        <a href="/tags/BUAA-OS/">
-                            <span class="chip bg-color">BUAA_OS</span>
-                        </a>
-                        
-                    </div>
-                    
-                </div>
-            </div>
-            
-        </div>
-    </article>
 
 </main>
 
 
-<div class="container paging">
-    <div class="row">
-        <div class="col s6 m4 l4">
-            
-            <a href="/page/3/"
-               class="left btn-floating btn-large waves-effect waves-light bg-color">
-                <i class="fas fa-angle-left"></i>
-            </a>
-            
-        </div>
-        <div class="page-info col m4 l4 hide-on-small-only">
-            <div class="center-align b-text-gray">4 / 9</div>
-        </div>
-        <div class="col s6 m4 l4">
-            
-            <a href="/page/5/"
-               class="right btn-floating btn-large waves-effect waves-light bg-color">
-                <i class="fas fa-angle-right"></i>
-            </a>
-            
-        </div>
-    </div>
-</div>
-
-
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+<!-- 代码语言 -->
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+<!-- 代码块复制 -->
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+<script type="text/javascript" src="/libs/codeBlock/clipboard.min.js"></script>
+<!-- 代码块收缩 -->
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script> 
+<!-- 代码块折行 -->
+<style type="text/css">code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }</style>
 
 
     <footer class="page-footer bg-color">

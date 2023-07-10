@@ -4,7 +4,7 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="keywords" content="海明码, farewell&#39;s blog">
+    <meta name="keywords" content="tqdm包, farewell&#39;s blog">
     <meta name="description" content="你到过许多地方，用你自己的故事记认许多城邦后，你终于抵达此城">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>海明码 | farewell&#39;s blog</title>
+    <title>tqdm包 | farewell&#39;s blog</title>
     <link rel="icon" type="image/png" href="/medias/logo.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -354,12 +354,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/7.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">海明码</h1>
+                    <h1 class="description center-align post-title">tqdm包</h1>
                 </div>
             </div>
         </div>
@@ -475,8 +475,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E7%A5%9E%E5%A5%87%E7%9A%84%E5%AD%A6%E4%B9%A0/">
-                                <span class="chip bg-color">神奇的学习</span>
+                            <a href="/tags/%E7%9E%8E%E6%90%9E/">
+                                <span class="chip bg-color">瞎搞</span>
                             </a>
                         
                     </div>
@@ -491,7 +491,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2023-05-30
+                    2023-07-10
                 </div>
                 
 
@@ -515,147 +515,178 @@
 
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h1 id="海明码"><a href="#海明码" class="headerlink" title="海明码"></a>海明码</h1><p>闲来无事看os的时候，对raid的海明码很好奇。现在介绍如下</p>
-<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>海明码的作用是校验</p>
-<p>通过多余的位存的数据，来校验丢失的几位数据可能是啥</p>
-<h2 id="构成"><a href="#构成" class="headerlink" title="构成"></a>构成</h2><p>海明码是由n+x位构成。其中，我们原本想存储的数据是n位，然后需要加上x位校验</p>
-<p>这x位是啥？x&#x3D;？</p>
-<p>x的值，是满足<br>$$<br>2^x -1 &gt;&#x3D;n+x<br>$$<br>的情况。</p>
-<p>我们需要用x来指示码的n+x个可能出错位置，并且用一种情况代表没有出错。</p>
-<p>对于n位，x位合成的所有的编码情况一定要多于n+x个，才能指示他们的错误。</p>
-<h2 id="x个位的摆放"><a href="#x个位的摆放" class="headerlink" title="x个位的摆放"></a>x个位的摆放</h2><p>n+x，但是不是+，而是穿插。</p>
-<p>x个校验码，分别放在新组合的n+x的<br>$$<br>2^r<br>$$<br>位置处（这里计算的位置从1开始）</p>
-<p>比如，假设有4位n计算值x&#x3D;3.</p>
-<p>所以，分别为：1，2,4</p>
-<p>那么，数据放的位置是3,5,6,7. <strong>所有2^r的放校验码，其他位放数据</strong></p>
-<p>这样，所有放校验码的位，都满足这样的特性：</p>
-<p><strong>有且仅有一个位为1</strong></p>
-<p>2^n, 第n位为1，其余为0.</p>
-<p>我们的填写，就从这个展开：</p>
-<h2 id="x个位的填写"><a href="#x个位的填写" class="headerlink" title="x个位的填写"></a>x个位的填写</h2><p>那么这x个位该填写什么呢？</p>
-<p>分为奇校验和偶校验两种，不同的就是要几个异或异或起来是1还是0</p>
-<p>一偶校验为例子。</p>
-<p>上面说到，所有的校验位，都满足有且仅有一个位&#x3D;1</p>
-<p>我们就利用这个位。</p>
-<p>现在，我们找到所有  Pn&amp;2^r !&#x3D;0的位</p>
-<p>，打个比方，r&#x3D;1，就是第一个校验位，负责所有最低位为1的位（叫他对r的海明 位吧）上的1&#x2F;0数据</p>
-<p>比如，3,5,7</p>
-<p>需要满足，所有这些对r的海明位的异或值，为0（偶校验）</p>
-<p>比如data1⊕data3⊕data5⊕data7&#x3D;0</p>
-<h2 id="校验"><a href="#校验" class="headerlink" title="校验"></a>校验</h2><p>那么,如何校验呢?</p>
-<p>对于任意的一位,我们看看它的数据被谁管:</p>
-<p>校验位:自己管自己</p>
-<p>非校验位:</p>
-<p>有几个1被几个校验位管.</p>
-<p>有几个校验位，决定了上面有几个异或方程，一堆1&#x2F;0，异或起来&#x3D;0。</p>
-<p>我们可以解释为这个校验位&#x3D;它管的数据位异或起来</p>
-<p>所以，我们可以根据这些位，去算按照这些数，如果正常的话，校验位该是多少</p>
-<p>比如传进来： 1 0 1 1 0 1 1 0 0 1 1</p>
-<p>共11位，r+n&#x3D;11，2^r-1&gt;&#x3D;n+r，r&#x3D;4，n&#x3D;7</p>
-<p>那么依据寻找位数，可知，假设对的校验位：</p>
-<p>h1</p>
-<p>h2</p>
-<p>h4</p>
-<p>h8</p>
-<p>将他们和现有的校验位相比。</p>
-<p>假设相同，就是0，假设不同，就是1.</p>
-<p>将结果拼成一个二进制数：</p>
-<p>ans4 ans 3 ans2 ans1</p>
-<p>(分别代表h8的比对结果，h4的，h2的，h1的比对结果)</p>
-<p>得到0110</p>
-<p>那么就是第6位有问题。</p>
-<p>解释：上面说了，一个校验位，有且仅有一位为1</p>
-<p>它管所有该位也为1的</p>
-<p>比对结果为1，就是不同，就代表这个方程计算出来有问题。</p>
-<p>也就是说，该位的错误，导致了所有包含它的方程都错了</p>
-<p>没包含的都没错。</p>
-<p>我们只需要知道哪个数包含且仅包含这几位了，它的位数的二进制化后，这几位是1，其他是0。</p>
-<p>那么就是二进制数了。</p>
-<p>0110，有第1位的1，有第2位的1，第0位和第3位都是0，代表没问题。</p>
-<p>所以是第六个</p>
-<pre class="language-Python" data-language="Python"><code class="language-Python">class Hamming():
-    def __init__(self,data):
-        self.data &#x3D; data
-    def hammingEncode(self):
-        self.dataLen &#x3D; len(self.data)
-        self.r &#x3D; 0
-        while pow(2,self.r) - self.r &lt; self.dataLen + 1:
-            self.r +&#x3D; 1 
-        self.HammingLen &#x3D; self.r + self.dataLen #求出插入校验码后的总长
-        self.HammingData &#x3D; [0] * self.HammingLen
-        for i in range(self.r):
-            self.HammingData[pow(2,i)-1] &#x3D; 1#先默认校验位都设置为1
-        dataIndex &#x3D; 0
-        for i in range(self.HammingLen):#插入数据
-            if self.HammingData[i] &#x3D;&#x3D; 0:
-                self.HammingData[i] &#x3D; self.data[dataIndex]
-                dataIndex +&#x3D; 1
-        print(self.HammingData)
-        for pn in range(1,self.r+1):#逐个计算校验位
-            #pn所在位置
-            pos &#x3D; pow(2,(pn-1)) - 1
-            temp &#x3D; 0
-            for pr in range(pos,self.HammingLen+1,pow(2,pn)):              
-                for i in range(pr,min(pr+pow(2,(pn-1)),self.HammingLen)):#疯狂异或
-                    temp ^&#x3D; self.HammingData[i]
-            if temp &#x3D;&#x3D; 1:
-                self.HammingData[pos] &#x3D; 0
-        print(self.HammingData)
+                <h1 id="tqdm使用"><a href="#tqdm使用" class="headerlink" title="tqdm使用"></a>tqdm使用</h1><p>是一个进度条包，通过在shell上不断重写来达到进度条的效果。</p>
+<p>最常用的在于下载上，如果你用linux下过东西，就很熟悉这种形式了。</p>
+<p>万物均可查文档，如有需要自行查看：</p>
+<p><a target="_blank" rel="noopener" href="https://pypi.org/project/tqdm/">文档</a> （ctrl+左键，点开连接的操作，pdf里面也是一样）</p>
+<h2 id="第一种使用方式"><a href="#第一种使用方式" class="headerlink" title="第一种使用方式"></a>第一种使用方式</h2><p>第一种使用方式就是题上写的</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">for</span> i <span class="token keyword">in</span> tqdm<span class="token punctuation">(</span><span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    sleep<span class="token punctuation">(</span><span class="token number">0.2</span><span class="token punctuation">)</span></code></pre>
 
-    def makeMistake(self,k):
-        if self.HammingData[k] &#x3D;&#x3D; 0:
-            self.HammingData[k] &#x3D; 1
-        else:
-            self.HammingData[k] &#x3D; 0
-        print(self.HammingData)
+<p>这个i的类型？其实还是对range(1,100)迭代，所以是tqdm中的迭代参数的类型</p>
+<p>它体现在输出上是：</p>
+<pre class="language-none"><code class="language-none">27%|██▋       | 27&#x2F;99 [00:05&lt;00:14,  4.81it&#x2F;s]</code></pre>
 
-    def hammingDecode(self):
-        wrongList &#x3D; []
-        for pn in range(1,self.r+1):#逐个计算校验组
-            #pn所在位置
-            pos &#x3D; pow(2,(pn-1)) - 1
-            temp &#x3D; 0
-            for pr in range(pos,self.HammingLen+1,pow(2,pn)):              
-                for i in range(pr,min(pr+pow(2,(pn-1)),self.HammingLen)):#疯狂异或
-                    temp ^&#x3D; self.HammingData[i]
-            print(temp)
-            if temp &#x3D;&#x3D; 1:
-                wrongList.append(pn)#记下哪个校验组错了
-        if wrongList:
-            print(&quot;原数据&quot;,self.HammingData)
-            if len(wrongList) &#x3D;&#x3D; 1:
-                self.HammingData[pow(2,wrongList[0]-1)-1] ^&#x3D; 1
-            elif len(wrongList) &#x3D;&#x3D; 2:
-                if 1 in wrongList and 2 in wrongList:
-                    self.HammingData[2] ^&#x3D; 1
-                elif 1 in wrongList and 3 in wrongList:
-                    self.HammingData[4] ^&#x3D; 1
-                elif 1 in wrongList and 4 in wrongList:
-                    self.HammingData[8] ^&#x3D; 1
-                elif 2 in wrongList and 3 in wrongList:
-                    self.HammingData[5] ^&#x3D; 1
-                elif 2 in wrongList and 4 in wrongList:
-                    self.HammingData[9] ^&#x3D; 1
-                elif 4 in wrongList and 3 in wrongList:
-                    self.HammingData[11] ^&#x3D; 1
-            elif len(wrongList) &#x3D;&#x3D; 3:
-                if 1 in wrongList and 2 in wrongList and 3 in wrongList:
-                    self.HammingData[6] ^&#x3D; 1
-                elif 1 in wrongList and 2 in wrongList and 4 in wrongList:
-                    self.HammingData[10] ^&#x3D; 1                
-            print(&quot;现数据&quot;,self.HammingData)
-            return False
-        else:
-            return True
+<p>00:05&lt;00:14</p>
+<p>左边指已经进行了的时间，右边指还剩多少时间，后面是速度，it&#x2F;s就是item&#x2F;s</p>
+<p>27&#x2F;99</p>
+<p>这个是已经进行了多少。</p>
+<p>这个多少指的是：range(1,100)中的多少个。一个算作一item</p>
+<p>每个item都会花0.2秒（sleep的功能，这个函数就是让啥指令也不执行，去停0.2s，学了多线程或者操作系统就知道了)</p>
+<p><strong>用for形式的必须要迭代！！！，不然不知道在循环啥</strong></p>
+<p>tqdm()这个里面必要的一个参数，就是一个可供迭代的对象，这样才能显示运行的进度</p>
+<pre class="language-none"><code class="language-none">iterable&#x3D;None,            
+desc&#x3D;None,      传入str类型，作为进度条标题（类似于说明）
+total&#x3D;None,     *预期*的迭代次数
+leave&#x3D;True,             
+file&#x3D;None, 
+ncols&#x3D;None,         可以自定义进度条的总长度
+mininterval&#x3D;0.1,    最小的更新间隔
+maxinterval&#x3D;10.0,   最大更新间隔miniters&#x3D;None, ascii&#x3D;None, unit&#x3D;&#39;it&#39;,unit_scale&#x3D;False, dynamic_ncols&#x3D;False, </code></pre>
 
+<p>但是for+total会发生啥？</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">for</span> i <span class="token keyword">in</span> tqdm<span class="token punctuation">(</span><span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">,</span>total<span class="token operator">=</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    sleep<span class="token punctuation">(</span><span class="token number">0.2</span><span class="token punctuation">)</span></code></pre>
 
-a &#x3D; Hamming([1,0,1,1,1,0,1,1])
-a.hammingEncode()
-a.hammingDecode()
-a.makeMistake(4)
-a.hammingDecode()</code></pre>
+<p>例如这个</p>
+<p>混用的话会出现：</p>
+<p>刚开始</p>
+<pre class="language-none"><code class="language-none">45%|████▌     | 9&#x2F;20 [00:01&lt;00:02,  4.70it&#x2F;s]</code></pre>
 
-<p>代码部分转贴自[<a target="_blank" rel="noopener" href="https://www.jianshu.com/p/e82193198632">超级无敌简单易懂的海明码的校验和纠错原理与实现 - 简书 (jianshu.com)</a>]</p>
+<p>可以看见，这个9&#x2F;20是属于total的</p>
+<p>进行完这个之后，会有</p>
+<pre class="language-c" data-language="c"><code class="language-c"><span class="token number">25</span>it <span class="token punctuation">[</span><span class="token number">00</span><span class="token operator">:</span><span class="token number">05</span><span class="token punctuation">,</span>  <span class="token number">4.79</span>it<span class="token operator">/</span>s<span class="token punctuation">]</span></code></pre>
+
+<p>这个，到100的时候会停，看来是100的奏效了</p>
+<p>所以不要混用。</p>
+<p>不用total，我们来试着加一下其他参数</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">for</span> i <span class="token keyword">in</span> tqdm<span class="token punctuation">(</span><span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">,</span>desc<span class="token operator">=</span><span class="token string">"download"</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    sleep<span class="token punctuation">(</span><span class="token number">0.2</span><span class="token punctuation">)</span></code></pre>
+
+<p>这样的效果是：</p>
+<pre class="language-none"><code class="language-none">download: 100%|██████████| 100&#x2F;100 [00:20&lt;00:00,  4.97it&#x2F;s]</code></pre>
+
+<p>注意看，这里设置参数的时候，是让desc&#x3D;” “。面对这种参数很多的，缺省的，一般都采用这种参数名+&#x3D; 的操作来实现设置特定的参数，其他都是默认</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">for</span> i <span class="token keyword">in</span> tqdm<span class="token punctuation">(</span><span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">,</span>desc<span class="token operator">=</span><span class="token string">"download"</span><span class="token punctuation">,</span>ncols<span class="token operator">=</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    sleep<span class="token punctuation">(</span><span class="token number">0.2</span><span class="token punctuation">)</span></code></pre>
+
+<p>换成这样呢？可以看到是控制进度条长度的</p>
+<pre class="language-none"><code class="language-none">download:  21%|██████████▉                                         | 21&#x2F;100 [00:04&lt;00:15,  4.98it&#x2F;s]</code></pre>
+
+<p>变长了捏</p>
+<p>postfix</p>
+<pre class="language-none"><code class="language-none">for i in tqdm(range(0, 100), desc&#x3D;&quot;download&quot;, postfix&#x3D;&quot;books&quot;):
+    sleep(0.02)</code></pre>
+
+<p>我们先使用一下这个</p>
+<p>输出是：</p>
+<pre class="language-none"><code class="language-none">download: 100%|██████████| 100&#x2F;100 [00:02&lt;00:00, 48.91it&#x2F;s, books]</code></pre>
+
+<p>诶，好像仅仅就是一进度条的后缀</p>
+<p>但是，它可以表征一个参数环境，例如</p>
+<p>用一个字典的形式体现参数：</p>
+<pre class="language-none"><code class="language-none">for i in tqdm(range(0, 100), desc&#x3D;&quot;download&quot;, postfix&#x3D;&#123;&quot;os&quot;:&quot;linux&quot;&#125;):
+    sleep(0.02)</code></pre>
+
+<p>输出的时候可以体现参数环境：</p>
+<pre class="language-none"><code class="language-none">download: 100%|██████████| 100&#x2F;100 [00:02&lt;00:00, 48.62it&#x2F;s, os&#x3D;linux]</code></pre>
+
+<p>后边那俩在for的时候是不能体现的。</p>
+<p>比如我去掉sleep，实现一个很小的算数：</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">for</span> i <span class="token keyword">in</span> tqdm<span class="token punctuation">(</span><span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">,</span> desc<span class="token operator">=</span><span class="token string">"download"</span><span class="token punctuation">,</span> ncols<span class="token operator">=</span><span class="token number">100</span><span class="token punctuation">,</span> mininterval<span class="token operator">=</span><span class="token boolean">None</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    a <span class="token operator">=</span> <span class="token number">1</span> <span class="token operator">+</span> <span class="token number">1</span></code></pre>
+
+<p>好家伙，你看看这速度</p>
+<pre class="language-none"><code class="language-none">download: 100%|████████████████████████████████████████████████| 100&#x2F;100 [00:00&lt;00:00, 11760.61it&#x2F;s]</code></pre>
+
+<p>但是，不想这么快，可能要和其他线程汇合？</p>
+<p>你需要换用一种方式：</p>
+<h2 id="第二种使用方式"><a href="#第二种使用方式" class="headerlink" title="第二种使用方式"></a>第二种使用方式</h2><p>第二种是一种上下文的方式，方便对于这个东西进行更好的控制。</p>
+<p>我们看：</p>
+<pre class="language-none"><code class="language-none">for i in tqdm(range(0,100),desc&#x3D;&quot;download&quot;,ncols&#x3D;100):</code></pre>
+
+<p><code>tqdm</code>应该是一个可以迭代的对象，所以其实所有可迭代的对象都可以作为迭代的东西传进来的。</p>
+<p>比如</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">for</span> i <span class="token keyword">in</span> tqdm<span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">"a"</span><span class="token punctuation">,</span><span class="token string">"b"</span><span class="token punctuation">,</span><span class="token string">"c"</span><span class="token punctuation">,</span><span class="token string">"d"</span><span class="token punctuation">]</span><span class="token punctuation">,</span> desc<span class="token operator">=</span><span class="token string">"download"</span><span class="token punctuation">,</span> postfix<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">"os"</span><span class="token punctuation">:</span><span class="token string">"linux"</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+    sleep<span class="token punctuation">(</span><span class="token number">0.2</span><span class="token punctuation">)</span></code></pre>
+
+<p>其效果为：</p>
+<pre class="language-none"><code class="language-none">download: 100%|██████████| 4&#x2F;4 [00:00&lt;00:00,  4.99it&#x2F;s, os&#x3D;linux]</code></pre>
+
+<p>但是这样的话，并不能体现到底是再哪个</p>
+<p>我们可以：</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">from</span> time <span class="token keyword">import</span> sleep
+
+<span class="token keyword">from</span> tqdm <span class="token keyword">import</span> tqdm
+x<span class="token operator">=</span><span class="token punctuation">[</span><span class="token string">"a"</span><span class="token punctuation">,</span><span class="token string">"b"</span><span class="token punctuation">,</span><span class="token string">"c"</span><span class="token punctuation">,</span><span class="token string">"d"</span><span class="token punctuation">]</span>
+pbar<span class="token operator">=</span> tqdm<span class="token punctuation">(</span>x<span class="token punctuation">,</span> desc<span class="token operator">=</span><span class="token string">"download:c"</span><span class="token punctuation">,</span> postfix<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">"os"</span><span class="token punctuation">:</span><span class="token string">"linux"</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span>
+<span class="token keyword">for</span> i <span class="token keyword">in</span> pbar<span class="token punctuation">:</span>
+    pbar<span class="token punctuation">.</span>set_description<span class="token punctuation">(</span>i<span class="token punctuation">)</span>
+    sleep<span class="token punctuation">(</span><span class="token number">0.2</span><span class="token punctuation">)</span>
+   </code></pre>
+
+<p>可以及时修改desc的内容。</p>
+<p>另外，方便自己更新进度条，我们可以选择使用with的模式：</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">with</span> tqdm<span class="token punctuation">(</span>x<span class="token punctuation">,</span> desc<span class="token operator">=</span><span class="token string">"download:c"</span><span class="token punctuation">,</span> postfix<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">"os"</span><span class="token punctuation">:</span> <span class="token string">"linux"</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span> <span class="token keyword">as</span> pbar<span class="token punctuation">:</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> pbar<span class="token punctuation">:</span>
+        sleep<span class="token punctuation">(</span><span class="token number">0.2</span><span class="token punctuation">)</span>
+        pbar<span class="token punctuation">.</span>set_description<span class="token punctuation">(</span>i<span class="token punctuation">)</span></code></pre>
+
+<p>这个和上面的是等价的。</p>
+<p>我们可以不可以不去使用for迭代呢？</p>
+<p>这里介绍一个新的函数：update：</p>
+<p>更改之后：</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">with</span> tqdm<span class="token punctuation">(</span>x<span class="token punctuation">,</span> desc<span class="token operator">=</span><span class="token string">"download:c"</span><span class="token punctuation">,</span> postfix<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">"os"</span><span class="token punctuation">:</span> <span class="token string">"linux"</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span> <span class="token keyword">as</span> pbar<span class="token punctuation">:</span>
+        sleep<span class="token punctuation">(</span><span class="token number">0.2</span><span class="token punctuation">)</span>
+        pbar<span class="token punctuation">.</span>update<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span></code></pre>
+
+<p>会卡到这里：</p>
+<pre class="language-none"><code class="language-none">download:  25%|██▌       | 1&#x2F;4 [00:00&lt;00:00,  4.98it&#x2F;s, os&#x3D;linux]</code></pre>
+
+<p>说也正常，因为毕竟就update了一次，我可以更换一下：</p>
+<pre class="language-python" data-language="python"><code class="language-python">x <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">"a"</span><span class="token punctuation">,</span> <span class="token string">"b"</span><span class="token punctuation">,</span> <span class="token string">"c"</span><span class="token punctuation">,</span> <span class="token string">"d"</span><span class="token punctuation">]</span>
+<span class="token keyword">with</span> tqdm<span class="token punctuation">(</span>x<span class="token punctuation">,</span> desc<span class="token operator">=</span><span class="token string">"download"</span><span class="token punctuation">,</span> postfix<span class="token operator">=</span><span class="token punctuation">&#123;</span><span class="token string">"os"</span><span class="token punctuation">:</span> <span class="token string">"linux"</span><span class="token punctuation">&#125;</span><span class="token punctuation">)</span> <span class="token keyword">as</span> pbar<span class="token punctuation">:</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> x<span class="token punctuation">:</span>
+        sleep<span class="token punctuation">(</span><span class="token number">0.2</span><span class="token punctuation">)</span>
+        pbar<span class="token punctuation">.</span>update<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span></code></pre>
+
+<p>注意，这样的情况下，我们是对x迭代，而不是对tqdm迭代。这个可以容许我干很多事。</p>
+<p>这个update()里面的整数，就是这个方法执行的迭代次数，就是进度条里面a&#x2F;b的那个a的变化。</p>
+<p>上面说到，total，是预期的迭代次数，但是超出预期呢？</p>
+<p>比如：</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">import</span> time
+<span class="token keyword">from</span> tqdm <span class="token keyword">import</span> tqdm
+
+<span class="token keyword">with</span> tqdm<span class="token punctuation">(</span>total<span class="token operator">=</span><span class="token number">200</span><span class="token punctuation">)</span> <span class="token keyword">as</span> pbar<span class="token punctuation">:</span>
+    pbar<span class="token punctuation">.</span>set_description<span class="token punctuation">(</span><span class="token string">'Processing:'</span><span class="token punctuation">)</span>
+    <span class="token comment"># total表示总的项目, 循环的次数20*10(每次更新数目) = 200(total)</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment"># 进行动作, 这里是过0.1s</span>
+        time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">0.1</span><span class="token punctuation">)</span>
+        <span class="token comment"># 进行进度更新, 这里设置10个</span>
+        pbar<span class="token punctuation">.</span>update<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span></code></pre>
+
+<pre class="language-none"><code class="language-none">Processing:: 100%|██████████| 200&#x2F;200 [00:02&lt;00:00, 99.16it&#x2F;s]</code></pre>
+
+<p>没毛病。</p>
+<p>但是我修改一下：</p>
+<pre class="language-python" data-language="python"><code class="language-python"><span class="token keyword">with</span> tqdm<span class="token punctuation">(</span>total<span class="token operator">=</span><span class="token number">200</span><span class="token punctuation">)</span> <span class="token keyword">as</span> pbar<span class="token punctuation">:</span>
+    pbar<span class="token punctuation">.</span>set_description<span class="token punctuation">(</span><span class="token string">'Processing:'</span><span class="token punctuation">)</span>
+    <span class="token comment"># total表示总的项目, 循环的次数20*10(每次更新数目) = 200(total)</span>
+    <span class="token keyword">for</span> i <span class="token keyword">in</span> <span class="token builtin">range</span><span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        <span class="token comment"># 进行动作, 这里是过0.1s</span>
+        time<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">0.1</span><span class="token punctuation">)</span>
+        <span class="token comment"># 进行进度更新, 这里设置10个</span>
+        pbar<span class="token punctuation">.</span>update<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span></code></pre>
+
+<p>那么，</p>
+<pre class="language-none"><code class="language-none">Processing::  80%|████████  | 160&#x2F;200 [00:01&lt;00:00, 94.27it&#x2F;s]</code></pre>
+
+<p>刚开始的时候还是只有200个，这个是预期的循环次数，预期的循环次数决定了一开始输出的&#x2F;200，所有的80%的比例都是按照这个计算的</p>
+<p>当这个200跑完后，会进入到这个状态：</p>
+<pre class="language-python" data-language="python"><code class="language-python">Processing<span class="token punctuation">:</span><span class="token punctuation">:</span> <span class="token punctuation">:</span> 290it <span class="token punctuation">[</span><span class="token number">00</span><span class="token punctuation">:</span><span class="token number">03</span><span class="token punctuation">,</span> <span class="token number">96</span><span class="token punctuation">.</span>17it<span class="token operator">/</span>s<span class="token punctuation">]</span></code></pre>
+
+<p>就是没有进度条的状态</p>
 
                 
             </div>
@@ -682,7 +713,7 @@ a.hammingDecode()</code></pre>
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="https://farewillwell.github.io/2023/05/30/%E6%B5%B7%E6%98%8E%E7%A0%81/">https://farewillwell.github.io/2023/05/30/%E6%B5%B7%E6%98%8E%E7%A0%81/</a>
+                    <a href="https://farewillwell.github.io/2023/07/10/tqdm/">https://farewillwell.github.io/2023/07/10/tqdm/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -720,8 +751,8 @@ a.hammingDecode()</code></pre>
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E7%A5%9E%E5%A5%87%E7%9A%84%E5%AD%A6%E4%B9%A0/">
-                                    <span class="chip bg-color">神奇的学习</span>
+                                <a href="/tags/%E7%9E%8E%E6%90%9E/">
+                                    <span class="chip bg-color">瞎搞</span>
                                 </a>
                             
                         </div>
@@ -765,9 +796,56 @@ a.hammingDecode()</code></pre>
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
+            <div class="card">
+                <a href="/2023/07/10/tqdm/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/7.jpg" class="responsive-img" alt="tqdm包">
+                        
+                        <span class="card-title">tqdm包</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-07-10
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            farewell
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E7%9E%8E%E6%90%9E/">
+                        <span class="chip bg-color">瞎搞</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
             <div class="card">
                 <a href="/2023/07/04/Junit%E4%B8%8E%E6%A1%86%E6%9E%B6/">
                     <div class="card-image">
@@ -785,45 +863,8 @@ a.hammingDecode()</code></pre>
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2023-07-04
-                        </span>
-                        <span class="publish-author">
-                            
-                            <i class="fas fa-user fa-fw"></i>
-                            farewell
-                            
-                        </span>
-                    </div>
-                </div>
-                
-            </div>
-        </div>
-        
-        
-        <div class="article col s12 m6" data-aos="fade-up">
-            <div class="article-badge right-badge text-color">
-                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
-            </div>
-            <div class="card">
-                <a href="/2023/05/18/OKtest%E2%80%94%E2%80%94%E8%A7%84%E6%A0%BC%E3%80%81%E5%AE%9E%E7%8E%B0%E5%92%8C%E6%B5%8B%E8%AF%95/">
-                    <div class="card-image">
-                        
-                        
-                        <img src="/medias/featureimages/8.jpg" class="responsive-img" alt="what is oktest">
-                        
-                        <span class="card-title">what is oktest</span>
-                    </div>
-                </a>
-                <div class="card-content article-content">
-                    <div class="summary block-with-text">
-                        
-                            
-                        
-                    </div>
-                    <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2023-05-18
+                                <i class="far fa-clock fa-fw icon-date"></i>2023-07-04
                             </span>
                         <span class="publish-author">
                             
@@ -832,14 +873,6 @@ a.hammingDecode()</code></pre>
                             
                         </span>
                     </div>
-                </div>
-                
-                <div class="card-action article-tags">
-                    
-                    <a href="/tags/BUAA-OO/">
-                        <span class="chip bg-color">BUAA_OO</span>
-                    </a>
-                    
                 </div>
                 
             </div>
